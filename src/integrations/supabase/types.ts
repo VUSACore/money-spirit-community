@@ -192,6 +192,78 @@ export type Database = {
         }
         Relationships: []
       }
+      ritual_completions: {
+        Row: {
+          completed_at: string
+          id: string
+          reflection: string | null
+          ritual_id: string
+          shared_to_feed: boolean
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          reflection?: string | null
+          ritual_id: string
+          shared_to_feed?: boolean
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          reflection?: string | null
+          ritual_id?: string
+          shared_to_feed?: boolean
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ritual_completions_ritual_id_fkey"
+            columns: ["ritual_id"]
+            isOneToOne: false
+            referencedRelation: "rituals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ritual_completions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rituals: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          prompt: string
+          published: boolean
+          title: string
+          week_of: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          prompt: string
+          published?: boolean
+          title: string
+          week_of: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          prompt?: string
+          published?: boolean
+          title?: string
+          week_of?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
