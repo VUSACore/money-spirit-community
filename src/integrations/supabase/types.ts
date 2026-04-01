@@ -14,6 +14,101 @@ export type Database = {
   }
   public: {
     Tables: {
+      event_tickets: {
+        Row: {
+          event_id: string
+          id: string
+          purchased_at: string
+          status: string
+          stripe_session_id: string | null
+          user_id: string
+        }
+        Insert: {
+          event_id: string
+          id?: string
+          purchased_at?: string
+          status?: string
+          stripe_session_id?: string | null
+          user_id: string
+        }
+        Update: {
+          event_id?: string
+          id?: string
+          purchased_at?: string
+          status?: string
+          stripe_session_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_tickets_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_tickets_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          capacity: number | null
+          created_at: string
+          created_by: string | null
+          description: string
+          event_date: string
+          id: string
+          is_virtual: boolean
+          location_name: string | null
+          price_pence: number
+          published: boolean
+          stripe_price_id: string | null
+          title: string
+        }
+        Insert: {
+          capacity?: number | null
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          event_date: string
+          id?: string
+          is_virtual?: boolean
+          location_name?: string | null
+          price_pence?: number
+          published?: boolean
+          stripe_price_id?: string | null
+          title: string
+        }
+        Update: {
+          capacity?: number | null
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          event_date?: string
+          id?: string
+          is_virtual?: boolean
+          location_name?: string | null
+          price_pence?: number
+          published?: boolean
+          stripe_price_id?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       memberships: {
         Row: {
           cancel_at_period_end: boolean
