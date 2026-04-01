@@ -99,12 +99,16 @@ const Rituals = () => {
     });
 
     // Update streak on profile
+    const { data: profileData } = await supabase
+      .from("profiles")
+      .select("ritual_streak")
+      .eq("id", userId)
+      .single();
+
     await supabase
       .from("profiles")
       .update({
-        ritual_streak: (await supabase.from("profiles").select("ritual_streak").eq("id", userId).single()).data?.ritual_streak
-          ? (await supabase.from("profiles").select("ritual_streak").eq("id", userId).single()).data!.ritual_streak + 1
-          : 1,
+        ritual_streak: (profileData?.ritual_streak ?? 0) + 1,
         ritual_last_date: getThisMonday(),
       })
       .eq("id", userId);
