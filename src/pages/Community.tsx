@@ -4,6 +4,7 @@ import { useProfile } from "@/components/PlatformLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Heart, PartyPopper, Sparkles, Zap } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
