@@ -5,18 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import type { Tables } from "@/integrations/supabase/types";
 
-interface Event {
-  id: string;
-  title: string;
-  description: string;
-  event_date: string;
-  location_name: string | null;
-  is_virtual: boolean;
-  price_pence: number;
-  capacity: number | null;
-  stripe_price_id: string | null;
-}
+type Event = Tables<"events">;
 
 const formatPrice = (pence: number) => {
   if (pence === 0) return "Free";
@@ -35,11 +26,11 @@ const Events = () => {
     const load = async () => {
       const { data } = await supabase
         .from("events")
-        .select("id, title, description, event_date, location_name, is_virtual, price_pence, capacity, stripe_price_id")
+        .select("*")
         .eq("published", true)
         .order("event_date", { ascending: true });
 
-      setEvents((data as Event[]) ?? []);
+      setEvents(data ?? []);
 
       // Load user's existing tickets
       const { data: { user } } = await supabase.auth.getUser();
@@ -49,13 +40,14 @@ const Events = () => {
           .select("event_id")
           .eq("user_id", user.id)
           .eq("status", "active");
-        setTicketedIds(new Set((tickets ?? []).map((t: any) => t.event_id)));
+        setTicketedIds(new Set((tickets ?? []).map((t) => t.event_id)));
 
+        // Use event_waitlist as interest registration since event_interests doesn't exist
         const { data: interests } = await supabase
-          .from("event_interests")
+          .from("event_waitlist")
           .select("event_id")
           .eq("user_id", user.id);
-        setInterestedIds(new Set((interests ?? []).map((t: any) => t.event_id)));
+        setInterestedIds(new Set((interests ?? []).map((t) => t.event_id)));
       }
 
       setLoading(false);
@@ -95,7 +87,7 @@ const Events = () => {
       return;
     }
 
-    const { error } = await supabase.from("event_interests").insert({
+    const { error } = await supabase.from("event_waitlist").insert({
       event_id: eventId,
       user_id: user.id,
     });
@@ -163,7 +155,6 @@ const Events = () => {
                 key={event.id}
                 className="rounded-2xl border border-border overflow-hidden bg-card shadow-sm hover:shadow-md transition-shadow"
               >
-                {/* Cover placeholder */}
                 <div className="h-40 bg-primary flex items-center justify-center">
                   <CalendarDays className="h-12 w-12 text-primary-foreground/30" />
                 </div>
@@ -185,7 +176,7 @@ const Events = () => {
                     ) : (
                       <>
                         <MapPin className="h-4 w-4 text-accent" />
-                        {event.location_name ?? "Location TBA"}
+                        {event.location ?? "Location TBA"}
                       </>
                     )}
                   </div>

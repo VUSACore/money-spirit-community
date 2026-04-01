@@ -11,16 +11,9 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { Tables } from "@/integrations/supabase/types";
 
-interface Ritual {
-  id: string;
-  title: string;
-  description: string;
-  prompt: string;
-  week_of: string;
-  published: boolean;
-  created_at: string;
-}
+type Ritual = Tables<"rituals">;
 
 const AdminRituals = () => {
   const [rituals, setRituals] = useState<Ritual[]>([]);
@@ -28,10 +21,9 @@ const AdminRituals = () => {
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
 
-  // Form state
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [prompt, setPrompt] = useState("");
+  const [reflectionPrompt, setReflectionPrompt] = useState("");
   const [weekOf, setWeekOf] = useState<Date | undefined>();
   const [published, setPublished] = useState(false);
 
@@ -40,18 +32,18 @@ const AdminRituals = () => {
       .from("rituals")
       .select("*")
       .order("week_of", { ascending: false });
-    setRituals((data as Ritual[]) ?? []);
+    setRituals(data ?? []);
     setLoading(false);
   };
 
   useEffect(() => { load(); }, []);
 
   const resetForm = () => {
-    setTitle(""); setDescription(""); setPrompt(""); setWeekOf(undefined); setPublished(false);
+    setTitle(""); setDescription(""); setReflectionPrompt(""); setWeekOf(undefined); setPublished(false);
   };
 
   const handleCreate = async () => {
-    if (!title || !description || !prompt || !weekOf) {
+    if (!title || !description || !reflectionPrompt || !weekOf) {
       toast({ title: "Missing fields", description: "Please fill in all fields.", variant: "destructive" });
       return;
     }
@@ -59,7 +51,7 @@ const AdminRituals = () => {
     const { error } = await supabase.from("rituals").insert({
       title,
       description,
-      prompt,
+      reflection_prompt: reflectionPrompt,
       week_of: format(weekOf, "yyyy-MM-dd"),
       published,
     });
@@ -77,7 +69,6 @@ const AdminRituals = () => {
     <div>
       <h2 className="text-2xl font-heading text-primary mb-6">Rituals</h2>
 
-      {/* Create form */}
       <div className="rounded-xl border border-border bg-card p-6 space-y-4 mb-8 max-w-2xl">
         <h3 className="font-heading text-lg text-primary">Create Ritual</h3>
 
@@ -90,8 +81,8 @@ const AdminRituals = () => {
           <Textarea className="ms-input mt-1" rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
         </div>
         <div>
-          <Label className="font-body text-sm">Prompt</Label>
-          <Textarea className="ms-input mt-1" rows={2} value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+          <Label className="font-body text-sm">Reflection Prompt</Label>
+          <Textarea className="ms-input mt-1" rows={2} value={reflectionPrompt} onChange={(e) => setReflectionPrompt(e.target.value)} />
         </div>
         <div>
           <Label className="font-body text-sm">Week of</Label>
@@ -119,7 +110,6 @@ const AdminRituals = () => {
         </Button>
       </div>
 
-      {/* Existing rituals */}
       {loading ? (
         <p className="text-muted-foreground font-body">Loading…</p>
       ) : (

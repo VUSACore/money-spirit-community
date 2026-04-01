@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { Search, MapPin, Flame, X } from "lucide-react";
+import { Search, MapPin, Flame } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
@@ -34,7 +34,7 @@ const Members = () => {
       const { data } = await supabase
         .from("profiles")
         .select("id, display_name, avatar_url, bio, location, ritual_streak, created_at")
-        .eq("show_in_directory", true)
+        .eq("visible_in_directory", true)
         .order("display_name", { ascending: true });
 
       setMembers((data as MemberProfile[]) ?? []);
@@ -61,7 +61,6 @@ const Members = () => {
       <h1 className="text-3xl font-heading text-primary mb-2">Members</h1>
       <p className="text-muted-foreground font-body mb-6">Browse the community directory.</p>
 
-      {/* Search */}
       <div className="relative mb-8 max-w-md">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
@@ -82,7 +81,6 @@ const Members = () => {
               onClick={() => setSelected(member)}
               className="rounded-2xl border border-border bg-card p-5 text-left shadow-sm hover:shadow-md transition-shadow flex items-start gap-4"
             >
-              {/* Avatar */}
               {member.avatar_url ? (
                 <img
                   src={member.avatar_url}
@@ -122,7 +120,6 @@ const Members = () => {
         </div>
       )}
 
-      {/* Profile modal */}
       <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>

@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import type { Database } from "@/integrations/supabase/types";
+
+type PathwayType = Database["public"]["Enums"]["pathway_type"];
 
 const questions = [
   {
@@ -26,7 +29,7 @@ const questions = [
   },
 ];
 
-function calculatePathway(answers: number[]): string {
+function calculatePathway(answers: number[]): PathwayType {
   let foundation = 0;
   let growth = 0;
   let abundance = 0;
@@ -68,7 +71,6 @@ const Onboarding = () => {
       return;
     }
 
-    // Final step — save to Supabase
     setSaving(true);
     setError("");
 
@@ -98,13 +100,11 @@ const Onboarding = () => {
   return (
     <div className="min-h-screen bg-navy-deep flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-lg">
-        {/* Header */}
         <div className="text-center mb-6">
           <h1 className="text-3xl font-heading text-white mb-1">Your Money Spirit Path</h1>
           <p className="text-gold font-body text-sm">Question {step + 1} of {questions.length}</p>
         </div>
 
-        {/* Progress bar */}
         <div className="w-full h-1.5 bg-navy rounded-full mb-8 overflow-hidden">
           <div
             className="h-full bg-gold rounded-full transition-all duration-300"
@@ -112,10 +112,8 @@ const Onboarding = () => {
           />
         </div>
 
-        {/* Question */}
         <h2 className="text-xl font-heading text-white text-center mb-6">{current.question}</h2>
 
-        {/* Options */}
         <div className="space-y-3 mb-8">
           {current.options.map((option, idx) => (
             <button
@@ -138,7 +136,6 @@ const Onboarding = () => {
           </div>
         )}
 
-        {/* Next / Complete */}
         <Button
           variant="gold"
           className="w-full rounded-xl h-11"

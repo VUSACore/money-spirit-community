@@ -12,14 +12,9 @@ import {
 } from "@/components/ui/accordion";
 import { Flame, CheckCircle2 } from "lucide-react";
 import { startOfWeek, format } from "date-fns";
+import type { Tables } from "@/integrations/supabase/types";
 
-interface Ritual {
-  id: string;
-  title: string;
-  description: string;
-  prompt: string;
-  week_of: string;
-}
+type Ritual = Tables<"rituals">;
 
 const getThisMonday = () => {
   const monday = startOfWeek(new Date(), { weekStartsOn: 1 });
@@ -45,10 +40,9 @@ const Rituals = () => {
 
       const monday = getThisMonday();
 
-      // Fetch current week ritual
       const { data: current } = await supabase
         .from("rituals")
-        .select("id, title, description, prompt, week_of")
+        .select("*")
         .eq("week_of", monday)
         .eq("published", true)
         .limit(1)
@@ -56,17 +50,15 @@ const Rituals = () => {
 
       setCurrentRitual(current);
 
-      // Fetch past rituals
       const { data: past } = await supabase
         .from("rituals")
-        .select("id, title, description, prompt, week_of")
+        .select("*")
         .lt("week_of", monday)
         .eq("published", true)
         .order("week_of", { ascending: false });
 
       setPastRituals(past ?? []);
 
-      // Check completions
       if (uid) {
         const { data: completions } = await supabase
           .from("ritual_completions")
@@ -90,7 +82,6 @@ const Rituals = () => {
     if (!userId || !currentRitual) return;
     setSubmitting(true);
 
-    // Insert completion
     await supabase.from("ritual_completions").insert({
       user_id: userId,
       ritual_id: currentRitual.id,
@@ -98,26 +89,11 @@ const Rituals = () => {
       shared_to_feed: shareToFeed,
     });
 
-    // Update streak on profile
-    const { data: profileData } = await supabase
-      .from("profiles")
-      .select("ritual_streak")
-      .eq("id", userId)
-      .single();
-
-    await supabase
-      .from("profiles")
-      .update({
-        ritual_streak: (profileData?.ritual_streak ?? 0) + 1,
-        ritual_last_date: getThisMonday(),
-      })
-      .eq("id", userId);
-
     // Share to feed if checked
     if (shareToFeed && reflection.trim()) {
       await supabase.from("posts").insert({
         author_id: userId,
-        type: "ritual_share",
+        post_type: "ritual_share" as const,
         content: `✨ Completed this week's ritual: "${currentRitual.title}"\n\n${reflection.trim()}`,
       });
     }
@@ -142,7 +118,6 @@ const Rituals = () => {
         <h1 className="text-3xl font-heading text-foreground">Rituals</h1>
       </div>
 
-      {/* Current week ritual */}
       {currentRitual ? (
         <Card className="border bg-card shadow-none">
           <CardContent className="p-6 space-y-5">
@@ -157,12 +132,13 @@ const Rituals = () => {
               {currentRitual.description}
             </p>
 
-            {/* Prompt box */}
-            <div className="bg-primary/5 rounded-xl p-5 border border-border">
-              <p className="text-sm font-body text-foreground italic leading-relaxed">
-                {currentRitual.prompt}
-              </p>
-            </div>
+            {currentRitual.reflection_prompt && (
+              <div className="bg-primary/5 rounded-xl p-5 border border-border">
+                <p className="text-sm font-body text-foreground italic leading-relaxed">
+                  {currentRitual.reflection_prompt}
+                </p>
+              </div>
+            )}
 
             {completed ? (
               <div className="flex items-center gap-3 py-4">
@@ -219,7 +195,6 @@ const Rituals = () => {
         </Card>
       )}
 
-      {/* Past rituals */}
       {pastRituals.length > 0 && (
         <div className="space-y-3">
           <h3 className="text-lg font-heading text-foreground">Past Rituals</h3>
@@ -243,9 +218,11 @@ const Rituals = () => {
                 </AccordionTrigger>
                 <AccordionContent className="space-y-3 pb-4">
                   <p className="text-sm font-body text-foreground">{ritual.description}</p>
-                  <div className="bg-primary/5 rounded-lg p-4 border border-border">
-                    <p className="text-sm font-body text-foreground italic">{ritual.prompt}</p>
-                  </div>
+                  {ritual.reflection_prompt && (
+                    <div className="bg-primary/5 rounded-lg p-4 border border-border">
+                      <p className="text-sm font-body text-foreground italic">{ritual.reflection_prompt}</p>
+                    </div>
+                  )}
                 </AccordionContent>
               </AccordionItem>
             ))}

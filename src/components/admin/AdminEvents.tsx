@@ -11,18 +11,9 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { Tables } from "@/integrations/supabase/types";
 
-interface Event {
-  id: string;
-  title: string;
-  description: string;
-  event_date: string;
-  location_name: string | null;
-  is_virtual: boolean;
-  price_pence: number;
-  capacity: number | null;
-  published: boolean;
-}
+type Event = Tables<"events">;
 
 const AdminEvents = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -33,7 +24,7 @@ const AdminEvents = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [eventDate, setEventDate] = useState<Date | undefined>();
-  const [locationName, setLocationName] = useState("");
+  const [location, setLocation] = useState("");
   const [isVirtual, setIsVirtual] = useState(false);
   const [priceAud, setPriceAud] = useState("");
   const [capacity, setCapacity] = useState("");
@@ -42,9 +33,9 @@ const AdminEvents = () => {
   const load = async () => {
     const { data } = await supabase
       .from("events")
-      .select("id, title, description, event_date, location_name, is_virtual, price_pence, capacity, published")
+      .select("*")
       .order("event_date", { ascending: false });
-    setEvents((data as Event[]) ?? []);
+    setEvents(data ?? []);
     setLoading(false);
   };
 
@@ -52,7 +43,7 @@ const AdminEvents = () => {
 
   const resetForm = () => {
     setTitle(""); setDescription(""); setEventDate(undefined);
-    setLocationName(""); setIsVirtual(false); setPriceAud(""); setCapacity(""); setPublished(false);
+    setLocation(""); setIsVirtual(false); setPriceAud(""); setCapacity(""); setPublished(false);
   };
 
   const handleCreate = async () => {
@@ -62,15 +53,20 @@ const AdminEvents = () => {
     }
     setSaving(true);
     const pricePence = Math.round((parseFloat(priceAud) || 0) * 100);
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { setSaving(false); return; }
+
     const { error } = await supabase.from("events").insert({
       title,
       description,
       event_date: eventDate.toISOString(),
-      location_name: locationName || null,
+      location: location || null,
       is_virtual: isVirtual,
       price_pence: pricePence,
       capacity: capacity ? parseInt(capacity) : null,
       published,
+      created_by: user.id,
     });
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -119,7 +115,7 @@ const AdminEvents = () => {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <Label className="font-body text-sm">Location</Label>
-            <Input className="ms-input mt-1" value={locationName} onChange={(e) => setLocationName(e.target.value)} placeholder="e.g. Sydney CBD" />
+            <Input className="ms-input mt-1" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="e.g. Sydney CBD" />
           </div>
           <div className="flex items-end gap-3 pb-1">
             <Switch checked={isVirtual} onCheckedChange={setIsVirtual} />

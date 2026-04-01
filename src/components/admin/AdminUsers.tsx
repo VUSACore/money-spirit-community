@@ -6,13 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import type { Tables } from "@/integrations/supabase/types";
 
-interface Profile {
-  id: string;
-  display_name: string;
-  role: string;
-  created_at: string;
-}
+type Profile = Pick<Tables<"profiles">, "id" | "display_name" | "role" | "created_at">;
 
 const AdminUsers = () => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
@@ -27,7 +23,7 @@ const AdminUsers = () => {
       .from("profiles")
       .select("id, display_name, role, created_at")
       .order("created_at", { ascending: false });
-    setProfiles((data as Profile[]) ?? []);
+    setProfiles(data ?? []);
     setLoading(false);
   };
 
@@ -41,15 +37,16 @@ const AdminUsers = () => {
   const saveRole = async () => {
     if (!editing) return;
     setSaving(true);
-    const { error } = await supabase.rpc("admin_update_profile_role", {
-      _target_id: editing.id,
-      _new_role: newRole,
-    });
+    // Direct update — admin RLS allows this via auth_user_role() check
+    const { error } = await supabase
+      .from("profiles")
+      .update({ role: newRole as Tables<"profiles">["role"] })
+      .eq("id", editing.id);
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "Role updated" });
-      setProfiles((prev) => prev.map((p) => p.id === editing.id ? { ...p, role: newRole } : p));
+      setProfiles((prev) => prev.map((p) => p.id === editing.id ? { ...p, role: newRole as Tables<"profiles">["role"] } : p));
       setEditing(null);
     }
     setSaving(false);
