@@ -69,12 +69,15 @@ const Community = () => {
 
     if (!postsData) return;
 
+    // Fetch author profiles directly from the profiles table
     const authorIds = [...new Set(postsData.map((p) => p.author_id))];
     const { data: authors } = await supabase
-      .rpc("get_public_profiles", { profile_ids: authorIds });
+      .from("profiles")
+      .select("id, display_name, avatar_url")
+      .in("id", authorIds);
 
     const authorMap = new Map(
-      (authors ?? []).map((a: { id: string; display_name: string; avatar_url: string | null }) => [a.id, a])
+      (authors ?? []).map((a) => [a.id, a])
     );
 
     const postIds = postsData.map((p) => p.id);
@@ -135,7 +138,11 @@ const Community = () => {
   const handlePost = async () => {
     if (!newContent.trim() || !userId) return;
     setPosting(true);
-    await supabase.from("posts").insert({ author_id: userId, content: newContent.trim() });
+    await supabase.from("posts").insert({
+      author_id: userId,
+      content: newContent.trim(),
+      post_type: "standard" as const,
+    });
     setNewContent("");
     setPosting(false);
   };

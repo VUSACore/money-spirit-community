@@ -20,7 +20,6 @@ type TabId = (typeof tabs)[number]["id"];
 const Admin = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [activeTab, setActiveTab] = useState<TabId>("users");
 
   useEffect(() => {
@@ -28,10 +27,10 @@ const Admin = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { navigate("/login", { replace: true }); return; }
 
-      const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
-      if (!data) { navigate("/dashboard", { replace: true }); return; }
+      // Check role via auth_user_role() which is available as an RPC
+      const { data: role } = await supabase.rpc("auth_user_role");
+      if (role !== "admin") { navigate("/dashboard", { replace: true }); return; }
 
-      setIsAdmin(true);
       setLoading(false);
     };
     check();
@@ -47,7 +46,6 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen flex">
-      {/* Sidebar */}
       <aside className="w-[240px] shrink-0 bg-primary flex flex-col fixed inset-y-0 left-0 z-30">
         <div className="px-6 py-6 flex items-center gap-2.5">
           <LotusIcon className="text-accent" size={28} />
@@ -84,7 +82,6 @@ const Admin = () => {
         </div>
       </aside>
 
-      {/* Main */}
       <main className="ml-[240px] flex-1 min-h-screen bg-background overflow-y-auto p-8">
         {activeTab === "users" && <AdminUsers />}
         {activeTab === "rituals" && <AdminRituals />}
