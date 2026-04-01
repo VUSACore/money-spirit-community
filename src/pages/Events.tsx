@@ -85,11 +85,34 @@ const Events = () => {
     setClaimingId(null);
   };
 
+  const registerInterest = async (eventId: string) => {
+    setClaimingId(eventId);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast({ title: "Please sign in", description: "You need an account to register interest.", variant: "destructive" });
+      setClaimingId(null);
+      return;
+    }
+
+    const { error } = await supabase.from("event_interests").insert({
+      event_id: eventId,
+      user_id: user.id,
+    });
+
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      setInterestedIds((prev) => new Set(prev).add(eventId));
+      toast({ title: "Thanks!", description: "We will be in touch with payment details shortly." });
+    }
+    setClaimingId(null);
+  };
+
   const handleGetTicket = (event: Event) => {
     if (event.price_pence === 0) {
       claimFreeTicket(event.id);
     } else {
-      toast({ title: "Coming soon", description: "Paid ticket checkout will be available shortly." });
+      registerInterest(event.id);
     }
   };
 
