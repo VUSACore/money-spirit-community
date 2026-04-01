@@ -11,8 +11,11 @@ import {
   Contact,
   LogOut,
   Shield,
+  Menu,
+  X,
 } from "lucide-react";
 import LotusIcon from "@/components/LotusIcon";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Profile = Tables<"profiles">;
@@ -30,11 +33,78 @@ const navItems = [
   { label: "Members", to: "/members", icon: Contact },
 ];
 
+const SidebarContent = ({
+  profile,
+  location,
+  handleSignOut,
+  onNavClick,
+}: {
+  profile: Profile | null;
+  location: ReturnType<typeof useLocation>;
+  handleSignOut: () => void;
+  onNavClick?: () => void;
+}) => (
+  <>
+    {/* Logo */}
+    <div className="px-6 py-6 flex items-center gap-2.5">
+      <LotusIcon className="text-gold" size={28} />
+      <span className="text-white font-heading text-xl tracking-wide">Money Spirit</span>
+    </div>
+
+    {/* Nav */}
+    <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
+      {navItems.map((item) => {
+        const active = location.pathname === item.to;
+        return (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            onClick={onNavClick}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-body transition-colors ${
+              active
+                ? "bg-gold/15 text-white"
+                : "text-white/70 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <item.icon size={18} className={active ? "text-gold" : ""} />
+            {item.label}
+          </NavLink>
+        );
+      })}
+    </nav>
+
+    {/* User / Sign out */}
+    <div className="px-4 py-4 border-t border-white/10">
+      <p className="text-white text-sm font-body truncate mb-2">
+        {profile?.display_name ?? "Member"}
+      </p>
+      {profile?.role === "admin" && (
+        <Link
+          to="/admin"
+          onClick={onNavClick}
+          className="flex items-center gap-2 text-accent hover:text-accent/80 text-xs font-body transition-colors mb-2"
+        >
+          <Shield size={14} />
+          Admin Panel
+        </Link>
+      )}
+      <button
+        onClick={handleSignOut}
+        className="flex items-center gap-2 text-white/50 hover:text-white text-xs font-body transition-colors"
+      >
+        <LogOut size={14} />
+        Sign out
+      </button>
+    </div>
+  </>
+);
+
 const PlatformLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -79,61 +149,38 @@ const PlatformLayout = () => {
   return (
     <ProfileContext.Provider value={profile}>
       <div className="min-h-screen flex">
-        {/* Sidebar */}
-        <aside className="w-[260px] shrink-0 bg-navy-deep flex flex-col fixed inset-y-0 left-0 z-30">
-          {/* Logo */}
-          <div className="px-6 py-6 flex items-center gap-2.5">
-            <LotusIcon className="text-gold" size={28} />
-            <span className="text-white font-heading text-xl tracking-wide">Money Spirit</span>
-          </div>
-
-          {/* Nav */}
-          <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
-            {navItems.map((item) => {
-              const active = location.pathname === item.to;
-              return (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-body transition-colors ${
-                    active
-                      ? "bg-gold/15 text-white"
-                      : "text-white/70 hover:text-white hover:bg-white/5"
-                  }`}
-                >
-                  <item.icon size={18} className={active ? "text-gold" : ""} />
-                  {item.label}
-                </NavLink>
-              );
-            })}
-          </nav>
-
-          {/* User / Sign out */}
-          <div className="px-4 py-4 border-t border-white/10">
-            <p className="text-white text-sm font-body truncate mb-2">
-              {profile?.display_name ?? "Member"}
-            </p>
-            {profile?.role === "admin" && (
-              <Link
-                to="/admin"
-                className="flex items-center gap-2 text-accent hover:text-accent/80 text-xs font-body transition-colors mb-2"
-              >
-                <Shield size={14} />
-                Admin Panel
-              </Link>
-            )}
-            <button
-              onClick={handleSignOut}
-              className="flex items-center gap-2 text-white/50 hover:text-white text-xs font-body transition-colors"
-            >
-              <LogOut size={14} />
-              Sign out
-            </button>
-          </div>
+        {/* Desktop sidebar */}
+        <aside className="hidden md:flex w-[260px] shrink-0 bg-navy-deep flex-col fixed inset-y-0 left-0 z-30">
+          <SidebarContent profile={profile} location={location} handleSignOut={handleSignOut} />
         </aside>
 
+        {/* Mobile header */}
+        <header className="fixed top-0 left-0 right-0 z-40 md:hidden bg-navy-deep flex items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-2">
+            <LotusIcon className="text-gold" size={24} />
+            <span className="text-white font-heading text-lg tracking-wide">Money Spirit</span>
+          </div>
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild>
+              <button className="text-white p-1">
+                <Menu size={24} />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[260px] bg-navy-deep border-none p-0 [&>button]:hidden">
+              <SidebarContent
+                profile={profile}
+                location={location}
+                handleSignOut={handleSignOut}
+                onNavClick={() => setMobileOpen(false)}
+              />
+            </SheetContent>
+          </Sheet>
+        </header>
+
         {/* Main content */}
-        <main className="ml-[260px] flex-1 min-h-screen bg-cream overflow-y-auto">
+        <main className="md:ml-[260px] flex-1 min-h-screen bg-cream overflow-y-auto pt-14 md:pt-0">
+          {/* Gold top border */}
+          <div className="h-1 bg-gold w-full" />
           <Outlet />
         </main>
       </div>

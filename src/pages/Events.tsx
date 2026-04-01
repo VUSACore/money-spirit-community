@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { CalendarDays, MapPin, Globe, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -118,9 +119,25 @@ const Events = () => {
 
   if (loading) {
     return (
-      <div className="p-8">
-        <h1 className="text-3xl font-heading text-primary mb-6">Events</h1>
-        <p className="text-muted-foreground font-body">Loading events…</p>
+      <div className="p-8 max-w-5xl mx-auto">
+        <h1 className="text-3xl font-heading text-primary mb-2">Events</h1>
+        <p className="text-muted-foreground font-body mb-8">Workshops, circles and gatherings for the community.</p>
+        <div className="grid gap-6 sm:grid-cols-2">
+          {[1, 2].map((i) => (
+            <div key={i} className="rounded-2xl border border-border overflow-hidden bg-card">
+              <Skeleton className="h-40 w-full rounded-none bg-gold/10" />
+              <div className="p-5 space-y-3">
+                <Skeleton className="h-6 w-3/4 bg-gold/10" />
+                <Skeleton className="h-4 w-1/2 bg-gold/10" />
+                <Skeleton className="h-4 w-1/3 bg-gold/10" />
+                <div className="flex justify-between pt-2">
+                  <Skeleton className="h-6 w-16 bg-gold/10" />
+                  <Skeleton className="h-9 w-32 rounded-lg bg-gold/10" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -131,9 +148,9 @@ const Events = () => {
       <p className="text-muted-foreground font-body mb-8">Workshops, circles and gatherings for the community.</p>
 
       {events.length === 0 ? (
-        <div className="text-center py-16">
+        <div className="text-center py-16 space-y-2">
           <CalendarDays className="mx-auto h-12 w-12 text-muted-foreground/40 mb-4" />
-          <p className="text-muted-foreground font-body">No upcoming events right now. Check back soon!</p>
+          <p className="text-lg font-body text-muted-foreground">No events yet — check back soon</p>
         </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2">

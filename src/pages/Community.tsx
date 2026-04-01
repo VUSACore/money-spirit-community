@@ -4,6 +4,7 @@ import { useProfile } from "@/components/PlatformLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Heart, PartyPopper, Sparkles, Zap } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
@@ -54,6 +55,7 @@ const Community = () => {
   const [posts, setPosts] = useState<PostWithAuthor[]>([]);
   const [newContent, setNewContent] = useState("");
   const [posting, setPosting] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
 
   const isGuest = profile?.role === "guest";
@@ -114,6 +116,7 @@ const Community = () => {
       const uid = session?.user?.id ?? null;
       setUserId(uid);
       await fetchPosts(uid);
+      setLoading(false);
     };
     init();
 
@@ -156,6 +159,29 @@ const Community = () => {
   };
 
   const visiblePosts = isGuest ? posts.slice(0, 5) : posts;
+
+  if (loading) {
+    return (
+      <div className="p-8 max-w-3xl mx-auto space-y-6">
+        <h1 className="text-3xl font-heading text-foreground">Community</h1>
+        {[1, 2, 3].map((i) => (
+          <Card key={i} className="border bg-card shadow-none">
+            <CardContent className="p-5 space-y-3">
+              <div className="flex items-center gap-3">
+                <Skeleton className="w-10 h-10 rounded-full bg-gold/10" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-28 bg-gold/10" />
+                  <Skeleton className="h-3 w-16 bg-gold/10" />
+                </div>
+              </div>
+              <Skeleton className="h-4 w-full bg-gold/10" />
+              <Skeleton className="h-4 w-2/3 bg-gold/10" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="p-8 max-w-3xl mx-auto space-y-6">
@@ -234,9 +260,16 @@ const Community = () => {
         ))}
 
         {visiblePosts.length === 0 && (
-          <p className="text-center text-muted-foreground font-body py-12">
-            No posts yet. Be the first to share!
-          </p>
+          <div className="text-center py-16 space-y-4">
+            <p className="text-muted-foreground font-body text-lg">
+              Be the first to share something with the community
+            </p>
+            {!isGuest && (
+              <Button variant="gold" onClick={() => document.querySelector("textarea")?.focus()}>
+                Write a post
+              </Button>
+            )}
+          </div>
         )}
 
         {isGuest && posts.length > 5 && (
