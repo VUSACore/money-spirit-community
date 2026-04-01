@@ -54,6 +54,7 @@ const Community = () => {
   const [posts, setPosts] = useState<PostWithAuthor[]>([]);
   const [newContent, setNewContent] = useState("");
   const [posting, setPosting] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
 
   const isGuest = profile?.role === "guest";
