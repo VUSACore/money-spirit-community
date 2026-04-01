@@ -260,9 +260,16 @@ const Community = () => {
         ))}
 
         {visiblePosts.length === 0 && (
-          <p className="text-center text-muted-foreground font-body py-12">
-            No posts yet. Be the first to share!
-          </p>
+          <div className="text-center py-16 space-y-4">
+            <p className="text-muted-foreground font-body text-lg">
+              Be the first to share something with the community
+            </p>
+            {!isGuest && (
+              <Button variant="gold" onClick={() => document.querySelector("textarea")?.focus()}>
+                Write a post
+              </Button>
+            )}
+          </div>
         )}
 
         {isGuest && posts.length > 5 && (
