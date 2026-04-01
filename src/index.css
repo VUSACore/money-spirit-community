@@ -66,3 +66,9 @@
     font-family: var(--font-heading);
   }
 }
+
+@layer components {
+  .ms-input {
+    @apply w-full rounded-xl border border-navy bg-cream text-navy px-4 py-2.5 text-sm font-body placeholder:text-navy/40 focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold transition-colors;
+  }
+}
