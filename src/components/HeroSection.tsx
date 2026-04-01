@@ -26,9 +26,15 @@ const HeroSection = () => {
         <p className="font-heading text-xl md:text-2xl text-gold italic tracking-widest mb-12">
           Spirit Inspired Freedom
         </p>
-        <Button variant="gold" size="lg" className="text-base px-10 py-6 rounded-sm">
-          Join the Community
+        <Button variant="gold" size="lg" className="text-base px-10 py-6 rounded-sm" asChild>
+          <Link to="/register">Join the Community</Link>
         </Button>
+        <p className="mt-6 text-sm font-body text-cream/60">
+          Already a member?{" "}
+          <Link to="/login" className="text-gold hover:text-gold/80 underline underline-offset-2 transition-colors">
+            Sign in
+          </Link>
+        </p>
       </div>
     </section>
   );
