@@ -17,6 +17,7 @@ import Rituals from "./pages/Rituals.tsx";
 import Learn from "./pages/Learn.tsx";
 import Events from "./pages/Events.tsx";
 import Members from "./pages/Members.tsx";
+import Admin from "./pages/Admin.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
