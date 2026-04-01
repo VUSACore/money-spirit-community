@@ -49,6 +49,12 @@ const Events = () => {
           .eq("user_id", user.id)
           .eq("status", "active");
         setTicketedIds(new Set((tickets ?? []).map((t: any) => t.event_id)));
+
+        const { data: interests } = await supabase
+          .from("event_interests")
+          .select("event_id")
+          .eq("user_id", user.id);
+        setInterestedIds(new Set((interests ?? []).map((t: any) => t.event_id)));
       }
 
       setLoading(false);
