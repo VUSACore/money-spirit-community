@@ -14,7 +14,107 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      memberships: {
+        Row: {
+          cancel_at_period_end: boolean
+          created_at: string
+          current_period_end: string | null
+          id: string
+          plan: string | null
+          status: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          user_id: string
+        }
+        Insert: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          plan?: string | null
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          user_id: string
+        }
+        Update: {
+          cancel_at_period_end?: boolean
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          plan?: string | null
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memberships_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          currency_pref: string | null
+          display_name: string
+          id: string
+          location: string | null
+          onboarding_complete: boolean
+          pathway_type: string | null
+          ritual_last_date: string | null
+          ritual_streak: number
+          role: string
+          show_in_directory: boolean
+          suspended_at: string | null
+          updated_at: string
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          currency_pref?: string | null
+          display_name: string
+          id: string
+          location?: string | null
+          onboarding_complete?: boolean
+          pathway_type?: string | null
+          ritual_last_date?: string | null
+          ritual_streak?: number
+          role?: string
+          show_in_directory?: boolean
+          suspended_at?: string | null
+          updated_at?: string
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          currency_pref?: string | null
+          display_name?: string
+          id?: string
+          location?: string | null
+          onboarding_complete?: boolean
+          pathway_type?: string | null
+          ritual_last_date?: string | null
+          ritual_streak?: number
+          role?: string
+          show_in_directory?: boolean
+          suspended_at?: string | null
+          updated_at?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
