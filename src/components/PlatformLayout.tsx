@@ -113,6 +113,15 @@ const PlatformLayout = () => {
             <p className="text-white text-sm font-body truncate mb-2">
               {profile?.display_name ?? "Member"}
             </p>
+            {profile?.role === "admin" && (
+              <Link
+                to="/admin"
+                className="flex items-center gap-2 text-accent hover:text-accent/80 text-xs font-body transition-colors mb-2"
+              >
+                <Shield size={14} />
+                Admin Panel
+              </Link>
+            )}
             <button
               onClick={handleSignOut}
               className="flex items-center gap-2 text-white/50 hover:text-white text-xs font-body transition-colors"
