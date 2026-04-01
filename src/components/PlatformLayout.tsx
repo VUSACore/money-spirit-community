@@ -1,5 +1,5 @@
 import { useEffect, useState, createContext, useContext } from "react";
-import { useNavigate, Outlet, NavLink, useLocation } from "react-router-dom";
+import { useNavigate, Outlet, NavLink, useLocation, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Compass,
@@ -10,6 +10,7 @@ import {
   CalendarDays,
   Contact,
   LogOut,
+  Shield,
 } from "lucide-react";
 import LotusIcon from "@/components/LotusIcon";
 import type { Tables } from "@/integrations/supabase/types";
@@ -112,6 +113,15 @@ const PlatformLayout = () => {
             <p className="text-white text-sm font-body truncate mb-2">
               {profile?.display_name ?? "Member"}
             </p>
+            {profile?.role === "admin" && (
+              <Link
+                to="/admin"
+                className="flex items-center gap-2 text-accent hover:text-accent/80 text-xs font-body transition-colors mb-2"
+              >
+                <Shield size={14} />
+                Admin Panel
+              </Link>
+            )}
             <button
               onClick={handleSignOut}
               className="flex items-center gap-2 text-white/50 hover:text-white text-xs font-body transition-colors"
