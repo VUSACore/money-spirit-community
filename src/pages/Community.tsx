@@ -116,6 +116,7 @@ const Community = () => {
       const uid = session?.user?.id ?? null;
       setUserId(uid);
       await fetchPosts(uid);
+      setLoading(false);
     };
     init();
 
