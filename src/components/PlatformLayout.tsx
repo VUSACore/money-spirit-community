@@ -10,6 +10,7 @@ import {
   CalendarDays,
   Contact,
   LogOut,
+  Shield,
 } from "lucide-react";
 import LotusIcon from "@/components/LotusIcon";
 import type { Tables } from "@/integrations/supabase/types";
