@@ -26,6 +26,7 @@ const Events = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [ticketedIds, setTicketedIds] = useState<Set<string>>(new Set());
+  const [interestedIds, setInterestedIds] = useState<Set<string>>(new Set());
   const [claimingId, setClaimingId] = useState<string | null>(null);
   const { toast } = useToast();
 
@@ -48,6 +49,12 @@ const Events = () => {
           .eq("user_id", user.id)
           .eq("status", "active");
         setTicketedIds(new Set((tickets ?? []).map((t: any) => t.event_id)));
+
+        const { data: interests } = await supabase
+          .from("event_interests")
+          .select("event_id")
+          .eq("user_id", user.id);
+        setInterestedIds(new Set((interests ?? []).map((t: any) => t.event_id)));
       }
 
       setLoading(false);
@@ -78,11 +85,34 @@ const Events = () => {
     setClaimingId(null);
   };
 
+  const registerInterest = async (eventId: string) => {
+    setClaimingId(eventId);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast({ title: "Please sign in", description: "You need an account to register interest.", variant: "destructive" });
+      setClaimingId(null);
+      return;
+    }
+
+    const { error } = await supabase.from("event_interests").insert({
+      event_id: eventId,
+      user_id: user.id,
+    });
+
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      setInterestedIds((prev) => new Set(prev).add(eventId));
+      toast({ title: "Thanks!", description: "We will be in touch with payment details shortly." });
+    }
+    setClaimingId(null);
+  };
+
   const handleGetTicket = (event: Event) => {
     if (event.price_pence === 0) {
       claimFreeTicket(event.id);
     } else {
-      toast({ title: "Coming soon", description: "Paid ticket checkout will be available shortly." });
+      registerInterest(event.id);
     }
   };
 
@@ -109,6 +139,8 @@ const Events = () => {
         <div className="grid gap-6 sm:grid-cols-2">
           {events.map((event) => {
             const hasTicket = ticketedIds.has(event.id);
+            const hasInterest = interestedIds.has(event.id);
+            const isFree = event.price_pence === 0;
             return (
               <div
                 key={event.id}
@@ -147,8 +179,12 @@ const Events = () => {
                     </span>
 
                     {hasTicket ? (
-                      <span className="inline-flex items-center gap-1.5 text-sm font-body font-semibold text-green-700 bg-green-100 px-3 py-1.5 rounded-full">
+                      <span className="inline-flex items-center gap-1.5 text-sm font-body font-semibold text-accent bg-accent/10 px-3 py-1.5 rounded-full">
                         <Ticket className="h-4 w-4" /> Ticket confirmed
+                      </span>
+                    ) : hasInterest ? (
+                      <span className="inline-flex items-center gap-1.5 text-sm font-body font-semibold text-accent bg-accent/10 px-3 py-1.5 rounded-full">
+                        ✓ Interest registered
                       </span>
                     ) : (
                       <Button
@@ -157,7 +193,11 @@ const Events = () => {
                         disabled={claimingId === event.id}
                         onClick={() => handleGetTicket(event)}
                       >
-                        {claimingId === event.id ? "Claiming…" : "Get your ticket"}
+                        {claimingId === event.id
+                          ? "Submitting…"
+                          : isFree
+                            ? "Get your ticket"
+                            : "Register your interest"}
                       </Button>
                     )}
                   </div>
