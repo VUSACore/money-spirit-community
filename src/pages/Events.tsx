@@ -139,6 +139,8 @@ const Events = () => {
         <div className="grid gap-6 sm:grid-cols-2">
           {events.map((event) => {
             const hasTicket = ticketedIds.has(event.id);
+            const hasInterest = interestedIds.has(event.id);
+            const isFree = event.price_pence === 0;
             return (
               <div
                 key={event.id}
@@ -177,8 +179,12 @@ const Events = () => {
                     </span>
 
                     {hasTicket ? (
-                      <span className="inline-flex items-center gap-1.5 text-sm font-body font-semibold text-green-700 bg-green-100 px-3 py-1.5 rounded-full">
+                      <span className="inline-flex items-center gap-1.5 text-sm font-body font-semibold text-accent bg-accent/10 px-3 py-1.5 rounded-full">
                         <Ticket className="h-4 w-4" /> Ticket confirmed
+                      </span>
+                    ) : hasInterest ? (
+                      <span className="inline-flex items-center gap-1.5 text-sm font-body font-semibold text-accent bg-accent/10 px-3 py-1.5 rounded-full">
+                        ✓ Interest registered
                       </span>
                     ) : (
                       <Button
@@ -187,7 +193,11 @@ const Events = () => {
                         disabled={claimingId === event.id}
                         onClick={() => handleGetTicket(event)}
                       >
-                        {claimingId === event.id ? "Claiming…" : "Get your ticket"}
+                        {claimingId === event.id
+                          ? "Submitting…"
+                          : isFree
+                            ? "Get your ticket"
+                            : "Register your interest"}
                       </Button>
                     )}
                   </div>
