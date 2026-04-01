@@ -56,13 +56,6 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "memberships_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
         ]
       }
       post_reactions: {
@@ -102,13 +95,6 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "post_reactions_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
         ]
       }
       posts: {
@@ -145,13 +131,6 @@ export type Database = {
             columns: ["author_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "posts_author_id_fkey"
-            columns: ["author_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -253,13 +232,6 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "ritual_completions_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "public_profiles"
-            referencedColumns: ["id"]
-          },
         ]
       }
       rituals: {
@@ -294,33 +266,29 @@ export type Database = {
       }
     }
     Views: {
-      public_profiles: {
-        Row: {
-          avatar_url: string | null
-          bio: string | null
-          display_name: string | null
-          id: string | null
-          location: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          bio?: string | null
-          display_name?: string | null
-          id?: string | null
-          location?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          bio?: string | null
-          display_name?: string | null
-          id?: string | null
-          location?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_public_profile: {
+        Args: { profile_id: string }
+        Returns: {
+          avatar_url: string
+          bio: string
+          display_name: string
+          id: string
+          location: string
+        }[]
+      }
+      get_public_profiles: {
+        Args: { profile_ids: string[] }
+        Returns: {
+          avatar_url: string
+          bio: string
+          display_name: string
+          id: string
+          location: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

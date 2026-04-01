@@ -69,11 +69,11 @@ const Community = () => {
 
     const authorIds = [...new Set(postsData.map((p) => p.author_id))];
     const { data: authors } = await supabase
-      .from("profiles")
-      .select("id, display_name, avatar_url")
-      .in("id", authorIds);
+      .rpc("get_public_profiles", { profile_ids: authorIds });
 
-    const authorMap = new Map(authors?.map((a) => [a.id, a]) ?? []);
+    const authorMap = new Map(
+      (authors ?? []).map((a: { id: string; display_name: string; avatar_url: string | null }) => [a.id, a])
+    );
 
     const postIds = postsData.map((p) => p.id);
     const { data: reactions } = await supabase
