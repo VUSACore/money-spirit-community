@@ -119,9 +119,25 @@ const Events = () => {
 
   if (loading) {
     return (
-      <div className="p-8">
-        <h1 className="text-3xl font-heading text-primary mb-6">Events</h1>
-        <p className="text-muted-foreground font-body">Loading events…</p>
+      <div className="p-8 max-w-5xl mx-auto">
+        <h1 className="text-3xl font-heading text-primary mb-2">Events</h1>
+        <p className="text-muted-foreground font-body mb-8">Workshops, circles and gatherings for the community.</p>
+        <div className="grid gap-6 sm:grid-cols-2">
+          {[1, 2].map((i) => (
+            <div key={i} className="rounded-2xl border border-border overflow-hidden bg-card">
+              <Skeleton className="h-40 w-full rounded-none bg-gold/10" />
+              <div className="p-5 space-y-3">
+                <Skeleton className="h-6 w-3/4 bg-gold/10" />
+                <Skeleton className="h-4 w-1/2 bg-gold/10" />
+                <Skeleton className="h-4 w-1/3 bg-gold/10" />
+                <div className="flex justify-between pt-2">
+                  <Skeleton className="h-6 w-16 bg-gold/10" />
+                  <Skeleton className="h-9 w-32 rounded-lg bg-gold/10" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
