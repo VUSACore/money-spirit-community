@@ -34,7 +34,7 @@ const Forums = () => {
   }
 
   return (
-    <div className="p-8 max-w-4xl mx-auto space-y-6">
+    <div className="p-8 max-w-4xl mx-auto space-y-6 animate-fade-in">
       {hasFinanceForum && <EducationBanner />}
 
       <div>
@@ -48,7 +48,7 @@ const Forums = () => {
           <p className="text-lg font-body text-muted-foreground">Start the conversation — create the first thread.</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-3 animate-slide-up">
           {forums.map((forum) => (
             <div key={forum.id} className="rounded-2xl border border-border bg-card p-5 hover:shadow-sm transition-shadow">
               <div className="flex items-start gap-3">

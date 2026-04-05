@@ -122,9 +122,9 @@ const Onboarding = () => {
           />
         </div>
 
-        <h2 className="text-xl font-heading text-white text-center mb-6">{current.question}</h2>
+        <h2 className="text-xl font-heading text-white text-center mb-6 animate-slide-up">{current.question}</h2>
 
-        <div className="space-y-3 mb-8">
+        <div className="space-y-3 mb-8 animate-slide-up" key={step}>
           {current.options.map((option, idx) => (
             <button
               key={idx}
