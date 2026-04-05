@@ -53,9 +53,9 @@ const Dashboard = () => {
   const streak = profile.ritual_streak ?? 0;
 
   return (
-    <div className="p-8 max-w-4xl mx-auto space-y-8">
+    <div className="p-8 max-w-4xl mx-auto space-y-8 animate-fade-in">
       {/* Welcome heading */}
-      <div>
+      <div className="animate-slide-up">
         <h1 className="text-3xl font-heading text-foreground mb-1">
           Welcome to your {label} Journey, {profile.display_name}
         </h1>
@@ -65,7 +65,7 @@ const Dashboard = () => {
       </div>
 
       {/* Progress overview */}
-      <div className="space-y-2">
+      <div className="space-y-2 animate-slide-up" style={{ animationDelay: '100ms', animationFillMode: 'both' }}>
         <div className="flex items-center justify-between">
           <span className="text-sm font-body text-foreground font-medium">
             {label} Pathway Progress
@@ -76,9 +76,9 @@ const Dashboard = () => {
       </div>
 
       {/* Two cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-slide-up" style={{ animationDelay: '200ms', animationFillMode: 'both' }}>
         {/* Ritual card */}
-        <Card className="border-0 bg-gold/10 shadow-none">
+        <Card className="border-0 bg-gold/10 shadow-none animate-slide-up">
           <CardContent className="p-6 flex flex-col items-start gap-4">
             <div className="flex items-center gap-2">
               <Flame className="text-gold" size={22} />
@@ -113,7 +113,7 @@ const Dashboard = () => {
       {/* Streak counter */}
       {streak > 0 && (
         <div className="flex items-center gap-3">
-          <Badge className="bg-gold text-foreground border-0 px-4 py-2 text-sm font-body font-semibold animate-pulse shadow-[0_0_15px_rgba(201,148,30,0.4)]">
+          <Badge className={`bg-gold text-foreground border-0 px-4 py-2 text-sm font-body font-semibold ${streak >= 3 ? 'animate-streak-glow' : ''} shadow-[0_0_15px_rgba(201,148,30,0.4)]`}>
             <Flame size={16} className="mr-1.5" />
             {streak} week streak
           </Badge>

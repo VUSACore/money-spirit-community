@@ -136,7 +136,7 @@ const Community = () => {
   }
 
   return (
-    <div className="p-8 max-w-3xl mx-auto space-y-6">
+    <div className="p-8 max-w-3xl mx-auto space-y-6 animate-fade-in">
       <h1 className="text-3xl font-heading text-foreground">Community</h1>
 
       {!isGuest && (
@@ -152,7 +152,7 @@ const Community = () => {
 
       <div className="space-y-4">
         {visiblePosts.map((post) => (
-          <Card key={post.id} className="border bg-card shadow-none">
+          <Card key={post.id} className="border bg-card shadow-none animate-fade-in">
             <CardContent className="p-5 space-y-3">
               <div className="flex items-center gap-3">
                 {post.author?.avatar_url ? (

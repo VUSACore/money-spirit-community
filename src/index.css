@@ -72,3 +72,15 @@
     @apply w-full rounded-xl border border-navy bg-cream text-navy px-4 py-2.5 text-sm font-body placeholder:text-navy/40 focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold transition-colors;
   }
 }
+
+@layer utilities {
+  .animate-celebration::before {
+    content: '✨';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 1rem;
+    animation: celebration 0.6s ease-out;
+    pointer-events: none;
+  }
+}

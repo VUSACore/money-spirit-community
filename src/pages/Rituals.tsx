@@ -118,7 +118,7 @@ const Rituals = () => {
   }
 
   return (
-    <div className="p-8 max-w-3xl mx-auto space-y-8">
+    <div className="p-8 max-w-3xl mx-auto space-y-8 animate-fade-in">
       <EducationBanner />
 
       <div className="flex items-center gap-3">
@@ -127,7 +127,7 @@ const Rituals = () => {
       </div>
 
       {currentRitual ? (
-        <Card className="border bg-card shadow-none">
+        <Card className="border bg-card shadow-none animate-slide-up">
           <CardContent className="p-6 space-y-5">
             <div>
               <p className="text-xs font-body text-muted-foreground uppercase tracking-wider mb-1">This week's ritual</p>
@@ -143,7 +143,7 @@ const Rituals = () => {
             )}
 
             {completed ? (
-              <div className="flex items-center gap-3 py-4">
+              <div className="flex items-center gap-3 py-4 relative animate-celebration">
                 <CheckCircle2 className="text-green-600" size={28} />
                 <p className="font-heading text-xl text-green-700">Ritual complete. Well done.</p>
               </div>

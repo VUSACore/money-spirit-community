@@ -76,7 +76,7 @@ const Members = () => {
   }
 
   return (
-    <div className="p-8 max-w-6xl mx-auto">
+    <div className="p-8 max-w-6xl mx-auto animate-fade-in">
       <h1 className="text-3xl font-heading text-primary mb-2">Our Community</h1>
       <p className="text-muted-foreground font-body mb-6">The women walking this path with you</p>
 
@@ -104,7 +104,7 @@ const Members = () => {
       ) : (
         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((member) => (
-            <button key={member.id} onClick={() => setSelected(member)} className="rounded-2xl border border-border bg-card p-5 text-left shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
+            <button key={member.id} onClick={() => setSelected(member)} className="rounded-2xl border border-border bg-card p-5 text-left shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3 animate-fade-in">
               <div className="flex items-start gap-4">
                 {member.avatar_url ? (
                   <img src={member.avatar_url} alt={member.display_name} className="h-14 w-14 rounded-full object-cover flex-shrink-0" />

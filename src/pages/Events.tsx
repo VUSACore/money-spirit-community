@@ -105,7 +105,7 @@ const Events = () => {
   }
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
+    <div className="p-8 max-w-5xl mx-auto animate-fade-in">
       <EducationBanner />
 
       <h1 className="text-3xl font-heading text-primary mb-2">Events</h1>
@@ -123,7 +123,7 @@ const Events = () => {
             const hasInterest = interestedIds.has(event.id);
             const isFree = event.price_pence === 0;
             return (
-              <div key={event.id} className="rounded-2xl border border-border overflow-hidden bg-card shadow-sm hover:shadow-md transition-shadow">
+              <div key={event.id} className="rounded-2xl border border-border overflow-hidden bg-card shadow-sm hover:shadow-md transition-shadow animate-fade-in">
                 <div className="h-40 bg-primary flex items-center justify-center">
                   <CalendarDays className="h-12 w-12 text-primary-foreground/30" />
                 </div>
