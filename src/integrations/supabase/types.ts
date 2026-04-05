@@ -921,8 +921,6 @@ export type Database = {
       }
       event_tickets_sold: { Args: { event_uuid: string }; Returns: number }
       has_active_membership: { Args: { user_uuid: string }; Returns: boolean }
-      show_limit: { Args: never; Returns: number }
-      show_trgm: { Args: { "": string }; Returns: string[] }
     }
     Enums: {
       link_type: "course" | "ritual" | "event"
