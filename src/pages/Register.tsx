@@ -11,6 +11,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
@@ -24,6 +25,7 @@ const Register = () => {
     else if (password.length < 6) newErrors.password = "Password must be at least 6 characters";
     if (!confirmPassword) newErrors.confirmPassword = "Please confirm your password";
     else if (password !== confirmPassword) newErrors.confirmPassword = "Passwords do not match";
+    if (!termsAccepted) newErrors.terms = "Please accept the terms to continue";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -93,6 +95,25 @@ const Register = () => {
                 <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="ms-input" placeholder="••••••••" />
                 {errors.confirmPassword && <p className="text-destructive text-sm mt-1 font-body">{errors.confirmPassword}</p>}
               </div>
+
+              <div className="flex items-start gap-2.5">
+                <input
+                  type="checkbox"
+                  id="terms"
+                  checked={termsAccepted}
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
+                  className="mt-1 h-4 w-4 accent-accent rounded border-border"
+                />
+                <label htmlFor="terms" className="text-sm font-body text-muted-foreground leading-snug">
+                  I agree to the{" "}
+                  <Link to="/terms" className="text-accent hover:underline" target="_blank">Terms of Service</Link>
+                  {" "}and have read the{" "}
+                  <Link to="/privacy" className="text-accent hover:underline" target="_blank">Privacy Policy</Link>
+                  {" "}and{" "}
+                  <Link to="/ethics" className="text-accent hover:underline" target="_blank">Ethics &amp; Education Policy</Link>.
+                </label>
+              </div>
+              {errors.terms && <p className="text-destructive text-sm font-body">{errors.terms}</p>}
 
               <Button type="submit" variant="gold" className="w-full rounded-xl h-11" disabled={loading}>
                 {loading ? "Creating account..." : "Join Money Spirit"}
