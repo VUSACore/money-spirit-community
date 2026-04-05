@@ -1,0 +1,1 @@
+UPDATE profiles SET visible_in_directory = true, display_name = 'VUSAtest1' WHERE user_id = 'a60c5368-1db4-47fb-a27d-90163ba711b9';
