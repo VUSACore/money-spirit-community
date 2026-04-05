@@ -1,0 +1,1 @@
+UPDATE events SET published = true WHERE id = '695d07fb-16ab-463b-97a4-e540ac60dfa0';
