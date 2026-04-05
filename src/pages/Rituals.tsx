@@ -11,15 +11,20 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Flame, CheckCircle2, Sparkles } from "lucide-react";
-import { startOfWeek, format } from "date-fns";
+import { startOfWeek, endOfWeek, format } from "date-fns";
 import type { Tables } from "@/integrations/supabase/types";
 import EducationBanner from "@/components/EducationBanner";
 
 type Ritual = Tables<"rituals">;
 
-const getThisMonday = () => {
-  const monday = startOfWeek(new Date(), { weekStartsOn: 1 });
-  return format(monday, "yyyy-MM-dd");
+const getCurrentWeekRange = () => {
+  const now = new Date();
+  const monday = startOfWeek(now, { weekStartsOn: 1 });
+  const sunday = endOfWeek(now, { weekStartsOn: 1 });
+  return {
+    start: format(monday, "yyyy-MM-dd"),
+    end: format(sunday, "yyyy-MM-dd"),
+  };
 };
 
 const Rituals = () => {
