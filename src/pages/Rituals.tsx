@@ -11,15 +11,20 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Flame, CheckCircle2, Sparkles } from "lucide-react";
-import { startOfWeek, format } from "date-fns";
+import { startOfWeek, endOfWeek, format } from "date-fns";
 import type { Tables } from "@/integrations/supabase/types";
 import EducationBanner from "@/components/EducationBanner";
 
 type Ritual = Tables<"rituals">;
 
-const getThisMonday = () => {
-  const monday = startOfWeek(new Date(), { weekStartsOn: 1 });
-  return format(monday, "yyyy-MM-dd");
+const getCurrentWeekRange = () => {
+  const now = new Date();
+  const monday = startOfWeek(now, { weekStartsOn: 1 });
+  const sunday = endOfWeek(now, { weekStartsOn: 1 });
+  return {
+    start: format(monday, "yyyy-MM-dd"),
+    end: format(sunday, "yyyy-MM-dd"),
+  };
 };
 
 const Rituals = () => {
@@ -39,12 +44,13 @@ const Rituals = () => {
       const uid = session?.user?.id ?? null;
       setUserId(uid);
 
-      const monday = getThisMonday();
+      const { start, end } = getCurrentWeekRange();
 
       const { data: current } = await supabase
         .from("rituals")
         .select("*")
-        .eq("week_of", monday)
+        .gte("week_of", start)
+        .lte("week_of", end)
         .eq("published", true)
         .limit(1)
         .maybeSingle();
@@ -54,7 +60,7 @@ const Rituals = () => {
       const { data: past } = await supabase
         .from("rituals")
         .select("*")
-        .lt("week_of", monday)
+        .lt("week_of", start)
         .eq("published", true)
         .order("week_of", { ascending: false });
 
