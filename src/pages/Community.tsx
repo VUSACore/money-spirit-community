@@ -55,8 +55,8 @@ const Community = () => {
     if (!postsData) return;
 
     const authorIds = [...new Set(postsData.map((p) => p.author_id))];
-    const { data: authors } = await supabase.from("profiles").select("id, display_name, avatar_url").in("id", authorIds);
-    const authorMap = new Map((authors ?? []).map((a) => [a.id, a]));
+    const { data: authors } = await supabase.from("profiles").select("user_id, display_name, avatar_url").in("user_id", authorIds);
+    const authorMap = new Map((authors ?? []).map((a) => [a.user_id, a]));
 
     const postIds = postsData.map((p) => p.id);
     const { data: reactions } = await supabase.from("post_reactions").select("post_id, user_id, type").in("post_id", postIds);
