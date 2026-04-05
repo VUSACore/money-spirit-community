@@ -44,12 +44,13 @@ const Rituals = () => {
       const uid = session?.user?.id ?? null;
       setUserId(uid);
 
-      const monday = getThisMonday();
+      const { start, end } = getCurrentWeekRange();
 
       const { data: current } = await supabase
         .from("rituals")
         .select("*")
-        .eq("week_of", monday)
+        .gte("week_of", start)
+        .lte("week_of", end)
         .eq("published", true)
         .limit(1)
         .maybeSingle();
@@ -59,7 +60,7 @@ const Rituals = () => {
       const { data: past } = await supabase
         .from("rituals")
         .select("*")
-        .lt("week_of", monday)
+        .lt("week_of", start)
         .eq("published", true)
         .order("week_of", { ascending: false });
 
