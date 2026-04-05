@@ -117,8 +117,8 @@ const PlatformLayout = () => {
       const { data } = await supabase
         .from("profiles")
         .select("*")
-        .eq("id", session.user.id)
-        .single();
+        .eq("user_id", session.user.id)
+        .maybeSingle();
 
       setProfile(data);
       setLoading(false);

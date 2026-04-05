@@ -87,13 +87,13 @@ const Onboarding = () => {
     const { data: profile } = await supabase
       .from("profiles")
       .select("display_name")
-      .eq("id", user.id)
-      .single();
+      .eq("user_id", user.id)
+      .maybeSingle();
 
     const { error: updateError } = await supabase
       .from("profiles")
       .update({ pathway_type: pathway, onboarding_complete: true })
-      .eq("id", user.id);
+      .eq("user_id", user.id);
 
     if (updateError) {
       setError(updateError.message);
