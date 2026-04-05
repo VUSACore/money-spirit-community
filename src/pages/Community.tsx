@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/components/PlatformLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
+import PostComposer from "@/components/PostComposer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Heart, PartyPopper, Sparkles, Zap } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
@@ -140,14 +140,12 @@ const Community = () => {
       <h1 className="text-3xl font-heading text-foreground">Community</h1>
 
       {!isGuest && (
-        <Card className="border bg-card shadow-none">
-          <CardContent className="p-4 space-y-3">
-            <Textarea placeholder="Share something with the community..." value={newContent} onChange={(e) => setNewContent(e.target.value)} className="min-h-[80px] bg-background border-input font-body resize-none" />
-            <div className="flex justify-end">
-              <Button variant="gold" onClick={handlePost} disabled={posting || !newContent.trim()}>Post</Button>
-            </div>
-          </CardContent>
-        </Card>
+        <PostComposer
+          value={newContent}
+          onChange={setNewContent}
+          onSubmit={handlePost}
+          disabled={posting || !newContent.trim()}
+        />
       )}
 
       <div className="space-y-4">
