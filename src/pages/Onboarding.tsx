@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -83,6 +84,12 @@ const Onboarding = () => {
 
     const pathway = calculatePathway(answers as number[]);
 
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("display_name")
+      .eq("id", user.id)
+      .single();
+
     const { error: updateError } = await supabase
       .from("profiles")
       .update({ pathway_type: pathway, onboarding_complete: true })
@@ -94,6 +101,9 @@ const Onboarding = () => {
       return;
     }
 
+    const name = profile?.display_name ?? "there";
+    const label = pathway.charAt(0).toUpperCase() + pathway.slice(1);
+    toast.success(`Welcome to Money Spirit, ${name}. Your ${label} pathway is ready.`);
     navigate("/dashboard");
   };
 

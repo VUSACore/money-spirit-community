@@ -177,8 +177,27 @@ const PlatformLayout = () => {
           </Sheet>
         </header>
 
+        {/* Mobile bottom nav */}
+        <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-navy-deep border-t border-white/10 flex justify-around items-center py-2 px-1">
+          {navItems.slice(0, 5).map((item) => {
+            const active = location.pathname === item.to;
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg text-[10px] font-body transition-colors ${
+                  active ? "text-gold" : "text-white/50"
+                }`}
+              >
+                <item.icon size={20} />
+                <span>{item.label === "My Pathway" ? "Home" : item.label}</span>
+              </NavLink>
+            );
+          })}
+        </nav>
+
         {/* Main content */}
-        <main className="md:ml-[260px] flex-1 min-h-screen bg-cream overflow-y-auto pt-14 md:pt-0">
+        <main className="md:ml-[260px] flex-1 min-h-screen bg-cream overflow-y-auto pt-14 pb-16 md:pt-0 md:pb-0">
           {/* Gold top border */}
           <div className="h-1 bg-gold w-full" />
           <Outlet />
