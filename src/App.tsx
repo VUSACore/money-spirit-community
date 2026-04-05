@@ -19,6 +19,7 @@ import Events from "./pages/Events.tsx";
 import Members from "./pages/Members.tsx";
 import Admin from "./pages/Admin.tsx";
 import Ethics from "./pages/Ethics.tsx";
+import Join from "./pages/Join.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -49,6 +50,7 @@ const App = () => (
           </Route>
 
           <Route path="/admin" element={<Admin />} />
+          <Route path="/join" element={<Join />} />
           <Route path="/ethics" element={<Ethics />} />
 
           <Route path="*" element={<NotFound />} />
