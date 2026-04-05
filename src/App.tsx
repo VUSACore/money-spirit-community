@@ -20,6 +20,8 @@ import Members from "./pages/Members.tsx";
 import Admin from "./pages/Admin.tsx";
 import Ethics from "./pages/Ethics.tsx";
 import Join from "./pages/Join.tsx";
+import Privacy from "./pages/Privacy.tsx";
+import Terms from "./pages/Terms.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -51,6 +53,9 @@ const App = () => (
 
           <Route path="/admin" element={<Admin />} />
           <Route path="/join" element={<Join />} />
+          <Route path="/ethics" element={<Ethics />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
           <Route path="/ethics" element={<Ethics />} />
 
           <Route path="*" element={<NotFound />} />
