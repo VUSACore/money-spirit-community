@@ -1,12 +1,11 @@
 import { useEffect, useState, useMemo } from "react";
 import { format } from "date-fns";
-import { Search, MapPin, Flame, ChevronDown } from "lucide-react";
+import { Search, MapPin, Flame, Heart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
-import LotusIcon from "@/components/LotusIcon";
 
 interface MemberProfile {
   id: string;
@@ -21,12 +20,7 @@ interface MemberProfile {
 }
 
 const getInitials = (name: string) =>
-  name
-    .split(" ")
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
+  name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2);
 
 const Members = () => {
   const [members, setMembers] = useState<MemberProfile[]>([]);
@@ -42,7 +36,6 @@ const Members = () => {
         .select("id, display_name, avatar_url, bio, location, show_location, show_bio, ritual_streak, created_at")
         .eq("visible_in_directory", true)
         .order("display_name", { ascending: true });
-
       setMembers((data as MemberProfile[]) ?? []);
       setLoading(false);
     };
@@ -50,18 +43,14 @@ const Members = () => {
   }, []);
 
   const locations = useMemo(() => {
-    const locs = members
-      .filter((m) => m.location && m.show_location)
-      .map((m) => m.location as string);
+    const locs = members.filter((m) => m.location && m.show_location).map((m) => m.location as string);
     return [...new Set(locs)].sort();
   }, [members]);
 
   const filtered = useMemo(() => {
     return members.filter((m) => {
       const matchesSearch = m.display_name.toLowerCase().includes(search.toLowerCase());
-      const matchesLocation =
-        locationFilter === "all" ||
-        (m.location && m.show_location && m.location === locationFilter);
+      const matchesLocation = locationFilter === "all" || (m.location && m.show_location && m.location === locationFilter);
       return matchesSearch && matchesLocation;
     });
   }, [members, search, locationFilter]);
@@ -76,11 +65,7 @@ const Members = () => {
             <div key={i} className="rounded-2xl border border-border bg-card p-5 space-y-3">
               <div className="flex items-start gap-4">
                 <Skeleton className="h-14 w-14 rounded-full bg-accent/30" />
-                <div className="flex-1 space-y-2">
-                  <Skeleton className="h-5 w-32 bg-accent/30" />
-                  <Skeleton className="h-3 w-24 bg-accent/20" />
-                  <Skeleton className="h-3 w-20 bg-accent/20" />
-                </div>
+                <div className="flex-1 space-y-2"><Skeleton className="h-5 w-32 bg-accent/30" /><Skeleton className="h-3 w-24 bg-accent/20" /><Skeleton className="h-3 w-20 bg-accent/20" /></div>
               </div>
               <Skeleton className="h-8 w-full bg-accent/20" />
             </div>
@@ -95,29 +80,17 @@ const Members = () => {
       <h1 className="text-3xl font-heading text-primary mb-2">Our Community</h1>
       <p className="text-muted-foreground font-body mb-6">The women walking this path with you</p>
 
-      {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3 mb-8 max-w-xl">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search by name…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 ms-input"
-          />
+          <Input placeholder="Search by name…" value={search} onChange={(e) => setSearch(e.target.value)} className="pl-10 ms-input" />
         </div>
         {locations.length > 0 && (
           <Select value={locationFilter} onValueChange={setLocationFilter}>
-            <SelectTrigger className="w-full sm:w-48 ms-input">
-              <SelectValue placeholder="All locations" />
-            </SelectTrigger>
+            <SelectTrigger className="w-full sm:w-48 ms-input"><SelectValue placeholder="All locations" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All locations</SelectItem>
-              {locations.map((loc) => (
-                <SelectItem key={loc} value={loc}>
-                  {loc}
-                </SelectItem>
-              ))}
+              {locations.map((loc) => (<SelectItem key={loc} value={loc}>{loc}</SelectItem>))}
             </SelectContent>
           </Select>
         )}
@@ -125,34 +98,21 @@ const Members = () => {
 
       {filtered.length === 0 ? (
         <div className="text-center py-20 space-y-4">
-          <LotusIcon className="text-accent mx-auto" size={48} />
-          <p className="text-muted-foreground font-body text-lg">
-            The community is growing. You're among the first here.
-          </p>
+          <Heart className="mx-auto h-12 w-12 text-accent/60" />
+          <p className="text-lg font-body text-muted-foreground">The community is growing. You're among the first here.</p>
         </div>
       ) : (
         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((member) => (
-            <button
-              key={member.id}
-              onClick={() => setSelected(member)}
-              className="rounded-2xl border border-border bg-card p-5 text-left shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3"
-            >
+            <button key={member.id} onClick={() => setSelected(member)} className="rounded-2xl border border-border bg-card p-5 text-left shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3">
               <div className="flex items-start gap-4">
                 {member.avatar_url ? (
-                  <img
-                    src={member.avatar_url}
-                    alt={member.display_name}
-                    className="h-14 w-14 rounded-full object-cover flex-shrink-0"
-                  />
+                  <img src={member.avatar_url} alt={member.display_name} className="h-14 w-14 rounded-full object-cover flex-shrink-0" />
                 ) : (
                   <div className="h-14 w-14 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                    <span className="text-accent font-heading font-bold text-lg">
-                      {getInitials(member.display_name)}
-                    </span>
+                    <span className="text-accent font-heading font-bold text-lg">{getInitials(member.display_name)}</span>
                   </div>
                 )}
-
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <h3 className="font-heading text-lg text-primary truncate">{member.display_name}</h3>
@@ -162,74 +122,43 @@ const Members = () => {
                       </span>
                     )}
                   </div>
-
                   {member.location && member.show_location && (
-                    <p className="flex items-center gap-1 text-sm text-muted-foreground font-body mt-1">
-                      <MapPin className="h-3 w-3" /> {member.location}
-                    </p>
+                    <p className="flex items-center gap-1 text-sm text-muted-foreground font-body mt-1"><MapPin className="h-3 w-3" /> {member.location}</p>
                   )}
-
-                  <p className="text-xs text-muted-foreground font-body mt-1">
-                    Member since {format(new Date(member.created_at), "MMMM yyyy")}
-                  </p>
+                  <p className="text-xs text-muted-foreground font-body mt-1">Member since {format(new Date(member.created_at), "MMMM yyyy")}</p>
                 </div>
               </div>
-
-              {member.bio && member.show_bio && (
-                <p className="text-sm font-body text-muted-foreground line-clamp-2">
-                  {member.bio}
-                </p>
-              )}
+              {member.bio && member.show_bio && <p className="text-sm font-body text-muted-foreground line-clamp-2">{member.bio}</p>}
             </button>
           ))}
         </div>
       )}
 
-      {/* Profile modal */}
       <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
         <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="font-heading text-primary">{selected?.display_name}</DialogTitle>
-          </DialogHeader>
-
+          <DialogHeader><DialogTitle className="font-heading text-primary">{selected?.display_name}</DialogTitle></DialogHeader>
           {selected && (
             <div className="space-y-4">
               <div className="flex items-center gap-4">
                 {selected.avatar_url ? (
-                  <img
-                    src={selected.avatar_url}
-                    alt={selected.display_name}
-                    className="h-20 w-20 rounded-full object-cover"
-                  />
+                  <img src={selected.avatar_url} alt={selected.display_name} className="h-20 w-20 rounded-full object-cover" />
                 ) : (
                   <div className="h-20 w-20 rounded-full bg-primary flex items-center justify-center">
-                    <span className="text-accent font-heading font-bold text-2xl">
-                      {getInitials(selected.display_name)}
-                    </span>
+                    <span className="text-accent font-heading font-bold text-2xl">{getInitials(selected.display_name)}</span>
                   </div>
                 )}
-
                 <div>
                   <h2 className="font-heading text-xl text-primary">{selected.display_name}</h2>
                   {selected.location && selected.show_location && (
-                    <p className="flex items-center gap-1 text-sm text-muted-foreground font-body">
-                      <MapPin className="h-3.5 w-3.5" /> {selected.location}
-                    </p>
+                    <p className="flex items-center gap-1 text-sm text-muted-foreground font-body"><MapPin className="h-3.5 w-3.5" /> {selected.location}</p>
                   )}
-                  <p className="text-xs text-muted-foreground font-body mt-0.5">
-                    Member since {format(new Date(selected.created_at), "MMMM yyyy")}
-                  </p>
+                  <p className="text-xs text-muted-foreground font-body mt-0.5">Member since {format(new Date(selected.created_at), "MMMM yyyy")}</p>
                   {selected.ritual_streak > 0 && (
-                    <span className="inline-flex items-center gap-1 text-sm font-body font-semibold text-accent mt-1">
-                      <Flame className="h-4 w-4" /> {selected.ritual_streak}-day streak
-                    </span>
+                    <span className="inline-flex items-center gap-1 text-sm font-body font-semibold text-accent mt-1"><Flame className="h-4 w-4" /> {selected.ritual_streak}-day streak</span>
                   )}
                 </div>
               </div>
-
-              {selected.bio && selected.show_bio && (
-                <p className="text-sm font-body text-foreground leading-relaxed">{selected.bio}</p>
-              )}
+              {selected.bio && selected.show_bio && <p className="text-sm font-body text-foreground leading-relaxed">{selected.bio}</p>}
             </div>
           )}
         </DialogContent>

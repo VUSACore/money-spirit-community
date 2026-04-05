@@ -10,9 +10,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Flame, CheckCircle2 } from "lucide-react";
+import { Flame, CheckCircle2, Sparkles } from "lucide-react";
 import { startOfWeek, format } from "date-fns";
 import type { Tables } from "@/integrations/supabase/types";
+import EducationBanner from "@/components/EducationBanner";
 
 type Ritual = Tables<"rituals">;
 
@@ -89,7 +90,6 @@ const Rituals = () => {
       shared_to_feed: shareToFeed,
     });
 
-    // Share to feed if checked
     if (shareToFeed && reflection.trim()) {
       await supabase.from("posts").insert({
         author_id: userId,
@@ -113,8 +113,10 @@ const Rituals = () => {
 
   return (
     <div className="p-8 max-w-3xl mx-auto space-y-8">
+      <EducationBanner />
+
       <div className="flex items-center gap-3">
-        <Flame className="text-gold" size={28} />
+        <Flame className="text-accent" size={28} />
         <h1 className="text-3xl font-heading text-foreground">Rituals</h1>
       </div>
 
@@ -122,62 +124,34 @@ const Rituals = () => {
         <Card className="border bg-card shadow-none">
           <CardContent className="p-6 space-y-5">
             <div>
-              <p className="text-xs font-body text-muted-foreground uppercase tracking-wider mb-1">
-                This week's ritual
-              </p>
+              <p className="text-xs font-body text-muted-foreground uppercase tracking-wider mb-1">This week's ritual</p>
               <h2 className="text-2xl font-heading text-foreground">{currentRitual.title}</h2>
             </div>
 
-            <p className="text-sm font-body text-foreground leading-relaxed">
-              {currentRitual.description}
-            </p>
+            <p className="text-sm font-body text-foreground leading-relaxed">{currentRitual.description}</p>
 
             {currentRitual.reflection_prompt && (
               <div className="bg-primary/5 rounded-xl p-5 border border-border">
-                <p className="text-sm font-body text-foreground italic leading-relaxed">
-                  {currentRitual.reflection_prompt}
-                </p>
+                <p className="text-sm font-body text-foreground italic leading-relaxed">{currentRitual.reflection_prompt}</p>
               </div>
             )}
 
             {completed ? (
               <div className="flex items-center gap-3 py-4">
                 <CheckCircle2 className="text-green-600" size={28} />
-                <p className="font-heading text-xl text-green-700">
-                  Ritual complete. Well done.
-                </p>
+                <p className="font-heading text-xl text-green-700">Ritual complete. Well done.</p>
               </div>
             ) : (
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-body font-medium text-foreground">
-                    Your reflection (optional — just for you)
-                  </label>
-                  <Textarea
-                    value={reflection}
-                    onChange={(e) => setReflection(e.target.value)}
-                    placeholder="Write your thoughts here..."
-                    className="min-h-[100px] bg-background border-input font-body resize-none"
-                  />
+                  <label className="text-sm font-body font-medium text-foreground">Your reflection (optional — just for you)</label>
+                  <Textarea value={reflection} onChange={(e) => setReflection(e.target.value)} placeholder="Write your thoughts here..." className="min-h-[100px] bg-background border-input font-body resize-none" />
                 </div>
-
                 <div className="flex items-center gap-2">
-                  <Checkbox
-                    id="share"
-                    checked={shareToFeed}
-                    onCheckedChange={(v) => setShareToFeed(v === true)}
-                  />
-                  <label htmlFor="share" className="text-sm font-body text-foreground cursor-pointer">
-                    Share my reflection with the community
-                  </label>
+                  <Checkbox id="share" checked={shareToFeed} onCheckedChange={(v) => setShareToFeed(v === true)} />
+                  <label htmlFor="share" className="text-sm font-body text-foreground cursor-pointer">Share my reflection with the community</label>
                 </div>
-
-                <Button
-                  variant="gold"
-                  onClick={handleComplete}
-                  disabled={submitting}
-                  className="w-full sm:w-auto"
-                >
+                <Button variant="gold" onClick={handleComplete} disabled={submitting} className="w-full sm:w-auto">
                   {submitting ? "Completing…" : "Complete this ritual"}
                 </Button>
               </div>
@@ -185,14 +159,10 @@ const Rituals = () => {
           </CardContent>
         </Card>
       ) : (
-        <Card className="border bg-card shadow-none">
-          <CardContent className="p-6 text-center py-12">
-            <Flame className="text-muted-foreground mx-auto mb-3" size={32} />
-            <p className="text-muted-foreground font-body">
-              No ritual published for this week yet. Check back soon.
-            </p>
-          </CardContent>
-        </Card>
+        <div className="text-center py-16 space-y-4">
+          <Sparkles className="mx-auto h-12 w-12 text-accent/60" />
+          <p className="text-lg font-body text-muted-foreground">This week's ritual is being prepared. Check back soon.</p>
+        </div>
       )}
 
       {pastRituals.length > 0 && (
@@ -200,20 +170,12 @@ const Rituals = () => {
           <h3 className="text-lg font-heading text-foreground">Past Rituals</h3>
           <Accordion type="single" collapsible className="space-y-2">
             {pastRituals.map((ritual) => (
-              <AccordionItem
-                key={ritual.id}
-                value={ritual.id}
-                className="border rounded-xl bg-card px-4"
-              >
+              <AccordionItem key={ritual.id} value={ritual.id} className="border rounded-xl bg-card px-4">
                 <AccordionTrigger className="font-body text-sm hover:no-underline">
                   <div className="flex items-center gap-2 text-left">
-                    {pastCompletions.has(ritual.id) && (
-                      <CheckCircle2 className="text-green-600 shrink-0" size={16} />
-                    )}
+                    {pastCompletions.has(ritual.id) && <CheckCircle2 className="text-green-600 shrink-0" size={16} />}
                     <span className="text-foreground">{ritual.title}</span>
-                    <span className="text-muted-foreground text-xs ml-2">
-                      {format(new Date(ritual.week_of), "d MMM yyyy")}
-                    </span>
+                    <span className="text-muted-foreground text-xs ml-2">{format(new Date(ritual.week_of), "d MMM yyyy")}</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="space-y-3 pb-4">
