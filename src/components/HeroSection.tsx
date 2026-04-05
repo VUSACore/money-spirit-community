@@ -27,7 +27,7 @@ const HeroSection = () => {
           Spirit Inspired Freedom
         </p>
         <Button variant="gold" size="lg" className="text-base px-10 py-6 rounded-sm" asChild>
-          <Link to="/register">Join the Community</Link>
+          <Link to="/join">Join the Community</Link>
         </Button>
         <p className="mt-6 text-sm font-body text-cream/60">
           Already a member?{" "}
