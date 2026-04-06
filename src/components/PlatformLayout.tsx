@@ -12,25 +12,28 @@ import {
   LogOut,
   Shield,
   Menu,
-  X,
 } from "lucide-react";
 import LotusIcon from "@/components/LotusIcon";
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
+import ThemeToggle from "@/components/layout/ThemeToggle";
+import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
+import { useLanguage } from "@/components/layout/LanguageContext";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import type { Tables } from "@/integrations/supabase/types";
+import type { TranslationKey } from "@/lib/i18n/translations";
 
 type Profile = Tables<"profiles">;
 
 const ProfileContext = createContext<Profile | null>(null);
 export const useProfile = () => useContext(ProfileContext);
 
-const navItems = [
-  { label: "My Pathway", to: "/dashboard", icon: Compass },
-  { label: "Community", to: "/community", icon: Users },
-  { label: "Forums", to: "/forums", icon: MessageSquare },
-  { label: "Rituals", to: "/rituals", icon: Flame },
-  { label: "Learn", to: "/learn", icon: BookOpen },
-  { label: "Events", to: "/events", icon: CalendarDays },
-  { label: "Members", to: "/members", icon: Contact },
+const navItems: { labelKey: TranslationKey; to: string; icon: typeof Compass }[] = [
+  { labelKey: "my_pathway", to: "/dashboard", icon: Compass },
+  { labelKey: "community", to: "/community", icon: Users },
+  { labelKey: "forums", to: "/forums", icon: MessageSquare },
+  { labelKey: "rituals", to: "/rituals", icon: Flame },
+  { labelKey: "learn", to: "/learn", icon: BookOpen },
+  { labelKey: "events", to: "/events", icon: CalendarDays },
+  { labelKey: "members", to: "/members", icon: Contact },
 ];
 
 const SidebarContent = ({
@@ -43,61 +46,71 @@ const SidebarContent = ({
   location: ReturnType<typeof useLocation>;
   handleSignOut: () => void;
   onNavClick?: () => void;
-}) => (
-  <>
-    {/* Logo */}
-    <div className="px-6 py-6 flex items-center gap-2.5">
-      <LotusIcon className="text-gold" size={28} />
-      <span className="text-white font-heading text-xl tracking-wide">Money Spirit</span>
-    </div>
+}) => {
+  const { t } = useLanguage();
 
-    {/* Nav */}
-    <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
-      {navItems.map((item) => {
-        const active = location.pathname === item.to;
-        return (
-          <NavLink
-            key={item.to}
-            to={item.to}
+  return (
+    <>
+      {/* Logo */}
+      <div className="px-6 py-6 flex items-center gap-2.5">
+        <LotusIcon className="text-gold" size={28} />
+        <span className="text-white font-heading text-xl tracking-wide">Money Spirit</span>
+      </div>
+
+      {/* Nav */}
+      <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
+        {navItems.map((item) => {
+          const active = location.pathname === item.to;
+          return (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              onClick={onNavClick}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-body transition-colors ${
+                active
+                  ? "bg-gold/15 text-white"
+                  : "text-white/70 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              <item.icon size={18} className={active ? "text-gold" : ""} />
+              {t(item.labelKey)}
+            </NavLink>
+          );
+        })}
+      </nav>
+
+      {/* Theme and Language */}
+      <div className="px-3 space-y-1 pb-2">
+        <ThemeToggle />
+        <LanguageSwitcher />
+      </div>
+
+      {/* User / Sign out */}
+      <div className="px-4 py-4 border-t border-white/10">
+        <p className="text-white text-sm font-body truncate mb-2">
+          {profile?.display_name ?? "Member"}
+        </p>
+        {profile?.role === "admin" && (
+          <Link
+            to="/admin"
             onClick={onNavClick}
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-body transition-colors ${
-              active
-                ? "bg-gold/15 text-white"
-                : "text-white/70 hover:text-white hover:bg-white/5"
-            }`}
+            className="flex items-center gap-2 text-accent hover:text-accent/80 text-xs font-body transition-colors mb-2"
           >
-            <item.icon size={18} className={active ? "text-gold" : ""} />
-            {item.label}
-          </NavLink>
-        );
-      })}
-    </nav>
-
-    {/* User / Sign out */}
-    <div className="px-4 py-4 border-t border-white/10">
-      <p className="text-white text-sm font-body truncate mb-2">
-        {profile?.display_name ?? "Member"}
-      </p>
-      {profile?.role === "admin" && (
-        <Link
-          to="/admin"
-          onClick={onNavClick}
-          className="flex items-center gap-2 text-accent hover:text-accent/80 text-xs font-body transition-colors mb-2"
+            <Shield size={14} />
+            Admin Panel
+          </Link>
+        )}
+        <button
+          onClick={handleSignOut}
+          className="flex items-center gap-2 text-white/50 hover:text-white text-xs font-body transition-colors"
         >
-          <Shield size={14} />
-          Admin Panel
-        </Link>
-      )}
-      <button
-        onClick={handleSignOut}
-        className="flex items-center gap-2 text-white/50 hover:text-white text-xs font-body transition-colors"
-      >
-        <LogOut size={14} />
-        Sign out
-      </button>
-    </div>
-  </>
-);
+          <LogOut size={14} />
+          {t("sign_out")}
+        </button>
+      </div>
+    </>
+  );
+};
 
 const PlatformLayout = () => {
   const navigate = useNavigate();
@@ -105,6 +118,7 @@ const PlatformLayout = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const load = async () => {
@@ -140,7 +154,7 @@ const PlatformLayout = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-navy-deep flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <LotusIcon className="text-gold animate-pulse" size={48} />
       </div>
     );
@@ -150,12 +164,12 @@ const PlatformLayout = () => {
     <ProfileContext.Provider value={profile}>
       <div className="min-h-screen flex">
         {/* Desktop sidebar */}
-        <aside className="hidden md:flex w-[260px] shrink-0 bg-navy-deep flex-col fixed inset-y-0 left-0 z-30">
+        <aside className="hidden md:flex w-[260px] shrink-0 bg-sidebar flex-col fixed inset-y-0 left-0 z-30">
           <SidebarContent profile={profile} location={location} handleSignOut={handleSignOut} />
         </aside>
 
         {/* Mobile header */}
-        <header className="fixed top-0 left-0 right-0 z-40 md:hidden bg-navy-deep flex items-center justify-between px-4 py-3">
+        <header className="fixed top-0 left-0 right-0 z-40 md:hidden bg-sidebar flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
             <LotusIcon className="text-gold" size={24} />
             <span className="text-white font-heading text-lg tracking-wide">Money Spirit</span>
@@ -166,7 +180,7 @@ const PlatformLayout = () => {
                 <Menu size={24} />
               </button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[260px] bg-navy-deep border-none p-0 [&>button]:hidden">
+            <SheetContent side="left" className="w-[260px] bg-sidebar border-none p-0 [&>button]:hidden">
               <SidebarContent
                 profile={profile}
                 location={location}
@@ -178,7 +192,7 @@ const PlatformLayout = () => {
         </header>
 
         {/* Mobile bottom nav */}
-        <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-navy-deep border-t border-white/10 flex justify-around items-center py-2 px-1">
+        <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-sidebar border-t border-sidebar-border flex justify-around items-center py-2 px-1">
           {navItems.slice(0, 5).map((item) => {
             const active = location.pathname === item.to;
             return (
@@ -190,14 +204,14 @@ const PlatformLayout = () => {
                 }`}
               >
                 <item.icon size={20} />
-                <span>{item.label === "My Pathway" ? "Home" : item.label}</span>
+                <span>{item.labelKey === "my_pathway" ? "Home" : t(item.labelKey)}</span>
               </NavLink>
             );
           })}
         </nav>
 
         {/* Main content */}
-        <main className="md:ml-[260px] flex-1 min-h-screen bg-cream overflow-y-auto pt-14 pb-16 md:pt-0 md:pb-0">
+        <main className="md:ml-[260px] flex-1 min-h-screen bg-background overflow-y-auto pt-14 pb-16 md:pt-0 md:pb-0">
           {/* Gold top border */}
           <div className="h-1 bg-gold w-full" />
           <Outlet />
