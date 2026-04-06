@@ -4,18 +4,23 @@ interface Course {
   id: string;
   title: string;
   description: string | null;
-  thumbnail_url: string | null;
   lessonCount: number;
+  enrolledCount: number;
 }
 
 interface CourseGridProps {
   courses: Course[];
   enrolledIds: Set<string>;
+  userId: string | null;
 }
 
-const CourseGrid = ({ courses, enrolledIds }: CourseGridProps) => {
+const CourseGrid = ({ courses, enrolledIds, userId }: CourseGridProps) => {
   if (courses.length === 0) {
-    return <p className="text-navy/50 font-body">No courses available yet.</p>;
+    return (
+      <p className="font-body text-navy/50 text-center py-16">
+        No courses available yet. Check back soon.
+      </p>
+    );
   }
 
   return (
@@ -27,7 +32,9 @@ const CourseGrid = ({ courses, enrolledIds }: CourseGridProps) => {
           title={course.title}
           description={course.description}
           lessonCount={course.lessonCount}
+          enrolledCount={course.enrolledCount}
           isEnrolled={enrolledIds.has(course.id)}
+          userId={userId}
           index={i}
         />
       ))}
