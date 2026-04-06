@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { LanguageProvider } from "@/components/layout/LanguageContext";
 import Index from "./pages/Index.tsx";
 import Login from "./pages/Login.tsx";
 import Register from "./pages/Register.tsx";
@@ -31,43 +30,42 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <LanguageProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/onboarding" element={<Onboarding />} />
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/onboarding" element={<Onboarding />} />
 
-            {/* Authenticated platform routes */}
-            <Route element={<PlatformLayout />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/community" element={<Community />} />
-              <Route path="/forums" element={<Forums />} />
-              <Route path="/rituals" element={<Rituals />} />
-              <Route path="/learn" element={<Learn />} />
-              <Route path="/learn/:courseId" element={<CoursePage />} />
-              <Route path="/learn/:courseId/:lessonId" element={<LessonPage />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/members" element={<Members />} />
-            </Route>
+          {/* Authenticated platform routes */}
+          <Route element={<PlatformLayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/forums" element={<Forums />} />
+            <Route path="/rituals" element={<Rituals />} />
+            <Route path="/learn" element={<Learn />} />
+            <Route path="/learn/:courseId" element={<CoursePage />} />
+            <Route path="/learn/:courseId/:lessonId" element={<LessonPage />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/members" element={<Members />} />
+          </Route>
 
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/join" element={<Join />} />
-            <Route path="/ethics" element={<Ethics />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/join" element={<Join />} />
+          <Route path="/ethics" element={<Ethics />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/ethics" element={<Ethics />} />
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </LanguageProvider>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
   </QueryClientProvider>
 );
 
