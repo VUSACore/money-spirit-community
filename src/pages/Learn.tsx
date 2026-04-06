@@ -69,8 +69,8 @@ const Learn = () => {
 
   return (
     <div className="p-6 md:p-8 animate-fade-in">
-      <h1 className="font-heading text-3xl text-navy mb-1">Learn</h1>
-      <p className="font-body text-navy/60 mb-10">Explore courses and resources.</p>
+      <h1 className="font-heading text-3xl text-primary font-normal mb-1">Learn</h1>
+      <p className="font-body text-primary/70 text-base mb-6">Explore courses and resources.</p>
 
       {isLoading ? (
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">

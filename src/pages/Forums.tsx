@@ -27,8 +27,8 @@ const Forums = () => {
   if (loading) {
     return (
       <div className="p-8">
-        <h1 className="text-3xl font-heading text-primary mb-2">Forums</h1>
-        <p className="text-muted-foreground font-body">Loading…</p>
+        <h1 className="text-3xl font-heading text-primary font-normal mb-1">Forums</h1>
+        <p className="text-primary/70 font-body text-base">Loading...</p>
       </div>
     );
   }
@@ -38,28 +38,33 @@ const Forums = () => {
       {hasFinanceForum && <EducationBanner />}
 
       <div>
-        <h1 className="text-3xl font-heading text-primary mb-2">Forums</h1>
-        <p className="text-muted-foreground font-body">Join the conversation.</p>
+        <h1 className="text-3xl font-heading text-primary font-normal mb-1">Forums</h1>
+        <p className="text-primary/70 font-body text-base mb-6">Join the conversation.</p>
       </div>
 
       {forums.length === 0 ? (
         <div className="text-center py-16 space-y-4">
           <MessageSquare className="mx-auto h-12 w-12 text-accent/60" />
-          <p className="text-lg font-body text-muted-foreground">Start the conversation — create the first thread.</p>
+          <p className="text-lg font-body text-muted-foreground">Start the conversation. Create the first thread.</p>
         </div>
       ) : (
         <div className="space-y-3 animate-slide-up">
           {forums.map((forum) => (
-            <div key={forum.id} className="rounded-2xl border border-stone-200 bg-white p-5 hover:shadow-sm transition-shadow">
+            <div
+              key={forum.id}
+              className="rounded-xl border border-stone-200 bg-white shadow-sm p-4 cursor-pointer hover:border-amber-400 hover:shadow-md transition-all duration-200"
+            >
               <div className="flex items-start gap-3">
-                <MessageSquare className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />
+                <MessageSquare className="h-5 w-5 text-amber-500 mt-0.5 shrink-0" />
                 <div>
-                  <h3 className="font-heading text-lg text-navy font-semibold">{forum.title}</h3>
+                  <h3 className="font-heading text-base text-primary font-semibold leading-snug">{forum.title}</h3>
                   {forum.description && (
-                    <p className="text-sm font-body text-navy/70 mt-1">{forum.description}</p>
+                    <p className="text-sm font-body text-primary/60 mt-0.5 leading-relaxed">{forum.description}</p>
                   )}
                   {forum.is_finance && (
-                    <span className="inline-block text-xs font-body text-gold bg-gold/10 px-2 py-0.5 rounded-full mt-2">Finance</span>
+                    <span className="inline-flex mt-2 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700 border border-amber-200">
+                      Finance
+                    </span>
                   )}
                 </div>
               </div>
