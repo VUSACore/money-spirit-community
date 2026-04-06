@@ -50,16 +50,16 @@ const Forums = () => {
       ) : (
         <div className="space-y-3 animate-slide-up">
           {forums.map((forum) => (
-            <div key={forum.id} className="rounded-2xl border border-border bg-card p-5 hover:shadow-sm transition-shadow">
+            <div key={forum.id} className="rounded-2xl border border-stone-200 bg-white p-5 hover:shadow-sm transition-shadow">
               <div className="flex items-start gap-3">
-                <MessageSquare className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
+                <MessageSquare className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />
                 <div>
-                  <h3 className="font-heading text-lg text-primary">{forum.title}</h3>
+                  <h3 className="font-heading text-lg text-navy font-semibold">{forum.title}</h3>
                   {forum.description && (
-                    <p className="text-sm font-body text-muted-foreground mt-1">{forum.description}</p>
+                    <p className="text-sm font-body text-navy/70 mt-1">{forum.description}</p>
                   )}
                   {forum.is_finance && (
-                    <span className="inline-block text-xs font-body text-accent bg-accent/10 px-2 py-0.5 rounded-full mt-2">Finance</span>
+                    <span className="inline-block text-xs font-body text-gold bg-gold/10 px-2 py-0.5 rounded-full mt-2">Finance</span>
                   )}
                 </div>
               </div>

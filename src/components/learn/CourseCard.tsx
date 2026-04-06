@@ -48,7 +48,7 @@ const CourseCard = ({
 
   const card = (
     <div
-      className="group rounded-lg border border-border bg-white overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-gold animate-slide-up"
+      className="group rounded-lg border border-stone-200 bg-white overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-gold animate-slide-up"
       style={{ animationDelay: `${index * 100}ms`, animationFillMode: "both" }}
     >
       <div className="h-[120px] bg-navy flex items-center justify-center">
@@ -56,9 +56,9 @@ const CourseCard = ({
       </div>
 
       <div className="p-5">
-        <h3 className="font-heading text-lg text-navy mb-1 leading-snug">{title}</h3>
+        <h3 className="font-heading text-lg text-navy mb-1 leading-snug font-semibold">{title}</h3>
         {description && (
-          <p className="font-body text-sm text-navy/60 leading-relaxed mb-4 line-clamp-2">
+          <p className="font-body text-sm text-navy/70 leading-relaxed mb-4 line-clamp-2">
             {description}
           </p>
         )}
