@@ -15,6 +15,8 @@ import Community from "./pages/Community.tsx";
 import Forums from "./pages/Forums.tsx";
 import Rituals from "./pages/Rituals.tsx";
 import Learn from "./pages/Learn.tsx";
+import CoursePage from "./pages/CoursePage.tsx";
+import LessonPage from "./pages/LessonPage.tsx";
 import Events from "./pages/Events.tsx";
 import Members from "./pages/Members.tsx";
 import Admin from "./pages/Admin.tsx";
@@ -47,6 +49,8 @@ const App = () => (
             <Route path="/forums" element={<Forums />} />
             <Route path="/rituals" element={<Rituals />} />
             <Route path="/learn" element={<Learn />} />
+            <Route path="/learn/:courseId" element={<CoursePage />} />
+            <Route path="/learn/:courseId/:lessonId" element={<LessonPage />} />
             <Route path="/events" element={<Events />} />
             <Route path="/members" element={<Members />} />
           </Route>
