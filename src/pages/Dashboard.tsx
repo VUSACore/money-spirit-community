@@ -56,10 +56,10 @@ const Dashboard = () => {
     <div className="p-8 max-w-4xl mx-auto space-y-8 animate-fade-in">
       {/* Welcome heading */}
       <div className="animate-slide-up">
-        <h1 className="text-3xl font-heading text-foreground mb-1">
+        <h1 className="text-3xl font-heading text-navy mb-1">
           Welcome to your {label} Journey, {profile.display_name}
         </h1>
-        <p className="text-muted-foreground font-body">
+        <p className="text-navy-deep/70 font-body">
           Your personalised pathway to financial wellbeing
         </p>
       </div>
@@ -67,10 +67,10 @@ const Dashboard = () => {
       {/* Progress overview */}
       <div className="space-y-2 animate-slide-up" style={{ animationDelay: '100ms', animationFillMode: 'both' }}>
         <div className="flex items-center justify-between">
-          <span className="text-sm font-body text-foreground font-medium">
+          <span className="text-sm font-body text-navy font-medium">
             {label} Pathway Progress
           </span>
-          <span className="text-sm font-body text-muted-foreground">{progress}%</span>
+          <span className="text-sm font-body text-navy">{progress}%</span>
         </div>
         <Progress value={progress} className="h-3 bg-muted [&>div]:bg-gold" />
       </div>
@@ -78,13 +78,13 @@ const Dashboard = () => {
       {/* Two cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-slide-up" style={{ animationDelay: '200ms', animationFillMode: 'both' }}>
         {/* Ritual card */}
-        <Card className="border-0 bg-gold/10 shadow-none animate-slide-up">
+        <Card className="border border-border bg-white shadow-none animate-slide-up">
           <CardContent className="p-6 flex flex-col items-start gap-4">
             <div className="flex items-center gap-2">
               <Flame className="text-gold" size={22} />
-              <span className="font-heading text-xl text-foreground">This week's ritual</span>
+              <span className="font-heading text-xl text-navy">This week's ritual</span>
             </div>
-            <p className="text-sm text-muted-foreground font-body">
+            <p className="text-sm text-navy-deep/70 font-body">
               Stay aligned with your financial intentions through a guided practice.
             </p>
             <Button variant="gold" asChild>
@@ -94,16 +94,16 @@ const Dashboard = () => {
         </Card>
 
         {/* Learn card */}
-        <Card className="border-0 bg-primary/5 shadow-none">
+        <Card className="border border-border bg-white shadow-none">
           <CardContent className="p-6 flex flex-col items-start gap-4">
             <div className="flex items-center gap-2">
-              <BookOpen className="text-foreground" size={22} />
-              <span className="font-heading text-xl text-foreground">Continue learning</span>
+              <BookOpen className="text-navy" size={22} />
+              <span className="font-heading text-xl text-navy">Continue learning</span>
             </div>
-            <p className="text-sm text-muted-foreground font-body">
+            <p className="text-sm text-navy-deep/70 font-body">
               Pick up where you left off on your {label} learning path.
             </p>
-            <Button variant="outline" asChild>
+            <Button variant="default" asChild>
               <Link to="/learn">Go to lessons</Link>
             </Button>
           </CardContent>
@@ -113,7 +113,7 @@ const Dashboard = () => {
       {/* Streak counter */}
       {streak > 0 && (
         <div className="flex items-center gap-3">
-          <Badge className={`bg-gold text-foreground border-0 px-4 py-2 text-sm font-body font-semibold ${streak >= 3 ? 'animate-streak-glow' : ''} shadow-[0_0_15px_rgba(201,148,30,0.4)]`}>
+          <Badge className={`bg-gold text-navy border-0 px-4 py-2 text-sm font-body font-semibold ${streak >= 3 ? 'animate-streak-glow' : ''} shadow-[0_0_15px_rgba(201,148,30,0.4)]`}>
             <Flame size={16} className="mr-1.5" />
             {streak} week streak
           </Badge>
