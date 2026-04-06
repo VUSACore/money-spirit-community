@@ -12,7 +12,7 @@ type Event = Tables<"events">;
 
 const formatPrice = (pence: number) => {
   if (pence === 0) return "Free";
-  return `£${(pence / 100).toFixed(0)}`;
+  return `AU$${(pence / 100).toFixed(0)}`;
 };
 
 const Events = () => {
