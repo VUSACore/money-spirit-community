@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { REFERRAL_LINKS } from "@/lib/referralLinks";
+import { CURRENCY_META, SUPPORTED_CURRENCIES, formatCurrency } from "@/lib/currencyMeta";
 
 const fetchRates = async (base: string) => {
   const res = await fetch(`https://open.er-api.com/v6/latest/${base}`);
@@ -29,16 +30,22 @@ const CurrencyCalculator = () => {
     staleTime: 5 * 60 * 1000,
   });
 
-  const currencies = data?.rates ? Object.keys(data.rates).sort() : [];
   const rate = data?.rates?.[toCurrency] ?? 0;
   const numAmount = parseFloat(amount) || 0;
   const converted = numAmount * rate;
   const lastUpdated = data?.time_last_update_utc;
 
+  // Use only supported currencies that exist in API response
+  const availableCurrencies = data?.rates
+    ? SUPPORTED_CURRENCIES.filter((c) => c in data.rates)
+    : SUPPORTED_CURRENCIES;
+
   if (isError) {
     return (
       <div className="rounded-lg border border-border bg-cream p-6 my-8">
-        <p className="font-body text-navy text-sm">Unable to load exchange rates right now. Please try again later.</p>
+        <p className="font-body text-navy text-sm">
+          Unable to load exchange rates right now. Please try again later.
+        </p>
       </div>
     );
   }
@@ -60,11 +67,17 @@ const CurrencyCalculator = () => {
                 <label className="font-body text-xs text-navy/60 mb-1 block">From</label>
                 <Select value={fromCurrency} onValueChange={setFromCurrency}>
                   <SelectTrigger className="bg-cream border-border">
-                    <SelectValue />
+                    <SelectValue>
+                      {CURRENCY_META[fromCurrency]
+                        ? `${CURRENCY_META[fromCurrency].flag} ${fromCurrency}`
+                        : fromCurrency}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {currencies.map((c) => (
-                      <SelectItem key={c} value={c}>{c}</SelectItem>
+                    {availableCurrencies.map((c) => (
+                      <SelectItem key={c} value={c}>
+                        {formatCurrency(c)}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -73,11 +86,17 @@ const CurrencyCalculator = () => {
                 <label className="font-body text-xs text-navy/60 mb-1 block">To</label>
                 <Select value={toCurrency} onValueChange={setToCurrency}>
                   <SelectTrigger className="bg-cream border-border">
-                    <SelectValue />
+                    <SelectValue>
+                      {CURRENCY_META[toCurrency]
+                        ? `${CURRENCY_META[toCurrency].flag} ${toCurrency}`
+                        : toCurrency}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {currencies.map((c) => (
-                      <SelectItem key={c} value={c}>{c}</SelectItem>
+                    {availableCurrencies.map((c) => (
+                      <SelectItem key={c} value={c}>
+                        {formatCurrency(c)}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -96,7 +115,11 @@ const CurrencyCalculator = () => {
 
             <div className="pt-2">
               <p className="font-heading text-3xl text-gold">
-                {converted.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {toCurrency}
+                {converted.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}{" "}
+                {toCurrency}
               </p>
               <p className="font-body text-xs text-navy/60 mt-1">
                 1 {fromCurrency} = {rate.toFixed(4)} {toCurrency}
@@ -111,12 +134,12 @@ const CurrencyCalculator = () => {
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Button asChild className="bg-navy text-white hover:bg-gold hover:text-white font-body">
                 <a href={REFERRAL_LINKS.wise} target="_blank" rel="noopener noreferrer">
-                  Send this amount with Wise →
+                  Send this amount with Wise
                 </a>
               </Button>
               <Button asChild className="bg-navy text-white hover:bg-gold hover:text-white font-body">
                 <a href={REFERRAL_LINKS.remitly} target="_blank" rel="noopener noreferrer">
-                  Send this amount with Remitly →
+                  Send this amount with Remitly
                 </a>
               </Button>
             </div>
