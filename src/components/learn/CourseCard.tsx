@@ -48,43 +48,44 @@ const CourseCard = ({
 
   const card = (
     <div
-      className="group rounded-lg border border-stone-200 bg-white overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-gold animate-slide-up"
+      className="group rounded-2xl border border-stone-200 bg-white overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl hover:border-amber-300 hover:-translate-y-1 animate-slide-up"
       style={{ animationDelay: `${index * 100}ms`, animationFillMode: "both" }}
     >
-      <div className="h-[120px] bg-navy flex items-center justify-center">
-        <LotusIcon size={40} className="text-gold" />
+      <div className="h-[128px] bg-primary flex items-center justify-center">
+        <LotusIcon size={40} className="text-accent opacity-90" />
       </div>
 
-      <div className="p-5">
-        <h3 className="font-heading text-lg text-navy mb-1 leading-snug font-semibold">{title}</h3>
+      <div className="px-5 py-4 flex flex-col gap-2">
+        <h3 className="font-heading text-lg text-primary font-semibold leading-snug">{title}</h3>
         {description && (
-          <p className="font-body text-sm text-navy/70 leading-relaxed mb-4 line-clamp-2">
+          <p className="font-body text-sm text-primary/70 leading-relaxed line-clamp-3">
             {description}
           </p>
         )}
 
-        <div className="flex items-center gap-3 mb-4">
-          <span className="font-body text-xs text-gold font-medium">
+        <div className="flex items-center gap-3">
+          <span className="font-body text-xs text-amber-600 font-medium">
             {lessonCount} {lessonCount === 1 ? "lesson" : "lessons"}
           </span>
-          <span className="font-body text-xs text-navy/40">
+          <span className="font-body text-xs text-primary/50">
             {enrolledCount} enrolled
           </span>
         </div>
 
         {isEnrolled ? (
-          <Button asChild className="w-full bg-navy text-white hover:bg-gold hover:text-white font-body">
+          <Button asChild className="w-full mt-3 py-2.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 font-body text-sm font-medium">
             <Link to={`/learn/${id}`}>Continue</Link>
           </Button>
         ) : (
           <Button
+            variant="outline"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               enrol.mutate();
             }}
             disabled={enrol.isPending || !userId}
-            className="w-full bg-gold text-white hover:bg-gold/90 font-body"
+            className="w-full mt-3 py-2.5 rounded-lg border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-body text-sm font-medium transition-all duration-200"
           >
             {enrol.isPending ? "Enrolling..." : "Enrol Free"}
           </Button>
