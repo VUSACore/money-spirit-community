@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect } from "react";
@@ -6,8 +6,9 @@ import LessonSidebar from "@/components/learn/LessonSidebar";
 import ComparisonCards from "@/components/learn/ComparisonCards";
 import StepGuide from "@/components/learn/StepGuide";
 import CurrencyCalculator from "@/components/learn/CurrencyCalculator";
-import LessonComplete from "@/components/learn/LessonComplete";
+import LessonNavigation from "@/components/learn/LessonNavigation";
 import EducationBanner from "@/components/EducationBanner";
+import { Progress } from "@/components/ui/progress";
 
 const LessonPage = () => {
   const { courseId, lessonId } = useParams<{ courseId: string; lessonId: string }>();
@@ -18,6 +19,21 @@ const LessonPage = () => {
       setUserId(session?.user?.id ?? null);
     });
   }, []);
+
+  const { data: isEnrolled, isLoading: enrolLoading } = useQuery({
+    queryKey: ["enrolment_check", courseId, userId],
+    enabled: !!userId && !!courseId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("course_enrollments")
+        .select("id")
+        .eq("user_id", userId!)
+        .eq("course_id", courseId!)
+        .maybeSingle();
+      if (error) throw error;
+      return !!data;
+    },
+  });
 
   const { data: lesson } = useQuery({
     queryKey: ["lesson", lessonId],
@@ -64,6 +80,11 @@ const LessonPage = () => {
     },
   });
 
+  // Gate: redirect to course page if not enrolled
+  if (!enrolLoading && userId && !isEnrolled) {
+    return <Navigate to={`/learn/${courseId}`} replace />;
+  }
+
   if (!lesson || !allLessons) {
     return (
       <div className="p-6 md:p-8 animate-fade-in">
@@ -75,12 +96,20 @@ const LessonPage = () => {
 
   const completedIds = progress ?? new Set<string>();
   const currentIndex = allLessons.findIndex((l) => l.id === lessonId);
-  const nextLesson = currentIndex >= 0 && currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
-  const nextLessonUrl = nextLesson ? `/learn/${courseId}/${nextLesson.id}` : null;
-  const isCompleted = completedIds.has(lessonId!);
+  const lessonNumber = currentIndex + 1;
+  const totalLessons = allLessons.length;
+  const progressPct = totalLessons > 0 ? Math.round((lessonNumber / totalLessons) * 100) : 0;
 
   return (
     <div className="p-6 md:p-8 animate-fade-in">
+      {/* Top progress bar */}
+      <div className="mb-6">
+        <p className="font-body text-xs text-navy/50 mb-1">
+          Lesson {lessonNumber} of {totalLessons}
+        </p>
+        <Progress value={progressPct} className="h-1 bg-gold/15 [&>div]:bg-gold" />
+      </div>
+
       <div className="flex flex-col lg:flex-row gap-8">
         <LessonSidebar courseId={courseId!} lessons={allLessons} completedIds={completedIds} />
 
@@ -97,12 +126,12 @@ const LessonPage = () => {
           </header>
 
           {/* Intro */}
-          <section className="mb-10">
+          <section className="mb-10 space-y-4">
             <p className="font-body text-navy/70 leading-relaxed max-w-2xl">
-              Wise and Remitly are trusted by millions of migrant women globally for safe, low-fee
-              international transfers. Whether you're sending money home to family, supporting loved
-              ones through education, or building financial stability across borders — these tools
-              help you keep more of what you earn.
+              Wise and Remitly are two of the most trusted services used by migrant women around the world to send money home safely and affordably. Millions of families rely on them every month to receive funds quickly and at a fair exchange rate.
+            </p>
+            <p className="font-body text-navy/70 leading-relaxed max-w-2xl">
+              Whether you are supporting loved ones through education, covering household costs, or building financial stability across borders, these tools help you keep more of what you earn. This guide walks you through how to use them with confidence.
             </p>
           </section>
 
@@ -114,11 +143,12 @@ const LessonPage = () => {
 
           <CurrencyCalculator />
 
-          <LessonComplete
+          <LessonNavigation
+            courseId={courseId!}
             lessonId={lessonId!}
             userId={userId}
-            isCompleted={isCompleted}
-            nextLessonUrl={nextLessonUrl}
+            lessons={allLessons}
+            completedIds={completedIds}
           />
         </div>
       </div>
