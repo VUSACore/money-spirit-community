@@ -5,20 +5,20 @@ const services = [
   {
     name: "Wise",
     icon: "W",
-    tagline: "Best for bank-to-bank transfers",
-    fee: "Low fixed fee + mid-market rate",
-    speed: "1–2 business days",
+    tagline: "Best for bank-to-bank transfers.",
+    fee: "Low fixed fee at mid-market rate",
+    speed: "1 to 2 business days",
     link: REFERRAL_LINKS.wise,
-    cta: "Send with Wise →",
+    cta: "Send with Wise",
   },
   {
     name: "Remitly",
     icon: "R",
-    tagline: "Best for fast cash pickup",
+    tagline: "Best for fast cash pickup.",
     fee: "First transfer often free",
     speed: "Minutes to hours",
     link: REFERRAL_LINKS.remitly,
-    cta: "Send with Remitly →",
+    cta: "Send with Remitly",
   },
 ];
 
@@ -62,7 +62,7 @@ const ComparisonCards = () => {
       </div>
 
       <p className="font-body text-xs italic text-navy/50 mt-4 max-w-2xl">
-        Money Spirit may earn a small referral fee when you use these links — at no extra cost to you. We only recommend services we trust.
+        Money Spirit may earn a small referral fee when you use these links at no extra cost to you. We only recommend services we trust.
       </p>
     </section>
   );

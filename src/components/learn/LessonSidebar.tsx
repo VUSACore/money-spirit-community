@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { CheckCircle, Lock } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 interface Lesson {
   id: string;
@@ -15,10 +16,25 @@ interface LessonSidebarProps {
 
 const LessonSidebar = ({ courseId, lessons, completedIds }: LessonSidebarProps) => {
   const { lessonId: activeLessonId } = useParams();
+  const completedCount = Array.from(completedIds).filter((id) =>
+    lessons.some((l) => l.id === id)
+  ).length;
+  const pct = lessons.length > 0 ? Math.round((completedCount / lessons.length) * 100) : 0;
 
   return (
     <nav className="w-full lg:w-64 shrink-0">
-      <h3 className="font-heading text-lg text-navy mb-4">Lessons</h3>
+      <h3 className="font-heading text-lg text-navy mb-3">Lessons</h3>
+
+      <div className="mb-4">
+        <div className="flex items-center justify-between mb-1">
+          <span className="font-body text-xs text-navy/50">
+            {completedCount} of {lessons.length} complete
+          </span>
+          <span className="font-body text-xs font-medium text-navy">{pct}%</span>
+        </div>
+        <Progress value={pct} className="h-1.5 bg-gold/15 [&>div]:bg-gold" />
+      </div>
+
       <ol className="space-y-1">
         {lessons.map((lesson, i) => {
           const isActive = lesson.id === activeLessonId;

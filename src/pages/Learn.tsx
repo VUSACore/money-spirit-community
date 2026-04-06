@@ -22,19 +22,35 @@ const Learn = () => {
         .order("created_at", { ascending: false });
       if (error) throw error;
 
-      // Fetch lesson counts per course
       const ids = data.map((c) => c.id);
+
+      // Fetch lesson counts
       const { data: lessons } = await supabase
         .from("lessons")
         .select("course_id")
         .in("course_id", ids);
 
-      const countMap: Record<string, number> = {};
+      const lessonCountMap: Record<string, number> = {};
       lessons?.forEach((l) => {
-        countMap[l.course_id] = (countMap[l.course_id] || 0) + 1;
+        lessonCountMap[l.course_id] = (lessonCountMap[l.course_id] || 0) + 1;
       });
 
-      return data.map((c) => ({ ...c, lessonCount: countMap[c.id] || 0 }));
+      // Fetch enrolled counts
+      const { data: enrollments } = await supabase
+        .from("course_enrollments")
+        .select("course_id")
+        .in("course_id", ids);
+
+      const enrolledCountMap: Record<string, number> = {};
+      enrollments?.forEach((e) => {
+        enrolledCountMap[e.course_id] = (enrolledCountMap[e.course_id] || 0) + 1;
+      });
+
+      return data.map((c) => ({
+        ...c,
+        lessonCount: lessonCountMap[c.id] || 0,
+        enrolledCount: enrolledCountMap[c.id] || 0,
+      }));
     },
   });
 
@@ -63,7 +79,11 @@ const Learn = () => {
           ))}
         </div>
       ) : (
-        <CourseGrid courses={courses || []} enrolledIds={enrollments ?? new Set()} />
+        <CourseGrid
+          courses={courses || []}
+          enrolledIds={enrollments ?? new Set()}
+          userId={userId}
+        />
       )}
     </div>
   );

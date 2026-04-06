@@ -1,9 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect } from "react";
 import LessonSidebar from "@/components/learn/LessonSidebar";
 import CourseOverview from "@/components/learn/CourseOverview";
+import EnrolmentGate from "@/components/learn/EnrolmentGate";
 
 const CoursePage = () => {
   const { courseId } = useParams<{ courseId: string }>();
@@ -43,9 +44,24 @@ const CoursePage = () => {
     enabled: !!courseId,
   });
 
+  const { data: isEnrolled, isLoading: enrolLoading } = useQuery({
+    queryKey: ["enrolment_check", courseId, userId],
+    enabled: !!userId && !!courseId,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("course_enrollments")
+        .select("id")
+        .eq("user_id", userId!)
+        .eq("course_id", courseId!)
+        .maybeSingle();
+      if (error) throw error;
+      return !!data;
+    },
+  });
+
   const { data: progress } = useQuery({
     queryKey: ["lesson_progress", courseId, userId],
-    enabled: !!userId && !!courseId,
+    enabled: !!userId && !!courseId && !!lessons,
     queryFn: async () => {
       const lessonIds = lessons?.map((l) => l.id) ?? [];
       if (lessonIds.length === 0) return new Set<string>();
@@ -65,6 +81,21 @@ const CoursePage = () => {
       <div className="p-6 md:p-8 animate-fade-in">
         <div className="animate-pulse bg-muted h-8 w-64 rounded mb-4" />
         <div className="animate-pulse bg-muted h-4 w-96 rounded" />
+      </div>
+    );
+  }
+
+  // Show enrolment gate if not enrolled
+  if (!enrolLoading && !isEnrolled) {
+    return (
+      <div className="p-6 md:p-8">
+        <EnrolmentGate
+          courseId={course.id}
+          userId={userId}
+          title={course.title}
+          description={course.description}
+          lessonCount={lessons.length}
+        />
       </div>
     );
   }

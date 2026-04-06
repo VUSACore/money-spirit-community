@@ -1,30 +1,30 @@
 const steps = [
   {
     title: "Choose your service",
-    body: "Large amount going to a bank account? Wise is your best bet. Family needs cash fast, or collects via mobile money? Go with Remitly.",
+    body: "If you are sending a larger amount to a bank account, Wise is usually the better choice. If your family needs cash quickly or collects via mobile money, Remitly tends to be faster.",
   },
   {
     title: "Create your free account",
-    body: "Use the referral links above for the best rates. You'll need: a photo ID, proof of address, and your recipient's bank or mobile money details.",
+    body: "Use the links on this page to get the best rates available. You will need a photo ID, proof of address, and your recipient's bank details or phone number depending on the service.",
   },
   {
     title: "Enter your transfer details",
-    body: "Type the amount in your send currency, select the recipient currency, and enter their account number or phone. Always check the rate AND the fee separately before confirming.",
+    body: "Type in the amount you want to send in your home currency. Select your recipient's currency and enter their account number or mobile number. Always check the exchange rate and the fee separately before you confirm.",
   },
   {
     title: "Review and confirm",
-    body: "Screenshot the confirmation for your records. Share the tracking link with your family so they know it's on the way.",
+    body: "Take a screenshot of the confirmation screen for your records. Share the tracking link with your family so they know the transfer is on its way.",
   },
   {
     title: "Track your transfer",
-    body: "Both services send email and SMS updates. If the transfer is delayed beyond the quoted time, contact their support immediately.",
+    body: "Both Wise and Remitly send email and SMS updates at each stage. If your transfer is delayed beyond the quoted time, contact their support team directly using the app or website.",
   },
 ];
 
 const StepGuide = () => {
   return (
     <section className="my-12">
-      <h2 className="font-heading text-2xl text-navy mb-8">How to Send Money — Step by Step</h2>
+      <h2 className="font-heading text-2xl text-navy mb-8">How to Send Money, Step by Step</h2>
       <ol className="space-y-8">
         {steps.map((step, i) => (
           <li
