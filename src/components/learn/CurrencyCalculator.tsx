@@ -14,10 +14,10 @@ const fetchRates = async (base: string) => {
 };
 
 const CurrencyCalculator = () => {
-  const [fromCurrency, setFromCurrency] = useState("GBP");
+  const [fromCurrency, setFromCurrency] = useState("AUD");
   const [toCurrency, setToCurrency] = useState("PHP");
   const [amount, setAmount] = useState("200");
-  const [debouncedFrom, setDebouncedFrom] = useState("GBP");
+  const [debouncedFrom, setDebouncedFrom] = useState("AUD");
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedFrom(fromCurrency), 300);

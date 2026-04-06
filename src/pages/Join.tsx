@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LotusIcon from "@/components/LotusIcon";
 import EthicsFooter from "@/components/EthicsFooter";
+import JoinComparisonTable from "@/components/JoinComparisonTable";
 
 const features = {
   monthly: [
@@ -55,11 +56,13 @@ const Join = () => {
           </p>
         </section>
 
+        <JoinComparisonTable />
+
         <div className="grid md:grid-cols-2 gap-6 mb-14">
           <div className="rounded-2xl border border-border bg-card p-8 flex flex-col">
             <p className="text-sm font-body font-semibold text-muted-foreground uppercase tracking-wider mb-1">Monthly</p>
             <div className="mb-6">
-              <span className="text-4xl font-heading text-primary">£19</span>
+              <span className="text-4xl font-heading text-primary">AU$19</span>
               <span className="text-muted-foreground font-body ml-1">/ month</span>
             </div>
             <ul className="space-y-3 mb-8 flex-1">
@@ -79,10 +82,10 @@ const Join = () => {
               <span className="text-xs font-body font-bold text-accent bg-accent/10 px-2.5 py-0.5 rounded-full">Best Value</span>
             </div>
             <div className="mb-1">
-              <span className="text-4xl font-heading text-primary">£149</span>
+              <span className="text-4xl font-heading text-primary">AU$149</span>
               <span className="text-muted-foreground font-body ml-1">/ year</span>
             </div>
-            <p className="text-sm font-body text-accent font-semibold mb-6">Save £79</p>
+            <p className="text-sm font-body text-accent font-semibold mb-6">Save AU$79</p>
             <ul className="space-y-3 mb-8 flex-1">
               {features.annual.map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-sm font-body text-foreground">
