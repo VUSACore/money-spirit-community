@@ -46,21 +46,27 @@ export type Database = {
       }
       badges: {
         Row: {
+          color: string
           description: string | null
+          emoji: string
           icon_url: string | null
           id: string
           name: string
           slug: string
         }
         Insert: {
+          color?: string
           description?: string | null
+          emoji?: string
           icon_url?: string | null
           id?: string
           name: string
           slug: string
         }
         Update: {
+          color?: string
           description?: string | null
+          emoji?: string
           icon_url?: string | null
           id?: string
           name?: string
@@ -472,6 +478,7 @@ export type Database = {
           link: string | null
           message: string
           read: boolean
+          title: string | null
           type: string
           user_id: string
         }
@@ -481,6 +488,7 @@ export type Database = {
           link?: string | null
           message: string
           read?: boolean
+          title?: string | null
           type: string
           user_id: string
         }
@@ -490,6 +498,7 @@ export type Database = {
           link?: string | null
           message?: string
           read?: boolean
+          title?: string | null
           type?: string
           user_id?: string
         }
