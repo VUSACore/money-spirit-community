@@ -6,6 +6,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
+import BadgePreview from "@/components/badges/BadgePreview";
+import BadgeGrid from "@/components/badges/BadgeGrid";
 
 interface MemberProfile {
   id: string;
@@ -129,6 +131,7 @@ const Members = () => {
                 </div>
               </div>
               {member.bio && member.show_bio && <p className="text-sm font-body text-muted-foreground line-clamp-2">{member.bio}</p>}
+              <BadgePreview userId={member.id} />
             </button>
           ))}
         </div>
@@ -159,6 +162,7 @@ const Members = () => {
                 </div>
               </div>
               {selected.bio && selected.show_bio && <p className="text-sm font-body text-foreground leading-relaxed">{selected.bio}</p>}
+              <BadgeGrid userId={selected.id} />
             </div>
           )}
         </DialogContent>
