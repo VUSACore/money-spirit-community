@@ -142,7 +142,7 @@ const AdminRevenue = () => {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  
+  useEffect(() => {
     const load = async () => {
       const [
         membershipsRes,
