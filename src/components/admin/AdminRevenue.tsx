@@ -1,11 +1,14 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { format, subDays, startOfWeek } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import * as XLSX from "xlsx";
 import {
   Users, TrendingUp, TrendingDown, CreditCard, GraduationCap,
-  UserCheck, Ticket, MessageSquare, Flame, Search
+  UserCheck, Ticket, MessageSquare, Flame, Search,
+  Download, FileSpreadsheet, FileText, Copy, ChevronDown
 } from "lucide-react";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
@@ -127,6 +130,17 @@ const AdminRevenue = () => {
   const [range, setRange] = useState<Range>("90");
   const [ticketFilter, setTicketFilter] = useState<"all" | "active" | "cancelled">("all");
   const [ticketSearch, setTicketSearch] = useState("");
+  const [exportOpen, setExportOpen] = useState(false);
+  const exportRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (exportRef.current && !exportRef.current.contains(e.target as Node)) setExportOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -247,11 +261,125 @@ const AdminRevenue = () => {
   const PIE_COLORS = [NAVY, GOLD];
   const BAR_COLORS = [NAVY, NAVY_LIGHT, NAVY_PALE];
 
+  /* ── export helpers ─────────────────── */
+  const getMetricsData = () => [
+    ["Metric", "Value"],
+    ["Active Members", activeMembers.length],
+    ["Monthly Recurring Revenue (AUD)", `A$${mrr.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`],
+    ["Annual Plan Members", annualCount],
+    ["Event Tickets Sold", activeTickets],
+    ["Courses Enrolled", totalEnrollments],
+    ["Total Users", totalProfiles],
+  ];
+
+  const getTicketsData = () => [
+    ["Ticket ID", "Event", "User", "Purchase Date", "Status"],
+    ...filteredTickets.map(t => [
+      t.id.slice(0, 8),
+      eventMap.get(t.event_id) ?? "Unknown",
+      profileMap.get(t.user_id) ?? "Unknown",
+      format(new Date(t.purchased_at), "d MMM yyyy, HH:mm"),
+      t.status,
+    ]),
+  ];
+
+  const getActivityData = () => [
+    ["Metric", "Value"],
+    ["Total Posts", totalPosts],
+    ["Forum Threads", totalThreads],
+    ["Ritual Completions", totalRitualCompletions],
+  ];
+
+  const triggerDownload = (blob: Blob, filename: string) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleExportCSV = () => {
+    setExportOpen(false);
+    const sections = [
+      "--- Key Metrics ---",
+      ...getMetricsData().map(r => r.join(",")),
+      "",
+      "--- Recent Tickets ---",
+      ...getTicketsData().map(r => r.join(",")),
+      "",
+      "--- Platform Activity ---",
+      ...getActivityData().map(r => r.join(",")),
+    ];
+    const blob = new Blob([sections.join("\n")], { type: "text/csv" });
+    triggerDownload(blob, `money-spirit-revenue-${format(new Date(), "yyyy-MM-dd")}.csv`);
+    toast.success("CSV exported");
+  };
+
+  const handleExportExcel = () => {
+    setExportOpen(false);
+    const wb = XLSX.utils.book_new();
+    const ws1 = XLSX.utils.aoa_to_sheet(getMetricsData());
+    ws1["!cols"] = [{ wch: 35 }, { wch: 20 }];
+    XLSX.utils.book_append_sheet(wb, ws1, "Key Metrics");
+    const ws2 = XLSX.utils.aoa_to_sheet(getTicketsData());
+    ws2["!cols"] = [{ wch: 12 }, { wch: 25 }, { wch: 20 }, { wch: 22 }, { wch: 12 }];
+    XLSX.utils.book_append_sheet(wb, ws2, "Recent Tickets");
+    const ws3 = XLSX.utils.aoa_to_sheet(getActivityData());
+    ws3["!cols"] = [{ wch: 25 }, { wch: 15 }];
+    XLSX.utils.book_append_sheet(wb, ws3, "Platform Activity");
+    const buf = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    triggerDownload(new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }), `money-spirit-revenue-${format(new Date(), "yyyy-MM-dd")}.xlsx`);
+    toast.success("Excel file exported");
+  };
+
+  const handleCopySummary = async () => {
+    setExportOpen(false);
+    const text = [
+      "Money Spirit -- Revenue Summary",
+      `Generated: ${format(new Date(), "d MMM yyyy, HH:mm")}`,
+      "",
+      `Total Members: ${activeMembers.length}`,
+      `MRR: A$${mrr.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
+      `Annual Plan Members: ${annualCount}`,
+      `Event Tickets Sold: ${activeTickets}`,
+      `Courses Enrolled: ${totalEnrollments}`,
+      `Total Users: ${totalProfiles}`,
+    ].join("\n");
+    await navigator.clipboard.writeText(text);
+    toast.success("Copied to clipboard");
+  };
+
   return (
     <div className="space-y-10 max-w-6xl">
       {/* Section 1: Key Metrics */}
       <div>
-        <h2 className="font-heading text-2xl text-primary mb-6">Revenue &amp; Platform Analytics</h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="font-heading text-2xl text-primary">Revenue &amp; Platform Analytics</h2>
+          <div className="relative" ref={exportRef}>
+            <button
+              onClick={() => setExportOpen(o => !o)}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-primary text-primary text-sm font-body font-medium hover:bg-accent hover:text-accent-foreground hover:border-accent transition-colors"
+            >
+              <Download size={15} />
+              Export Data
+              <ChevronDown size={14} className={`transition-transform ${exportOpen ? "rotate-180" : ""}`} />
+            </button>
+            {exportOpen && (
+              <div className="absolute right-0 mt-1.5 w-56 bg-white rounded-lg border border-border shadow-lg z-50 py-1 animate-in fade-in slide-in-from-top-1 duration-150">
+                <button onClick={handleExportCSV} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-body text-primary hover:bg-accent/10 transition-colors">
+                  <FileText size={15} className="text-accent" /> Export as CSV
+                </button>
+                <button onClick={handleExportExcel} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-body text-primary hover:bg-accent/10 transition-colors">
+                  <FileSpreadsheet size={15} className="text-accent" /> Export as Excel (.xlsx)
+                </button>
+                <button onClick={handleCopySummary} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-body text-primary hover:bg-accent/10 transition-colors">
+                  <Copy size={15} className="text-accent" /> Copy summary to clipboard
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <StatCard icon={UserCheck} label="Active Members" value={loading ? "..." : activeMembers.length} trend={trend} loading={loading} />
           <StatCard icon={CreditCard} label="Monthly Recurring Revenue" value={loading ? "..." : `A$${mrr.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`} trend={null} loading={loading} />
