@@ -130,8 +130,19 @@ const AdminRevenue = () => {
   const [range, setRange] = useState<Range>("90");
   const [ticketFilter, setTicketFilter] = useState<"all" | "active" | "cancelled">("all");
   const [ticketSearch, setTicketSearch] = useState("");
+  const [exportOpen, setExportOpen] = useState(false);
+  const exportRef = useRef<HTMLDivElement>(null);
 
+  // Close dropdown on outside click
   useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (exportRef.current && !exportRef.current.contains(e.target as Node)) setExportOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  
     const load = async () => {
       const [
         membershipsRes,
