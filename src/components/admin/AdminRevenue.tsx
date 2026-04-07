@@ -1,11 +1,14 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { format, subDays, startOfWeek } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import * as XLSX from "xlsx";
 import {
   Users, TrendingUp, TrendingDown, CreditCard, GraduationCap,
-  UserCheck, Ticket, MessageSquare, Flame, Search
+  UserCheck, Ticket, MessageSquare, Flame, Search,
+  Download, FileSpreadsheet, FileText, Copy, ChevronDown
 } from "lucide-react";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
