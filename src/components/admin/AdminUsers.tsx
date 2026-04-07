@@ -7,6 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { Tables } from "@/integrations/supabase/types";
+import { awardBadge, getAllBadges, getUserBadges } from "@/lib/actions/badges";
+import { toast as sonnerToast } from "sonner";
 
 type Profile = Pick<Tables<"profiles">, "id" | "display_name" | "role" | "created_at">;
 
@@ -108,8 +110,68 @@ const AdminUsers = () => {
               {saving ? "Saving…" : "Save"}
             </Button>
           </div>
+
+          {/* Badge Award Section */}
+          {editing && <BadgeAwardSection userId={editing.id} />}
         </DialogContent>
       </Dialog>
+    </div>
+  );
+};
+
+const BadgeAwardSection = ({ userId }: { userId: string }) => {
+  const [allBadges, setAllBadges] = useState<any[]>([]);
+  const [earnedIds, setEarnedIds] = useState<Set<string>>(new Set());
+  const [selectedBadge, setSelectedBadge] = useState("");
+  const [awarding, setAwarding] = useState(false);
+
+  useEffect(() => {
+    const load = async () => {
+      const [badges, userBadges] = await Promise.all([
+        getAllBadges(),
+        getUserBadges(userId),
+      ]);
+      setAllBadges(badges);
+      setEarnedIds(new Set(userBadges.map((ub: any) => ub.badge_id)));
+    };
+    load();
+  }, [userId]);
+
+  const available = allBadges.filter((b) => !earnedIds.has(b.id));
+
+  const handleAward = async () => {
+    if (!selectedBadge) return;
+    setAwarding(true);
+    const badge = allBadges.find((b) => b.id === selectedBadge);
+    await awardBadge(userId, badge.slug);
+    setEarnedIds((prev) => new Set(prev).add(selectedBadge));
+    setSelectedBadge("");
+    sonnerToast.success("Badge awarded");
+    setAwarding(false);
+  };
+
+  if (available.length === 0) return null;
+
+  return (
+    <div className="space-y-3 pt-3 border-t border-border">
+      <h4 className="font-heading text-sm text-primary font-semibold">Award Badge</h4>
+      <div className="flex gap-2">
+        <Select value={selectedBadge} onValueChange={setSelectedBadge}>
+          <SelectTrigger className="ms-input flex-1">
+            <SelectValue placeholder="Select badge..." />
+          </SelectTrigger>
+          <SelectContent>
+            {available.map((b: any) => (
+              <SelectItem key={b.id} value={b.id}>
+                {b.emoji} {b.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Button variant="gold" size="sm" disabled={!selectedBadge || awarding} onClick={handleAward}>
+          Award
+        </Button>
+      </div>
     </div>
   );
 };

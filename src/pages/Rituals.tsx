@@ -14,6 +14,7 @@ import { Flame, CheckCircle2, Sparkles } from "lucide-react";
 import { startOfWeek, endOfWeek, format } from "date-fns";
 import type { Tables } from "@/integrations/supabase/types";
 import EducationBanner from "@/components/EducationBanner";
+import { checkAndAwardRitualBadges } from "@/lib/actions/badges";
 
 type Ritual = Tables<"rituals">;
 
@@ -104,6 +105,7 @@ const Rituals = () => {
       });
     }
 
+    await checkAndAwardRitualBadges(userId);
     setCompleted(true);
     setPastCompletions((prev) => new Set(prev).add(currentRitual.id));
     setSubmitting(false);

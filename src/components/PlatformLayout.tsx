@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import LotusIcon from "@/components/LotusIcon";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import NotificationBell from "@/components/notifications/NotificationBell";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import type { TranslationKey } from "@/lib/i18n/translations";
@@ -77,6 +78,13 @@ const SidebarContent = ({
           );
         })}
       </nav>
+
+      {/* Notifications */}
+      {profile?.user_id && (
+        <div className="px-3 mb-1">
+          <NotificationBell userId={profile.user_id} />
+        </div>
+      )}
 
       {/* User / Language / Sign out */}
       <div className="px-4 py-4 border-t border-white/10 space-y-2">

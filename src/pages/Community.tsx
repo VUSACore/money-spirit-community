@@ -8,6 +8,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Heart, PartyPopper, Sparkles, Zap } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import LotusIcon from "@/components/LotusIcon";
+import { createNotification } from "@/lib/actions/notifications";
+import { checkAndAwardPostBadges } from "@/lib/actions/badges";
 
 type ReactionType = "heart" | "celebrate" | "inspire" | "spark";
 
@@ -97,6 +99,7 @@ const Community = () => {
     if (!newContent.trim() || !userId) return;
     setPosting(true);
     await supabase.from("posts").insert({ author_id: userId, content: newContent.trim(), post_type: "standard" as const });
+    await checkAndAwardPostBadges(userId, "standard");
     setNewContent("");
     setPosting(false);
   };
@@ -109,6 +112,12 @@ const Community = () => {
       await supabase.from("post_reactions").delete().eq("post_id", postId).eq("user_id", userId).eq("type", type);
     } else {
       await supabase.from("post_reactions").insert({ post_id: postId, user_id: userId, type });
+      // Notify post author
+      if (post.author_id !== userId) {
+        const { data: actor } = await supabase.from("profiles").select("display_name").eq("user_id", userId).maybeSingle();
+        const name = actor?.display_name ?? "Someone";
+        await createNotification(post.author_id, "reaction", `${name} reacted to your post`, `/community`);
+      }
     }
     await fetchPosts(userId);
   };
