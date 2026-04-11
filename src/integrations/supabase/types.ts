@@ -338,6 +338,145 @@ export type Database = {
         }
         Relationships: []
       }
+      family_circle_members: {
+        Row: {
+          circle_id: string
+          id: string
+          invited_at: string | null
+          joined_at: string | null
+          member_id: string
+          role: string
+        }
+        Insert: {
+          circle_id: string
+          id?: string
+          invited_at?: string | null
+          joined_at?: string | null
+          member_id: string
+          role: string
+        }
+        Update: {
+          circle_id?: string
+          id?: string
+          invited_at?: string | null
+          joined_at?: string | null
+          member_id?: string
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "family_circle_members_circle_id_fkey"
+            columns: ["circle_id"]
+            isOneToOne: false
+            referencedRelation: "family_circles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      family_circles: {
+        Row: {
+          circle_name: string
+          circle_type: string
+          created_at: string | null
+          creator_id: string
+          id: string
+        }
+        Insert: {
+          circle_name: string
+          circle_type: string
+          created_at?: string | null
+          creator_id: string
+          id?: string
+        }
+        Update: {
+          circle_name?: string
+          circle_type?: string
+          created_at?: string | null
+          creator_id?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      family_ritual_completions: {
+        Row: {
+          completed_at: string | null
+          completed_by: string
+          family_ritual_id: string
+          id: string
+          reflection: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          completed_by: string
+          family_ritual_id: string
+          id?: string
+          reflection?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          completed_by?: string
+          family_ritual_id?: string
+          id?: string
+          reflection?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "family_ritual_completions_family_ritual_id_fkey"
+            columns: ["family_ritual_id"]
+            isOneToOne: false
+            referencedRelation: "family_rituals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      family_rituals: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          family_circle_id: string
+          id: string
+          reflection_prompt: string | null
+          ritual_id: string | null
+          title: string
+          week_of: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          family_circle_id: string
+          id?: string
+          reflection_prompt?: string | null
+          ritual_id?: string | null
+          title: string
+          week_of: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          family_circle_id?: string
+          id?: string
+          reflection_prompt?: string | null
+          ritual_id?: string | null
+          title?: string
+          week_of?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "family_rituals_family_circle_id_fkey"
+            columns: ["family_circle_id"]
+            isOneToOne: false
+            referencedRelation: "family_circles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "family_rituals_ritual_id_fkey"
+            columns: ["ritual_id"]
+            isOneToOne: false
+            referencedRelation: "rituals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       forums: {
         Row: {
           description: string | null
@@ -365,6 +504,45 @@ export type Database = {
           slug?: string
           sort_order?: number
           title?: string
+        }
+        Relationships: []
+      }
+      legacy_goals: {
+        Row: {
+          created_at: string | null
+          currency: string | null
+          goal_type: string
+          id: string
+          notes: string | null
+          target_amount: number | null
+          target_date: string | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          currency?: string | null
+          goal_type: string
+          id?: string
+          notes?: string | null
+          target_amount?: number | null
+          target_date?: string | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          currency?: string | null
+          goal_type?: string
+          id?: string
+          notes?: string | null
+          target_amount?: number | null
+          target_date?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -702,6 +880,7 @@ export type Database = {
           fms_score: number | null
           fms_signal_type: string | null
           id: string
+          is_legacy_enabled: boolean | null
           life_stage: string | null
           location: string | null
           onboarding_complete: boolean
@@ -728,6 +907,7 @@ export type Database = {
           fms_score?: number | null
           fms_signal_type?: string | null
           id?: string
+          is_legacy_enabled?: boolean | null
           life_stage?: string | null
           location?: string | null
           onboarding_complete?: boolean
@@ -754,6 +934,7 @@ export type Database = {
           fms_score?: number | null
           fms_signal_type?: string | null
           id?: string
+          is_legacy_enabled?: boolean | null
           life_stage?: string | null
           location?: string | null
           onboarding_complete?: boolean
