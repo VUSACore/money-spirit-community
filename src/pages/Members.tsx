@@ -9,6 +9,16 @@ import { supabase } from "@/integrations/supabase/client";
 import BadgePreview from "@/components/badges/BadgePreview";
 import BadgeGrid from "@/components/badges/BadgeGrid";
 
+const archetypeAccent: Record<string, string> = {
+  giver: "#E8845C", keeper: "#5B8DB8", rebel: "#9B59B6", seeker: "#27AE8F", achiever: "#C9941E",
+};
+const archetypeName: Record<string, string> = {
+  giver: "The Giver", keeper: "The Keeper", rebel: "The Rebel", seeker: "The Seeker", achiever: "The Achiever",
+};
+const lifeStageLabel: Record<string, string> = {
+  under_30: "Under 30", "30_to_40": "30 to 40", "40_to_50": "40 to 50", "50_plus": "50 or over",
+};
+
 interface MemberProfile {
   id: string;
   display_name: string;
@@ -19,6 +29,8 @@ interface MemberProfile {
   show_bio: boolean;
   ritual_streak: number;
   created_at: string;
+  pathway_type: string | null;
+  life_stage: string | null;
 }
 
 const getInitials = (name: string) =>
@@ -35,7 +47,7 @@ const Members = () => {
     const load = async () => {
       const { data } = await supabase
         .from("profiles")
-        .select("id, display_name, avatar_url, bio, location, show_location, show_bio, ritual_streak, created_at")
+        .select("id, display_name, avatar_url, bio, location, show_location, show_bio, ritual_streak, created_at, pathway_type, life_stage")
         .eq("visible_in_directory", true)
         .order("display_name", { ascending: true });
       setMembers((data as MemberProfile[]) ?? []);
@@ -158,6 +170,19 @@ const Members = () => {
                   <p className="text-xs text-muted-foreground font-body mt-0.5">Member since {format(new Date(selected.created_at), "MMMM yyyy")}</p>
                   {selected.ritual_streak > 0 && (
                     <span className="inline-flex items-center gap-1 text-sm font-body font-semibold text-accent mt-1"><Flame className="h-4 w-4" /> {selected.ritual_streak}-day streak</span>
+                  )}
+                  {selected.pathway_type && (
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: archetypeAccent[selected.pathway_type] ?? "#C9941E" }} />
+                      <span className="text-sm font-body font-medium" style={{ color: archetypeAccent[selected.pathway_type] ?? "#C9941E" }}>
+                        {archetypeName[selected.pathway_type] ?? selected.pathway_type}
+                      </span>
+                    </div>
+                  )}
+                  {selected.life_stage && (
+                    <p className="text-xs text-muted-foreground font-body mt-0.5">
+                      {lifeStageLabel[selected.life_stage] ?? selected.life_stage}
+                    </p>
                   )}
                 </div>
               </div>

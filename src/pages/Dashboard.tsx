@@ -10,12 +10,12 @@ import type { Tables } from "@/integrations/supabase/types";
 
 type Profile = Tables<"profiles">;
 
-const pathwayLabels: Record<string, string> = {
-  giver: "Giver",
-  keeper: "Keeper",
-  rebel: "Rebel",
-  seeker: "Seeker",
-  achiever: "Achiever",
+const archetypeDisplay: Record<string, { name: string; accent: string; description: string }> = {
+  giver: { name: "The Giver", accent: "#E8845C", description: "You lead with generosity and care deeply about providing for others." },
+  keeper: { name: "The Keeper", accent: "#5B8DB8", description: "You value security above all else. Building a solid foundation is your strength." },
+  rebel: { name: "The Rebel", accent: "#9B59B6", description: "You reject traditional money rules and forge your own bold path." },
+  seeker: { name: "The Seeker", accent: "#27AE8F", description: "You approach money with curiosity and a desire to understand its deeper purpose." },
+  achiever: { name: "The Achiever", accent: "#C9941E", description: "You are driven, ambitious, and focused on growth with unstoppable belief." },
 };
 
 const pathwayProgress: Record<string, number> = {
@@ -52,7 +52,7 @@ const Dashboard = () => {
   }
 
   const pathway = profile.pathway_type ?? "keeper";
-  const label = pathwayLabels[pathway] ?? "Keeper";
+  const info = archetypeDisplay[pathway] ?? archetypeDisplay.keeper;
   const progress = pathwayProgress[pathway] ?? 15;
   const streak = profile.ritual_streak ?? 0;
 
@@ -61,18 +61,33 @@ const Dashboard = () => {
       {/* Welcome heading */}
       <div className="animate-slide-up">
         <h1 className="text-3xl font-heading text-navy mb-1">
-          Welcome to your {label} Journey, {profile.display_name}
+          Welcome back, {profile.display_name}
         </h1>
         <p className="text-navy-deep/70 font-body">
           Your personalised pathway to financial wellbeing
         </p>
       </div>
 
+      {/* Archetype card */}
+      <Card
+        className="border-l-4 bg-white shadow-none animate-slide-up"
+        style={{ borderLeftColor: info.accent }}
+      >
+        <CardContent className="p-6">
+          <h2 className="font-heading text-2xl mb-1" style={{ color: info.accent }}>
+            {info.name}
+          </h2>
+          <p className="text-sm font-body text-navy-deep/60 line-clamp-2">
+            {info.description}
+          </p>
+        </CardContent>
+      </Card>
+
       {/* Progress overview */}
       <div className="space-y-2 animate-slide-up" style={{ animationDelay: '100ms', animationFillMode: 'both' }}>
         <div className="flex items-center justify-between">
           <span className="text-sm font-body text-navy font-medium">
-            {label} Pathway Progress
+            {info.name} Pathway Progress
           </span>
           <span className="text-sm font-body text-navy">{progress}%</span>
         </div>
@@ -105,7 +120,7 @@ const Dashboard = () => {
               <span className="font-heading text-xl text-navy">Continue learning</span>
             </div>
             <p className="text-sm text-navy-deep/70 font-body">
-              Pick up where you left off on your {label} learning path.
+              Pick up where you left off on your {info.name} learning path.
             </p>
             <Button variant="default" asChild>
               <Link to="/learn">Go to lessons</Link>

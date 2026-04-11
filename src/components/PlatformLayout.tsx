@@ -91,6 +91,21 @@ const SidebarContent = ({
         <p className="text-white text-sm font-body truncate">
           {profile?.display_name ?? "Member"}
         </p>
+        {profile?.pathway_type && (() => {
+          const accentMap: Record<string, string> = {
+            giver: "#E8845C", keeper: "#5B8DB8", rebel: "#9B59B6", seeker: "#27AE8F", achiever: "#C9941E",
+          };
+          const nameMap: Record<string, string> = {
+            giver: "The Giver", keeper: "The Keeper", rebel: "The Rebel", seeker: "The Seeker", achiever: "The Achiever",
+          };
+          const pt = profile.pathway_type;
+          return (
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: accentMap[pt] ?? "#C9941E" }} />
+              <span className="text-xs font-body text-white/60">{nameMap[pt] ?? pt}</span>
+            </div>
+          );
+        })()}
         {profile?.role === "admin" && (
           <Link
             to="/admin"
