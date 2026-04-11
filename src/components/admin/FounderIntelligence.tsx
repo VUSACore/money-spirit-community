@@ -49,6 +49,7 @@ const FounderIntelligence = () => {
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [quickStats, setQuickStats] = useState({ active: 0, newThisWeek: 0, ritualsThisWeek: 0 });
   const [sendingNudge, setSendingNudge] = useState<string | null>(null);
+  const [legacyStats, setLegacyStats] = useState({ enabledCount: 0, circleCount: 0, goalCount: 0 });
 
   const fetchAll = useCallback(async (forceDigest = false) => {
     setLoading(true);
