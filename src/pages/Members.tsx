@@ -9,6 +9,16 @@ import { supabase } from "@/integrations/supabase/client";
 import BadgePreview from "@/components/badges/BadgePreview";
 import BadgeGrid from "@/components/badges/BadgeGrid";
 
+const archetypeAccent: Record<string, string> = {
+  giver: "#E8845C", keeper: "#5B8DB8", rebel: "#9B59B6", seeker: "#27AE8F", achiever: "#C9941E",
+};
+const archetypeName: Record<string, string> = {
+  giver: "The Giver", keeper: "The Keeper", rebel: "The Rebel", seeker: "The Seeker", achiever: "The Achiever",
+};
+const lifeStageLabel: Record<string, string> = {
+  under_30: "Under 30", "30_to_40": "30 to 40", "40_to_50": "40 to 50", "50_plus": "50 or over",
+};
+
 interface MemberProfile {
   id: string;
   display_name: string;
@@ -19,6 +29,8 @@ interface MemberProfile {
   show_bio: boolean;
   ritual_streak: number;
   created_at: string;
+  pathway_type: string | null;
+  life_stage: string | null;
 }
 
 const getInitials = (name: string) =>
