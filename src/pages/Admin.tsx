@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Users, Flame, CalendarDays, DollarSign, Sparkles } from "lucide-react";
+import { Users, Flame, CalendarDays, DollarSign, Sparkles, Target } from "lucide-react";
 import LotusIcon from "@/components/LotusIcon";
 import AdminUsers from "@/components/admin/AdminUsers";
 import AdminRituals from "@/components/admin/AdminRituals";
 import AdminEvents from "@/components/admin/AdminEvents";
 import AdminRevenue from "@/components/admin/AdminRevenue";
 import IntelligenceComingSoon from "@/components/admin/IntelligenceComingSoon";
+import FMSLeadBoard from "@/components/admin/FMSLeadBoard";
 
 const tabs = [
   { id: "users", label: "Users", icon: Users },
@@ -15,6 +16,7 @@ const tabs = [
   { id: "events", label: "Events", icon: CalendarDays },
   { id: "revenue", label: "Revenue", icon: DollarSign },
   { id: "intelligence", label: "Intelligence", icon: Sparkles },
+  { id: "fms", label: "FMS Leads", icon: Target },
 ] as const;
 
 type TabId = (typeof tabs)[number]["id"];
@@ -90,6 +92,7 @@ const Admin = () => {
         {activeTab === "events" && <AdminEvents />}
         {activeTab === "revenue" && <AdminRevenue />}
         {activeTab === "intelligence" && <IntelligenceComingSoon />}
+        {activeTab === "fms" && <FMSLeadBoard />}
       </main>
     </div>
   );
