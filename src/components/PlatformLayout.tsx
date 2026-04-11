@@ -20,6 +20,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import type { TranslationKey } from "@/lib/i18n/translations";
 import type { Tables } from "@/integrations/supabase/types";
+import { useBadgeNotification } from "@/hooks/useBadgeNotification";
 
 type Profile = Tables<"profiles">;
 
