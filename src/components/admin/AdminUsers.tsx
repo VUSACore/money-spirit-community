@@ -55,11 +55,31 @@ const AdminUsers = () => {
     setSaving(false);
   };
 
+  const toggleLegacy = async (p: Profile) => {
+    const newVal = !p.is_legacy_enabled;
+    const { error } = await supabase
+      .from("profiles")
+      .update({ is_legacy_enabled: newVal } as any)
+      .eq("id", p.id);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      setProfiles((prev) => prev.map((pr) => pr.id === p.id ? { ...pr, is_legacy_enabled: newVal } : pr));
+    }
+  };
+
+  const legacyCount = profiles.filter((p) => p.is_legacy_enabled).length;
+
   if (loading) return <p className="text-muted-foreground font-body">Loading users…</p>;
 
   return (
     <div>
-      <h2 className="text-2xl font-heading text-primary mb-6">Users</h2>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-heading text-primary">Users</h2>
+        <div className="bg-accent/10 text-accent font-body text-sm px-3 py-1.5 rounded-full">
+          {legacyCount} member{legacyCount !== 1 ? "s" : ""} with Legacy access
+        </div>
+      </div>
 
       <div className="rounded-xl border border-border overflow-hidden">
         <Table>
@@ -67,6 +87,7 @@ const AdminUsers = () => {
             <TableRow>
               <TableHead className="font-body">Name</TableHead>
               <TableHead className="font-body">Role</TableHead>
+              <TableHead className="font-body">Legacy</TableHead>
               <TableHead className="font-body">Joined</TableHead>
               <TableHead className="font-body w-[100px]" />
             </TableRow>
@@ -76,6 +97,13 @@ const AdminUsers = () => {
               <TableRow key={p.id}>
                 <TableCell className="font-body">{p.display_name}</TableCell>
                 <TableCell className="font-body capitalize">{p.role}</TableCell>
+                <TableCell>
+                  <Switch
+                    checked={!!p.is_legacy_enabled}
+                    onCheckedChange={() => toggleLegacy(p)}
+                    aria-label={`Toggle legacy access for ${p.display_name}`}
+                  />
+                </TableCell>
                 <TableCell className="font-body text-muted-foreground">
                   {format(new Date(p.created_at), "d MMM yyyy")}
                 </TableCell>
