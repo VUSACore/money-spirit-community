@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Users, Flame, CalendarDays, DollarSign } from "lucide-react";
+import { Users, Flame, CalendarDays, DollarSign, Sparkles } from "lucide-react";
 import LotusIcon from "@/components/LotusIcon";
 import AdminUsers from "@/components/admin/AdminUsers";
 import AdminRituals from "@/components/admin/AdminRituals";
