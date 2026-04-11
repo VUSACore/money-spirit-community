@@ -693,6 +693,10 @@ export type Database = {
           bio: string | null
           created_at: string
           display_name: string
+          fms_confidence: string | null
+          fms_last_scored_at: string | null
+          fms_lead_type: string | null
+          fms_rationale: string | null
           fms_referral_dismissed: boolean | null
           fms_referral_eligible: boolean | null
           fms_score: number | null
@@ -715,6 +719,10 @@ export type Database = {
           bio?: string | null
           created_at?: string
           display_name: string
+          fms_confidence?: string | null
+          fms_last_scored_at?: string | null
+          fms_lead_type?: string | null
+          fms_rationale?: string | null
           fms_referral_dismissed?: boolean | null
           fms_referral_eligible?: boolean | null
           fms_score?: number | null
@@ -737,6 +745,10 @@ export type Database = {
           bio?: string | null
           created_at?: string
           display_name?: string
+          fms_confidence?: string | null
+          fms_last_scored_at?: string | null
+          fms_lead_type?: string | null
+          fms_rationale?: string | null
           fms_referral_dismissed?: boolean | null
           fms_referral_eligible?: boolean | null
           fms_score?: number | null
