@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -10,7 +11,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { awardBadge, getAllBadges, getUserBadges } from "@/lib/actions/badges";
 import { toast as sonnerToast } from "sonner";
 
-type Profile = Pick<Tables<"profiles">, "id" | "display_name" | "role" | "created_at">;
+type Profile = Pick<Tables<"profiles">, "id" | "display_name" | "role" | "created_at"> & { is_legacy_enabled?: boolean };
 
 const AdminUsers = () => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
