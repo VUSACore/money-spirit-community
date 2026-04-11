@@ -5,22 +5,22 @@
 @layer base {
   :root {
     --background: 39 33% 95%;
-    --foreground: 216 73% 21%;
+    --foreground: 214 67% 32%;
 
     --card: 39 33% 95%;
-    --card-foreground: 216 73% 21%;
+    --card-foreground: 214 67% 32%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 216 73% 21%;
+    --popover-foreground: 214 67% 32%;
 
-    --primary: 216 73% 21%;
+    --primary: 214 67% 32%;
     --primary-foreground: 39 33% 95%;
 
     --secondary: 39 33% 95%;
-    --secondary-foreground: 216 73% 21%;
+    --secondary-foreground: 214 67% 32%;
 
     --muted: 39 20% 90%;
-    --muted-foreground: 216 30% 40%;
+    --muted-foreground: 214 30% 40%;
 
     --accent: 41 74% 45%;
     --accent-foreground: 0 0% 100%;
@@ -34,18 +34,18 @@
 
     --radius: 0.5rem;
 
-    --navy: 216 73% 21%;
-    --navy-deep: 218 75% 14%;
+    --navy: 214 67% 32%;
+    --navy-deep: 220 72% 6%;
     --gold: 41 74% 45%;
     --cream: 39 33% 95%;
 
-    --sidebar-background: 216 73% 21%;
+    --sidebar-background: 220 72% 6%;
     --sidebar-foreground: 39 33% 95%;
     --sidebar-primary: 41 74% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 218 75% 14%;
+    --sidebar-accent: 216 73% 15%;
     --sidebar-accent-foreground: 39 33% 95%;
-    --sidebar-border: 216 50% 30%;
+    --sidebar-border: 214 50% 20%;
     --sidebar-ring: 41 74% 45%;
 
     --font-heading: 'Cormorant Garamond', serif;
@@ -71,6 +71,78 @@
   .ms-input {
     @apply w-full rounded-xl border border-navy bg-cream text-navy px-4 py-2.5 text-sm font-body placeholder:text-navy/40 focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold transition-colors;
   }
+
+  .btn-gold {
+    background: linear-gradient(
+      135deg,
+      #F5C842 0%,
+      #E8A91C 20%,
+      #C9941E 45%,
+      #A67816 70%,
+      #F0C235 90%,
+      #F5C842 100%
+    );
+    background-size: 200% 200%;
+    color: #061530;
+    font-weight: 600;
+    border: none;
+    transition: background-position 0.4s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(201, 148, 30, 0.35),
+                inset 0 1px 0 rgba(245, 200, 66, 0.6);
+  }
+
+  .btn-gold:hover {
+    background-position: 100% 100%;
+    box-shadow: 0 4px 16px rgba(201, 148, 30, 0.5),
+                inset 0 1px 0 rgba(245, 200, 66, 0.8);
+  }
+
+  .btn-primary {
+    background-color: #1B4B8A;
+    color: #ffffff;
+    transition: background-color 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #163F75;
+  }
+
+  .ms-badge {
+    background: linear-gradient(
+      135deg,
+      #F5C842 0%,
+      #C9941E 50%,
+      #A67816 100%
+    );
+    color: #061530;
+    font-weight: 600;
+  }
+
+  .nav-item-active {
+    background-color: rgba(27, 75, 138, 0.15);
+    color: #F5C842;
+  }
+
+  .streak-active {
+    text-shadow: 0 0 8px rgba(245, 200, 66, 0.7),
+                 0 0 16px rgba(201, 148, 30, 0.4);
+    color: #F5C842;
+  }
+}
+
+@keyframes streak-glow {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(245, 200, 66, 0.7),
+                 0 0 16px rgba(201, 148, 30, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 14px rgba(245, 200, 66, 1),
+                 0 0 28px rgba(201, 148, 30, 0.7);
+  }
+}
+
+.animate-streak-glow {
+  animation: streak-glow 2s ease-in-out infinite;
 }
 
 @layer utilities {
