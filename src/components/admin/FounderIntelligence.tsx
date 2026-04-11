@@ -416,6 +416,42 @@ const FounderIntelligence = () => {
           </>
         )}
       </section>
+
+      {/* FAMILY LEGACY */}
+      <section>
+        <h2 className="font-body text-base text-primary-foreground mb-1">Family Legacy</h2>
+        <p className="font-body text-xs text-primary-foreground/40 mb-4">Schema-ready product line — early access & circle stats</p>
+        {loading ? (
+          <Skeleton className="h-32 w-full rounded-xl" style={{ background: "hsl(220 72% 10%)" }} />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="rounded-xl p-5" style={{ background: "hsl(220 72% 10%)", border: "1px solid hsl(220 50% 20%)" }}>
+              <div className="flex items-center gap-2 mb-3">
+                <Heart size={16} className="text-accent" />
+                <span className="font-body text-[11px] text-primary-foreground/40 uppercase tracking-wide">Early Access</span>
+              </div>
+              <p className="font-heading text-4xl text-primary-foreground">{legacyStats.enabledCount}</p>
+              <p className="font-body text-[13px] text-primary-foreground/60 mt-1">members with legacy enabled</p>
+            </div>
+            <div className="rounded-xl p-5" style={{ background: "hsl(220 72% 10%)", border: "1px solid hsl(220 50% 20%)" }}>
+              <div className="flex items-center gap-2 mb-3">
+                <Users size={16} className="text-accent" />
+                <span className="font-body text-[11px] text-primary-foreground/40 uppercase tracking-wide">Family Circles</span>
+              </div>
+              <p className="font-heading text-4xl text-primary-foreground">{legacyStats.circleCount}</p>
+              <p className="font-body text-[13px] text-primary-foreground/60 mt-1">circles created</p>
+            </div>
+            <div className="rounded-xl p-5" style={{ background: "hsl(220 72% 10%)", border: "1px solid hsl(220 50% 20%)" }}>
+              <div className="flex items-center gap-2 mb-3">
+                <Building size={16} className="text-accent" />
+                <span className="font-body text-[11px] text-primary-foreground/40 uppercase tracking-wide">Legacy Goals</span>
+              </div>
+              <p className="font-heading text-4xl text-primary-foreground">{legacyStats.goalCount}</p>
+              <p className="font-body text-[13px] text-primary-foreground/60 mt-1">goals set by members</p>
+            </div>
+          </div>
+        )}
+      </section>
     </div>
   );
 };
