@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { getUserBadges } from "@/lib/actions/badges";
-import BadgeIcon from "./BadgeIcon";
+import LucideBadgeIcon from "./LucideBadgeIcon";
 
 interface BadgePreviewProps {
   userId: string;
   maxShow?: number;
 }
 
-const BadgePreview = ({ userId, maxShow = 4 }: BadgePreviewProps) => {
+const BadgePreview = ({ userId, maxShow = 3 }: BadgePreviewProps) => {
   const [badges, setBadges] = useState<any[]>([]);
 
   useEffect(() => {
@@ -22,11 +22,11 @@ const BadgePreview = ({ userId, maxShow = 4 }: BadgePreviewProps) => {
   const remaining = badges.length - maxShow;
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1.5">
       {visible.map((ub: any) => (
-        <BadgeIcon
+        <LucideBadgeIcon
           key={ub.id}
-          emoji={ub.badges.emoji}
+          iconSlug={ub.badges.icon_slug ?? "award"}
           color={ub.badges.color}
           name={ub.badges.name}
           description={ub.badges.description}
@@ -35,7 +35,7 @@ const BadgePreview = ({ userId, maxShow = 4 }: BadgePreviewProps) => {
         />
       ))}
       {remaining > 0 && (
-        <span className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-[10px] font-body font-medium text-muted-foreground">
+        <span className="h-8 px-2 rounded-full bg-muted flex items-center justify-center text-[11px] font-body font-medium text-muted-foreground">
           +{remaining}
         </span>
       )}
