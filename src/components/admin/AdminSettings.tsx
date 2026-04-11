@@ -5,8 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { format } from "date-fns";
-import { Download } from "lucide-react";
+import { Download, Eye } from "lucide-react";
+import {
+  welcomeEmail,
+  ticketConfirmationEmail,
+  ritualReminderEmail,
+  archetypeRevealEmail,
+} from "@/lib/email/templates";
 
 const FLAG_KEYS = [
   { key: "ai_engine_enabled", label: "AI Engine", desc: "Archetype AI + Next Sacred Step" },
@@ -20,6 +27,8 @@ const AdminSettings = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [previewHtml, setPreviewHtml] = useState<string | null>(null);
+  const [previewTitle, setPreviewTitle] = useState("");
   const { toast } = useToast();
 
   const load = async () => {
@@ -146,6 +155,29 @@ const AdminSettings = () => {
         ))}
       </section>
 
+      {/* Email Templates */}
+      <section className="rounded-xl border border-border bg-card p-6 space-y-4">
+        <h3 className="font-heading text-lg text-primary">Email Templates</h3>
+        <div className="grid grid-cols-2 gap-3">
+          {[
+            { label: "Preview Welcome Email", html: welcomeEmail("Aisha", "The Keeper") },
+            { label: "Preview Ticket Confirmation", html: ticketConfirmationEmail("Aisha", "Money & Mindset Live Session", "Saturday, 12 April 2026", "Online via Zoom", "TKT-12345678") },
+            { label: "Preview Ritual Reminder", html: ritualReminderEmail("Aisha", "The Money Breath", "Take three deep breaths and ask yourself: where am I holding financial tension today?") },
+            { label: "Preview Archetype Reveal", html: archetypeRevealEmail("Aisha", "The Keeper", "You value security above all else. Building a solid foundation, protecting what you have, and planning carefully are the pillars of your financial wellbeing.", "#5B8DB8") },
+          ].map((t) => (
+            <Button
+              key={t.label}
+              variant="ghost"
+              size="sm"
+              className="justify-start gap-2"
+              onClick={() => { setPreviewTitle(t.label); setPreviewHtml(t.html); }}
+            >
+              <Eye size={14} /> {t.label}
+            </Button>
+          ))}
+        </div>
+      </section>
+
       {/* Danger Zone */}
       <section className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 space-y-4">
         <h3 className="font-body text-sm font-semibold text-destructive">Danger Zone</h3>
@@ -159,6 +191,20 @@ const AdminSettings = () => {
           </Button>
         </div>
       </section>
+
+      {/* Email Preview Modal */}
+      <Dialog open={!!previewHtml} onOpenChange={(open) => { if (!open) setPreviewHtml(null); }}>
+        <DialogContent className="max-w-3xl max-h-[90vh]">
+          <DialogHeader>
+            <DialogTitle className="font-heading">{previewTitle}</DialogTitle>
+          </DialogHeader>
+          <iframe
+            srcDoc={previewHtml ?? ""}
+            style={{ width: "100%", height: 600, border: "none", background: "#061530", borderRadius: 8 }}
+            title="Email Preview"
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

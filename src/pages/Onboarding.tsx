@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
+import { sendWelcomeEmail, sendArchetypeReveal } from "@/lib/email/emailService";
 
 type ArchetypeKey = "giver" | "keeper" | "rebel" | "seeker" | "achiever";
 type LifeStage = "under_30" | "30_to_40" | "40_to_50" | "50_plus";
@@ -198,7 +199,15 @@ const Onboarding = () => {
       .maybeSingle();
 
     const name = profile?.display_name ?? "there";
-    toast.success(`Welcome to Money Spirit, ${name}. Your ${archetypeInfo[result].name} journey is ready.`);
+    const info = archetypeInfo[result];
+
+    // Send welcome + archetype reveal emails (fire-and-forget)
+    if (user.email) {
+      sendWelcomeEmail(user.email, name, info.name);
+      sendArchetypeReveal(user.email, name, info.name, info.description, info.accent);
+    }
+
+    toast.success(`Welcome to Money Spirit, ${name}. Your ${info.name} journey is ready.`);
     navigate("/dashboard");
   };
 

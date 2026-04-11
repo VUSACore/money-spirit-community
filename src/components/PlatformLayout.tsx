@@ -23,6 +23,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { useBadgeNotification } from "@/hooks/useBadgeNotification";
 import { useWeeklyArchetypeScore } from "@/hooks/useWeeklyArchetypeScore";
 import { useFMSScoring } from "@/hooks/useFMSScoring";
+import { useRitualReminder } from "@/hooks/useRitualReminder";
 
 type Profile = Tables<"profiles">;
 
@@ -150,6 +151,7 @@ const PlatformLayout = () => {
   useBadgeNotification(profile?.user_id);
   useWeeklyArchetypeScore(profile?.user_id);
   useFMSScoring(profile?.user_id);
+  useRitualReminder(profile?.user_id);
 
   useEffect(() => {
     const load = async () => {

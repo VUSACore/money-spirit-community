@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { Tables } from "@/integrations/supabase/types";
 import EducationBanner from "@/components/EducationBanner";
+import { sendTicketConfirmation } from "@/lib/email/emailService";
 
 type Event = Tables<"events">;
 
@@ -58,9 +59,25 @@ const Events = () => {
     setClaimingId(eventId);
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { toast({ title: "Please sign in", description: "You need an account to get a ticket.", variant: "destructive" }); setClaimingId(null); return; }
-    const { error } = await supabase.from("event_tickets").insert({ event_id: eventId, user_id: user.id });
+    const { data: ticket, error } = await supabase.from("event_tickets").insert({ event_id: eventId, user_id: user.id }).select("id").single();
     if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); }
-    else { setTicketedIds((prev) => new Set(prev).add(eventId)); toast({ title: "Ticket confirmed!", description: "You're all set." }); }
+    else {
+      setTicketedIds((prev) => new Set(prev).add(eventId));
+      toast({ title: "Ticket confirmed!", description: "You're all set." });
+      // Send ticket confirmation email
+      const evt = events.find(e => e.id === eventId);
+      if (evt && user.email && ticket) {
+        const { data: profile } = await supabase.from("profiles").select("display_name").eq("user_id", user.id).maybeSingle();
+        sendTicketConfirmation(
+          user.email,
+          profile?.display_name ?? "there",
+          evt.title,
+          format(new Date(evt.event_date), "EEEE, d MMMM yyyy"),
+          evt.is_virtual ? "Online event" : (evt.location ?? "Location TBA"),
+          ticket.id
+        );
+      }
+    }
     setClaimingId(null);
   };
 
