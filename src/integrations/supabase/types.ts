@@ -541,21 +541,30 @@ export type Database = {
       }
       pathways: {
         Row: {
+          accent_colour: string | null
           description: string | null
+          icon_slug: string | null
           id: string
           pathway_type: Database["public"]["Enums"]["pathway_type"]
+          sort_order: number | null
           title: string
         }
         Insert: {
+          accent_colour?: string | null
           description?: string | null
+          icon_slug?: string | null
           id?: string
           pathway_type: Database["public"]["Enums"]["pathway_type"]
+          sort_order?: number | null
           title: string
         }
         Update: {
+          accent_colour?: string | null
           description?: string | null
+          icon_slug?: string | null
           id?: string
           pathway_type?: Database["public"]["Enums"]["pathway_type"]
+          sort_order?: number | null
           title?: string
         }
         Relationships: []
@@ -624,11 +633,17 @@ export type Database = {
       }
       profiles: {
         Row: {
+          archetype_score: Json | null
           avatar_url: string | null
           bio: string | null
           created_at: string
           display_name: string
+          fms_referral_dismissed: boolean | null
+          fms_referral_eligible: boolean | null
+          fms_score: number | null
+          fms_signal_type: string | null
           id: string
+          life_stage: string | null
           location: string | null
           onboarding_complete: boolean
           pathway_type: Database["public"]["Enums"]["pathway_type"] | null
@@ -640,11 +655,17 @@ export type Database = {
           visible_in_directory: boolean
         }
         Insert: {
+          archetype_score?: Json | null
           avatar_url?: string | null
           bio?: string | null
           created_at?: string
           display_name: string
+          fms_referral_dismissed?: boolean | null
+          fms_referral_eligible?: boolean | null
+          fms_score?: number | null
+          fms_signal_type?: string | null
           id?: string
+          life_stage?: string | null
           location?: string | null
           onboarding_complete?: boolean
           pathway_type?: Database["public"]["Enums"]["pathway_type"] | null
@@ -656,11 +677,17 @@ export type Database = {
           visible_in_directory?: boolean
         }
         Update: {
+          archetype_score?: Json | null
           avatar_url?: string | null
           bio?: string | null
           created_at?: string
           display_name?: string
+          fms_referral_dismissed?: boolean | null
+          fms_referral_eligible?: boolean | null
+          fms_score?: number | null
+          fms_signal_type?: string | null
           id?: string
+          life_stage?: string | null
           location?: string | null
           onboarding_complete?: boolean
           pathway_type?: Database["public"]["Enums"]["pathway_type"] | null
@@ -935,7 +962,15 @@ export type Database = {
       link_type: "course" | "ritual" | "event"
       membership_plan: "monthly" | "annual"
       membership_status: "active" | "cancelled" | "past_due"
-      pathway_type: "foundation" | "growth" | "abundance"
+      pathway_type:
+        | "foundation"
+        | "growth"
+        | "abundance"
+        | "giver"
+        | "keeper"
+        | "rebel"
+        | "seeker"
+        | "achiever"
       post_type: "standard" | "win" | "ritual_share" | "announcement"
       ticket_status: "active" | "refunded" | "cancelled"
       user_role: "guest" | "member" | "moderator" | "admin"
@@ -1069,7 +1104,16 @@ export const Constants = {
       link_type: ["course", "ritual", "event"],
       membership_plan: ["monthly", "annual"],
       membership_status: ["active", "cancelled", "past_due"],
-      pathway_type: ["foundation", "growth", "abundance"],
+      pathway_type: [
+        "foundation",
+        "growth",
+        "abundance",
+        "giver",
+        "keeper",
+        "rebel",
+        "seeker",
+        "achiever",
+      ],
       post_type: ["standard", "win", "ritual_share", "announcement"],
       ticket_status: ["active", "refunded", "cancelled"],
       user_role: ["guest", "member", "moderator", "admin"],
