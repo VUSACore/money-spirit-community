@@ -166,12 +166,3 @@
     pointer-events: none;
   }
 }
-    content: '✨';
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    font-size: 1rem;
-    animation: celebration 0.6s ease-out;
-    pointer-events: none;
-  }
-}
