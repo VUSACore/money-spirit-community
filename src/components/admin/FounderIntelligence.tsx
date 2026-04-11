@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import {
   Sparkles, RefreshCw, Users, TrendingUp, Flame, AlertCircle,
-  Home, Shield, Building, Clock, Mail,
+  Home, Shield, Building, Clock, Mail, Heart,
 } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
@@ -49,6 +49,7 @@ const FounderIntelligence = () => {
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [quickStats, setQuickStats] = useState({ active: 0, newThisWeek: 0, ritualsThisWeek: 0 });
   const [sendingNudge, setSendingNudge] = useState<string | null>(null);
+  const [legacyStats, setLegacyStats] = useState({ enabledCount: 0, circleCount: 0, goalCount: 0 });
 
   const fetchAll = useCallback(async (forceDigest = false) => {
     setLoading(true);
@@ -60,7 +61,8 @@ const FounderIntelligence = () => {
 
     const sevenDaysAgo = new Date(Date.now() - 7 * 86400000).toISOString();
     const [trendsData, churnData, retreatData, fmsData, digestData,
-      { count: activeCount }, { count: newCount }, { count: ritualCount }] = await Promise.all([
+      { count: activeCount }, { count: newCount }, { count: ritualCount },
+      { count: legacyEnabledCount }, { count: circleCount }, { count: goalCount }] = await Promise.all([
       getArchetypeTrends(),
       getChurnRiskMembers(),
       getRetreatDemandSignals(),
@@ -69,6 +71,9 @@ const FounderIntelligence = () => {
       supabase.from("memberships").select("id", { count: "exact", head: true }).eq("status", "active"),
       supabase.from("memberships").select("id", { count: "exact", head: true }).gte("created_at", sevenDaysAgo),
       supabase.from("ritual_completions").select("id", { count: "exact", head: true }).gte("completed_at", sevenDaysAgo),
+      supabase.from("profiles").select("id", { count: "exact", head: true }).eq("is_legacy_enabled", true),
+      supabase.from("family_circles").select("id", { count: "exact", head: true }),
+      supabase.from("legacy_goals").select("id", { count: "exact", head: true }),
     ]);
 
     setTrends(trendsData);
@@ -77,6 +82,7 @@ const FounderIntelligence = () => {
     setFms(fmsData);
     setDigest(digestData);
     setQuickStats({ active: activeCount || 0, newThisWeek: newCount || 0, ritualsThisWeek: ritualCount || 0 });
+    setLegacyStats({ enabledCount: legacyEnabledCount || 0, circleCount: circleCount || 0, goalCount: goalCount || 0 });
     setLastUpdated(new Date());
     setLoading(false);
     setDigestLoading(false);
@@ -408,6 +414,42 @@ const FounderIntelligence = () => {
               View Full Lead Board →
             </a>
           </>
+        )}
+      </section>
+
+      {/* FAMILY LEGACY */}
+      <section>
+        <h2 className="font-body text-base text-primary-foreground mb-1">Family Legacy</h2>
+        <p className="font-body text-xs text-primary-foreground/40 mb-4">Schema-ready product line — early access & circle stats</p>
+        {loading ? (
+          <Skeleton className="h-32 w-full rounded-xl" style={{ background: "hsl(220 72% 10%)" }} />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="rounded-xl p-5" style={{ background: "hsl(220 72% 10%)", border: "1px solid hsl(220 50% 20%)" }}>
+              <div className="flex items-center gap-2 mb-3">
+                <Heart size={16} className="text-accent" />
+                <span className="font-body text-[11px] text-primary-foreground/40 uppercase tracking-wide">Early Access</span>
+              </div>
+              <p className="font-heading text-4xl text-primary-foreground">{legacyStats.enabledCount}</p>
+              <p className="font-body text-[13px] text-primary-foreground/60 mt-1">members with legacy enabled</p>
+            </div>
+            <div className="rounded-xl p-5" style={{ background: "hsl(220 72% 10%)", border: "1px solid hsl(220 50% 20%)" }}>
+              <div className="flex items-center gap-2 mb-3">
+                <Users size={16} className="text-accent" />
+                <span className="font-body text-[11px] text-primary-foreground/40 uppercase tracking-wide">Family Circles</span>
+              </div>
+              <p className="font-heading text-4xl text-primary-foreground">{legacyStats.circleCount}</p>
+              <p className="font-body text-[13px] text-primary-foreground/60 mt-1">circles created</p>
+            </div>
+            <div className="rounded-xl p-5" style={{ background: "hsl(220 72% 10%)", border: "1px solid hsl(220 50% 20%)" }}>
+              <div className="flex items-center gap-2 mb-3">
+                <Building size={16} className="text-accent" />
+                <span className="font-body text-[11px] text-primary-foreground/40 uppercase tracking-wide">Legacy Goals</span>
+              </div>
+              <p className="font-heading text-4xl text-primary-foreground">{legacyStats.goalCount}</p>
+              <p className="font-body text-[13px] text-primary-foreground/60 mt-1">goals set by members</p>
+            </div>
+          </div>
         )}
       </section>
     </div>
