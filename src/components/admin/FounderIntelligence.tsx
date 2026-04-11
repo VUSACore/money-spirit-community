@@ -61,7 +61,8 @@ const FounderIntelligence = () => {
 
     const sevenDaysAgo = new Date(Date.now() - 7 * 86400000).toISOString();
     const [trendsData, churnData, retreatData, fmsData, digestData,
-      { count: activeCount }, { count: newCount }, { count: ritualCount }] = await Promise.all([
+      { count: activeCount }, { count: newCount }, { count: ritualCount },
+      { count: legacyEnabledCount }, { count: circleCount }, { count: goalCount }] = await Promise.all([
       getArchetypeTrends(),
       getChurnRiskMembers(),
       getRetreatDemandSignals(),
@@ -70,6 +71,9 @@ const FounderIntelligence = () => {
       supabase.from("memberships").select("id", { count: "exact", head: true }).eq("status", "active"),
       supabase.from("memberships").select("id", { count: "exact", head: true }).gte("created_at", sevenDaysAgo),
       supabase.from("ritual_completions").select("id", { count: "exact", head: true }).gte("completed_at", sevenDaysAgo),
+      supabase.from("profiles").select("id", { count: "exact", head: true }).eq("is_legacy_enabled", true),
+      supabase.from("family_circles").select("id", { count: "exact", head: true }),
+      supabase.from("legacy_goals").select("id", { count: "exact", head: true }),
     ]);
 
     setTrends(trendsData);
