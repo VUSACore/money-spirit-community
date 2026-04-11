@@ -1,139 +1,93 @@
 import { useEffect, useState, useMemo, useRef } from "react";
-import { format, subDays, startOfWeek } from "date-fns";
+import { format, subDays, startOfWeek, startOfMonth, isAfter } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import * as XLSX from "xlsx";
 import {
-  Users, TrendingUp, TrendingDown, CreditCard, GraduationCap,
-  UserCheck, Ticket, MessageSquare, Flame, Search,
-  Download, FileSpreadsheet, FileText, Copy, ChevronDown
+  Users, CreditCard, TrendingUp, Ticket, DollarSign, UserPlus,
+  MessageSquare, Sparkles, Activity, Download, FileSpreadsheet,
+  FileText, Copy, ChevronDown,
 } from "lucide-react";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, PieChart, Pie, Cell, Legend,
-  BarChart, Bar, Area, AreaChart
 } from "recharts";
 
-/* ── types ────────────────────────────── */
+const MONTHLY_PRICE = 19;
+const ANNUAL_PRICE = 149;
+
 interface Membership {
-  id: string;
-  plan: string;
-  status: string;
-  created_at: string;
+  id: string; plan: string; status: string; created_at: string;
 }
 interface TicketRow {
-  id: string;
-  event_id: string;
-  user_id: string;
-  purchased_at: string;
-  status: string;
+  id: string; event_id: string; user_id: string; purchased_at: string; status: string;
 }
-interface EventRow { id: string; title: string }
-interface ProfileRow { id: string; display_name: string; user_id: string }
+interface EventRow { id: string; title: string; price_pence: number }
+interface ProfileRow { user_id: string; display_name: string }
 
-type Range = "30" | "90" | "all";
+type Days = 30 | 90 | 365;
 
-const MONTHLY_PRICE_AUD = 29;
-const ANNUAL_PRICE_AUD = 290;
-const NAVY = "#0E2D5F";
-const GOLD = "#C9941E";
-const NAVY_LIGHT = "#1B4B8F";
-const NAVY_PALE = "#2A5FA0";
-
-/* ── small reusable pieces ────────────── */
-
-function StatCard({
-  icon: Icon, label, value, trend, loading
-}: {
-  icon: React.ElementType; label: string; value: string | number;
-  trend?: number | null; loading: boolean;
+/* ── Metric Card ── */
+function MetricCard({ label, value, sub, loading }: {
+  label: string; value: string | number; sub?: string; loading: boolean;
 }) {
-  if (loading) {
-    return (
-      <div className="bg-white rounded-xl border-l-4 border-accent p-5">
-        <Skeleton className="h-3 w-20 mb-3" />
-        <Skeleton className="h-8 w-28" />
-      </div>
-    );
-  }
+  if (loading) return (
+    <div className="bg-[#102A4C] rounded-xl border border-[#1E3A5F]/50 p-5 animate-pulse">
+      <div className="h-3 w-24 bg-white/10 rounded mb-4" />
+      <div className="h-9 w-32 bg-white/10 rounded" />
+    </div>
+  );
   return (
-    <div className="bg-white rounded-xl border-l-4 border-accent p-5 shadow-sm">
-      <div className="flex items-center justify-between mb-1">
-        <span className="text-[11px] font-body font-semibold tracking-widest uppercase text-primary/60">
-          {label}
-        </span>
-        <Icon size={16} className="text-accent" />
-      </div>
-      <p className="font-heading text-3xl text-primary leading-none mt-2">{value}</p>
-      {trend !== undefined && trend !== null && (
-        <div className={`flex items-center gap-1 mt-2 text-xs font-body ${trend >= 0 ? "text-emerald-600" : "text-red-500"}`}>
-          {trend >= 0 ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
-          <span>{Math.abs(trend).toFixed(1)}% vs last month</span>
-        </div>
-      )}
+    <div className="bg-[#102A4C] rounded-xl border border-[#1E3A5F]/50 p-5">
+      <p className="text-[12px] font-body font-semibold tracking-[0.8px] uppercase text-[#5A7A9F] mb-2">{label}</p>
+      <p className="font-heading text-4xl text-cream-50 leading-none">{value}</p>
+      {sub && <p className="text-[12px] font-body text-[#5A7A9F] mt-2">{sub}</p>}
     </div>
   );
 }
 
-function InfoCard({
-  icon: Icon, label, value, loading
-}: { icon: React.ElementType; label: string; value: number; loading: boolean }) {
-  if (loading) {
-    return (
-      <div className="bg-white rounded-xl border-l-4 border-accent p-5">
-        <Skeleton className="h-3 w-20 mb-3" />
-        <Skeleton className="h-8 w-16" />
-      </div>
-    );
-  }
+/* ── Custom Tooltip ── */
+function ChartTooltip({ active, payload, label }: any) {
+  if (!active || !payload?.length) return null;
   return (
-    <div className="bg-white rounded-xl border-l-4 border-accent p-5 shadow-sm">
-      <div className="flex items-center gap-2 mb-1">
-        <Icon size={16} className="text-accent" />
-        <span className="text-[11px] font-body font-semibold tracking-widest uppercase text-primary/60">
-          {label}
-        </span>
-      </div>
-      <p className="font-heading text-3xl text-primary leading-none mt-2">
-        {value === 0 ? <span className="text-lg text-primary/40 font-body">No data yet</span> : value}
-      </p>
+    <div className="bg-[#0B1D3A] border border-gold/40 rounded-lg px-3 py-2 shadow-lg">
+      <p className="text-[12px] font-body text-cream-200">{label}</p>
+      <p className="text-[13px] font-body font-medium text-gold">{payload[0].value} members</p>
     </div>
   );
 }
 
-function StatusBadge({ status }: { status: string }) {
-  const isActive = status === "active";
+/* ── Status Pill ── */
+function StatusPill({ status }: { status: string }) {
+  const styles: Record<string, string> = {
+    active: "bg-teal-500/20 text-teal-400",
+    cancelled: "bg-[#E8845C]/20 text-[#E8845C]",
+    refunded: "bg-[#E8845C]/20 text-[#E8845C]",
+  };
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-      isActive ? "bg-emerald-100 text-emerald-700" : "bg-stone-200 text-stone-600"
-    }`}>
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${styles[status] ?? "bg-gold/20 text-gold"}`}>
       {status}
     </span>
   );
 }
 
-/* ── main component ───────────────────── */
-
 const AdminRevenue = () => {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [memberships, setMemberships] = useState<Membership[]>([]);
   const [tickets, setTickets] = useState<TicketRow[]>([]);
   const [events, setEvents] = useState<EventRow[]>([]);
   const [profiles, setProfiles] = useState<ProfileRow[]>([]);
-  const [totalProfiles, setTotalProfiles] = useState(0);
-  const [totalEnrollments, setTotalEnrollments] = useState(0);
-  const [totalPosts, setTotalPosts] = useState(0);
-  const [totalThreads, setTotalThreads] = useState(0);
-  const [totalRitualCompletions, setTotalRitualCompletions] = useState(0);
-  const [range, setRange] = useState<Range>("90");
-  const [ticketFilter, setTicketFilter] = useState<"all" | "active" | "cancelled">("all");
-  const [ticketSearch, setTicketSearch] = useState("");
+  const [weekPosts, setWeekPosts] = useState(0);
+  const [weekRituals, setWeekRituals] = useState(0);
+  const [weekMembers, setWeekMembers] = useState(0);
+  const [weekActiveUsers, setWeekActiveUsers] = useState(0);
+  const [days, setDays] = useState<Days>(90);
+  const [eventFilter, setEventFilter] = useState("all");
   const [exportOpen, setExportOpen] = useState(false);
   const exportRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (exportRef.current && !exportRef.current.contains(e.target as Node)) setExportOpen(false);
@@ -144,98 +98,56 @@ const AdminRevenue = () => {
 
   useEffect(() => {
     const load = async () => {
-      const [
-        membershipsRes,
-        ticketsRes,
-        eventsRes,
-        profilesRes,
-        profileCountRes,
-        enrollCountRes,
-        postsCountRes,
-        threadsCountRes,
-        ritualsCountRes,
-      ] = await Promise.all([
-        supabase.from("memberships").select("id, plan, status, created_at"),
-        supabase.from("event_tickets").select("id, event_id, user_id, purchased_at, status").order("purchased_at", { ascending: false }).limit(50),
-        supabase.from("events").select("id, title"),
-        supabase.from("profiles").select("id, display_name, user_id"),
-        supabase.from("profiles").select("id", { count: "exact", head: true }),
-        supabase.from("course_enrollments").select("id", { count: "exact", head: true }),
-        supabase.from("posts").select("id", { count: "exact", head: true }),
-        supabase.from("threads").select("id", { count: "exact", head: true }),
-        supabase.from("ritual_completions").select("id", { count: "exact", head: true }),
-      ]);
+      try {
+        const monday = startOfWeek(new Date(), { weekStartsOn: 1 });
+        const mondayISO = monday.toISOString();
 
-      setMemberships((membershipsRes.data as Membership[]) ?? []);
-      setTickets((ticketsRes.data as TicketRow[]) ?? []);
-      setEvents((eventsRes.data as EventRow[]) ?? []);
-      setProfiles((profilesRes.data as ProfileRow[]) ?? []);
-      setTotalProfiles(profileCountRes.count ?? 0);
-      setTotalEnrollments(enrollCountRes.count ?? 0);
-      setTotalPosts(postsCountRes.count ?? 0);
-      setTotalThreads(threadsCountRes.count ?? 0);
-      setTotalRitualCompletions(ritualsCountRes.count ?? 0);
-      setLoading(false);
+        const [mRes, tRes, eRes, pRes, wpRes, wrRes, wmRes, wPostUsers, wRitualUsers, wReplyUsers] = await Promise.all([
+          supabase.from("memberships").select("id, plan, status, created_at"),
+          supabase.from("event_tickets").select("id, event_id, user_id, purchased_at, status").order("purchased_at", { ascending: false }).limit(50),
+          supabase.from("events").select("id, title, price_pence"),
+          supabase.from("profiles").select("user_id, display_name"),
+          supabase.from("posts").select("id", { count: "exact", head: true }).gte("created_at", mondayISO),
+          supabase.from("ritual_completions").select("id", { count: "exact", head: true }).gte("completed_at", mondayISO),
+          supabase.from("memberships").select("id", { count: "exact", head: true }).gte("created_at", mondayISO),
+          supabase.from("posts").select("author_id").gte("created_at", mondayISO),
+          supabase.from("ritual_completions").select("user_id").gte("completed_at", mondayISO),
+          supabase.from("thread_replies").select("author_id").gte("created_at", mondayISO),
+        ]);
+
+        setMemberships((mRes.data as Membership[]) ?? []);
+        setTickets((tRes.data as TicketRow[]) ?? []);
+        setEvents((eRes.data as EventRow[]) ?? []);
+        setProfiles((pRes.data as ProfileRow[]) ?? []);
+        setWeekPosts(wpRes.count ?? 0);
+        setWeekRituals(wrRes.count ?? 0);
+        setWeekMembers(wmRes.count ?? 0);
+
+        const userSet = new Set<string>();
+        (wPostUsers.data ?? []).forEach((r: any) => userSet.add(r.author_id));
+        (wRitualUsers.data ?? []).forEach((r: any) => userSet.add(r.user_id));
+        (wReplyUsers.data ?? []).forEach((r: any) => userSet.add(r.author_id));
+        setWeekActiveUsers(userSet.size);
+
+        setLoading(false);
+      } catch {
+        setError(true);
+        setLoading(false);
+      }
     };
     load();
   }, []);
 
-  /* derived metrics */
-  const activeMembers = useMemo(() => memberships.filter(m => m.status === "active"), [memberships]);
-  const monthlyCount = useMemo(() => activeMembers.filter(m => m.plan === "monthly").length, [activeMembers]);
-  const annualCount = useMemo(() => activeMembers.filter(m => m.plan === "annual").length, [activeMembers]);
-  const mrr = monthlyCount * MONTHLY_PRICE_AUD + annualCount * (ANNUAL_PRICE_AUD / 12);
-  const activeTickets = useMemo(() => tickets.filter(t => t.status === "active").length, [tickets]);
+  /* derived */
+  const active = useMemo(() => memberships.filter(m => m.status === "active"), [memberships]);
+  const monthlyCount = useMemo(() => active.filter(m => m.plan === "monthly").length, [active]);
+  const annualCount = useMemo(() => active.filter(m => m.plan === "annual").length, [active]);
+  const mrr = monthlyCount * MONTHLY_PRICE + annualCount * (ANNUAL_PRICE / 12);
+  const arr = mrr * 12;
 
-  /* trend: compare current month active members vs previous month */
-  const trend = useMemo(() => {
-    const now = new Date();
-    const thisMonth = memberships.filter(m => {
-      const d = new Date(m.created_at);
-      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-    }).length;
-    const prev = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-    const lastMonth = memberships.filter(m => {
-      const d = new Date(m.created_at);
-      return d.getMonth() === prev.getMonth() && d.getFullYear() === prev.getFullYear();
-    }).length;
-    if (lastMonth === 0) return thisMonth > 0 ? 100 : null;
-    return ((thisMonth - lastMonth) / lastMonth) * 100;
-  }, [memberships]);
-
-  /* growth chart data */
-  const growthData = useMemo(() => {
-    const cutoff = range === "30" ? subDays(new Date(), 30) : range === "90" ? subDays(new Date(), 90) : null;
-    const sorted = [...memberships].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
-    const weekMap = new Map<string, number>();
-    let cumulative = 0;
-    for (const m of sorted) {
-      const d = new Date(m.created_at);
-      if (cutoff && d < cutoff) { cumulative++; continue; }
-      const weekKey = format(startOfWeek(d, { weekStartsOn: 1 }), "d MMM yy");
-      cumulative++;
-      weekMap.set(weekKey, cumulative);
-    }
-    return Array.from(weekMap.entries()).map(([week, count]) => ({ week, members: count }));
-  }, [memberships, range]);
-
-  /* plan breakdown pie */
-  const planData = useMemo(() => [
-    { name: "Monthly", value: monthlyCount },
-    { name: "Annual", value: annualCount },
-  ], [monthlyCount, annualCount]);
-
-  /* status breakdown bar */
-  const statusData = useMemo(() => {
-    const counts: Record<string, number> = {};
-    memberships.forEach(m => { counts[m.status] = (counts[m.status] || 0) + 1; });
-    return Object.entries(counts).map(([status, count]) => ({ status, count }));
-  }, [memberships]);
-
-  /* tickets table with filter & search */
   const eventMap = useMemo(() => {
-    const m = new Map<string, string>();
-    events.forEach(e => m.set(e.id, e.title));
+    const m = new Map<string, EventRow>();
+    events.forEach(e => m.set(e.id, e));
     return m;
   }, [events]);
   const profileMap = useMemo(() => {
@@ -244,216 +156,226 @@ const AdminRevenue = () => {
     return m;
   }, [profiles]);
 
+  const ticketRevenue = useMemo(() => {
+    return tickets
+      .filter(t => t.status === "active")
+      .reduce((sum, t) => sum + ((eventMap.get(t.event_id)?.price_pence ?? 0) / 100), 0);
+  }, [tickets, eventMap]);
+
+  const avgRev = active.length > 0 ? mrr / active.length : 0;
+
+  const newThisMonth = useMemo(() => {
+    const start = startOfMonth(new Date());
+    return memberships.filter(m => isAfter(new Date(m.created_at), start)).length;
+  }, [memberships]);
+
+  /* growth chart */
+  const growthData = useMemo(() => {
+    const cutoff = subDays(new Date(), days);
+    const sorted = [...memberships].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+    const dayMap = new Map<string, number>();
+    let cum = 0;
+    for (const m of sorted) {
+      const d = new Date(m.created_at);
+      if (d < cutoff) { if (m.status === "active") cum++; continue; }
+      if (m.status === "active") cum++;
+      const key = days <= 90 ? format(d, "d MMM") : format(d, "MMM yy");
+      dayMap.set(key, cum);
+    }
+    return Array.from(dayMap.entries()).map(([date, count]) => ({ date, count }));
+  }, [memberships, days]);
+
+  /* plan pie */
+  const planData = useMemo(() => [
+    { name: "Monthly", value: monthlyCount },
+    { name: "Annual", value: annualCount },
+  ], [monthlyCount, annualCount]);
+
+  /* ticket table */
+  const distinctEvents = useMemo(() => {
+    const titles = new Set<string>();
+    tickets.forEach(t => {
+      const e = eventMap.get(t.event_id);
+      if (e) titles.add(e.title);
+    });
+    return Array.from(titles);
+  }, [tickets, eventMap]);
+
   const filteredTickets = useMemo(() => {
     let list = tickets;
-    if (ticketFilter !== "all") list = list.filter(t => t.status === ticketFilter);
-    if (ticketSearch.trim()) {
-      const q = ticketSearch.toLowerCase();
-      list = list.filter(t =>
-        t.id.toLowerCase().includes(q) ||
-        (eventMap.get(t.event_id) ?? "").toLowerCase().includes(q) ||
-        (profileMap.get(t.user_id) ?? "").toLowerCase().includes(q)
-      );
+    if (eventFilter !== "all") {
+      list = list.filter(t => (eventMap.get(t.event_id)?.title ?? "") === eventFilter);
     }
-    return list.slice(0, 10);
-  }, [tickets, ticketFilter, ticketSearch, eventMap, profileMap]);
+    return list.slice(0, 20);
+  }, [tickets, eventFilter, eventMap]);
 
-  const PIE_COLORS = [NAVY, GOLD];
-  const BAR_COLORS = [NAVY, NAVY_LIGHT, NAVY_PALE];
-
-  /* ── export helpers ─────────────────── */
-  const getMetricsData = () => [
-    ["Metric", "Value"],
-    ["Active Members", activeMembers.length],
-    ["Monthly Recurring Revenue (AUD)", `A$${mrr.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`],
-    ["Annual Plan Members", annualCount],
-    ["Event Tickets Sold", activeTickets],
-    ["Courses Enrolled", totalEnrollments],
-    ["Total Users", totalProfiles],
+  /* exports */
+  const metricsArr = () => [
+    { Metric: "Active Members", Value: active.length },
+    { Metric: "Monthly Revenue (AUD)", Value: `$${mrr.toFixed(0)}` },
+    { Metric: "Annual Revenue Run Rate (AUD)", Value: `$${arr.toFixed(0)}` },
+    { Metric: "Event Ticket Revenue (AUD)", Value: `$${ticketRevenue.toFixed(2)}` },
+    { Metric: "Avg Revenue Per Member (AUD)", Value: `$${avgRev.toFixed(2)}` },
+    { Metric: "New Members This Month", Value: newThisMonth },
   ];
 
-  const getTicketsData = () => [
-    ["Ticket ID", "Event", "User", "Purchase Date", "Status"],
-    ...filteredTickets.map(t => [
-      t.id.slice(0, 8),
-      eventMap.get(t.event_id) ?? "Unknown",
-      profileMap.get(t.user_id) ?? "Unknown",
-      format(new Date(t.purchased_at), "d MMM yyyy, HH:mm"),
-      t.status,
-    ]),
-  ];
+  const ticketsArr = () => filteredTickets.map(t => ({
+    Event: eventMap.get(t.event_id)?.title ?? "Unknown",
+    Member: profileMap.get(t.user_id) ?? "Unknown",
+    "Amount (AUD)": `$${((eventMap.get(t.event_id)?.price_pence ?? 0) / 100).toFixed(2)}`,
+    Date: format(new Date(t.purchased_at), "d MMM yyyy"),
+    Status: t.status,
+  }));
 
-  const getActivityData = () => [
-    ["Metric", "Value"],
-    ["Total Posts", totalPosts],
-    ["Forum Threads", totalThreads],
-    ["Ritual Completions", totalRitualCompletions],
-  ];
-
-  const triggerDownload = (blob: Blob, filename: string) => {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(url);
+  const download = (blob: Blob, name: string) => {
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; a.click();
   };
 
-  const handleExportCSV = () => {
+  const exportCSV = () => {
     setExportOpen(false);
-    const sections = [
-      "--- Key Metrics ---",
-      ...getMetricsData().map(r => r.join(",")),
-      "",
-      "--- Recent Tickets ---",
-      ...getTicketsData().map(r => r.join(",")),
-      "",
-      "--- Platform Activity ---",
-      ...getActivityData().map(r => r.join(",")),
-    ];
-    const blob = new Blob([sections.join("\n")], { type: "text/csv" });
-    triggerDownload(blob, `money-spirit-revenue-${format(new Date(), "yyyy-MM-dd")}.csv`);
+    const rows = ticketsArr();
+    if (!rows.length) { toast.error("No data to export"); return; }
+    const hdr = Object.keys(rows[0]).join(",");
+    const body = rows.map(r => Object.values(r).join(",")).join("\n");
+    download(new Blob([hdr + "\n" + body], { type: "text/csv" }), `money-spirit-revenue-${format(new Date(), "yyyy-MM-dd")}.csv`);
     toast.success("CSV exported");
   };
 
-  const handleExportExcel = () => {
+  const exportExcel = () => {
     setExportOpen(false);
     const wb = XLSX.utils.book_new();
-    const ws1 = XLSX.utils.aoa_to_sheet(getMetricsData());
+    const ws1 = XLSX.utils.json_to_sheet(metricsArr());
     ws1["!cols"] = [{ wch: 35 }, { wch: 20 }];
-    XLSX.utils.book_append_sheet(wb, ws1, "Key Metrics");
-    const ws2 = XLSX.utils.aoa_to_sheet(getTicketsData());
-    ws2["!cols"] = [{ wch: 12 }, { wch: 25 }, { wch: 20 }, { wch: 22 }, { wch: 12 }];
-    XLSX.utils.book_append_sheet(wb, ws2, "Recent Tickets");
-    const ws3 = XLSX.utils.aoa_to_sheet(getActivityData());
-    ws3["!cols"] = [{ wch: 25 }, { wch: 15 }];
-    XLSX.utils.book_append_sheet(wb, ws3, "Platform Activity");
-    const buf = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    triggerDownload(new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }), `money-spirit-revenue-${format(new Date(), "yyyy-MM-dd")}.xlsx`);
-    toast.success("Excel file exported");
+    XLSX.utils.book_append_sheet(wb, ws1, "Summary");
+    const ws2 = XLSX.utils.json_to_sheet(ticketsArr());
+    ws2["!cols"] = [{ wch: 25 }, { wch: 20 }, { wch: 15 }, { wch: 15 }, { wch: 12 }];
+    XLSX.utils.book_append_sheet(wb, ws2, "Ticket Sales");
+    XLSX.writeFile(wb, `money-spirit-revenue-${format(new Date(), "yyyy-MM-dd")}.xlsx`);
+    toast.success("Excel exported");
   };
 
-  const handleCopySummary = async () => {
+  const copySummary = async () => {
     setExportOpen(false);
-    const text = [
-      "Money Spirit -- Revenue Summary",
-      `Generated: ${format(new Date(), "d MMM yyyy, HH:mm")}`,
-      "",
-      `Total Members: ${activeMembers.length}`,
-      `MRR: A$${mrr.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
-      `Annual Plan Members: ${annualCount}`,
-      `Event Tickets Sold: ${activeTickets}`,
-      `Courses Enrolled: ${totalEnrollments}`,
-      `Total Users: ${totalProfiles}`,
-    ].join("\n");
+    const text = metricsArr().map(m => `${m.Metric}: ${m.Value}`).join("\n");
     await navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard");
+    toast.success("Copied!");
   };
+
+  if (error) {
+    return <p className="text-[#E8845C] font-body text-sm p-8">Unable to load data — please refresh</p>;
+  }
+
+  const activityRows = [
+    { icon: MessageSquare, label: "Posts Published", value: weekPosts },
+    { icon: Sparkles, label: "Rituals Completed", value: weekRituals },
+    { icon: Users, label: "New Members", value: weekMembers },
+    { icon: Activity, label: "Active Users", value: weekActiveUsers },
+  ];
 
   return (
     <div className="space-y-10 max-w-6xl">
-      {/* Section 1: Key Metrics */}
-      <div>
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="font-heading text-2xl text-primary">Revenue &amp; Platform Analytics</h2>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+        <div>
+          <h1 className="font-heading text-[32px] text-primary leading-tight">Revenue &amp; Analytics</h1>
+          <p className="font-body text-sm text-muted-foreground mt-1">Platform financial overview</p>
+        </div>
+        <div className="flex items-center gap-4">
+          <span className="text-xs font-body text-muted-foreground">Updated just now</span>
           <div className="relative" ref={exportRef}>
             <button
               onClick={() => setExportOpen(o => !o)}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-primary text-primary text-sm font-body font-medium hover:bg-accent hover:text-accent-foreground hover:border-accent transition-colors"
+              className="btn-gold inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-body font-medium"
             >
-              <Download size={15} />
-              Export Data
+              <Download size={15} /> Export Data
               <ChevronDown size={14} className={`transition-transform ${exportOpen ? "rotate-180" : ""}`} />
             </button>
             {exportOpen && (
-              <div className="absolute right-0 mt-1.5 w-56 bg-white rounded-lg border border-border shadow-lg z-50 py-1 animate-in fade-in slide-in-from-top-1 duration-150">
-                <button onClick={handleExportCSV} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-body text-primary hover:bg-accent/10 transition-colors">
-                  <FileText size={15} className="text-accent" /> Export as CSV
+              <div className="absolute right-0 mt-1.5 w-52 bg-white rounded-lg border border-border shadow-lg z-50 py-1">
+                <button onClick={exportCSV} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-body text-primary hover:bg-muted transition-colors">
+                  <FileText size={15} className="text-accent" /> Download CSV
                 </button>
-                <button onClick={handleExportExcel} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-body text-primary hover:bg-accent/10 transition-colors">
-                  <FileSpreadsheet size={15} className="text-accent" /> Export as Excel (.xlsx)
+                <button onClick={exportExcel} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-body text-primary hover:bg-muted transition-colors">
+                  <FileSpreadsheet size={15} className="text-accent" /> Download Excel
                 </button>
-                <button onClick={handleCopySummary} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-body text-primary hover:bg-accent/10 transition-colors">
-                  <Copy size={15} className="text-accent" /> Copy summary to clipboard
+                <button onClick={copySummary} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-body text-primary hover:bg-muted transition-colors">
+                  <Copy size={15} className="text-accent" /> Copy to Clipboard
                 </button>
               </div>
             )}
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <StatCard icon={UserCheck} label="Active Members" value={loading ? "..." : activeMembers.length} trend={trend} loading={loading} />
-          <StatCard icon={CreditCard} label="Monthly Recurring Revenue" value={loading ? "..." : `A$${mrr.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`} trend={null} loading={loading} />
-          <StatCard icon={Users} label="Annual Plan Members" value={loading ? "..." : annualCount} trend={null} loading={loading} />
-          <StatCard icon={Ticket} label="Event Tickets Sold" value={loading ? "..." : activeTickets} trend={null} loading={loading} />
-          <StatCard icon={GraduationCap} label="Courses Enrolled" value={loading ? "..." : totalEnrollments} trend={null} loading={loading} />
-          <StatCard icon={Users} label="Total Users" value={loading ? "..." : totalProfiles} trend={null} loading={loading} />
-        </div>
       </div>
 
-      {/* Section 2: Membership Growth */}
-      <div className="bg-white rounded-xl shadow-sm border border-stone-200 p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
-          <h3 className="font-heading text-xl text-primary">Membership Growth</h3>
-          <div className="flex gap-1 bg-stone-100 rounded-lg p-0.5">
-            {([["30", "30 days"], ["90", "90 days"], ["all", "All time"]] as [Range, string][]).map(([val, lbl]) => (
+      {/* Section 1: Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <MetricCard label="Active Members" value={active.length} loading={loading} />
+        <MetricCard label="Monthly Revenue" value={`AUD $${mrr.toLocaleString(undefined, { maximumFractionDigits: 0 })}`} loading={loading} />
+        <MetricCard label="Annual Revenue Run Rate" value={`AUD $${arr.toLocaleString(undefined, { maximumFractionDigits: 0 })}`} loading={loading} />
+        <MetricCard label="Event Ticket Revenue" value={`AUD $${ticketRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} loading={loading} />
+        <MetricCard label="Avg Revenue Per Member" value={`AUD $${avgRev.toFixed(2)}`} loading={loading} />
+        <MetricCard label="New Members This Month" value={newThisMonth} sub="this calendar month" loading={loading} />
+      </div>
+
+      {/* Section 2: Growth Chart */}
+      <div className="bg-[#102A4C] rounded-xl border border-[#1E3A5F]/50 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="font-body text-base font-medium text-cream-100">Member Growth</h3>
+          <div className="flex gap-1">
+            {([30, 90, 365] as Days[]).map(d => (
               <button
-                key={val}
-                onClick={() => setRange(val)}
+                key={d}
+                onClick={() => setDays(d)}
                 className={`px-3 py-1.5 rounded-md text-xs font-body font-medium transition-colors ${
-                  range === val ? "bg-primary text-primary-foreground shadow-sm" : "text-primary/60 hover:text-primary"
+                  days === d ? "bg-[#1E3A5F] text-gold" : "text-cream-400 hover:text-cream-200"
                 }`}
               >
-                {lbl}
+                {d === 365 ? "1 year" : `${d} days`}
               </button>
             ))}
           </div>
         </div>
         {loading ? (
-          <Skeleton className="h-64 w-full rounded-lg" />
+          <div className="h-[280px] bg-white/5 rounded-lg animate-pulse" />
         ) : growthData.length === 0 ? (
-          <p className="text-primary/40 font-body text-center py-20">No data yet</p>
+          <p className="text-[#5A7A9F] font-body text-center py-20">No data yet</p>
         ) : (
           <ResponsiveContainer width="100%" height={280}>
-            <AreaChart data={growthData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-              <defs>
-                <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={GOLD} stopOpacity={0.3} />
-                  <stop offset="95%" stopColor={GOLD} stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E5E0D8" />
-              <XAxis dataKey="week" tick={{ fontSize: 11, fill: NAVY }} />
-              <YAxis tick={{ fontSize: 11, fill: NAVY }} />
-              <Tooltip
-                contentStyle={{ borderRadius: 8, border: `1px solid ${GOLD}`, fontFamily: "DM Sans" }}
-                labelStyle={{ fontWeight: 600, color: NAVY }}
-              />
-              <Area type="monotone" dataKey="members" stroke={NAVY} strokeWidth={2} fill="url(#goldGrad)" />
-            </AreaChart>
+            <LineChart data={growthData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+              <CartesianGrid stroke="#1E3A5F" strokeDasharray="3 3" />
+              <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#5A7A9F", fontFamily: "DM Sans" }} />
+              <YAxis tick={{ fontSize: 11, fill: "#5A7A9F", fontFamily: "DM Sans" }} />
+              <Tooltip content={<ChartTooltip />} />
+              <Line type="monotone" dataKey="count" stroke="#C9941E" strokeWidth={2} dot={false} />
+            </LineChart>
           </ResponsiveContainer>
         )}
       </div>
 
-      {/* Section 3: Two-column charts */}
+      {/* Section 3: Pie + Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Plan Breakdown Pie */}
-        <div className="bg-white rounded-xl shadow-sm border border-stone-200 p-6">
-          <h3 className="font-heading text-xl text-primary mb-4">Plan Breakdown</h3>
+        {/* Plan Breakdown */}
+        <div className="bg-[#102A4C] rounded-xl border border-[#1E3A5F]/50 p-6">
+          <h3 className="font-body text-base font-medium text-cream-100 mb-4">Plan Breakdown</h3>
           {loading ? (
-            <Skeleton className="h-52 w-full rounded-lg" />
+            <div className="h-[200px] bg-white/5 rounded-lg animate-pulse" />
           ) : planData.every(d => d.value === 0) ? (
-            <p className="text-primary/40 font-body text-center py-16">No data yet</p>
+            <p className="text-[#5A7A9F] font-body text-center py-16">No data yet</p>
           ) : (
-            <ResponsiveContainer width="100%" height={240}>
+            <ResponsiveContainer width="100%" height={200}>
               <PieChart>
-                <Pie data={planData} cx="50%" cy="50%" innerRadius={55} outerRadius={85} dataKey="value" paddingAngle={3} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
-                  {planData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
+                <Pie
+                  data={planData} cx="50%" cy="50%" innerRadius={50} outerRadius={75}
+                  dataKey="value" paddingAngle={3}
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                >
+                  <Cell fill="#C9941E" />
+                  <Cell fill="#27AE8F" />
                 </Pie>
-                <Tooltip contentStyle={{ borderRadius: 8, fontFamily: "DM Sans" }} />
                 <Legend
-                  formatter={(value, entry: any) => {
+                  formatter={(value) => {
                     const item = planData.find(d => d.name === value);
-                    return <span className="text-sm font-body text-primary">{value}: {item?.value ?? 0}</span>;
+                    return <span className="text-xs font-body text-cream-300">{value}: {item?.value ?? 0}</span>;
                   }}
                 />
               </PieChart>
@@ -461,101 +383,73 @@ const AdminRevenue = () => {
           )}
         </div>
 
-        {/* Status Breakdown Bar */}
-        <div className="bg-white rounded-xl shadow-sm border border-stone-200 p-6">
-          <h3 className="font-heading text-xl text-primary mb-4">Membership Status</h3>
+        {/* Platform Activity */}
+        <div className="bg-[#102A4C] rounded-xl border border-[#1E3A5F]/50 p-6">
+          <h3 className="font-body text-sm font-medium text-cream-200 mb-4">This Week</h3>
           {loading ? (
-            <Skeleton className="h-52 w-full rounded-lg" />
-          ) : statusData.length === 0 ? (
-            <p className="text-primary/40 font-body text-center py-16">No data yet</p>
+            <div className="space-y-4">
+              {[1, 2, 3, 4].map(i => <div key={i} className="h-8 bg-white/5 rounded animate-pulse" />)}
+            </div>
           ) : (
-            <ResponsiveContainer width="100%" height={240}>
-              <BarChart data={statusData} layout="vertical" margin={{ left: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E5E0D8" />
-                <XAxis type="number" tick={{ fontSize: 11, fill: NAVY }} />
-                <YAxis dataKey="status" type="category" tick={{ fontSize: 12, fill: NAVY }} width={80} />
-                <Tooltip contentStyle={{ borderRadius: 8, fontFamily: "DM Sans" }} />
-                <Bar dataKey="count" radius={[0, 6, 6, 0]}>
-                  {statusData.map((_, i) => <Cell key={i} fill={BAR_COLORS[i % BAR_COLORS.length]} />)}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="space-y-4">
+              {activityRows.map(r => (
+                <div key={r.label} className="flex items-center gap-3">
+                  <r.icon size={16} className="text-[#5A7A9F] shrink-0" />
+                  <span className="flex-1 text-[13px] font-body text-cream-300">{r.label}</span>
+                  <span className="text-sm font-body font-medium text-cream-100">{r.value}</span>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </div>
 
-      {/* Section 4: Recent Tickets Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-stone-200 p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
-          <h3 className="font-heading text-xl text-primary">Recent Tickets</h3>
-          <div className="flex gap-2 items-center">
-            <div className="flex gap-1 bg-stone-100 rounded-lg p-0.5">
-              {(["all", "active", "cancelled"] as const).map(s => (
-                <button
-                  key={s}
-                  onClick={() => setTicketFilter(s)}
-                  className={`px-3 py-1.5 rounded-md text-xs font-body font-medium capitalize transition-colors ${
-                    ticketFilter === s ? "bg-primary text-primary-foreground shadow-sm" : "text-primary/60 hover:text-primary"
-                  }`}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-            <div className="relative">
-              <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-primary/40" />
-              <Input
-                value={ticketSearch}
-                onChange={e => setTicketSearch(e.target.value)}
-                placeholder="Search..."
-                className="pl-8 h-8 text-xs w-40 bg-stone-50 border-stone-200"
-              />
-            </div>
-          </div>
+      {/* Section 4: Recent Ticket Sales */}
+      <div className="bg-[#102A4C] rounded-xl border border-[#1E3A5F]/50 overflow-hidden">
+        <div className="flex items-center justify-between px-6 py-4">
+          <h3 className="font-body text-base font-medium text-cream-100">Recent Ticket Sales</h3>
+          <select
+            value={eventFilter}
+            onChange={e => setEventFilter(e.target.value)}
+            className="bg-[#1E3A5F] text-cream-300 text-xs font-body rounded-lg px-3 py-1.5 border-none outline-none"
+          >
+            <option value="all">All Events</option>
+            {distinctEvents.map(title => (
+              <option key={title} value={title}>{title}</option>
+            ))}
+          </select>
         </div>
 
         {loading ? (
-          <div className="space-y-2">
-            {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-12 w-full rounded-lg" />)}
+          <div className="px-6 pb-6 space-y-2">
+            {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-12 bg-white/5 rounded animate-pulse" />)}
           </div>
         ) : filteredTickets.length === 0 ? (
-          <p className="text-primary/40 font-body text-center py-10">No tickets found</p>
+          <p className="text-[#5A7A9F] font-body text-sm text-center py-10">No ticket sales yet</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm font-body">
               <thead>
-                <tr className="border-b border-stone-200">
-                  <th className="text-left py-2.5 px-3 text-[11px] font-semibold tracking-wider uppercase text-primary/50">Ticket ID</th>
-                  <th className="text-left py-2.5 px-3 text-[11px] font-semibold tracking-wider uppercase text-primary/50">Event</th>
-                  <th className="text-left py-2.5 px-3 text-[11px] font-semibold tracking-wider uppercase text-primary/50">User</th>
-                  <th className="text-left py-2.5 px-3 text-[11px] font-semibold tracking-wider uppercase text-primary/50">Purchase Date</th>
-                  <th className="text-left py-2.5 px-3 text-[11px] font-semibold tracking-wider uppercase text-primary/50">Status</th>
+                <tr className="bg-[#0B1D3A]">
+                  {["Event", "Member", "Amount", "Date", "Status"].map(h => (
+                    <th key={h} className="text-left py-2.5 px-4 text-[11px] font-semibold tracking-[0.8px] uppercase text-[#5A7A9F]">{h}</th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
                 {filteredTickets.map(t => (
-                  <tr key={t.id} className="border-b border-stone-100 hover:bg-accent/5 transition-colors">
-                    <td className="py-3 px-3 text-primary/70 font-mono text-xs">{t.id.slice(0, 8)}...</td>
-                    <td className="py-3 px-3 text-primary">{eventMap.get(t.event_id) ?? "Unknown"}</td>
-                    <td className="py-3 px-3 text-primary">{profileMap.get(t.user_id) ?? "Unknown"}</td>
-                    <td className="py-3 px-3 text-primary/70">{format(new Date(t.purchased_at), "d MMM yyyy, HH:mm")}</td>
-                    <td className="py-3 px-3"><StatusBadge status={t.status} /></td>
+                  <tr key={t.id} className="border-t border-[#1E3A5F]/50 hover:bg-[#0F2847] transition-colors">
+                    <td className="py-3 px-4 text-cream-200">{eventMap.get(t.event_id)?.title ?? "Unknown"}</td>
+                    <td className="py-3 px-4 text-cream-200">{profileMap.get(t.user_id) ?? "Unknown"}</td>
+                    <td className="py-3 px-4 text-cream-200">AUD ${((eventMap.get(t.event_id)?.price_pence ?? 0) / 100).toFixed(2)}</td>
+                    <td className="py-3 px-4 text-cream-300">{format(new Date(t.purchased_at), "d MMM yyyy")}</td>
+                    <td className="py-3 px-4"><StatusPill status={t.status} /></td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         )}
-      </div>
-
-      {/* Section 5: Platform Activity */}
-      <div>
-        <h3 className="font-heading text-xl text-primary mb-4">Platform Activity</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <InfoCard icon={MessageSquare} label="Total Posts" value={totalPosts} loading={loading} />
-          <InfoCard icon={MessageSquare} label="Forum Threads" value={totalThreads} loading={loading} />
-          <InfoCard icon={Flame} label="Ritual Completions" value={totalRitualCompletions} loading={loading} />
-        </div>
       </div>
     </div>
   );
