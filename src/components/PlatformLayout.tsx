@@ -138,6 +138,8 @@ const PlatformLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { t } = useLanguage();
 
+  useBadgeNotification(profile?.user_id);
+
   useEffect(() => {
     const load = async () => {
       const { data: { session } } = await supabase.auth.getSession();
