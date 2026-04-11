@@ -21,6 +21,7 @@ import { useLanguage } from "@/lib/i18n/LanguageContext";
 import type { TranslationKey } from "@/lib/i18n/translations";
 import type { Tables } from "@/integrations/supabase/types";
 import { useBadgeNotification } from "@/hooks/useBadgeNotification";
+import { useWeeklyArchetypeScore } from "@/hooks/useWeeklyArchetypeScore";
 
 type Profile = Tables<"profiles">;
 
@@ -146,6 +147,7 @@ const PlatformLayout = () => {
   const { t } = useLanguage();
 
   useBadgeNotification(profile?.user_id);
+  useWeeklyArchetypeScore(profile?.user_id);
 
   useEffect(() => {
     const load = async () => {

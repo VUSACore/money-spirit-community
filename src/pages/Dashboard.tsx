@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Flame, BookOpen } from "lucide-react";
+import NextSacredStep from "@/components/ai/NextSacredStep";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Profile = Tables<"profiles">;
@@ -82,6 +83,11 @@ const Dashboard = () => {
           </p>
         </CardContent>
       </Card>
+
+      {/* Next Sacred Step AI widget */}
+      {profile.onboarding_complete && (
+        <NextSacredStep userId={profile.user_id} profile={profile} />
+      )}
 
       {/* Progress overview */}
       <div className="space-y-2 animate-slide-up" style={{ animationDelay: '100ms', animationFillMode: 'both' }}>
