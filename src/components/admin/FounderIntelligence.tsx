@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import {
   Sparkles, RefreshCw, Users, TrendingUp, Flame, AlertCircle,
-  Home, Shield, Building, Clock, Mail,
+  Home, Shield, Building, Clock, Mail, Heart,
 } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
