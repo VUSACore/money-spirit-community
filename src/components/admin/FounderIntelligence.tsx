@@ -82,6 +82,7 @@ const FounderIntelligence = () => {
     setFms(fmsData);
     setDigest(digestData);
     setQuickStats({ active: activeCount || 0, newThisWeek: newCount || 0, ritualsThisWeek: ritualCount || 0 });
+    setLegacyStats({ enabledCount: legacyEnabledCount || 0, circleCount: circleCount || 0, goalCount: goalCount || 0 });
     setLastUpdated(new Date());
     setLoading(false);
     setDigestLoading(false);
