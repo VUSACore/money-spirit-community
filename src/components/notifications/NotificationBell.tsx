@@ -77,7 +77,7 @@ const NotificationBell = ({ userId }: NotificationBellProps) => {
         <span>Notifications</span>
         {unreadCount > 0 && (
           <span
-            className={`absolute top-1 left-7 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-accent text-[10px] font-bold text-primary px-1 ${
+            className={`absolute top-1 left-7 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-gold text-[11px] font-semibold text-navy-deep px-1 ${
               pulse ? "animate-pulse" : ""
             }`}
           >

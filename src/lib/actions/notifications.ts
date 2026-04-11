@@ -39,12 +39,32 @@ export async function createNotification(
   userId: string,
   type: string,
   message: string,
-  link?: string | null
+  link?: string | null,
+  title?: string | null
 ) {
   await supabase.from("notifications").insert({
     user_id: userId,
     type,
     message,
+    title: title ?? null,
     link: link ?? null,
   });
+}
+
+export async function getNotificationPreferences(userId: string) {
+  const { data } = await supabase
+    .from("notification_preferences")
+    .select("*")
+    .eq("user_id", userId)
+    .maybeSingle();
+  return data;
+}
+
+export async function upsertNotificationPreferences(
+  userId: string,
+  prefs: Record<string, boolean>
+) {
+  await supabase
+    .from("notification_preferences")
+    .upsert({ user_id: userId, ...prefs, updated_at: new Date().toISOString() }, { onConflict: "user_id" });
 }
