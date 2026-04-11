@@ -24,7 +24,7 @@ const AdminUsers = () => {
   const load = async () => {
     const { data } = await supabase
       .from("profiles")
-      .select("id, display_name, role, created_at")
+      .select("id, display_name, role, created_at, is_legacy_enabled")
       .order("created_at", { ascending: false });
     setProfiles(data ?? []);
     setLoading(false);
