@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Users, Flame, CalendarDays, DollarSign, Brain, Target } from "lucide-react";
+import { Users, Flame, CalendarDays, DollarSign, Brain, Target, FileText, BookOpen, Settings, ClipboardList } from "lucide-react";
 import LotusIcon from "@/components/LotusIcon";
 import AdminUsers from "@/components/admin/AdminUsers";
 import AdminRituals from "@/components/admin/AdminRituals";
@@ -9,14 +9,22 @@ import AdminEvents from "@/components/admin/AdminEvents";
 import AdminRevenue from "@/components/admin/AdminRevenue";
 import FounderIntelligence from "@/components/admin/FounderIntelligence";
 import FMSLeadBoard from "@/components/admin/FMSLeadBoard";
+import AdminContent from "@/components/admin/AdminContent";
+import AdminCourses from "@/components/admin/AdminCourses";
+import AdminSettings from "@/components/admin/AdminSettings";
+import AdminAuditLog from "@/components/admin/AdminAuditLog";
 
 const tabs = [
   { id: "users", label: "Users", icon: Users },
+  { id: "content", label: "Content", icon: FileText },
+  { id: "courses", label: "Courses", icon: BookOpen },
   { id: "rituals", label: "Rituals", icon: Flame },
   { id: "events", label: "Events", icon: CalendarDays },
   { id: "revenue", label: "Revenue", icon: DollarSign },
   { id: "intelligence", label: "Intelligence", icon: Brain },
   { id: "fms", label: "FMS Leads", icon: Target },
+  { id: "settings", label: "Settings", icon: Settings },
+  { id: "audit", label: "Audit Log", icon: ClipboardList },
 ] as const;
 
 type TabId = (typeof tabs)[number]["id"];
@@ -30,11 +38,8 @@ const Admin = () => {
     const check = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { navigate("/login", { replace: true }); return; }
-
-      // Check role via auth_user_role() which is available as an RPC
       const { data: role } = await supabase.rpc("auth_user_role");
       if (role !== "admin") { navigate("/dashboard", { replace: true }); return; }
-
       setLoading(false);
     };
     check();
@@ -56,7 +61,7 @@ const Admin = () => {
           <span className="text-primary-foreground font-heading text-xl tracking-wide">Admin</span>
         </div>
 
-        <nav className="flex-1 px-3 space-y-0.5">
+        <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
           {tabs.map((tab) => {
             const active = activeTab === tab.id;
             return (
@@ -88,11 +93,15 @@ const Admin = () => {
 
       <main className="ml-[240px] flex-1 min-h-screen bg-background overflow-y-auto p-8">
         {activeTab === "users" && <AdminUsers />}
+        {activeTab === "content" && <AdminContent />}
+        {activeTab === "courses" && <AdminCourses />}
         {activeTab === "rituals" && <AdminRituals />}
         {activeTab === "events" && <AdminEvents />}
         {activeTab === "revenue" && <AdminRevenue />}
         {activeTab === "intelligence" && <FounderIntelligence />}
         {activeTab === "fms" && <FMSLeadBoard />}
+        {activeTab === "settings" && <AdminSettings />}
+        {activeTab === "audit" && <AdminAuditLog />}
       </main>
     </div>
   );
