@@ -802,6 +802,24 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_settings: {
+        Row: {
+          key: string
+          updated_at: string | null
+          value: string
+        }
+        Insert: {
+          key: string
+          updated_at?: string | null
+          value: string
+        }
+        Update: {
+          key?: string
+          updated_at?: string | null
+          value?: string
+        }
+        Relationships: []
+      }
       post_reactions: {
         Row: {
           id: string
@@ -889,6 +907,8 @@ export type Database = {
           role: Database["public"]["Enums"]["user_role"]
           show_bio: boolean
           show_location: boolean
+          suspended_at: string | null
+          suspended_reason: string | null
           user_id: string
           visible_in_directory: boolean
         }
@@ -916,6 +936,8 @@ export type Database = {
           role?: Database["public"]["Enums"]["user_role"]
           show_bio?: boolean
           show_location?: boolean
+          suspended_at?: string | null
+          suspended_reason?: string | null
           user_id: string
           visible_in_directory?: boolean
         }
@@ -943,6 +965,8 @@ export type Database = {
           role?: Database["public"]["Enums"]["user_role"]
           show_bio?: boolean
           show_location?: boolean
+          suspended_at?: string | null
+          suspended_reason?: string | null
           user_id?: string
           visible_in_directory?: boolean
         }
