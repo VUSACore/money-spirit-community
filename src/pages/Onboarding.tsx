@@ -31,19 +31,19 @@ const questions = [
 ];
 
 function calculatePathway(answers: number[]): PathwayType {
-  let foundation = 0;
-  let growth = 0;
-  let abundance = 0;
+  let keeper = 0;
+  let seeker = 0;
+  let achiever = 0;
 
   for (const a of answers) {
-    if (a <= 1) foundation++;
-    else if (a === 2) growth++;
-    else abundance++;
+    if (a <= 1) keeper++;
+    else if (a === 2) seeker++;
+    else achiever++;
   }
 
-  if (foundation >= growth && foundation >= abundance) return "foundation";
-  if (growth >= abundance) return "growth";
-  return "abundance";
+  if (keeper >= seeker && keeper >= achiever) return "keeper";
+  if (seeker >= achiever) return "seeker";
+  return "achiever";
 }
 
 const Onboarding = () => {

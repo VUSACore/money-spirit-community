@@ -11,15 +11,19 @@ import type { Tables } from "@/integrations/supabase/types";
 type Profile = Tables<"profiles">;
 
 const pathwayLabels: Record<string, string> = {
-  foundation: "Foundation",
-  growth: "Growth",
-  abundance: "Abundance",
+  giver: "Giver",
+  keeper: "Keeper",
+  rebel: "Rebel",
+  seeker: "Seeker",
+  achiever: "Achiever",
 };
 
 const pathwayProgress: Record<string, number> = {
-  foundation: 15,
-  growth: 45,
-  abundance: 75,
+  giver: 10,
+  keeper: 15,
+  rebel: 20,
+  seeker: 45,
+  achiever: 75,
 };
 
 const Dashboard = () => {
@@ -47,8 +51,8 @@ const Dashboard = () => {
     );
   }
 
-  const pathway = profile.pathway_type ?? "foundation";
-  const label = pathwayLabels[pathway] ?? "Foundation";
+  const pathway = profile.pathway_type ?? "keeper";
+  const label = pathwayLabels[pathway] ?? "Keeper";
   const progress = pathwayProgress[pathway] ?? 15;
   const streak = profile.ritual_streak ?? 0;
 
