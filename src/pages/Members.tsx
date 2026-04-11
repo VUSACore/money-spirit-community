@@ -47,7 +47,7 @@ const Members = () => {
     const load = async () => {
       const { data } = await supabase
         .from("profiles")
-        .select("id, display_name, avatar_url, bio, location, show_location, show_bio, ritual_streak, created_at")
+        .select("id, display_name, avatar_url, bio, location, show_location, show_bio, ritual_streak, created_at, pathway_type, life_stage")
         .eq("visible_in_directory", true)
         .order("display_name", { ascending: true });
       setMembers((data as MemberProfile[]) ?? []);
