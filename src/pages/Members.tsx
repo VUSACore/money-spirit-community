@@ -171,6 +171,19 @@ const Members = () => {
                   {selected.ritual_streak > 0 && (
                     <span className="inline-flex items-center gap-1 text-sm font-body font-semibold text-accent mt-1"><Flame className="h-4 w-4" /> {selected.ritual_streak}-day streak</span>
                   )}
+                  {selected.pathway_type && (
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: archetypeAccent[selected.pathway_type] ?? "#C9941E" }} />
+                      <span className="text-sm font-body font-medium" style={{ color: archetypeAccent[selected.pathway_type] ?? "#C9941E" }}>
+                        {archetypeName[selected.pathway_type] ?? selected.pathway_type}
+                      </span>
+                    </div>
+                  )}
+                  {selected.life_stage && (
+                    <p className="text-xs text-muted-foreground font-body mt-0.5">
+                      {lifeStageLabel[selected.life_stage] ?? selected.life_stage}
+                    </p>
+                  )}
                 </div>
               </div>
               {selected.bio && selected.show_bio && <p className="text-sm font-body text-foreground leading-relaxed">{selected.bio}</p>}
