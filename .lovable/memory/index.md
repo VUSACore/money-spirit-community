@@ -6,6 +6,7 @@ Cormorant Garamond headings, DM Sans body. Never serif body.
 Supabase Auth with profiles table (auto-created via trigger).
 ms-input class: cream bg, navy border, rounded-xl.
 Sidebar bg: navy-950 (#030B1A).
+5-archetype system: giver, keeper, rebel, seeker, achiever (replaces old foundation/growth/abundance).
 
 ## Memories
 - [Color tokens](mem://design/color-tokens) — Navy #1B4B8A, dimensional gold shimmer gradient, cream, navy-deep #030B1A
