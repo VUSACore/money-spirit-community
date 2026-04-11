@@ -49,6 +49,7 @@ export type Database = {
           color: string
           description: string | null
           emoji: string
+          icon_slug: string | null
           icon_url: string | null
           id: string
           name: string
@@ -58,6 +59,7 @@ export type Database = {
           color?: string
           description?: string | null
           emoji?: string
+          icon_slug?: string | null
           icon_url?: string | null
           id?: string
           name: string
@@ -67,6 +69,7 @@ export type Database = {
           color?: string
           description?: string | null
           emoji?: string
+          icon_slug?: string | null
           icon_url?: string | null
           id?: string
           name?: string
@@ -954,6 +957,10 @@ export type Database = {
       auth_user_role: {
         Args: never
         Returns: Database["public"]["Enums"]["user_role"]
+      }
+      award_badge: {
+        Args: { p_badge_slug: string; p_user_id: string }
+        Returns: undefined
       }
       event_tickets_sold: { Args: { event_uuid: string }; Returns: number }
       has_active_membership: { Args: { user_uuid: string }; Returns: boolean }
