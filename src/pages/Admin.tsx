@@ -7,12 +7,14 @@ import AdminUsers from "@/components/admin/AdminUsers";
 import AdminRituals from "@/components/admin/AdminRituals";
 import AdminEvents from "@/components/admin/AdminEvents";
 import AdminRevenue from "@/components/admin/AdminRevenue";
+import IntelligenceComingSoon from "@/components/admin/IntelligenceComingSoon";
 
 const tabs = [
   { id: "users", label: "Users", icon: Users },
   { id: "rituals", label: "Rituals", icon: Flame },
   { id: "events", label: "Events", icon: CalendarDays },
   { id: "revenue", label: "Revenue", icon: DollarSign },
+  { id: "intelligence", label: "Intelligence", icon: Sparkles },
 ] as const;
 
 type TabId = (typeof tabs)[number]["id"];
@@ -87,6 +89,7 @@ const Admin = () => {
         {activeTab === "rituals" && <AdminRituals />}
         {activeTab === "events" && <AdminEvents />}
         {activeTab === "revenue" && <AdminRevenue />}
+        {activeTab === "intelligence" && <IntelligenceComingSoon />}
       </main>
     </div>
   );
