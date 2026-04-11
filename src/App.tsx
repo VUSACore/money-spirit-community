@@ -25,6 +25,7 @@ import Join from "./pages/Join.tsx";
 import Privacy from "./pages/Privacy.tsx";
 import Terms from "./pages/Terms.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import NotificationPreferences from "./pages/NotificationPreferences.tsx";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="/learn/:courseId/:lessonId" element={<LessonPage />} />
             <Route path="/events" element={<Events />} />
             <Route path="/members" element={<Members />} />
+            <Route path="/settings/notifications" element={<NotificationPreferences />} />
           </Route>
 
           <Route path="/admin" element={<Admin />} />

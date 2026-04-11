@@ -82,8 +82,15 @@ const SidebarContent = ({
 
       {/* Notifications */}
       {profile?.user_id && (
-        <div className="px-3 mb-1">
+        <div className="px-3 mb-1 space-y-0.5">
           <NotificationBell userId={profile.user_id} />
+          <Link
+            to="/settings/notifications"
+            onClick={onNavClick}
+            className="block px-3 text-[11px] font-body text-white/40 hover:underline hover:text-white/60 transition-colors"
+          >
+            Notification settings
+          </Link>
         </div>
       )}
 

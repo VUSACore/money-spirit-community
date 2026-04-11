@@ -474,6 +474,45 @@ export type Database = {
         }
         Relationships: []
       }
+      notification_preferences: {
+        Row: {
+          badges_enabled: boolean | null
+          comments_enabled: boolean | null
+          event_reminders_enabled: boolean | null
+          id: string
+          mentions_enabled: boolean | null
+          reactions_enabled: boolean | null
+          ritual_reminders_enabled: boolean | null
+          system_enabled: boolean | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          badges_enabled?: boolean | null
+          comments_enabled?: boolean | null
+          event_reminders_enabled?: boolean | null
+          id?: string
+          mentions_enabled?: boolean | null
+          reactions_enabled?: boolean | null
+          ritual_reminders_enabled?: boolean | null
+          system_enabled?: boolean | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          badges_enabled?: boolean | null
+          comments_enabled?: boolean | null
+          event_reminders_enabled?: boolean | null
+          id?: string
+          mentions_enabled?: boolean | null
+          reactions_enabled?: boolean | null
+          ritual_reminders_enabled?: boolean | null
+          system_enabled?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string
