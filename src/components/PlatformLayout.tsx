@@ -247,9 +247,9 @@ const PlatformLayout = () => {
               {/* User info */}
               {sidebarExpanded ? (
                 <div className="px-3 py-2 space-y-1">
-                  <p className="text-[13px] font-body truncate" style={{ color: "var(--ms-text-primary)" }}>
+                  <Link to="/profile" className="text-[13px] font-body truncate block hover:underline" style={{ color: "var(--ms-text-primary)" }}>
                     {profile?.display_name ?? "Member"}
-                  </p>
+                  </Link>
                   {profile?.pathway_type && (
                     <p className="text-[11px] font-body" style={{ color: "var(--ms-text-muted)" }}>
                       {nameMap[profile.pathway_type] ?? profile.pathway_type}
