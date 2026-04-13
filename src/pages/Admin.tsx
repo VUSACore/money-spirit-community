@@ -29,10 +29,21 @@ const tabs = [
 
 type TabId = (typeof tabs)[number]["id"];
 
+const tabIdFromParam = (param?: string): TabId | null => {
+  const map: Record<string, TabId> = {
+    users: "users", content: "content", courses: "courses",
+    rituals: "rituals", events: "events", revenue: "revenue",
+    intelligence: "intelligence", "fms-leads": "fms", fms: "fms",
+    settings: "settings", audit: "audit",
+  };
+  return param ? map[param] ?? null : null;
+};
+
 const Admin = () => {
   const navigate = useNavigate();
+  const { tabId: tabParam } = useParams<{ tabId?: string }>();
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<TabId>("users");
+  const [activeTab, setActiveTab] = useState<TabId>(tabIdFromParam(tabParam) || "users");
 
   useEffect(() => {
     const check = async () => {
