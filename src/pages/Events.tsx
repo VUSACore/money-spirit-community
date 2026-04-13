@@ -132,7 +132,6 @@ const Events = () => {
 
       {events.length === 0 ? (
         <EmptyState icon={CalendarDays} heading="No upcoming events" body="Check back soon. New events and retreats are added regularly." />
-        </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2">
           {events.map((event) => {

@@ -203,7 +203,6 @@ const Community = () => {
             ctaLabel={!isGuest ? "Share Your First Post" : undefined}
             onCta={!isGuest ? () => document.querySelector("textarea")?.focus() : undefined}
           />
-          </div>
         )}
 
         {isGuest && posts.length > 5 && (
