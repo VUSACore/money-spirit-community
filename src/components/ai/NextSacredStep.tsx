@@ -33,28 +33,17 @@ const NextSacredStep = ({ userId, profile }: Props) => {
         const cached = sessionStorage.getItem(cacheKey);
         if (cached) {
           const { text: cachedText, timestamp } = JSON.parse(cached);
-          if (Date.now() - timestamp < CACHE_TTL) {
-            setText(cachedText);
-            return;
-          }
+          if (Date.now() - timestamp < CACHE_TTL) { setText(cachedText); return; }
         }
       } catch { /* ignore */ }
     }
-
     setLoading(true);
     try {
-      const { count } = await supabase
-        .from("course_enrollments")
-        .select("id", { count: "exact", head: true })
-        .eq("user_id", userId)
-        .not("completed_at", "is", null);
-
+      const { count } = await supabase.from("course_enrollments").select("id", { count: "exact", head: true }).eq("user_id", userId).not("completed_at", "is", null);
       const result = await getNextSacredStep(profile, count ?? 0);
       setText(result);
       sessionStorage.setItem(cacheKey, JSON.stringify({ text: result, timestamp: Date.now() }));
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   }, [userId, profile, cacheKey]);
 
   useEffect(() => {
@@ -68,51 +57,46 @@ const NextSacredStep = ({ userId, profile }: Props) => {
   const info = archetypeDisplay[pathway] ?? archetypeDisplay.keeper;
 
   return (
-    <div
-      className="ms-card-elevated animate-slide-up"
-      style={{
-        background: "linear-gradient(135deg, var(--ms-surface-2), var(--ms-surface-1))",
-        border: "1px solid rgba(201, 148, 30, 0.3)",
-      }}
-    >
+    <div className="glass-gold">
       {/* Top row */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Sparkles size={16} style={{ color: "#F5C842" }} />
-          <span className="font-body text-xs uppercase tracking-widest" style={{ color: "#F5C842" }}>
+          <Sparkles size={16} style={{ color: 'var(--gold-bright)' }} />
+          <span style={{
+            fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 600,
+            letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold-mid)',
+          }}>
             Your Next Sacred Step
           </span>
         </div>
-        <button
-          onClick={() => fetchStep(true)}
-          disabled={loading}
-          className="transition-colors disabled:opacity-50"
-          style={{ color: "var(--ms-text-muted)" }}
-        >
+        <button onClick={() => fetchStep(true)} disabled={loading} className="transition-colors disabled:opacity-50" style={{ color: 'var(--text-3)' }}>
           <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
         </button>
       </div>
 
-      {/* Content */}
       {loading && !text ? (
         <div className="space-y-3">
-          <div className="h-4 w-full rounded animate-pulse" style={{ background: "var(--ms-surface-3)" }} />
-          <div className="h-4 w-3/4 rounded animate-pulse" style={{ background: "var(--ms-surface-3)" }} />
+          <div className="h-4 w-full rounded animate-pulse" style={{ background: 'rgba(255,255,255,0.06)' }} />
+          <div className="h-4 w-3/4 rounded animate-pulse" style={{ background: 'rgba(255,255,255,0.06)' }} />
         </div>
       ) : (
         <>
-          <p className="font-heading text-lg italic leading-relaxed" style={{ color: "#F1F5F9" }}>
+          <p style={{
+            fontFamily: 'var(--font-display)', fontSize: '18px', fontStyle: 'italic',
+            fontWeight: 300, color: 'var(--text-1)', lineHeight: 1.7,
+          }}>
             {text}
           </p>
-
-          <div className="mt-4 pt-3" style={{ borderTop: "1px solid var(--ms-border)" }}>
-            <span
-              className="inline-block px-3 py-1 rounded-full font-body text-xs"
-              style={{
-                backgroundColor: `${info.accent}26`,
-                color: info.accent,
-              }}
-            >
+          <div className="mt-4 pt-3" style={{ borderTop: '1px solid var(--border-glass)' }}>
+            <span style={{
+              display: 'inline-block',
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.10)',
+              borderRadius: 'var(--r-full)',
+              padding: '4px 12px',
+              fontFamily: 'var(--font-body)', fontSize: '11px',
+              color: 'var(--text-gold)',
+            }}>
               {info.name}
             </span>
           </div>

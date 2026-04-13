@@ -8,7 +8,7 @@ type PostComposerProps = {
 };
 
 const PostComposer = ({ value, onChange, onSubmit, disabled = false }: PostComposerProps) => (
-  <div className="ms-card">
+  <div className="glass-card">
     <div className="space-y-3">
       <textarea
         placeholder="Share something with the community..."
