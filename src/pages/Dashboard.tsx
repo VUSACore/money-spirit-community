@@ -10,11 +10,11 @@ import type { Tables } from "@/integrations/supabase/types";
 type Profile = Tables<"profiles">;
 
 const archetypeDisplay: Record<string, { name: string; accent: string; description: string }> = {
-  giver: { name: "The Giver", accent: "#E8845C", description: "You lead with generosity and care deeply about providing for others." },
-  keeper: { name: "The Keeper", accent: "#5B8DB8", description: "You value security above all else. Building a solid foundation is your strength." },
-  rebel: { name: "The Rebel", accent: "#9B59B6", description: "You reject traditional money rules and forge your own bold path." },
-  seeker: { name: "The Seeker", accent: "#27AE8F", description: "You approach money with curiosity and a desire to understand its deeper purpose." },
-  achiever: { name: "The Achiever", accent: "#C9941E", description: "You are driven, ambitious, and focused on growth with unstoppable belief." },
+  giver: { name: "The Giver", accent: "#D4856A", description: "You lead with generosity and care deeply about providing for others." },
+  keeper: { name: "The Keeper", accent: "#6B9EC4", description: "You value security above all else. Building a solid foundation is your strength." },
+  rebel: { name: "The Rebel", accent: "#A87CC4", description: "You reject traditional money rules and forge your own bold path." },
+  seeker: { name: "The Seeker", accent: "#4DB89A", description: "You approach money with curiosity and a desire to understand its deeper purpose." },
+  achiever: { name: "The Achiever", accent: "#C4973A", description: "You are driven, ambitious, and focused on growth with unstoppable belief." },
 };
 
 const pathwayProgress: Record<string, number> = {
@@ -37,7 +37,7 @@ const Dashboard = () => {
   if (!profile) {
     return (
       <div className="p-8 flex items-center justify-center min-h-[50vh]">
-        <p style={{ color: 'var(--text-3)', fontSize: '14px', fontFamily: 'var(--font-body)' }}>Loading…</p>
+        <p style={{ color: '#A08B62', fontSize: '14px', fontFamily: 'var(--font-body)' }}>Loading…</p>
       </div>
     );
   }
@@ -48,39 +48,39 @@ const Dashboard = () => {
   const streak = profile.ritual_streak ?? 0;
 
   return (
-    <div className="px-5 py-6 md:px-10 md:py-8 max-w-4xl mx-auto space-y-8">
+    <div className="max-w-4xl mx-auto space-y-8" style={{ padding: 'clamp(24px, 4vw, 40px) clamp(20px, 5vw, 48px)' }}>
       <SEOHead title="Dashboard — Money Spirit" />
 
       {/* Welcome heading */}
-      <div className="animate-glass animate-glass-1">
+      <div className="ss-appear ss-appear-1">
         <h1 style={{
-          fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 38px)', fontWeight: 300,
-          letterSpacing: '-0.03em', color: 'var(--text-1)', marginBottom: '4px',
+          fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 300,
+          letterSpacing: '-0.035em', color: '#F2EAD8', marginBottom: '6px', lineHeight: 1.1,
         }}>
           Welcome back, {profile.display_name}
         </h1>
-        <p style={{ color: 'var(--text-3)', fontSize: '14px', fontFamily: 'var(--font-body)' }}>
+        <p style={{ color: '#A08B62', fontSize: '14px', fontFamily: 'var(--font-body)' }}>
           Your personalised pathway to financial wellbeing
         </p>
       </div>
 
       {/* Archetype card */}
-      <div className="glass-elevated animate-glass animate-glass-2" style={{ position: 'relative' }}>
-        {/* Accent strip */}
+      <div className="ss-elevated ss-appear ss-appear-2" style={{ position: 'relative', padding: '28px 32px' }}>
+        {/* Left accent bar */}
         <div style={{
-          position: 'absolute', left: 0, top: '20%', width: '3px', height: '60%',
-          background: `linear-gradient(180deg, ${info.accent} 0%, transparent 100%)`,
-          borderRadius: '0 2px 2px 0',
-          boxShadow: `0 0 12px ${info.accent}66`,
+          position: 'absolute', left: 0, top: 0, bottom: 0, width: '3px',
+          borderRadius: '22px 0 0 22px',
+          background: `linear-gradient(180deg, transparent 0%, ${info.accent} 20%, ${info.accent} 80%, transparent 100%)`,
+          boxShadow: `0 0 16px ${info.accent}4D`,
         }} />
         <div style={{ paddingLeft: '12px' }}>
           <h2 style={{
-            fontFamily: 'var(--font-display)', fontSize: '28px', fontWeight: 400,
-            color: info.accent, letterSpacing: '-0.02em', marginBottom: '4px',
+            fontFamily: 'var(--font-display)', fontSize: '32px', fontWeight: 400,
+            color: info.accent, letterSpacing: '-0.03em', lineHeight: 1, marginBottom: '8px',
           }}>
             {info.name}
           </h2>
-          <p style={{ color: 'var(--text-2)', fontSize: '14px', lineHeight: 1.65, fontFamily: 'var(--font-body)' }}>
+          <p style={{ color: '#D4C49A', fontSize: '14px', lineHeight: 1.70, fontFamily: 'var(--font-body)' }}>
             {info.description}
           </p>
         </div>
@@ -88,51 +88,51 @@ const Dashboard = () => {
 
       {/* Next Sacred Step AI widget */}
       {profile.onboarding_complete && (
-        <div className="animate-glass animate-glass-3">
+        <div className="ss-appear ss-appear-3">
           <NextSacredStep userId={profile.user_id} profile={profile} />
         </div>
       )}
 
       {/* Progress overview */}
-      <div className="space-y-2 animate-glass animate-glass-4">
+      <div className="space-y-2 ss-appear ss-appear-4">
         <div className="flex items-center justify-between">
-          <span style={{ color: 'var(--text-3)', fontSize: '13px', fontFamily: 'var(--font-body)', fontWeight: 500 }}>
+          <span style={{ color: '#A08B62', fontSize: '12px', fontFamily: 'var(--font-body)', fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             {info.name} Pathway Progress
           </span>
-          <span style={{ color: 'var(--text-gold)', fontSize: '13px', fontFamily: 'var(--font-body)', fontWeight: 500 }}>
+          <span style={{ color: '#EEC96E', fontSize: '12px', fontFamily: 'var(--font-body)', fontWeight: 600 }}>
             {progress}%
           </span>
         </div>
-        <div style={{ height: '4px', borderRadius: 'var(--r-full)', overflow: 'hidden', background: 'rgba(255,255,255,0.08)' }}>
+        <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(196,151,58,0.12)' }}>
           <div style={{
-            height: '100%', borderRadius: 'var(--r-full)',
+            height: '100%', borderRadius: 'var(--r-pill)',
             width: `${progress}%`,
-            background: 'linear-gradient(90deg, #C9941E 0%, #F5C842 100%)',
-            boxShadow: '0 0 8px rgba(245,200,66,0.4)',
-            transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+            background: 'linear-gradient(90deg, #8B6612 0%, #C4973A 50%, #EEC96E 100%)',
+            boxShadow: '0 0 8px rgba(238,201,110,0.35)',
+            transition: 'width 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
           }} />
         </div>
       </div>
 
       {/* Two cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-glass animate-glass-5">
-        <div className="glass-interactive flex flex-col items-start gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ss-appear ss-appear-5">
+        <div className="ss-interactive flex flex-col items-start gap-4" style={{ padding: '22px 24px' }}>
           <div className="flex items-center gap-2">
-            <Flame size={18} style={{ color: 'var(--gold-base)' }} />
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 400, color: 'var(--text-1)' }}>This week's ritual</span>
+            <Flame size={20} style={{ color: '#C4973A' }} />
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#F2EAD8', letterSpacing: '-0.02em' }}>This week's ritual</span>
           </div>
-          <p style={{ color: 'var(--text-2)', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
+          <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
             Stay aligned with your financial intentions through a guided practice.
           </p>
           <Button variant="gold" asChild><Link to="/rituals">Complete it</Link></Button>
         </div>
 
-        <div className="glass-interactive flex flex-col items-start gap-4">
+        <div className="ss-interactive flex flex-col items-start gap-4" style={{ padding: '22px 24px' }}>
           <div className="flex items-center gap-2">
-            <BookOpen size={18} style={{ color: 'var(--gold-base)' }} />
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 400, color: 'var(--text-1)' }}>Continue learning</span>
+            <BookOpen size={20} style={{ color: '#C4973A' }} />
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#F2EAD8', letterSpacing: '-0.02em' }}>Continue learning</span>
           </div>
-          <p style={{ color: 'var(--text-2)', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
+          <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
             Pick up where you left off on your {info.name} learning path.
           </p>
           <Button variant="default" asChild><Link to="/learn">Go to lessons</Link></Button>
@@ -146,13 +146,13 @@ const Dashboard = () => {
             className={streak >= 3 ? 'animate-streak-glow' : ''}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '6px',
-              background: 'rgba(201, 148, 30, 0.10)',
-              border: '1px solid rgba(201, 148, 30, 0.25)',
-              borderRadius: 'var(--r-full)',
-              padding: '8px 16px',
-              boxShadow: 'inset 0 1px 0 rgba(245,200,66,0.15)',
+              background: 'rgba(196,151,58,0.09)',
+              border: '1px solid rgba(196,151,58,0.22)',
+              borderRadius: 'var(--r-pill)',
+              padding: '7px 16px',
+              boxShadow: 'inset 0 1px 0 rgba(238,201,110,0.10), 0 0 12px rgba(196,151,58,0.10)',
               fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500,
-              color: 'var(--text-gold)',
+              color: '#EEC96E',
             }}
           >
             <Flame size={16} />

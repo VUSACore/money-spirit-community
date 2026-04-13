@@ -8,7 +8,7 @@ type PostComposerProps = {
 };
 
 const PostComposer = ({ value, onChange, onSubmit, disabled = false }: PostComposerProps) => (
-  <div className="glass-card">
+  <div className="ss-card">
     <div className="space-y-3">
       <textarea
         placeholder="Share something with the community..."
@@ -18,7 +18,7 @@ const PostComposer = ({ value, onChange, onSubmit, disabled = false }: PostCompo
         aria-label="Share something with the community"
       />
       <div className="flex justify-end">
-        <Button variant="gold" onClick={onSubmit} disabled={disabled}>
+        <Button variant="gold" onClick={onSubmit} disabled={disabled} className="btn-gold">
           POST
         </Button>
       </div>

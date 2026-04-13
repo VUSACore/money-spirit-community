@@ -29,52 +29,42 @@ const Index = () => {
         title="Money Spirit — Spirit Inspired Freedom"
         description="A financial wellbeing community for migrant women in Australia. Rituals, courses, events and a supportive community to help you thrive."
         ogTitle="Money Spirit — Spirit Inspired Freedom"
-        ogDescription="A financial wellbeing community for migrant women in Australia. Rituals, courses, events and a supportive community to help you thrive."
+        ogDescription="A financial wellbeing community for migrant women in Australia."
         ogType="website"
         ogImage="https://moneyspirit.com.au/og-image.png"
       />
       <HeroSection />
 
-      {/* Features Section */}
-      <section className="bg-background py-20 px-6">
+      <section style={{ background: '#0B1525', padding: '80px 24px' }}>
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
             {features.map((f) => (
               <div key={f.title} className="text-center space-y-4">
-                <f.icon className="mx-auto text-accent" size={36} strokeWidth={1.5} />
-                <h3 className="font-heading text-xl font-semibold text-foreground">{f.title}</h3>
-                <p className="font-body text-muted-foreground leading-relaxed">{f.description}</p>
+                <f.icon className="mx-auto" size={36} strokeWidth={1.5} style={{ color: '#C4973A' }} />
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#F2EAD8' }}>{f.title}</h3>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', lineHeight: 1.65 }}>{f.description}</p>
               </div>
             ))}
           </div>
 
           <div className="text-center">
-            <Button variant="gold" size="lg" className="text-base px-10 py-6 rounded-sm" asChild>
+            <Button variant="gold" size="lg" className="text-base px-10 py-6 btn-gold" asChild>
               <Link to="/join">Join the Community</Link>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-background border-t border-border py-6 px-6">
+      <footer style={{ background: '#040810', borderTop: '1px solid rgba(196,151,58,0.08)', padding: '24px' }}>
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-xs font-body text-muted-foreground leading-relaxed">
+          <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#5C4E34', lineHeight: 1.6 }}>
             Money Spirit provides financial education and community — not financial advice.
           </p>
-          <p className="text-xs font-body text-muted-foreground/60 mt-2">
+          <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#5C4E3480', marginTop: '8px' }}>
             © 2026 Money Spirit ·{" "}
-            <Link to="/ethics" className="hover:text-foreground transition-colors underline underline-offset-2">
-              Ethics &amp; Education Policy
-            </Link>{" "}
-            ·{" "}
-            <Link to="/privacy" className="hover:text-foreground transition-colors underline underline-offset-2">
-              Privacy
-            </Link>{" "}
-            ·{" "}
-            <Link to="/terms" className="hover:text-foreground transition-colors underline underline-offset-2">
-              Terms
-            </Link>
+            <Link to="/ethics" style={{ color: '#5C4E34', textDecoration: 'underline', textUnderlineOffset: '2px' }}>Ethics &amp; Education Policy</Link>{" "}·{" "}
+            <Link to="/privacy" style={{ color: '#5C4E34', textDecoration: 'underline', textUnderlineOffset: '2px' }}>Privacy</Link>{" "}·{" "}
+            <Link to="/terms" style={{ color: '#5C4E34', textDecoration: 'underline', textUnderlineOffset: '2px' }}>Terms</Link>
           </p>
         </div>
       </footer>
