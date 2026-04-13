@@ -108,8 +108,9 @@
     box-shadow: 0 0 0 3px rgba(201,148,30,0.15);
   }
 
-  /* Dark card system */
-  .ms-card {
+  /* Dark card system — intentionally left in @layer for composability */
+  .ms-card,
+  .ms-card-metric {
     background: var(--ms-surface-1);
     border: 1px solid var(--ms-border);
     border-radius: 12px;
