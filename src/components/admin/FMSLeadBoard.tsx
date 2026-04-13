@@ -132,9 +132,9 @@ const FMSLeadBoard = () => {
   };
 
   const MetricCard = ({ label, value }: { label: string; value: number }) => (
-    <div className="rounded-xl p-4 border" style={{ background: "hsl(220 72% 10%)", borderColor: "hsl(220 50% 20%)" }}>
-      <p className="font-body text-xs text-cream/40 mb-1">{label}</p>
-      <p className="font-heading text-2xl text-cream">{value}</p>
+    <div className="ms-card-metric">
+      <p className="font-body text-xs mb-1" style={{ color: "var(--ms-text-muted)" }}>{label}</p>
+      <p className="font-heading text-2xl" style={{ color: "#F1F5F9" }}>{value}</p>
     </div>
   );
 
@@ -221,7 +221,7 @@ const FMSLeadBoard = () => {
           </p>
         </div>
       ) : (
-        <div className="rounded-xl overflow-hidden border border-border">
+        <div className="ms-card rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
