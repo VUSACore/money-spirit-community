@@ -1,4 +1,6 @@
 import CourseCard from "./CourseCard";
+import { BookOpen } from "lucide-react";
+import EmptyState from "@/components/EmptyState";
 
 interface Course {
   id: string;
@@ -16,11 +18,7 @@ interface CourseGridProps {
 
 const CourseGrid = ({ courses, enrolledIds, userId }: CourseGridProps) => {
   if (courses.length === 0) {
-    return (
-      <p className="font-body text-navy/50 text-center py-16">
-        No courses available yet. Check back soon.
-      </p>
-    );
+    return <EmptyState icon={BookOpen} heading="Courses coming soon" body="Your learning journey is being prepared. Check back shortly." />;
   }
 
   return (

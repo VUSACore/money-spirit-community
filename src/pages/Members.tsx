@@ -1,6 +1,8 @@
 import { useEffect, useState, useMemo } from "react";
 import { format } from "date-fns";
-import { Search, MapPin, Flame, Heart } from "lucide-react";
+import { Search, MapPin, Flame, Heart, Users } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
+import EmptyState from "@/components/EmptyState";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -91,6 +93,7 @@ const Members = () => {
 
   return (
     <div className="p-8 max-w-6xl mx-auto animate-fade-in">
+      <SEOHead title="Members — Money Spirit" />
       <h1 className="text-3xl font-heading text-primary mb-2">Our Community</h1>
       <p className="text-muted-foreground font-body mb-6">The women walking this path with you</p>
 
@@ -111,10 +114,7 @@ const Members = () => {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-20 space-y-4">
-          <Heart className="mx-auto h-12 w-12 text-accent/60" />
-          <p className="text-lg font-body text-muted-foreground">The community is growing. You're among the first here.</p>
-        </div>
+        <EmptyState icon={Users} heading="Your community is growing" body="Members who have chosen to appear in the directory will show here." />
       ) : (
         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((member) => (

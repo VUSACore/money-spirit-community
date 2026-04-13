@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import HeroSection from "@/components/HeroSection";
 import { Leaf, Heart, BookOpen } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
 
 const features = [
   {
@@ -24,6 +25,14 @@ const features = [
 const Index = () => {
   return (
     <main>
+      <SEOHead
+        title="Money Spirit — Spirit Inspired Freedom"
+        description="A financial wellbeing community for migrant women in Australia. Rituals, courses, events and a supportive community to help you thrive."
+        ogTitle="Money Spirit — Spirit Inspired Freedom"
+        ogDescription="A financial wellbeing community for migrant women in Australia. Rituals, courses, events and a supportive community to help you thrive."
+        ogType="website"
+        ogImage="https://moneyspirit.com.au/og-image.png"
+      />
       <HeroSection />
 
       {/* Features Section */}
@@ -54,7 +63,7 @@ const Index = () => {
             Money Spirit provides financial education and community — not financial advice.
           </p>
           <p className="text-xs font-body text-muted-foreground/60 mt-2">
-            © 2025 Money Spirit ·{" "}
+            © 2026 Money Spirit ·{" "}
             <Link to="/ethics" className="hover:text-foreground transition-colors underline underline-offset-2">
               Ethics &amp; Education Policy
             </Link>{" "}

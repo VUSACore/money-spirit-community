@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect } from "react";
+import SEOHead from "@/components/SEOHead";
 import CourseGrid from "@/components/learn/CourseGrid";
 
 const Learn = () => {
@@ -69,6 +70,7 @@ const Learn = () => {
 
   return (
     <div className="p-6 md:p-8 animate-fade-in">
+      <SEOHead title="Courses & Learning — Money Spirit" description="Grow your financial knowledge with Money Spirit courses designed for migrant women. Learn at your own pace." />
       <h1 className="font-heading text-3xl text-primary font-normal mb-1">Learn</h1>
       <p className="font-body text-primary/70 text-base mb-6">Explore courses and resources.</p>
 

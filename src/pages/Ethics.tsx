@@ -1,7 +1,9 @@
 import PublicPageLayout from "@/components/PublicPageLayout";
+import SEOHead from "@/components/SEOHead";
 
 const Ethics = () => (
   <PublicPageLayout>
+    <SEOHead title="Our Ethics Commitment — Money Spirit" description="Money Spirit provides financial education only — not financial advice. Read our full ethics commitment here." />
     <h1 className="text-3xl font-heading text-foreground mb-8">Our Ethics &amp; Education Commitment</h1>
 
     <div className="space-y-6 font-body text-muted-foreground leading-relaxed">

@@ -1,14 +1,15 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
 User-agent: *
 Allow: /
+Allow: /join
+Allow: /events
+Allow: /learn
+Allow: /forums
+Allow: /ethics
+Allow: /privacy
+Allow: /terms
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /community
+Disallow: /profile
+Disallow: /settings
+Sitemap: https://moneyspirit.com.au/sitemap.xml

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { MessageSquare } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
 import type { Tables } from "@/integrations/supabase/types";
 import EducationBanner from "@/components/EducationBanner";
+import EmptyState from "@/components/EmptyState";
 
 type Forum = Tables<"forums">;
 
@@ -35,6 +37,7 @@ const Forums = () => {
 
   return (
     <div className="p-8 max-w-4xl mx-auto space-y-6 animate-fade-in">
+      <SEOHead title="Community Forums — Money Spirit" description="Join the conversation. Discuss money, mindset, spirituality and wellbeing with the Money Spirit community." />
       {hasFinanceForum && <EducationBanner />}
 
       <div>
@@ -43,10 +46,7 @@ const Forums = () => {
       </div>
 
       {forums.length === 0 ? (
-        <div className="text-center py-16 space-y-4">
-          <MessageSquare className="mx-auto h-12 w-12 text-accent/60" />
-          <p className="text-lg font-body text-muted-foreground">Start the conversation. Create the first thread.</p>
-        </div>
+        <EmptyState icon={MessageSquare} heading="No discussions yet" body="Be the first to start a conversation in this forum." />
       ) : (
         <div className="space-y-3 animate-slide-up">
           {forums.map((forum) => (

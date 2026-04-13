@@ -1,7 +1,9 @@
 import PublicPageLayout from "@/components/PublicPageLayout";
+import SEOHead from "@/components/SEOHead";
 
 const Privacy = () => (
   <PublicPageLayout>
+    <SEOHead title="Privacy Policy — Money Spirit" description="How Money Spirit collects, stores and protects your personal data. Your privacy matters to us." />
     <h1 className="text-3xl font-heading text-foreground mb-2">Privacy Policy</h1>
     <p className="text-sm font-body text-muted-foreground mb-8">Effective date: April 2026</p>
 

@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/components/PlatformLayout";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import PostComposer from "@/components/PostComposer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Heart, PartyPopper, Sparkles, Zap } from "lucide-react";
+import EmptyState from "@/components/EmptyState";
 import { formatDistanceToNow } from "date-fns";
 import LotusIcon from "@/components/LotusIcon";
 import { createNotification } from "@/lib/actions/notifications";
@@ -146,6 +148,7 @@ const Community = () => {
 
   return (
     <div className="p-8 max-w-3xl mx-auto space-y-6 animate-fade-in">
+      <SEOHead title="Community — Money Spirit" />
       <h1 className="text-3xl font-heading text-foreground">Community</h1>
 
       {!isGuest && (
@@ -192,13 +195,14 @@ const Community = () => {
         ))}
 
         {visiblePosts.length === 0 && (
-          <div className="text-center py-16 space-y-4">
-            <LotusIcon className="text-accent mx-auto" size={48} />
-            <p className="text-lg font-body text-muted-foreground">Be the first to share something with the community</p>
-            {!isGuest && (
-              <Button variant="gold" onClick={() => document.querySelector("textarea")?.focus()}>Write a post</Button>
-            )}
-          </div>
+          <EmptyState
+            icon={Sparkles}
+            iconClassName="text-accent"
+            heading="Be the first to share"
+            body="Your community is gathering. Start the conversation by sharing your first post or financial win."
+            ctaLabel={!isGuest ? "Share Your First Post" : undefined}
+            onCta={!isGuest ? () => document.querySelector("textarea")?.focus() : undefined}
+          />
         )}
 
         {isGuest && posts.length > 5 && (

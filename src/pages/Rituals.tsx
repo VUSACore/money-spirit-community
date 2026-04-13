@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import SEOHead from "@/components/SEOHead";
+import EmptyState from "@/components/EmptyState";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -121,6 +123,7 @@ const Rituals = () => {
 
   return (
     <div className="p-8 max-w-3xl mx-auto space-y-8 animate-fade-in">
+      <SEOHead title="Rituals — Money Spirit" />
       <EducationBanner />
 
       <div className="flex items-center gap-3">
@@ -167,10 +170,7 @@ const Rituals = () => {
           </CardContent>
         </Card>
       ) : (
-        <div className="text-center py-16 space-y-4">
-          <Sparkles className="mx-auto h-12 w-12 text-accent/60" />
-          <p className="text-lg font-body text-muted-foreground">This week's ritual is being prepared. Check back soon.</p>
-        </div>
+        <EmptyState icon={Sparkles} iconClassName="text-accent" heading="Your ritual is being prepared" body="A new money ritual will be published shortly. Come back on Monday." />
       )}
 
       {pastRituals.length > 0 && (

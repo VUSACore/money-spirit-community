@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { CalendarDays, MapPin, Globe, Ticket } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { Tables } from "@/integrations/supabase/types";
 import EducationBanner from "@/components/EducationBanner";
 import { sendTicketConfirmation } from "@/lib/email/emailService";
+import EmptyState from "@/components/EmptyState";
 
 type Event = Tables<"events">;
 
@@ -123,16 +125,14 @@ const Events = () => {
 
   return (
     <div className="p-8 max-w-5xl mx-auto animate-fade-in">
+      <SEOHead title="Events — Money Spirit" description="Join live events, retreats and community sessions hosted by Money Spirit. Book your ticket and connect with your community." />
       <EducationBanner />
 
       <h1 className="text-3xl font-heading text-primary mb-2">Events</h1>
       <p className="text-muted-foreground font-body mb-8">Workshops, circles and gatherings for the community.</p>
 
       {events.length === 0 ? (
-        <div className="text-center py-16 space-y-4">
-          <CalendarDays className="mx-auto h-12 w-12 text-accent/60" />
-          <p className="text-lg font-body text-muted-foreground">No events scheduled yet. Watch this space.</p>
-        </div>
+        <EmptyState icon={CalendarDays} heading="No upcoming events" body="Check back soon. New events and retreats are added regularly." />
       ) : (
         <div className="grid gap-6 sm:grid-cols-2">
           {events.map((event) => {
