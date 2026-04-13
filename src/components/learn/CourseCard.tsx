@@ -64,7 +64,7 @@ const CourseCard = ({
       }}
     >
       <div className="h-[128px] flex items-center justify-center" style={{ background: "var(--ms-surface-2)" }}>
-        <LotusIcon size={40} className="opacity-90" style={{ color: "#C9941E" }} />
+        <LotusIcon size={40} className="opacity-90 text-gold" />
       </div>
 
       <div className="px-5 py-4 flex flex-col gap-2">
