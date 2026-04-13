@@ -71,14 +71,9 @@ const Dashboard = () => {
 
       {/* Archetype card */}
       <div
-        className="animate-slide-up"
+        className="ms-card-elevated animate-slide-up"
         style={{
-          backgroundColor: "#1C2333",
-          border: "1px solid rgba(255,255,255,0.12)",
           borderLeft: `3px solid ${info.accent}`,
-          borderRadius: "16px",
-          padding: "24px 28px",
-          boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
         }}
       >
         <h2 style={{ color: info.accent, fontSize: "28px", fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, opacity: 1, marginBottom: "4px" }}>
@@ -115,8 +110,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-slide-up" style={{ animationDelay: '200ms', animationFillMode: 'both' }}>
         {/* Ritual card */}
         <div
-          className="flex flex-col items-start gap-4"
-          style={{ backgroundColor: "#111827", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "12px", padding: "20px 24px", boxShadow: "0 1px 3px rgba(0,0,0,0.3)" }}
+          className="ms-card flex flex-col items-start gap-4"
         >
           <div className="flex items-center gap-2">
             <Flame size={20} style={{ color: "#C9941E" }} />
@@ -132,8 +126,7 @@ const Dashboard = () => {
 
         {/* Learn card */}
         <div
-          className="flex flex-col items-start gap-4"
-          style={{ backgroundColor: "#111827", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "12px", padding: "20px 24px", boxShadow: "0 1px 3px rgba(0,0,0,0.3)" }}
+          className="ms-card flex flex-col items-start gap-4"
         >
           <div className="flex items-center gap-2">
             <BookOpen size={20} style={{ color: "#C9941E" }} />
