@@ -3,8 +3,6 @@ import SEOHead from "@/components/SEOHead";
 import EmptyState from "@/components/EmptyState";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Accordion,
@@ -116,7 +114,7 @@ const Rituals = () => {
   if (loading) {
     return (
       <div className="p-8 flex items-center justify-center min-h-[50vh]">
-        <p className="text-muted-foreground font-body">Loading…</p>
+        <p className="font-body" style={{ color: "var(--ms-text-secondary)" }}>Loading…</p>
       </div>
     );
   }
@@ -127,70 +125,77 @@ const Rituals = () => {
       <EducationBanner />
 
       <div className="flex items-center gap-3">
-        <Flame className="text-accent" size={28} />
-        <h1 className="text-3xl font-heading text-foreground">Rituals</h1>
+        <Flame style={{ color: "#F5C842" }} size={28} />
+        <h1 className="text-3xl font-heading" style={{ color: "var(--ms-text-primary)" }}>Rituals</h1>
       </div>
 
       {currentRitual ? (
-        <Card className="border bg-card shadow-none animate-slide-up">
-          <CardContent className="p-6 space-y-5">
-            <div>
-              <p className="text-xs font-body text-muted-foreground uppercase tracking-wider mb-1">This week's ritual</p>
-              <h2 className="text-2xl font-heading text-foreground">{currentRitual.title}</h2>
+        <div className="ms-card-elevated animate-slide-up space-y-5">
+          <div>
+            <p className="text-xs font-body uppercase tracking-wider mb-1" style={{ color: "var(--ms-text-muted)" }}>This week's ritual</p>
+            <h2 className="text-[28px] font-heading" style={{ color: "var(--ms-text-primary)" }}>{currentRitual.title}</h2>
+          </div>
+
+          <p className="text-[15px] font-body leading-[1.7]" style={{ color: "var(--ms-text-secondary)" }}>{currentRitual.description}</p>
+
+          {currentRitual.reflection_prompt && (
+            <div className="rounded-lg p-4" style={{ background: "var(--ms-base)", border: "1px solid var(--ms-border-active)" }}>
+              <p className="text-sm font-body italic leading-relaxed" style={{ color: "var(--ms-text-secondary)" }}>{currentRitual.reflection_prompt}</p>
             </div>
+          )}
 
-            <p className="text-sm font-body text-foreground leading-relaxed">{currentRitual.description}</p>
-
-            {currentRitual.reflection_prompt && (
-              <div className="bg-primary/5 rounded-xl p-5 border border-border">
-                <p className="text-sm font-body text-foreground italic leading-relaxed">{currentRitual.reflection_prompt}</p>
+          {completed ? (
+            <div className="flex items-center gap-3 py-4 relative animate-celebration">
+              <CheckCircle2 size={28} style={{ color: "var(--ms-success)" }} />
+              <p className="font-heading text-xl" style={{ color: "var(--ms-success)" }}>Ritual complete. Well done.</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-body font-medium" style={{ color: "var(--ms-text-primary)" }}>Your reflection (optional — just for you)</label>
+                <textarea
+                  value={reflection}
+                  onChange={(e) => setReflection(e.target.value)}
+                  placeholder="Write your thoughts here..."
+                  className="ms-input-dark min-h-[100px] resize-none"
+                />
               </div>
-            )}
-
-            {completed ? (
-              <div className="flex items-center gap-3 py-4 relative animate-celebration">
-                <CheckCircle2 className="text-green-600" size={28} />
-                <p className="font-heading text-xl text-green-700">Ritual complete. Well done.</p>
+              <div className="flex items-center gap-2">
+                <Checkbox id="share" checked={shareToFeed} onCheckedChange={(v) => setShareToFeed(v === true)} />
+                <label htmlFor="share" className="text-sm font-body cursor-pointer" style={{ color: "var(--ms-text-primary)" }}>Share my reflection with the community</label>
               </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-body font-medium text-foreground">Your reflection (optional — just for you)</label>
-                  <Textarea value={reflection} onChange={(e) => setReflection(e.target.value)} placeholder="Write your thoughts here..." className="min-h-[100px] bg-background border-input font-body resize-none" />
-                </div>
-                <div className="flex items-center gap-2">
-                  <Checkbox id="share" checked={shareToFeed} onCheckedChange={(v) => setShareToFeed(v === true)} />
-                  <label htmlFor="share" className="text-sm font-body text-foreground cursor-pointer">Share my reflection with the community</label>
-                </div>
-                <Button variant="gold" onClick={handleComplete} disabled={submitting} className="w-full sm:w-auto">
-                  {submitting ? "Completing…" : "Complete this ritual"}
-                </Button>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+              <Button variant="gold" onClick={handleComplete} disabled={submitting} className="w-full sm:w-auto">
+                {submitting ? "Completing…" : "Complete this ritual"}
+              </Button>
+            </div>
+          )}
+        </div>
       ) : (
-        <EmptyState icon={Sparkles} iconClassName="text-accent" heading="Your ritual is being prepared" body="A new money ritual will be published shortly. Come back on Monday." />
+        <EmptyState icon={Sparkles} iconClassName="text-gold" heading="Your ritual is being prepared" body="A new money ritual will be published shortly. Come back on Monday." />
       )}
 
       {pastRituals.length > 0 && (
         <div className="space-y-3">
-          <h3 className="text-lg font-heading text-foreground">Past Rituals</h3>
+          <h3 className="text-lg font-heading" style={{ color: "var(--ms-text-primary)" }}>Past Rituals</h3>
           <Accordion type="single" collapsible className="space-y-2">
             {pastRituals.map((ritual) => (
-              <AccordionItem key={ritual.id} value={ritual.id} className="border rounded-xl bg-card px-4">
-                <AccordionTrigger className="font-body text-sm hover:no-underline">
+              <AccordionItem key={ritual.id} value={ritual.id} className="rounded-xl px-4" style={{ border: "1px solid var(--ms-border)", background: "var(--ms-surface-1)" }}>
+                <AccordionTrigger className="font-body text-sm hover:no-underline" style={{ color: "var(--ms-text-primary)" }}>
                   <div className="flex items-center gap-2 text-left">
-                    {pastCompletions.has(ritual.id) && <CheckCircle2 className="text-green-600 shrink-0" size={16} />}
-                    <span className="text-foreground">{ritual.title}</span>
-                    <span className="text-muted-foreground text-xs ml-2">{format(new Date(ritual.week_of), "d MMM yyyy")}</span>
+                    {pastCompletions.has(ritual.id) ? (
+                      <CheckCircle2 className="shrink-0" size={16} style={{ color: "var(--ms-success)" }} />
+                    ) : (
+                      <div className="w-4 h-4 rounded-full border shrink-0" style={{ borderColor: "var(--ms-text-muted)" }} />
+                    )}
+                    <span>{ritual.title}</span>
+                    <span className="text-xs ml-2" style={{ color: "var(--ms-text-muted)" }}>{format(new Date(ritual.week_of), "d MMM yyyy")}</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="space-y-3 pb-4">
-                  <p className="text-sm font-body text-foreground">{ritual.description}</p>
+                  <p className="text-sm font-body" style={{ color: "var(--ms-text-secondary)" }}>{ritual.description}</p>
                   {ritual.reflection_prompt && (
-                    <div className="bg-primary/5 rounded-lg p-4 border border-border">
-                      <p className="text-sm font-body text-foreground italic">{ritual.reflection_prompt}</p>
+                    <div className="rounded-lg p-4" style={{ background: "var(--ms-base)", border: "1px solid var(--ms-border)" }}>
+                      <p className="text-sm font-body italic" style={{ color: "var(--ms-text-secondary)" }}>{ritual.reflection_prompt}</p>
                     </div>
                   )}
                 </AccordionContent>
