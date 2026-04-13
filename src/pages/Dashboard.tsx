@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import SEOHead from "@/components/SEOHead";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Flame, BookOpen } from "lucide-react";
 import NextSacredStep from "@/components/ai/NextSacredStep";
@@ -46,7 +45,7 @@ const Dashboard = () => {
   if (!profile) {
     return (
       <div className="p-8 flex items-center justify-center min-h-[50vh]">
-        <p className="font-body text-sm" style={{ color: "var(--ms-text-secondary)" }}>Loading…</p>
+        <p style={{ color: "#94A3B8", fontSize: "14px", fontFamily: "'DM Sans', sans-serif" }}>Loading…</p>
       </div>
     );
   }
@@ -62,23 +61,30 @@ const Dashboard = () => {
 
       {/* Welcome heading */}
       <div className="animate-slide-up">
-        <h1 className="text-3xl font-heading mb-1" style={{ color: "var(--ms-text-primary)" }}>
+        <h1 style={{ color: "#F1F5F9", fontSize: "32px", fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, marginBottom: "4px" }}>
           Welcome back, {profile.display_name}
         </h1>
-        <p className="font-body text-sm" style={{ color: "var(--ms-text-secondary)" }}>
+        <p style={{ color: "#94A3B8", fontSize: "14px", fontFamily: "'DM Sans', sans-serif" }}>
           Your personalised pathway to financial wellbeing
         </p>
       </div>
 
       {/* Archetype card */}
       <div
-        className="ms-card-elevated animate-slide-up"
-        style={{ borderLeft: `3px solid ${info.accent}` }}
+        className="animate-slide-up"
+        style={{
+          backgroundColor: "#1C2333",
+          border: "1px solid rgba(255,255,255,0.12)",
+          borderLeft: `3px solid ${info.accent}`,
+          borderRadius: "16px",
+          padding: "24px 28px",
+          boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
+        }}
       >
-        <h2 className="font-heading mb-1" style={{ color: info.accent, fontSize: '28px', fontWeight: 500, opacity: 1 }}>
+        <h2 style={{ color: info.accent, fontSize: "28px", fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, opacity: 1, marginBottom: "4px" }}>
           {info.name}
         </h2>
-        <p className="font-body" style={{ color: '#94A3B8', fontSize: '14px', lineHeight: 1.7, opacity: 1 }}>
+        <p style={{ color: "#94A3B8", fontSize: "14px", lineHeight: 1.7, fontFamily: "'DM Sans', sans-serif", opacity: 1 }}>
           {info.description}
         </p>
       </div>
@@ -91,15 +97,16 @@ const Dashboard = () => {
       {/* Progress overview */}
       <div className="space-y-2 animate-slide-up" style={{ animationDelay: '100ms', animationFillMode: 'both' }}>
         <div className="flex items-center justify-between">
-          <span className="text-[13px] font-body font-medium" style={{ color: "var(--ms-text-secondary)" }}>
+          <span style={{ color: "#94A3B8", fontSize: "13px", fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}>
             {info.name} Pathway Progress
           </span>
-          <span className="text-[13px] font-body" style={{ color: "#F5C842" }}>{progress}%</span>
+          <span style={{ color: "#F5C842", fontSize: "13px", fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}>
+            {progress}%
+          </span>
         </div>
-        <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--ms-border)" }}>
+        <div style={{ height: "6px", borderRadius: "3px", overflow: "hidden", background: "rgba(255,255,255,0.06)" }}>
           <div
-            className="h-full rounded-full transition-all duration-500"
-            style={{ width: `${progress}%`, background: "linear-gradient(90deg, #C9941E, #F5C842)" }}
+            style={{ height: "100%", borderRadius: "3px", width: `${progress}%`, background: "linear-gradient(90deg, #C9941E, #F5C842)", transition: "width 0.5s ease" }}
           />
         </div>
       </div>
@@ -107,12 +114,15 @@ const Dashboard = () => {
       {/* Two cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-slide-up" style={{ animationDelay: '200ms', animationFillMode: 'both' }}>
         {/* Ritual card */}
-        <div className="ms-card flex flex-col items-start gap-4">
+        <div
+          className="flex flex-col items-start gap-4"
+          style={{ backgroundColor: "#111827", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "12px", padding: "20px 24px", boxShadow: "0 1px 3px rgba(0,0,0,0.3)" }}
+        >
           <div className="flex items-center gap-2">
             <Flame size={20} style={{ color: "#C9941E" }} />
-            <span className="font-heading text-xl" style={{ color: "var(--ms-text-primary)" }}>This week's ritual</span>
+            <span style={{ color: "#F1F5F9", fontFamily: "'Cormorant Garamond', serif", fontSize: "20px" }}>This week's ritual</span>
           </div>
-          <p className="text-sm font-body" style={{ color: "var(--ms-text-secondary)" }}>
+          <p style={{ color: "#94A3B8", fontSize: "13px", lineHeight: 1.7, fontFamily: "'DM Sans', sans-serif" }}>
             Stay aligned with your financial intentions through a guided practice.
           </p>
           <Button variant="gold" asChild>
@@ -121,12 +131,15 @@ const Dashboard = () => {
         </div>
 
         {/* Learn card */}
-        <div className="ms-card flex flex-col items-start gap-4">
+        <div
+          className="flex flex-col items-start gap-4"
+          style={{ backgroundColor: "#111827", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "12px", padding: "20px 24px", boxShadow: "0 1px 3px rgba(0,0,0,0.3)" }}
+        >
           <div className="flex items-center gap-2">
             <BookOpen size={20} style={{ color: "#C9941E" }} />
-            <span className="font-heading text-xl" style={{ color: "var(--ms-text-primary)" }}>Continue learning</span>
+            <span style={{ color: "#F1F5F9", fontFamily: "'Cormorant Garamond', serif", fontSize: "20px" }}>Continue learning</span>
           </div>
-          <p className="text-sm font-body" style={{ color: "var(--ms-text-secondary)" }}>
+          <p style={{ color: "#94A3B8", fontSize: "13px", lineHeight: 1.7, fontFamily: "'DM Sans', sans-serif" }}>
             Pick up where you left off on your {info.name} learning path.
           </p>
           <Button variant="default" asChild>
@@ -139,11 +152,14 @@ const Dashboard = () => {
       {streak > 0 && (
         <div className="flex items-center gap-3">
           <span
-            className={`inline-flex items-center gap-1.5 px-4 py-2 text-[13px] font-body font-medium rounded-full ${streak >= 3 ? 'animate-streak-glow' : ''}`}
+            className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full ${streak >= 3 ? 'animate-streak-glow' : ''}`}
             style={{
-              background: "rgba(201,148,30,0.12)",
+              backgroundColor: "rgba(201,148,30,0.12)",
               border: "1px solid rgba(201,148,30,0.3)",
               color: "#F5C842",
+              fontSize: "13px",
+              fontFamily: "'DM Sans', sans-serif",
+              fontWeight: 500,
             }}
           >
             <Flame size={16} />
