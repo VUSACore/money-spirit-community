@@ -4,6 +4,7 @@ import { MessageSquare } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import type { Tables } from "@/integrations/supabase/types";
 import EducationBanner from "@/components/EducationBanner";
+import EmptyState from "@/components/EmptyState";
 
 type Forum = Tables<"forums">;
 

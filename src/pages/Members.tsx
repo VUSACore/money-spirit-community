@@ -113,8 +113,7 @@ const Members = () => {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-20 space-y-4">
-          <Heart className="mx-auto h-12 w-12 text-accent/60" />
+        <EmptyState icon={Users} heading="Your community is growing" body="Members who have chosen to appear in the directory will show here." />
           <p className="text-lg font-body text-muted-foreground">The community is growing. You're among the first here.</p>
         </div>
       ) : (
