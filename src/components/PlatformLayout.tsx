@@ -246,10 +246,7 @@ const PlatformLayout = () => {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <NavLink to="/settings/notifications" className="flex justify-center py-2">
-                      <Bell size={18} style={{ color: 'rgba(160,139,98,0.60)', transition: 'color 0.15s ease' }}
-                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#EEC96E'; }}
-                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(160,139,98,0.60)'; }}
-                      />
+                      <Bell size={18} style={{ color: 'rgba(160,139,98,0.60)', transition: 'color 0.15s ease' }} />
                     </NavLink>
                   </TooltipTrigger>
                   <TooltipContent side="right" sideOffset={16} style={tooltipStyle}>Notifications</TooltipContent>
@@ -463,10 +460,7 @@ const PlatformLayout = () => {
                 <div className="flex items-center gap-4">
                   {profile?.user_id && (
                     <div className="relative">
-                      <Bell size={20} style={{ color: 'rgba(160,139,98,0.60)', cursor: 'pointer', transition: 'color 0.15s ease' }}
-                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#EEC96E'; }}
-                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(160,139,98,0.60)'; }}
-                      />
+                      <Bell size={20} style={{ color: 'rgba(160,139,98,0.60)', cursor: 'pointer', transition: 'color 0.15s ease' }} />
                     </div>
                   )}
                   <Link to="/profile"
