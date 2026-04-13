@@ -46,6 +46,16 @@ const Admin = () => {
   const [activeTab, setActiveTab] = useState<TabId>(tabIdFromParam(tabParam) || "users");
 
   useEffect(() => {
+    const t = tabIdFromParam(tabParam);
+    if (t && t !== activeTab) setActiveTab(t);
+  }, [tabParam]);
+
+  const handleTabChange = (id: TabId) => {
+    setActiveTab(id);
+    navigate(`/admin/${id === "fms" ? "fms-leads" : id}`, { replace: true });
+  };
+
+  useEffect(() => {
     const check = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { navigate("/login", { replace: true }); return; }
@@ -78,7 +88,7 @@ const Admin = () => {
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => handleTabChange(tab.id)}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-body transition-colors ${
                   active
                     ? "bg-accent/15 text-primary-foreground"
