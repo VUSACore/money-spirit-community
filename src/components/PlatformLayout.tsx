@@ -1,5 +1,6 @@
 import { useEffect, useState, createContext, useContext } from "react";
 import { useNavigate, Outlet, NavLink, useLocation, Link } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Compass,
