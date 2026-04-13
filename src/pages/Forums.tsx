@@ -46,8 +46,6 @@ const Forums = () => {
 
       {forums.length === 0 ? (
         <EmptyState icon={MessageSquare} heading="No discussions yet" body="Be the first to start a conversation in this forum." />
-          <p className="text-lg font-body text-muted-foreground">Start the conversation. Create the first thread.</p>
-        </div>
       ) : (
         <div className="space-y-3 animate-slide-up">
           {forums.map((forum) => (
