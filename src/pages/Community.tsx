@@ -88,12 +88,21 @@ const Community = () => {
     };
     init();
 
-    const channel = supabase.channel("posts_realtime").on("postgres_changes", { event: "*", schema: "public", table: "posts" }, () => {
-      supabase.auth.getSession().then(({ data: { session } }) => fetchPosts(session?.user?.id ?? null));
-    }).subscribe();
+    const channel = supabase
+      .channel('posts_realtime_' + Date.now())
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'posts' },
+        () => {
+          supabase.auth.getSession().then(({ data: { session } }) => fetchPosts(session?.user?.id ?? null));
+        }
+      )
+      .subscribe();
 
-    return () => { supabase.removeChannel(channel); };
-  }, [fetchPosts]);
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   const handlePost = async () => {
     if (!newContent.trim() || !userId) return;

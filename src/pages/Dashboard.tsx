@@ -75,10 +75,10 @@ const Dashboard = () => {
         className="ms-card-elevated animate-slide-up"
         style={{ borderLeft: `3px solid ${info.accent}` }}
       >
-        <h2 className="font-heading text-[28px] mb-1" style={{ color: info.accent }}>
+        <h2 className="font-heading mb-1" style={{ color: info.accent, fontSize: '28px', fontWeight: 500, opacity: 1 }}>
           {info.name}
         </h2>
-        <p className="text-sm font-body leading-[1.7]" style={{ color: "var(--ms-text-secondary)" }}>
+        <p className="font-body" style={{ color: '#94A3B8', fontSize: '14px', lineHeight: 1.7, opacity: 1 }}>
           {info.description}
         </p>
       </div>
