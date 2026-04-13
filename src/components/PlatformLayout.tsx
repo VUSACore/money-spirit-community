@@ -395,20 +395,20 @@ const PlatformLayout = () => {
           <main
             className="flex-1 min-h-screen overflow-y-auto pt-14 pb-16 md:pt-0 md:pb-0"
             style={{
-              marginLeft: undefined,
-              background: "var(--ms-base)",
+              background: "#0A0D14",
               color: "var(--ms-text-primary)",
-              transition: "margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
             }}
           >
-            {/* Desktop margin for sidebar */}
-            <div className="hidden md:block platform-content" style={{
-              marginLeft: sidebarExpanded ? 240 : 64,
-              transition: "margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
-            }}>
-              {/* Top header bar */}
+            <div
+              className="platform-content"
+              style={{
+                marginLeft: sidebarExpanded ? 240 : 64,
+                transition: "margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+              }}
+            >
+              {/* Desktop top header bar */}
               <div
-                className="sticky top-0 z-40 flex items-center justify-between px-6"
+                className="hidden md:flex sticky top-0 z-40 items-center justify-between px-6"
                 style={{
                   height: 56,
                   background: "var(--ms-surface-1)",
@@ -430,10 +430,6 @@ const PlatformLayout = () => {
                   </Link>
                 </div>
               </div>
-              <Outlet />
-            </div>
-            {/* Mobile content (no sidebar margin) */}
-            <div className="md:hidden platform-content">
               <Outlet />
             </div>
           </main>
