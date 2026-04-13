@@ -24,6 +24,8 @@ const CoursePage = lazy(() => import("./pages/CoursePage"));
 const LessonPage = lazy(() => import("./pages/LessonPage"));
 const Events = lazy(() => import("./pages/Events"));
 const Members = lazy(() => import("./pages/Members"));
+const Profile = lazy(() => import("./pages/Profile"));
+const MemberProfile = lazy(() => import("./pages/MemberProfile"));
 const Admin = lazy(() => import("./pages/Admin"));
 const Ethics = lazy(() => import("./pages/Ethics"));
 const Join = lazy(() => import("./pages/Join"));
@@ -67,6 +69,8 @@ const App = () => (
                   <Route path="/learn/:courseId/:lessonId" element={<LessonPage />} />
                   <Route path="/events" element={<Events />} />
                   <Route path="/members" element={<Members />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/members/:userId" element={<MemberProfile />} />
                   <Route path="/settings/notifications" element={<NotificationPreferences />} />
                 </Route>
 

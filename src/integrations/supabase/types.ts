@@ -882,13 +882,42 @@ export type Database = {
         }
         Relationships: []
       }
+      profile_photos: {
+        Row: {
+          caption: string | null
+          created_at: string | null
+          id: string
+          photo_url: string
+          user_id: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string | null
+          id?: string
+          photo_url: string
+          user_id: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string | null
+          id?: string
+          photo_url?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           archetype_score: Json | null
           avatar_url: string | null
           bio: string | null
+          country_of_origin: string | null
+          cover_url: string | null
           created_at: string
           display_name: string
+          employment_type: string | null
+          facebook_url: string | null
+          financial_goals: string[] | null
           fms_confidence: string | null
           fms_last_scored_at: string | null
           fms_lead_type: string | null
@@ -898,26 +927,45 @@ export type Database = {
           fms_score: number | null
           fms_signal_type: string | null
           id: string
+          instagram_url: string | null
+          interests: string[] | null
           is_legacy_enabled: boolean | null
           life_stage: string | null
+          linkedin_url: string | null
           location: string | null
+          marital_status: string | null
+          number_of_children: number | null
           onboarding_complete: boolean
           pathway_type: Database["public"]["Enums"]["pathway_type"] | null
+          post_count: number | null
+          profile_complete: boolean | null
           ritual_streak: number
           role: Database["public"]["Enums"]["user_role"]
           show_bio: boolean
+          show_children: boolean | null
           show_location: boolean
+          show_marital_status: boolean | null
+          show_social_links: boolean | null
+          snapchat_username: string | null
           suspended_at: string | null
           suspended_reason: string | null
+          tiktok_url: string | null
           user_id: string
           visible_in_directory: boolean
+          website_url: string | null
+          years_in_australia: string | null
         }
         Insert: {
           archetype_score?: Json | null
           avatar_url?: string | null
           bio?: string | null
+          country_of_origin?: string | null
+          cover_url?: string | null
           created_at?: string
           display_name: string
+          employment_type?: string | null
+          facebook_url?: string | null
+          financial_goals?: string[] | null
           fms_confidence?: string | null
           fms_last_scored_at?: string | null
           fms_lead_type?: string | null
@@ -927,26 +975,45 @@ export type Database = {
           fms_score?: number | null
           fms_signal_type?: string | null
           id?: string
+          instagram_url?: string | null
+          interests?: string[] | null
           is_legacy_enabled?: boolean | null
           life_stage?: string | null
+          linkedin_url?: string | null
           location?: string | null
+          marital_status?: string | null
+          number_of_children?: number | null
           onboarding_complete?: boolean
           pathway_type?: Database["public"]["Enums"]["pathway_type"] | null
+          post_count?: number | null
+          profile_complete?: boolean | null
           ritual_streak?: number
           role?: Database["public"]["Enums"]["user_role"]
           show_bio?: boolean
+          show_children?: boolean | null
           show_location?: boolean
+          show_marital_status?: boolean | null
+          show_social_links?: boolean | null
+          snapchat_username?: string | null
           suspended_at?: string | null
           suspended_reason?: string | null
+          tiktok_url?: string | null
           user_id: string
           visible_in_directory?: boolean
+          website_url?: string | null
+          years_in_australia?: string | null
         }
         Update: {
           archetype_score?: Json | null
           avatar_url?: string | null
           bio?: string | null
+          country_of_origin?: string | null
+          cover_url?: string | null
           created_at?: string
           display_name?: string
+          employment_type?: string | null
+          facebook_url?: string | null
+          financial_goals?: string[] | null
           fms_confidence?: string | null
           fms_last_scored_at?: string | null
           fms_lead_type?: string | null
@@ -956,19 +1023,33 @@ export type Database = {
           fms_score?: number | null
           fms_signal_type?: string | null
           id?: string
+          instagram_url?: string | null
+          interests?: string[] | null
           is_legacy_enabled?: boolean | null
           life_stage?: string | null
+          linkedin_url?: string | null
           location?: string | null
+          marital_status?: string | null
+          number_of_children?: number | null
           onboarding_complete?: boolean
           pathway_type?: Database["public"]["Enums"]["pathway_type"] | null
+          post_count?: number | null
+          profile_complete?: boolean | null
           ritual_streak?: number
           role?: Database["public"]["Enums"]["user_role"]
           show_bio?: boolean
+          show_children?: boolean | null
           show_location?: boolean
+          show_marital_status?: boolean | null
+          show_social_links?: boolean | null
+          snapchat_username?: string | null
           suspended_at?: string | null
           suspended_reason?: string | null
+          tiktok_url?: string | null
           user_id?: string
           visible_in_directory?: boolean
+          website_url?: string | null
+          years_in_australia?: string | null
         }
         Relationships: []
       }
