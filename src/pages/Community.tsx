@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import PostComposer from "@/components/PostComposer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Heart, PartyPopper, Sparkles, Zap } from "lucide-react";
+import EmptyState from "@/components/EmptyState";
 import { formatDistanceToNow } from "date-fns";
 import LotusIcon from "@/components/LotusIcon";
 import { createNotification } from "@/lib/actions/notifications";
@@ -194,12 +195,14 @@ const Community = () => {
         ))}
 
         {visiblePosts.length === 0 && (
-          <div className="text-center py-16 space-y-4">
-            <LotusIcon className="text-accent mx-auto" size={48} />
-            <p className="text-lg font-body text-muted-foreground">Be the first to share something with the community</p>
-            {!isGuest && (
-              <Button variant="gold" onClick={() => document.querySelector("textarea")?.focus()}>Write a post</Button>
-            )}
+          <EmptyState
+            icon={Sparkles}
+            iconClassName="text-accent"
+            heading="Be the first to share"
+            body="Your community is gathering. Start the conversation by sharing your first post or financial win."
+            ctaLabel={!isGuest ? "Share Your First Post" : undefined}
+            onCta={!isGuest ? () => document.querySelector("textarea")?.focus() : undefined}
+          />
           </div>
         )}
 

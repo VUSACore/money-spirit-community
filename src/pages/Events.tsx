@@ -131,9 +131,7 @@ const Events = () => {
       <p className="text-muted-foreground font-body mb-8">Workshops, circles and gatherings for the community.</p>
 
       {events.length === 0 ? (
-        <div className="text-center py-16 space-y-4">
-          <CalendarDays className="mx-auto h-12 w-12 text-accent/60" />
-          <p className="text-lg font-body text-muted-foreground">No events scheduled yet. Watch this space.</p>
+        <EmptyState icon={CalendarDays} heading="No upcoming events" body="Check back soon. New events and retreats are added regularly." />
         </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2">
