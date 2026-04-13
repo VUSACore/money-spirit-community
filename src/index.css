@@ -196,6 +196,28 @@
   }
 }
 
+/* Platform content text visibility on dark backgrounds */
+.platform-content {
+  color: #F1F5F9;
+}
+.platform-content h1,
+.platform-content h2,
+.platform-content h3,
+.platform-content h4 {
+  color: #F1F5F9;
+}
+.platform-content p,
+.platform-content span,
+.platform-content label,
+.platform-content li {
+  color: #94A3B8;
+}
+.platform-content .ms-card,
+.platform-content .ms-card-elevated,
+.platform-content .ms-card-interactive {
+  background: #111827;
+}
+
 @keyframes streak-glow {
   0%, 100% {
     text-shadow: 0 0 8px rgba(245, 200, 66, 0.7),

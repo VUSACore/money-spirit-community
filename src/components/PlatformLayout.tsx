@@ -402,7 +402,7 @@ const PlatformLayout = () => {
             }}
           >
             {/* Desktop margin for sidebar */}
-            <div className="hidden md:block" style={{
+            <div className="hidden md:block platform-content" style={{
               marginLeft: sidebarExpanded ? 240 : 64,
               transition: "margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
             }}>
@@ -415,13 +415,13 @@ const PlatformLayout = () => {
                   borderBottom: "1px solid var(--ms-border)",
                 }}
               >
-                <h2 className="font-heading text-lg" style={{ color: "var(--ms-text-primary)" }}>
+                <h2 className="font-heading text-lg" style={{ color: "#F1F5F9" }}>
                   {pageTitle}
                 </h2>
                 <div className="flex items-center gap-4">
                   {profile?.user_id && (
                     <div className="relative">
-                      <Bell size={20} style={{ color: "var(--ms-text-secondary)" }} />
+                      <Bell size={20} style={{ color: "#94A3B8" }} />
                     </div>
                   )}
                   <div
@@ -435,7 +435,7 @@ const PlatformLayout = () => {
               <Outlet />
             </div>
             {/* Mobile content (no sidebar margin) */}
-            <div className="md:hidden">
+            <div className="md:hidden platform-content">
               <Outlet />
             </div>
           </main>
