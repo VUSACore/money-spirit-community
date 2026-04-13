@@ -46,6 +46,16 @@ const Admin = () => {
   const [activeTab, setActiveTab] = useState<TabId>(tabIdFromParam(tabParam) || "users");
 
   useEffect(() => {
+    const t = tabIdFromParam(tabParam);
+    if (t && t !== activeTab) setActiveTab(t);
+  }, [tabParam]);
+
+  const handleTabChange = (id: TabId) => {
+    setActiveTab(id);
+    navigate(`/admin/${id === "fms" ? "fms-leads" : id}`, { replace: true });
+  };
+
+  useEffect(() => {
     const check = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { navigate("/login", { replace: true }); return; }
