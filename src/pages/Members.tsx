@@ -1,43 +1,38 @@
 import { useEffect, useState, useMemo } from "react";
 import { format } from "date-fns";
-import { Search, MapPin, Flame, Users } from "lucide-react";
+import { Search, MapPin, Flame, Users, Globe } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
 import EmptyState from "@/components/EmptyState";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import BadgePreview from "@/components/badges/BadgePreview";
-import BadgeGrid from "@/components/badges/BadgeGrid";
-
-const archetypeAccent: Record<string, string> = {
-  giver: "#E8845C", keeper: "#5B8DB8", rebel: "#9B59B6", seeker: "#27AE8F", achiever: "#C9941E",
-};
-const archetypeName: Record<string, string> = {
-  giver: "The Giver", keeper: "The Keeper", rebel: "The Rebel", seeker: "The Seeker", achiever: "The Achiever",
-};
+import { archetypeAccent, archetypeName, yearsLabel } from "@/lib/profileConstants";
 
 interface MemberProfile {
   id: string; display_name: string; avatar_url: string | null; bio: string | null;
   location: string | null; show_location: boolean; show_bio: boolean; ritual_streak: number;
   created_at: string; pathway_type: string | null; life_stage: string | null;
+  country_of_origin: string | null; years_in_australia: string | null;
+  financial_goals: string[] | null; user_id: string;
 }
 
 const getInitials = (name: string) =>
   name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2);
 
 const Members = () => {
+  const navigate = useNavigate();
   const [members, setMembers] = useState<MemberProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [locationFilter, setLocationFilter] = useState("all");
-  const [selected, setSelected] = useState<MemberProfile | null>(null);
 
   useEffect(() => {
     const load = async () => {
       const { data } = await supabase
         .from("profiles")
-        .select("id, display_name, avatar_url, bio, location, show_location, show_bio, ritual_streak, created_at, pathway_type, life_stage")
+        .select("id, user_id, display_name, avatar_url, bio, location, show_location, show_bio, ritual_streak, created_at, pathway_type, life_stage, country_of_origin, years_in_australia, financial_goals")
         .eq("visible_in_directory", true)
         .order("display_name", { ascending: true });
       setMembers((data as MemberProfile[]) ?? []);
@@ -108,7 +103,11 @@ const Members = () => {
       ) : (
         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((member) => (
-            <button key={member.id} onClick={() => setSelected(member)} className="ms-card-interactive text-left flex flex-col gap-3 animate-fade-in">
+            <button
+              key={member.id}
+              onClick={() => navigate(`/members/${member.user_id}`)}
+              className="ms-card-interactive text-left flex flex-col gap-3 animate-fade-in"
+            >
               <div className="flex items-start gap-4">
                 {member.avatar_url ? (
                   <img src={member.avatar_url} alt={member.display_name} className="h-14 w-14 rounded-full object-cover flex-shrink-0" />
@@ -137,57 +136,38 @@ const Members = () => {
                       {archetypeName[member.pathway_type] ?? member.pathway_type}
                     </span>
                   )}
-                  {member.location && member.show_location && (
-                    <p className="flex items-center gap-1 text-xs font-body mt-1" style={{ color: "var(--ms-text-muted)" }}><MapPin className="h-3 w-3" /> {member.location}</p>
+                  {member.country_of_origin && (
+                    <p className="flex items-center gap-1 text-xs font-body mt-1" style={{ color: "var(--ms-text-muted)" }}>
+                      <Globe className="h-3 w-3" /> {member.country_of_origin}
+                    </p>
                   )}
-                  <p className="text-xs font-body mt-1" style={{ color: "var(--ms-text-muted)" }}>Member since {format(new Date(member.created_at), "MMMM yyyy")}</p>
+                  {member.years_in_australia && (
+                    <p className="flex items-center gap-1 text-xs font-body mt-1" style={{ color: "var(--ms-text-muted)" }}>
+                      <MapPin className="h-3 w-3" /> {yearsLabel(member.years_in_australia)}
+                    </p>
+                  )}
                 </div>
               </div>
-              {member.bio && member.show_bio && <p className="text-sm font-body line-clamp-2" style={{ color: "var(--ms-text-secondary)" }}>{member.bio}</p>}
+              {member.financial_goals && member.financial_goals.length > 0 && (
+                <div className="flex flex-wrap gap-1">
+                  {member.financial_goals.slice(0, 2).map((goal) => (
+                    <span key={goal} className="text-[10px] font-body px-2 py-0.5 rounded-full" style={{ background: "rgba(201,148,30,0.12)", color: "#C9941E" }}>
+                      {goal}
+                    </span>
+                  ))}
+                  {member.financial_goals.length > 2 && (
+                    <span className="text-[10px] font-body px-2 py-0.5 rounded-full" style={{ color: "var(--ms-text-muted)" }}>
+                      +{member.financial_goals.length - 2}
+                    </span>
+                  )}
+                </div>
+              )}
               <BadgePreview userId={member.id} />
+              <span className="text-xs font-body font-medium mt-auto" style={{ color: "#C9941E" }}>View Profile →</span>
             </button>
           ))}
         </div>
       )}
-
-      <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
-        <DialogContent className="sm:max-w-md" style={{ background: "var(--ms-surface-1)", border: "1px solid var(--ms-border-active)", color: "var(--ms-text-primary)" }}>
-          <DialogHeader><DialogTitle className="font-heading" style={{ color: "var(--ms-text-primary)" }}>{selected?.display_name}</DialogTitle></DialogHeader>
-          {selected && (
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                {selected.avatar_url ? (
-                  <img src={selected.avatar_url} alt={selected.display_name} className="h-20 w-20 rounded-full object-cover" />
-                ) : (
-                  <div className="h-20 w-20 rounded-full flex items-center justify-center" style={{ background: "#C9941E" }}>
-                    <span className="font-heading font-bold text-2xl" style={{ color: "#0A0D14" }}>{getInitials(selected.display_name)}</span>
-                  </div>
-                )}
-                <div>
-                  <h2 className="font-heading text-xl" style={{ color: "var(--ms-text-primary)" }}>{selected.display_name}</h2>
-                  {selected.location && selected.show_location && (
-                    <p className="flex items-center gap-1 text-sm font-body" style={{ color: "var(--ms-text-secondary)" }}><MapPin className="h-3.5 w-3.5" /> {selected.location}</p>
-                  )}
-                  <p className="text-xs font-body mt-0.5" style={{ color: "var(--ms-text-muted)" }}>Member since {format(new Date(selected.created_at), "MMMM yyyy")}</p>
-                  {selected.ritual_streak > 0 && (
-                    <span className="inline-flex items-center gap-1 text-sm font-body font-semibold mt-1" style={{ color: "#F5C842" }}><Flame className="h-4 w-4" /> {selected.ritual_streak}-day streak</span>
-                  )}
-                  {selected.pathway_type && (
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: archetypeAccent[selected.pathway_type] ?? "#C9941E" }} />
-                      <span className="text-sm font-body font-medium" style={{ color: archetypeAccent[selected.pathway_type] ?? "#C9941E" }}>
-                        {archetypeName[selected.pathway_type] ?? selected.pathway_type}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </div>
-              {selected.bio && selected.show_bio && <p className="text-sm font-body leading-relaxed" style={{ color: "var(--ms-text-secondary)" }}>{selected.bio}</p>}
-              <BadgeGrid userId={selected.id} />
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

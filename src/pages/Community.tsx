@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/components/PlatformLayout";
@@ -38,6 +39,7 @@ const InitialsAvatar = ({ name }: { name: string }) => {
 };
 
 const Community = () => {
+  const navigate = useNavigate();
   const profile = useProfile();
   const [posts, setPosts] = useState<PostWithAuthor[]>([]);
   const [newContent, setNewContent] = useState("");
@@ -172,13 +174,15 @@ const Community = () => {
           >
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                {post.author?.avatar_url ? (
-                  <img src={post.author.avatar_url} alt={post.author.display_name} className="w-10 h-10 rounded-full object-cover" />
-                ) : (
-                  <InitialsAvatar name={post.author?.display_name ?? "?"} />
-                )}
+                <button onClick={(e) => { e.stopPropagation(); navigate(`/members/${post.author_id}`); }} className="shrink-0">
+                  {post.author?.avatar_url ? (
+                    <img src={post.author.avatar_url} alt={post.author.display_name} className="w-10 h-10 rounded-full object-cover hover:ring-2 hover:ring-[#C9941E] transition-all" />
+                  ) : (
+                    <InitialsAvatar name={post.author?.display_name ?? "?"} />
+                  )}
+                </button>
                 <div>
-                  <p className="text-sm font-body font-medium" style={{ color: "var(--ms-text-primary)" }}>{post.author?.display_name ?? "Unknown"}</p>
+                  <button onClick={(e) => { e.stopPropagation(); navigate(`/members/${post.author_id}`); }} className="text-sm font-body font-medium hover:underline" style={{ color: "var(--ms-text-primary)" }}>{post.author?.display_name ?? "Unknown"}</button>
                   <p className="text-xs font-body" style={{ color: "var(--ms-text-muted)" }}>{formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}</p>
                 </div>
                 {post.pinned && (
