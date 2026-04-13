@@ -149,7 +149,7 @@ const AdminCourses = () => {
         </Button>
       </div>
 
-      <div className="rounded-xl border border-border overflow-hidden">
+      <div className="ms-card rounded-xl overflow-hidden p-0">
         <Table>
           <TableHeader>
             <TableRow>

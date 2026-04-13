@@ -155,7 +155,7 @@ const AdminContent = () => {
       ) : (
         <div className="space-y-4">
           {filtered.map(r => (
-            <div key={r.id} className="rounded-xl border border-border bg-card p-5 space-y-3">
+            <div key={r.id} className="ms-card space-y-3">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <span className="px-2 py-0.5 rounded text-[11px] font-body bg-muted text-muted-foreground uppercase">
