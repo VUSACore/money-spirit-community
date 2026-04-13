@@ -197,26 +197,46 @@
   }
 }
 
-/* Platform content text visibility on dark backgrounds */
+/* Platform content — force dark theme on authenticated pages */
 .platform-content {
-  color: #F1F5F9;
+  background-color: #0A0D14 !important;
+  color: #F1F5F9 !important;
+}
+.platform-content * {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.platform-content button,
+.platform-content .btn-gold {
+  border-color: transparent;
 }
 .platform-content h1,
 .platform-content h2,
 .platform-content h3,
 .platform-content h4 {
-  color: #F1F5F9;
+  color: #F1F5F9 !important;
 }
 .platform-content p,
-.platform-content span,
+.platform-content span:not([class*="badge"]):not([class*="pill"]):not([class*="tag"]),
 .platform-content label,
 .platform-content li {
   color: #94A3B8;
 }
 .platform-content .ms-card,
-.platform-content .ms-card-elevated,
+.platform-content .ms-card-metric {
+  background-color: #111827 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 12px !important;
+  padding: 20px 24px !important;
+}
+.platform-content .ms-card-elevated {
+  background-color: #1C2333 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 16px !important;
+  padding: 24px 28px !important;
+}
 .platform-content .ms-card-interactive {
-  background: #111827;
+  background-color: #111827 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
 @keyframes streak-glow {
