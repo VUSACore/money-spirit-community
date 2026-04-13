@@ -16,40 +16,16 @@ const Learn = () => {
   const { data: courses, isLoading } = useQuery({
     queryKey: ["published_courses"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("courses")
-        .select("id, title, description, thumbnail_url")
-        .eq("published", true)
-        .order("created_at", { ascending: false });
+      const { data, error } = await supabase.from("courses").select("id, title, description, thumbnail_url").eq("published", true).order("created_at", { ascending: false });
       if (error) throw error;
-
       const ids = data.map((c) => c.id);
-
-      const { data: lessons } = await supabase
-        .from("lessons")
-        .select("course_id")
-        .in("course_id", ids);
-
+      const { data: lessons } = await supabase.from("lessons").select("course_id").in("course_id", ids);
       const lessonCountMap: Record<string, number> = {};
-      lessons?.forEach((l) => {
-        lessonCountMap[l.course_id] = (lessonCountMap[l.course_id] || 0) + 1;
-      });
-
-      const { data: enrollments } = await supabase
-        .from("course_enrollments")
-        .select("course_id")
-        .in("course_id", ids);
-
+      lessons?.forEach((l) => { lessonCountMap[l.course_id] = (lessonCountMap[l.course_id] || 0) + 1; });
+      const { data: enrollments } = await supabase.from("course_enrollments").select("course_id").in("course_id", ids);
       const enrolledCountMap: Record<string, number> = {};
-      enrollments?.forEach((e) => {
-        enrolledCountMap[e.course_id] = (enrolledCountMap[e.course_id] || 0) + 1;
-      });
-
-      return data.map((c) => ({
-        ...c,
-        lessonCount: lessonCountMap[c.id] || 0,
-        enrolledCount: enrolledCountMap[c.id] || 0,
-      }));
+      enrollments?.forEach((e) => { enrolledCountMap[e.course_id] = (enrolledCountMap[e.course_id] || 0) + 1; });
+      return data.map((c) => ({ ...c, lessonCount: lessonCountMap[c.id] || 0, enrolledCount: enrolledCountMap[c.id] || 0 }));
     },
   });
 
@@ -57,33 +33,26 @@ const Learn = () => {
     queryKey: ["my_enrollments", userId],
     enabled: !!userId,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("course_enrollments")
-        .select("course_id")
-        .eq("user_id", userId!);
+      const { data, error } = await supabase.from("course_enrollments").select("course_id").eq("user_id", userId!);
       if (error) throw error;
       return new Set(data.map((e) => e.course_id));
     },
   });
 
   return (
-    <div className="p-6 md:p-8 animate-fade-in">
-      <SEOHead title="Courses & Learning — Money Spirit" description="Grow your financial knowledge with Money Spirit courses designed for migrant women." />
-      <h1 className="font-heading text-3xl font-normal mb-1" style={{ color: "var(--ms-text-primary)" }}>Learn</h1>
-      <p className="font-body text-base mb-6" style={{ color: "var(--ms-text-secondary)" }}>Explore courses and resources.</p>
+    <div className="p-6 md:p-8 animate-glass">
+      <SEOHead title="Courses & Learning — Money Spirit" />
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: 'var(--text-1)', letterSpacing: '-0.03em', marginBottom: '4px' }}>Learn</h1>
+      <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-3)', marginBottom: '24px' }}>Explore courses and resources.</p>
 
       {isLoading ? (
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="animate-pulse h-64 rounded-lg" style={{ background: "var(--ms-surface-1)" }} />
+            <div key={i} className="animate-pulse h-64 rounded-xl" style={{ background: 'var(--glass-1)' }} />
           ))}
         </div>
       ) : (
-        <CourseGrid
-          courses={courses || []}
-          enrolledIds={enrollments ?? new Set()}
-          userId={userId}
-        />
+        <CourseGrid courses={courses || []} enrolledIds={enrollments ?? new Set()} userId={userId} />
       )}
     </div>
   );
