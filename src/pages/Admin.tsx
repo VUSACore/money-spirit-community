@@ -69,29 +69,37 @@ const Admin = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--ms-base)" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg-void)' }}>
         <LotusIcon className="text-gold animate-pulse" size={48} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex" style={{ background: "var(--ms-base)" }}>
+    <div className="min-h-screen flex platform-bg" style={{
+      background: `
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201, 148, 30, 0.08) 0%, transparent 60%),
+        linear-gradient(180deg, #060912 0%, #080D1A 40%, #0C1221 100%)
+      `,
+    }}>
       <aside
         onMouseEnter={() => setSidebarExpanded(true)}
         onMouseLeave={() => setSidebarExpanded(false)}
         className="flex flex-col fixed inset-y-0 left-0 z-30 overflow-hidden"
         style={{
           width: sidebarExpanded ? 240 : 64,
-          background: "var(--ms-surface-1)",
-          borderRight: "1px solid var(--ms-border)",
-          transition: "width 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+          background: 'rgba(8, 13, 26, 0.7)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          borderRight: '1px solid rgba(255,255,255,0.06)',
+          boxShadow: 'inset -1px 0 0 rgba(255,255,255,0.04), 4px 0 24px rgba(0,0,0,0.3)',
+          transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
         <div className="px-5 py-5 flex items-center gap-2.5 min-h-[56px]">
           <LotusIcon className="text-gold shrink-0" size={24} />
           {sidebarExpanded && (
-            <span className="font-heading text-lg tracking-wide whitespace-nowrap" style={{ color: "#C9941E" }}>Admin</span>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 400, color: 'var(--gold-base)', whiteSpace: 'nowrap' }}>Admin</span>
           )}
         </div>
 
@@ -102,39 +110,41 @@ const Admin = () => {
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className="w-full flex items-center gap-3 rounded-lg text-[13px] font-body font-medium transition-colors"
+                className="w-full flex items-center gap-3 transition-colors"
                 style={{
-                  padding: sidebarExpanded ? "10px 16px" : "10px 0",
-                  justifyContent: sidebarExpanded ? "flex-start" : "center",
+                  padding: sidebarExpanded ? '10px 16px' : '10px 0',
+                  justifyContent: sidebarExpanded ? 'flex-start' : 'center',
                   height: 44,
-                  background: active ? "var(--ms-surface-3)" : "transparent",
-                  borderLeft: active && sidebarExpanded ? "2px solid #F5C842" : "2px solid transparent",
-                  color: active ? "#F5C842" : "var(--ms-text-muted)",
+                  fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500,
+                  ...(active ? {
+                    background: 'rgba(201, 148, 30, 0.12)',
+                    borderRadius: '12px',
+                    borderLeft: '2px solid rgba(245,200,66,0.6)',
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)',
+                    color: 'var(--gold-bright)',
+                  } : {
+                    background: 'transparent',
+                    borderRadius: '12px',
+                    borderLeft: '2px solid transparent',
+                    color: 'var(--text-3)',
+                  }),
                 }}
-                onMouseEnter={(e) => {
-                  if (!active) (e.currentTarget as HTMLElement).style.background = "var(--ms-surface-2)";
-                }}
-                onMouseLeave={(e) => {
-                  if (!active) (e.currentTarget as HTMLElement).style.background = "transparent";
-                }}
+                onMouseEnter={(e) => { if (!active) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
+                onMouseLeave={(e) => { if (!active) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
               >
-                <tab.icon size={18} className="shrink-0" style={{ color: active ? "#F5C842" : "var(--ms-text-muted)" }} />
+                <tab.icon size={18} className="shrink-0" style={{ color: active ? 'var(--gold-bright)' : 'var(--text-3)' }} />
                 {sidebarExpanded && <span className="whitespace-nowrap">{tab.label}</span>}
               </button>
             );
           })}
         </nav>
 
-        <div className="px-3 py-4" style={{ borderTop: "1px solid var(--ms-border)" }}>
-          {sidebarExpanded ? (
-            <button
-              onClick={() => navigate("/dashboard")}
-              className="text-xs font-body transition-colors"
-              style={{ color: "var(--ms-text-muted)" }}
-            >
+        <div className="px-3 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+          {sidebarExpanded && (
+            <button onClick={() => navigate("/dashboard")} style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: 'var(--text-3)' }} className="transition-colors">
               ← Back to platform
             </button>
-          ) : null}
+          )}
         </div>
       </aside>
 
@@ -142,12 +152,11 @@ const Admin = () => {
         className="flex-1 min-h-screen overflow-y-auto p-8"
         style={{
           marginLeft: sidebarExpanded ? 240 : 64,
-          background: "var(--ms-base)",
-          transition: "margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+          transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
-        <div className="md:hidden rounded-lg px-4 py-3 mb-6" style={{ background: "var(--ms-surface-1)", border: "1px solid var(--ms-border)" }}>
-          <p className="text-sm font-body" style={{ color: "var(--ms-text-secondary)" }}>The admin panel is best viewed on desktop.</p>
+        <div className="md:hidden glass-card mb-6">
+          <p style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: 'var(--text-2)' }}>The admin panel is best viewed on desktop.</p>
         </div>
         {activeTab === "users" && <AdminUsers />}
         {activeTab === "content" && <AdminContent />}
