@@ -63,7 +63,7 @@ const Index = () => {
             Money Spirit provides financial education and community — not financial advice.
           </p>
           <p className="text-xs font-body text-muted-foreground/60 mt-2">
-            © 2025 Money Spirit ·{" "}
+            © 2026 Money Spirit ·{" "}
             <Link to="/ethics" className="hover:text-foreground transition-colors underline underline-offset-2">
               Ethics &amp; Education Policy
             </Link>{" "}
