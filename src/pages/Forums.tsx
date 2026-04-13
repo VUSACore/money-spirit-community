@@ -45,8 +45,7 @@ const Forums = () => {
       </div>
 
       {forums.length === 0 ? (
-        <div className="text-center py-16 space-y-4">
-          <MessageSquare className="mx-auto h-12 w-12 text-accent/60" />
+        <EmptyState icon={MessageSquare} heading="No discussions yet" body="Be the first to start a conversation in this forum." />
           <p className="text-lg font-body text-muted-foreground">Start the conversation. Create the first thread.</p>
         </div>
       ) : (

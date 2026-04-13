@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { Tables } from "@/integrations/supabase/types";
 import EducationBanner from "@/components/EducationBanner";
 import { sendTicketConfirmation } from "@/lib/email/emailService";
+import EmptyState from "@/components/EmptyState";
 
 type Event = Tables<"events">;
 
