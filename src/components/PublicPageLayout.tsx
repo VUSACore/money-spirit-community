@@ -33,7 +33,7 @@ const PublicPageLayout = ({ children }: PublicPageLayoutProps) => (
           <span className="text-border">·</span>
           <Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
         </nav>
-        <p className="text-xs font-body text-muted-foreground/60">© 2025 Money Spirit</p>
+        <p className="text-xs font-body text-muted-foreground/60"><p className="text-xs font-body text-muted-foreground/60">© 2026 Money Spirit</p></p>
       </div>
     </footer>
   </div>

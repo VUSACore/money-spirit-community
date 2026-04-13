@@ -71,6 +71,7 @@ const App = () => (
                 </Route>
 
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/admin/:tabId" element={<Admin />} />
                 <Route path="/join" element={<Join />} />
                 <Route path="/ethics" element={<Ethics />} />
                 <Route path="/privacy" element={<Privacy />} />

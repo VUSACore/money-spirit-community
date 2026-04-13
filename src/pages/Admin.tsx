@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Users, Flame, CalendarDays, DollarSign, Brain, Target, FileText, BookOpen, Settings, ClipboardList } from "lucide-react";
 import LotusIcon from "@/components/LotusIcon";
