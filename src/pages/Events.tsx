@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { CalendarDays, MapPin, Globe, Ticket } from "lucide-react";
+import { CalendarDays, MapPin, Globe, Ticket, Sparkles } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -78,13 +78,13 @@ const Events = () => {
   if (loading) {
     return (
       <div className="p-8 max-w-5xl mx-auto">
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: 'var(--text-1)', letterSpacing: '-0.03em', marginBottom: '8px' }}>Events</h1>
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-3)', marginBottom: '32px' }}>Workshops, circles and gatherings for the community.</p>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em', marginBottom: '8px' }}>Events</h1>
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', marginBottom: '32px' }}>Workshops, circles and gatherings for the community.</p>
         <div className="grid gap-6 sm:grid-cols-2">
           {[1, 2].map((i) => (
-            <div key={i} className="glass-card overflow-hidden p-0">
-              <Skeleton className="h-40 w-full rounded-none" style={{ background: 'rgba(255,255,255,0.06)' }} />
-              <div className="p-5 space-y-3"><Skeleton className="h-6 w-3/4" style={{ background: 'rgba(255,255,255,0.06)' }} /></div>
+            <div key={i} className="ss-card overflow-hidden p-0">
+              <Skeleton className="h-40 w-full rounded-none" style={{ background: 'rgba(196,151,58,0.06)' }} />
+              <div className="p-5 space-y-3"><Skeleton className="h-6 w-3/4" style={{ background: 'rgba(196,151,58,0.06)' }} /></div>
             </div>
           ))}
         </div>
@@ -93,11 +93,11 @@ const Events = () => {
   }
 
   return (
-    <div className="p-8 max-w-5xl mx-auto animate-glass">
+    <div className="p-8 max-w-5xl mx-auto ss-appear">
       <SEOHead title="Events — Money Spirit" />
       <EducationBanner />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: 'var(--text-1)', letterSpacing: '-0.03em', marginBottom: '8px' }}>Events</h1>
-      <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-3)', marginBottom: '32px' }}>Workshops, circles and gatherings for the community.</p>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em', marginBottom: '8px' }}>Events</h1>
+      <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', marginBottom: '32px' }}>Workshops, circles and gatherings for the community.</p>
 
       {events.length === 0 ? (
         <EmptyState icon={CalendarDays} heading="No upcoming events" body="Check back soon." />
@@ -108,36 +108,36 @@ const Events = () => {
             const hasInterest = interestedIds.has(event.id);
             const isFree = event.price_pence === 0;
             return (
-              <div key={event.id} className="glass-interactive overflow-hidden p-0">
+              <div key={event.id} className="ss-interactive overflow-hidden p-0">
                 <div className="h-40 flex items-center justify-center" style={{
-                  background: 'linear-gradient(135deg, rgba(27,75,138,0.3), rgba(8,13,26,0.8))',
-                  borderRadius: '12px 12px 0 0',
+                  background: 'linear-gradient(145deg, rgba(17,32,54,0.90), rgba(6,12,24,0.95))',
+                  borderRadius: '14px 14px 0 0',
                 }}>
-                  <CalendarDays className="h-12 w-12" style={{ color: 'rgba(255,255,255,0.1)' }} />
+                  <Sparkles className="h-8 w-8" style={{ color: 'rgba(196,151,58,0.25)' }} />
                 </div>
                 <div className="p-5 space-y-3">
-                  <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 400, color: 'var(--text-1)' }}>{event.title}</h2>
-                  <div className="flex items-center gap-2" style={{ fontSize: '13px', fontFamily: 'var(--font-body)', color: 'var(--text-3)' }}>
-                    <CalendarDays className="h-4 w-4" style={{ color: 'var(--gold-base)' }} />
+                  <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#F2EAD8' }}>{event.title}</h2>
+                  <div className="flex items-center gap-2" style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#A08B62' }}>
+                    <CalendarDays className="h-4 w-4" style={{ color: '#C4973A' }} />
                     {format(new Date(event.event_date), "EEEE d MMMM yyyy")}
                   </div>
-                  <div className="flex items-center gap-2" style={{ fontSize: '13px', fontFamily: 'var(--font-body)', color: 'var(--text-3)' }}>
-                    {event.is_virtual ? (<><Globe className="h-4 w-4" style={{ color: 'var(--gold-base)' }} />Online event</>) : (<><MapPin className="h-4 w-4" style={{ color: 'var(--gold-base)' }} />{event.location ?? "Location TBA"}</>)}
+                  <div className="flex items-center gap-2" style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#A08B62' }}>
+                    {event.is_virtual ? (<><Globe className="h-4 w-4" style={{ color: '#C4973A' }} />Online event</>) : (<><MapPin className="h-4 w-4" style={{ color: '#C4973A' }} />{event.location ?? "Location TBA"}</>)}
                   </div>
                   <div className="flex items-center justify-between pt-2">
                     <span style={{
-                      background: 'rgba(201,148,30,0.12)', border: '1px solid rgba(201,148,30,0.25)',
-                      borderRadius: 'var(--r-full)', padding: '4px 12px',
-                      fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500, color: 'var(--text-gold)',
+                      background: 'rgba(196,151,58,0.11)', border: '1px solid rgba(196,151,58,0.25)',
+                      borderRadius: 'var(--r-pill)', padding: '4px 12px',
+                      fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500, color: '#EEC96E',
                     }}>{formatPrice(event.price_pence)}</span>
                     {hasTicket ? (
-                      <span className="inline-flex items-center gap-1.5" style={{ fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500, color: 'var(--text-gold)' }}>
+                      <span className="inline-flex items-center gap-1.5" style={{ fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500, color: '#EEC96E' }}>
                         <Ticket className="h-4 w-4" /> Ticket confirmed
                       </span>
                     ) : hasInterest ? (
-                      <span style={{ fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500, color: 'var(--text-gold)' }}>✓ Interest registered</span>
+                      <span style={{ fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500, color: '#EEC96E' }}>✓ Interest registered</span>
                     ) : (
-                      <Button variant="gold" size="sm" disabled={claimingId === event.id} onClick={() => handleGetTicket(event)}>
+                      <Button variant="gold" size="sm" disabled={claimingId === event.id} onClick={() => handleGetTicket(event)} className="btn-gold">
                         {claimingId === event.id ? "Submitting…" : isFree ? "Get your ticket" : "Register your interest"}
                       </Button>
                     )}

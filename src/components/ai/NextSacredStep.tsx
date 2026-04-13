@@ -9,11 +9,11 @@ type Profile = Tables<"profiles">;
 const CACHE_TTL = 5 * 60 * 1000;
 
 const archetypeDisplay: Record<string, { name: string; accent: string }> = {
-  giver: { name: "The Giver", accent: "#E8845C" },
-  keeper: { name: "The Keeper", accent: "#5B8DB8" },
-  rebel: { name: "The Rebel", accent: "#9B59B6" },
-  seeker: { name: "The Seeker", accent: "#27AE8F" },
-  achiever: { name: "The Achiever", accent: "#C9941E" },
+  giver: { name: "The Giver", accent: "#D4856A" },
+  keeper: { name: "The Keeper", accent: "#6B9EC4" },
+  rebel: { name: "The Rebel", accent: "#A87CC4" },
+  seeker: { name: "The Seeker", accent: "#4DB89A" },
+  achiever: { name: "The Achiever", accent: "#C4973A" },
 };
 
 interface Props {
@@ -57,45 +57,51 @@ const NextSacredStep = ({ userId, profile }: Props) => {
   const info = archetypeDisplay[pathway] ?? archetypeDisplay.keeper;
 
   return (
-    <div className="glass-gold">
-      {/* Top row */}
+    <div className="ss-sacred">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Sparkles size={16} style={{ color: 'var(--gold-bright)' }} />
+          <Sparkles size={16} style={{ color: '#EEC96E' }} />
           <span style={{
-            fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 600,
-            letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--gold-mid)',
+            fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 600,
+            letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C4973A',
           }}>
             Your Next Sacred Step
           </span>
         </div>
-        <button onClick={() => fetchStep(true)} disabled={loading} className="transition-colors disabled:opacity-50" style={{ color: 'var(--text-3)' }}>
+        <button
+          onClick={() => fetchStep(true)}
+          disabled={loading}
+          className="transition-colors disabled:opacity-50"
+          style={{ color: '#5C4E34' }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#C4973A'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#5C4E34'; }}
+        >
           <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
         </button>
       </div>
 
       {loading && !text ? (
         <div className="space-y-3">
-          <div className="h-4 w-full rounded animate-pulse" style={{ background: 'rgba(255,255,255,0.06)' }} />
-          <div className="h-4 w-3/4 rounded animate-pulse" style={{ background: 'rgba(255,255,255,0.06)' }} />
+          <div className="h-4 w-full rounded animate-pulse" style={{ background: 'rgba(196,151,58,0.08)' }} />
+          <div className="h-4 w-3/4 rounded animate-pulse" style={{ background: 'rgba(196,151,58,0.08)' }} />
         </div>
       ) : (
         <>
           <p style={{
-            fontFamily: 'var(--font-display)', fontSize: '18px', fontStyle: 'italic',
-            fontWeight: 300, color: 'var(--text-1)', lineHeight: 1.7,
+            fontFamily: 'var(--font-display)', fontSize: '20px', fontStyle: 'italic',
+            fontWeight: 300, color: '#F2EAD8', lineHeight: 1.75, letterSpacing: '-0.01em',
           }}>
             {text}
           </p>
-          <div className="mt-4 pt-3" style={{ borderTop: '1px solid var(--border-glass)' }}>
+          <div className="mt-4 pt-3" style={{ borderTop: '1px solid rgba(196,151,58,0.12)' }}>
             <span style={{
               display: 'inline-block',
-              background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.10)',
-              borderRadius: 'var(--r-full)',
-              padding: '4px 12px',
-              fontFamily: 'var(--font-body)', fontSize: '11px',
-              color: 'var(--text-gold)',
+              background: 'rgba(196,151,58,0.10)',
+              border: '1px solid rgba(196,151,58,0.25)',
+              borderRadius: 'var(--r-pill)',
+              padding: '4px 14px',
+              fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 500,
+              color: '#C4973A',
             }}>
               {info.name}
             </span>

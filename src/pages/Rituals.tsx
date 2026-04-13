@@ -68,55 +68,55 @@ const Rituals = () => {
   if (loading) {
     return (
       <div className="p-8 flex items-center justify-center min-h-[50vh]">
-        <p style={{ fontFamily: 'var(--font-body)', color: 'var(--text-3)' }}>Loading…</p>
+        <p style={{ fontFamily: 'var(--font-body)', color: '#A08B62' }}>Loading…</p>
       </div>
     );
   }
 
   return (
-    <div className="p-8 max-w-3xl mx-auto space-y-8 animate-glass">
+    <div className="p-8 max-w-3xl mx-auto space-y-8 ss-appear">
       <SEOHead title="Rituals — Money Spirit" />
       <EducationBanner />
 
       <div className="flex items-center gap-3">
-        <Sparkles size={28} style={{ color: 'var(--gold-bright)' }} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: 'var(--text-1)', letterSpacing: '-0.03em' }}>Rituals</h1>
+        <Sparkles size={32} style={{ color: '#EEC96E' }} />
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em' }}>Rituals</h1>
       </div>
 
       {currentRitual ? (
-        <div className="glass-elevated space-y-5" style={{ padding: '32px 36px' }}>
+        <div className="ss-elevated ss-appear ss-appear-1 space-y-5" style={{ padding: '36px 40px' }}>
           <div>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 500, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '8px' }}>This week's ritual</p>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '32px', fontWeight: 300, color: 'var(--text-1)', letterSpacing: '-0.03em' }}>{currentRitual.title}</h2>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C4973A', marginBottom: '10px' }}>This week's ritual</p>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '34px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em' }}>{currentRitual.title}</h2>
           </div>
 
-          <p style={{ fontSize: '15px', fontFamily: 'var(--font-body)', color: 'var(--text-2)', lineHeight: 1.7 }}>{currentRitual.description}</p>
+          <p style={{ fontSize: '15px', fontFamily: 'var(--font-body)', color: '#D4C49A', lineHeight: 1.75 }}>{currentRitual.description}</p>
 
           {currentRitual.reflection_prompt && (
             <div style={{
-              background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)',
+              background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(196,151,58,0.12)',
               borderRadius: '12px', padding: '16px 20px',
             }}>
-              <p style={{ fontFamily: 'var(--font-display)', fontSize: '15px', fontStyle: 'italic', color: 'var(--text-2)', lineHeight: 1.7 }}>{currentRitual.reflection_prompt}</p>
+              <p style={{ fontFamily: 'var(--font-display)', fontSize: '15px', fontStyle: 'italic', color: '#A08B62', lineHeight: 1.75 }}>{currentRitual.reflection_prompt}</p>
             </div>
           )}
 
           {completed ? (
             <div className="flex items-center gap-3 py-4 relative animate-celebration">
-              <CheckCircle2 size={28} style={{ color: '#10B981' }} />
-              <p style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 400, color: '#10B981' }}>Ritual complete. Well done.</p>
+              <CheckCircle2 size={28} style={{ color: '#4DB89A' }} />
+              <p style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 400, color: '#4DB89A' }}>Ritual complete. Well done.</p>
             </div>
           ) : (
             <div className="space-y-4">
               <div className="space-y-2">
-                <label style={{ fontSize: '14px', fontFamily: 'var(--font-body)', fontWeight: 500, color: 'var(--text-1)' }}>Your reflection (optional — just for you)</label>
+                <label style={{ fontSize: '14px', fontFamily: 'var(--font-body)', fontWeight: 500, color: '#F2EAD8' }}>Your reflection (optional — just for you)</label>
                 <textarea value={reflection} onChange={(e) => setReflection(e.target.value)} placeholder="Write your thoughts here..." className="ms-input-dark min-h-[100px]" style={{ resize: 'vertical' }} />
               </div>
               <div className="flex items-center gap-2">
                 <Checkbox id="share" checked={shareToFeed} onCheckedChange={(v) => setShareToFeed(v === true)} />
-                <label htmlFor="share" style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: 'var(--text-1)', cursor: 'pointer' }}>Share my reflection with the community</label>
+                <label htmlFor="share" style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: '#F2EAD8', cursor: 'pointer' }}>Share my reflection with the community</label>
               </div>
-              <Button variant="gold" onClick={handleComplete} disabled={submitting} className="w-full sm:w-auto">
+              <Button variant="gold" onClick={handleComplete} disabled={submitting} className="w-full sm:w-auto btn-gold">
                 {submitting ? "Completing…" : "Complete this ritual"}
               </Button>
             </div>
@@ -128,26 +128,26 @@ const Rituals = () => {
 
       {pastRituals.length > 0 && (
         <div className="space-y-3">
-          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', fontWeight: 400, color: 'var(--text-1)', letterSpacing: '-0.02em' }}>Past Rituals</h3>
+          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', fontWeight: 400, color: '#F2EAD8', letterSpacing: '-0.02em' }}>Past Rituals</h3>
           <Accordion type="single" collapsible className="space-y-2">
             {pastRituals.map((ritual) => (
-              <AccordionItem key={ritual.id} value={ritual.id} className="glass-interactive" style={{ padding: '12px 16px', borderRadius: 'var(--r-md)' }}>
-                <AccordionTrigger className="hover:no-underline" style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-1)' }}>
+              <AccordionItem key={ritual.id} value={ritual.id} className="ss-interactive" style={{ padding: '12px 16px', borderRadius: 'var(--r-md)' }}>
+                <AccordionTrigger className="hover:no-underline" style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#F2EAD8' }}>
                   <div className="flex items-center gap-2 text-left">
                     {pastCompletions.has(ritual.id) ? (
-                      <CheckCircle2 className="shrink-0" size={16} style={{ color: '#10B981' }} />
+                      <CheckCircle2 className="shrink-0" size={16} style={{ color: '#4DB89A' }} />
                     ) : (
-                      <div className="w-4 h-4 rounded-full border shrink-0" style={{ borderColor: 'var(--text-4)' }} />
+                      <div className="w-4 h-4 rounded-full border shrink-0" style={{ borderColor: '#5C4E34' }} />
                     )}
                     <span>{ritual.title}</span>
-                    <span style={{ fontSize: '12px', marginLeft: '8px', color: 'var(--text-4)' }}>{format(new Date(ritual.week_of), "d MMM yyyy")}</span>
+                    <span style={{ fontSize: '12px', marginLeft: '8px', color: '#5C4E34' }}>{format(new Date(ritual.week_of), "d MMM yyyy")}</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="space-y-3 pb-4">
-                  <p style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: 'var(--text-2)' }}>{ritual.description}</p>
+                  <p style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: '#D4C49A' }}>{ritual.description}</p>
                   {ritual.reflection_prompt && (
-                    <div style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', padding: '16px 20px' }}>
-                      <p style={{ fontFamily: 'var(--font-display)', fontSize: '14px', fontStyle: 'italic', color: 'var(--text-2)' }}>{ritual.reflection_prompt}</p>
+                    <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(196,151,58,0.12)', borderRadius: '12px', padding: '16px 20px' }}>
+                      <p style={{ fontFamily: 'var(--font-display)', fontSize: '14px', fontStyle: 'italic', color: '#A08B62' }}>{ritual.reflection_prompt}</p>
                     </div>
                   )}
                 </AccordionContent>

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import LotusIcon from "@/components/LotusIcon";
 import EthicsFooter from "@/components/EthicsFooter";
 
 const Register = () => {
@@ -35,93 +34,91 @@ const Register = () => {
     if (!validate()) return;
     setLoading(true);
     setErrors({});
-
     const { error } = await supabase.auth.signUp({
-      email: email.trim(),
-      password,
-      options: {
-        data: { display_name: displayName.trim() },
-        emailRedirectTo: window.location.origin,
-      },
+      email: email.trim(), password,
+      options: { data: { display_name: displayName.trim() }, emailRedirectTo: window.location.origin },
     });
-
-    if (error) {
-      setErrors({ general: error.message });
-      setLoading(false);
-      return;
-    }
-
+    if (error) { setErrors({ general: error.message }); setLoading(false); return; }
     navigate("/onboarding");
   };
 
+  const labelStyle: React.CSSProperties = { display: 'block', fontFamily: 'var(--font-body)', fontSize: '13px', color: '#A08B62', marginBottom: '6px' };
+  const errorStyle: React.CSSProperties = { color: '#F87171', fontSize: '13px', fontFamily: 'var(--font-body)', marginTop: '4px' };
+
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen flex flex-col" style={{ background: '#0B1525' }}>
       <div className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <LotusIcon className="text-accent mx-auto mb-4" size={48} />
-            <h1 className="text-4xl font-heading text-primary mb-2">Money Spirit</h1>
-            <p className="text-accent font-body">Join Money Spirit</p>
+            <img src="/logo.png" alt="Money Spirit" style={{ width: 64, height: 64, margin: '0 auto 16px', filter: 'drop-shadow(0 0 10px rgba(196,151,58,0.20))' }} />
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '26px', color: '#F2EAD8', marginBottom: '6px' }}>Money Spirit</h1>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62' }}>Join Money Spirit</p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-border p-8">
+          <div style={{
+            background: 'rgba(13,27,46,0.70)',
+            border: '1px solid rgba(196,151,58,0.18)',
+            borderRadius: 'var(--r-xl)',
+            boxShadow: 'inset 0 1px 0 rgba(238,201,110,0.20), 0 24px 60px rgba(0,0,0,0.60)',
+            padding: '40px 36px',
+            backdropFilter: 'blur(20px)',
+          }}>
             <form onSubmit={handleSubmit} className="space-y-5">
               {errors.general && (
-                <div className="bg-destructive/10 border border-destructive/30 text-destructive rounded-xl px-4 py-3 text-sm font-body">
+                <div style={{
+                  background: 'rgba(220,38,38,0.10)', border: '1px solid rgba(220,38,38,0.30)',
+                  borderRadius: '12px', padding: '12px 16px',
+                  fontFamily: 'var(--font-body)', fontSize: '14px', color: '#F87171',
+                }}>
                   {errors.general}
                 </div>
               )}
 
               <div>
-                <label className="block text-primary text-sm font-body font-medium mb-1.5">Display Name</label>
-                <input type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} className="ms-input" placeholder="Your name" />
-                {errors.displayName && <p className="text-destructive text-sm mt-1 font-body">{errors.displayName}</p>}
+                <label style={labelStyle}>Display Name</label>
+                <input type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} className="ms-input-dark" placeholder="Your name" />
+                {errors.displayName && <p style={errorStyle}>{errors.displayName}</p>}
               </div>
 
               <div>
-                <label className="block text-primary text-sm font-body font-medium mb-1.5">Email</label>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="ms-input" placeholder="you@example.com" />
-                {errors.email && <p className="text-destructive text-sm mt-1 font-body">{errors.email}</p>}
+                <label style={labelStyle}>Email</label>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="ms-input-dark" placeholder="you@example.com" />
+                {errors.email && <p style={errorStyle}>{errors.email}</p>}
               </div>
 
               <div>
-                <label className="block text-primary text-sm font-body font-medium mb-1.5">Password</label>
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="ms-input" placeholder="••••••••" />
-                {errors.password && <p className="text-destructive text-sm mt-1 font-body">{errors.password}</p>}
+                <label style={labelStyle}>Password</label>
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="ms-input-dark" placeholder="••••••••" />
+                {errors.password && <p style={errorStyle}>{errors.password}</p>}
               </div>
 
               <div>
-                <label className="block text-primary text-sm font-body font-medium mb-1.5">Confirm Password</label>
-                <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="ms-input" placeholder="••••••••" />
-                {errors.confirmPassword && <p className="text-destructive text-sm mt-1 font-body">{errors.confirmPassword}</p>}
+                <label style={labelStyle}>Confirm Password</label>
+                <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="ms-input-dark" placeholder="••••••••" />
+                {errors.confirmPassword && <p style={errorStyle}>{errors.confirmPassword}</p>}
               </div>
 
               <div className="flex items-start gap-2.5">
-                <input
-                  type="checkbox"
-                  id="terms"
-                  checked={termsAccepted}
-                  onChange={(e) => setTermsAccepted(e.target.checked)}
-                  className="mt-1 h-4 w-4 accent-accent rounded border-border"
-                />
-                <label htmlFor="terms" className="text-sm font-body text-muted-foreground leading-snug">
+                <input type="checkbox" id="terms" checked={termsAccepted} onChange={(e) => setTermsAccepted(e.target.checked)}
+                  className="mt-1 h-4 w-4 rounded" style={{ accentColor: '#C4973A' }} />
+                <label htmlFor="terms" style={{ fontSize: '13px', fontFamily: 'var(--font-body)', color: '#A08B62', lineHeight: 1.5 }}>
                   I agree to the{" "}
-                  <Link to="/terms" className="text-accent hover:underline" target="_blank">Terms of Service</Link>
+                  <Link to="/terms" style={{ color: '#C4973A' }} target="_blank">Terms of Service</Link>
                   {" "}and have read the{" "}
-                  <Link to="/privacy" className="text-accent hover:underline" target="_blank">Privacy Policy</Link>
+                  <Link to="/privacy" style={{ color: '#C4973A' }} target="_blank">Privacy Policy</Link>
                   {" "}and{" "}
-                  <Link to="/ethics" className="text-accent hover:underline" target="_blank">Ethics &amp; Education Policy</Link>.
+                  <Link to="/ethics" style={{ color: '#C4973A' }} target="_blank">Ethics &amp; Education Policy</Link>.
                 </label>
               </div>
-              {errors.terms && <p className="text-destructive text-sm font-body">{errors.terms}</p>}
+              {errors.terms && <p style={errorStyle}>{errors.terms}</p>}
 
-              <Button type="submit" variant="gold" className="w-full rounded-xl h-11" disabled={loading}>
+              <Button type="submit" variant="gold" className="w-full btn-gold" style={{ height: 44, borderRadius: 'var(--r-pill)' }} disabled={loading}>
                 {loading ? "Creating account..." : "Join Money Spirit"}
               </Button>
 
-              <p className="text-center text-muted-foreground text-sm font-body">
+              <p style={{ textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '14px', color: '#5C4E34' }}>
                 Already have an account?{" "}
-                <Link to="/login" className="text-accent hover:underline font-medium">Sign in</Link>
+                <Link to="/login" style={{ color: '#C4973A', fontWeight: 500 }}>Sign in</Link>
               </p>
             </form>
           </div>
