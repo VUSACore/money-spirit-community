@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { format } from "date-fns";
 import { Search, MapPin, Flame, Heart, Users } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import EmptyState from "@/components/EmptyState";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
