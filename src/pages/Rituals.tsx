@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -121,6 +122,7 @@ const Rituals = () => {
 
   return (
     <div className="p-8 max-w-3xl mx-auto space-y-8 animate-fade-in">
+      <SEOHead title="Rituals — Money Spirit" />
       <EducationBanner />
 
       <div className="flex items-center gap-3">

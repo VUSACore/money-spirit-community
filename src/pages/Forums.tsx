@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { MessageSquare } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
 import type { Tables } from "@/integrations/supabase/types";
 import EducationBanner from "@/components/EducationBanner";
 
@@ -35,6 +36,7 @@ const Forums = () => {
 
   return (
     <div className="p-8 max-w-4xl mx-auto space-y-6 animate-fade-in">
+      <SEOHead title="Community Forums — Money Spirit" description="Join the conversation. Discuss money, mindset, spirituality and wellbeing with the Money Spirit community." />
       {hasFinanceForum && <EducationBanner />}
 
       <div>

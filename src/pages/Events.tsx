@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { CalendarDays, MapPin, Globe, Ticket } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
@@ -123,6 +124,7 @@ const Events = () => {
 
   return (
     <div className="p-8 max-w-5xl mx-auto animate-fade-in">
+      <SEOHead title="Events — Money Spirit" description="Join live events, retreats and community sessions hosted by Money Spirit. Book your ticket and connect with your community." />
       <EducationBanner />
 
       <h1 className="text-3xl font-heading text-primary mb-2">Events</h1>

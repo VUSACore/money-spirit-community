@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import SEOHead from "@/components/SEOHead";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Progress } from "@/components/ui/progress";
@@ -59,6 +60,7 @@ const Dashboard = () => {
 
   return (
     <div className="p-8 max-w-4xl mx-auto space-y-8 animate-fade-in">
+      <SEOHead title="Dashboard — Money Spirit" />
       {/* Welcome heading */}
       <div className="animate-slide-up">
         <h1 className="text-3xl font-heading text-navy mb-1">

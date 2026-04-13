@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { format } from "date-fns";
-import { Search, MapPin, Flame, Heart } from "lucide-react";
+import { Search, MapPin, Flame, Heart, Users } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -91,6 +92,7 @@ const Members = () => {
 
   return (
     <div className="p-8 max-w-6xl mx-auto animate-fade-in">
+      <SEOHead title="Members — Money Spirit" />
       <h1 className="text-3xl font-heading text-primary mb-2">Our Community</h1>
       <p className="text-muted-foreground font-body mb-6">The women walking this path with you</p>
 

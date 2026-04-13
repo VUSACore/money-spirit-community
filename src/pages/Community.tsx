@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/components/PlatformLayout";
 import { Button } from "@/components/ui/button";
@@ -146,6 +147,7 @@ const Community = () => {
 
   return (
     <div className="p-8 max-w-3xl mx-auto space-y-6 animate-fade-in">
+      <SEOHead title="Community — Money Spirit" />
       <h1 className="text-3xl font-heading text-foreground">Community</h1>
 
       {!isGuest && (
