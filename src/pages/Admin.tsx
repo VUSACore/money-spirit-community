@@ -92,6 +92,9 @@ const Admin = () => {
       </aside>
 
       <main className="ml-[240px] flex-1 min-h-screen bg-background overflow-y-auto p-8">
+        <div className="md:hidden bg-sidebar-background border border-accent/30 rounded-lg px-4 py-3 mb-6">
+          <p className="text-sm font-body text-sidebar-foreground/70">The admin panel is best viewed on desktop.</p>
+        </div>
         {activeTab === "users" && <AdminUsers />}
         {activeTab === "content" && <AdminContent />}
         {activeTab === "courses" && <AdminCourses />}
