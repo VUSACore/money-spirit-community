@@ -1,0 +1,1 @@
+DELETE FROM forums WHERE id = '96d780c4-1b1d-4ad0-a6b8-1d046c0fd441';
