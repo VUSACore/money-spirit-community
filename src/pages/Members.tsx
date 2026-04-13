@@ -114,8 +114,6 @@ const Members = () => {
 
       {filtered.length === 0 ? (
         <EmptyState icon={Users} heading="Your community is growing" body="Members who have chosen to appear in the directory will show here." />
-          <p className="text-lg font-body text-muted-foreground">The community is growing. You're among the first here.</p>
-        </div>
       ) : (
         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((member) => (
