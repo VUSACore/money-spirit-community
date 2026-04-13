@@ -400,10 +400,10 @@ const PlatformLayout = () => {
             }}
           >
             <div
-              className="platform-content"
+              className="platform-content md:ml-16"
               style={{
-                marginLeft: sidebarExpanded ? 240 : 64,
                 transition: "margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+                ...(typeof window !== 'undefined' && window.innerWidth >= 768 ? { marginLeft: sidebarExpanded ? 240 : 64 } : {}),
               }}
             >
               {/* Desktop top header bar */}
