@@ -10,11 +10,18 @@ const EducationBanner = () => {
   if (dismissed) return null;
 
   return (
-    <div className="bg-accent/10 border border-accent/30 text-primary rounded-xl px-4 py-3 mb-6 flex items-start gap-3">
-      <p className="text-sm font-body flex-1">{BANNER_TEXT}</p>
+    <div
+      className="rounded-md px-4 py-3 mb-6 flex items-start gap-3"
+      style={{
+        background: "rgba(201,148,30,0.08)",
+        borderLeft: "3px solid #C9941E",
+      }}
+    >
+      <p className="text-[13px] font-body flex-1" style={{ color: "var(--ms-text-secondary)" }}>{BANNER_TEXT}</p>
       <button
         onClick={() => setDismissed(true)}
-        className="text-primary/60 hover:text-primary mt-0.5 flex-shrink-0"
+        className="mt-0.5 flex-shrink-0 transition-colors"
+        style={{ color: "var(--ms-text-muted)" }}
         aria-label="Dismiss"
       >
         <X size={16} />

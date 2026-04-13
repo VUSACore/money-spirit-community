@@ -33,16 +33,16 @@ function MetricCard({ label, value, sub, loading }: {
   label: string; value: string | number; sub?: string; loading: boolean;
 }) {
   if (loading) return (
-    <div className="bg-[#102A4C] rounded-xl border border-[#1E3A5F]/50 p-5 animate-pulse">
-      <div className="h-3 w-24 bg-white/10 rounded mb-4" />
-      <div className="h-9 w-32 bg-white/10 rounded" />
+    <div className="rounded-xl p-5 animate-pulse" style={{ background: "var(--ms-surface-1)", border: "1px solid var(--ms-border)" }}>
+      <div className="h-3 w-24 rounded mb-4" style={{ background: "var(--ms-surface-3)" }} />
+      <div className="h-9 w-32 rounded" style={{ background: "var(--ms-surface-3)" }} />
     </div>
   );
   return (
-    <div className="bg-[#102A4C] rounded-xl border border-[#1E3A5F]/50 p-5">
-      <p className="text-[12px] font-body font-semibold tracking-[0.8px] uppercase text-[#5A7A9F] mb-2">{label}</p>
-      <p className="font-heading text-4xl text-cream-50 leading-none">{value}</p>
-      {sub && <p className="text-[12px] font-body text-[#5A7A9F] mt-2">{sub}</p>}
+    <div className="rounded-xl p-5" style={{ background: "var(--ms-surface-1)", border: "1px solid var(--ms-border)" }}>
+      <p className="text-[11px] font-body font-semibold tracking-[1px] uppercase mb-2" style={{ color: "var(--ms-text-muted)" }}>{label}</p>
+      <p className="font-heading text-4xl leading-none font-medium" style={{ color: "#F1F5F9" }}>{value}</p>
+      {sub && <p className="text-[12px] font-body mt-2" style={{ color: "var(--ms-text-muted)" }}>{sub}</p>}
     </div>
   );
 }
@@ -51,22 +51,23 @@ function MetricCard({ label, value, sub, loading }: {
 function ChartTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-[#0B1D3A] border border-gold/40 rounded-lg px-3 py-2 shadow-lg">
-      <p className="text-[12px] font-body text-cream-200">{label}</p>
-      <p className="text-[13px] font-body font-medium text-gold">{payload[0].value} members</p>
+    <div className="rounded-lg px-3 py-2 shadow-lg" style={{ background: "var(--ms-surface-2)", border: "1px solid rgba(201,148,30,0.4)" }}>
+      <p className="text-[12px] font-body" style={{ color: "var(--ms-text-secondary)" }}>{label}</p>
+      <p className="text-[13px] font-body font-medium" style={{ color: "#F5C842" }}>{payload[0].value} members</p>
     </div>
   );
 }
 
 /* ── Status Pill ── */
 function StatusPill({ status }: { status: string }) {
-  const styles: Record<string, string> = {
-    active: "bg-teal-500/20 text-teal-400",
-    cancelled: "bg-[#E8845C]/20 text-[#E8845C]",
-    refunded: "bg-[#E8845C]/20 text-[#E8845C]",
+  const styles: Record<string, { bg: string; color: string }> = {
+    active: { bg: "rgba(16,185,129,0.2)", color: "#10B981" },
+    cancelled: { bg: "rgba(239,68,68,0.2)", color: "#EF4444" },
+    refunded: { bg: "rgba(239,68,68,0.2)", color: "#EF4444" },
   };
+  const s = styles[status] ?? { bg: "rgba(201,148,30,0.2)", color: "#F5C842" };
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${styles[status] ?? "bg-gold/20 text-gold"}`}>
+    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" style={{ background: s.bg, color: s.color }}>
       {status}
     </span>
   );
@@ -138,7 +139,6 @@ const AdminRevenue = () => {
     load();
   }, []);
 
-  /* derived */
   const active = useMemo(() => memberships.filter(m => m.status === "active"), [memberships]);
   const monthlyCount = useMemo(() => active.filter(m => m.plan === "monthly").length, [active]);
   const annualCount = useMemo(() => active.filter(m => m.plan === "annual").length, [active]);
@@ -169,7 +169,6 @@ const AdminRevenue = () => {
     return memberships.filter(m => isAfter(new Date(m.created_at), start)).length;
   }, [memberships]);
 
-  /* growth chart */
   const growthData = useMemo(() => {
     const cutoff = subDays(new Date(), days);
     const sorted = [...memberships].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
@@ -185,13 +184,11 @@ const AdminRevenue = () => {
     return Array.from(dayMap.entries()).map(([date, count]) => ({ date, count }));
   }, [memberships, days]);
 
-  /* plan pie */
   const planData = useMemo(() => [
     { name: "Monthly", value: monthlyCount },
     { name: "Annual", value: annualCount },
   ], [monthlyCount, annualCount]);
 
-  /* ticket table */
   const distinctEvents = useMemo(() => {
     const titles = new Set<string>();
     tickets.forEach(t => {
@@ -209,7 +206,6 @@ const AdminRevenue = () => {
     return list.slice(0, 20);
   }, [tickets, eventFilter, eventMap]);
 
-  /* exports */
   const metricsArr = () => [
     { Metric: "Active Members", Value: active.length },
     { Metric: "Monthly Revenue (AUD)", Value: `$${mrr.toFixed(0)}` },
@@ -262,7 +258,7 @@ const AdminRevenue = () => {
   };
 
   if (error) {
-    return <p className="text-[#E8845C] font-body text-sm p-8">Unable to load data — please refresh</p>;
+    return <p className="font-body text-sm p-8" style={{ color: "var(--ms-danger)" }}>Unable to load data — please refresh</p>;
   }
 
   const activityRows = [
@@ -277,11 +273,11 @@ const AdminRevenue = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
         <div>
-          <h1 className="font-heading text-[32px] text-primary leading-tight">Revenue &amp; Analytics</h1>
-          <p className="font-body text-sm text-muted-foreground mt-1">Platform financial overview</p>
+          <h1 className="font-heading text-[32px] leading-tight" style={{ color: "var(--ms-text-primary)" }}>Revenue &amp; Analytics</h1>
+          <p className="font-body text-sm mt-1" style={{ color: "var(--ms-text-secondary)" }}>Platform financial overview</p>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-xs font-body text-muted-foreground">Updated just now</span>
+          <span className="text-xs font-body" style={{ color: "var(--ms-text-muted)" }}>Updated just now</span>
           <div className="relative" ref={exportRef}>
             <button
               onClick={() => setExportOpen(o => !o)}
@@ -291,15 +287,15 @@ const AdminRevenue = () => {
               <ChevronDown size={14} className={`transition-transform ${exportOpen ? "rotate-180" : ""}`} />
             </button>
             {exportOpen && (
-              <div className="absolute right-0 mt-1.5 w-52 bg-white rounded-lg border border-border shadow-lg z-50 py-1">
-                <button onClick={exportCSV} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-body text-primary hover:bg-muted transition-colors">
-                  <FileText size={15} className="text-accent" /> Download CSV
+              <div className="absolute right-0 mt-1.5 w-52 rounded-lg shadow-lg z-50 py-1" style={{ background: "var(--ms-surface-2)", border: "1px solid var(--ms-border-active)" }}>
+                <button onClick={exportCSV} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-body transition-colors" style={{ color: "var(--ms-text-primary)" }}>
+                  <FileText size={15} style={{ color: "#C9941E" }} /> Download CSV
                 </button>
-                <button onClick={exportExcel} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-body text-primary hover:bg-muted transition-colors">
-                  <FileSpreadsheet size={15} className="text-accent" /> Download Excel
+                <button onClick={exportExcel} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-body transition-colors" style={{ color: "var(--ms-text-primary)" }}>
+                  <FileSpreadsheet size={15} style={{ color: "#C9941E" }} /> Download Excel
                 </button>
-                <button onClick={copySummary} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-body text-primary hover:bg-muted transition-colors">
-                  <Copy size={15} className="text-accent" /> Copy to Clipboard
+                <button onClick={copySummary} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-body transition-colors" style={{ color: "var(--ms-text-primary)" }}>
+                  <Copy size={15} style={{ color: "#C9941E" }} /> Copy to Clipboard
                 </button>
               </div>
             )}
@@ -318,17 +314,19 @@ const AdminRevenue = () => {
       </div>
 
       {/* Section 2: Growth Chart */}
-      <div className="bg-[#102A4C] rounded-xl border border-[#1E3A5F]/50 p-6">
+      <div className="rounded-xl p-6" style={{ background: "var(--ms-surface-1)", border: "1px solid var(--ms-border)" }}>
         <div className="flex items-center justify-between mb-6">
-          <h3 className="font-body text-base font-medium text-cream-100">Member Growth</h3>
+          <h3 className="font-body text-base font-medium" style={{ color: "var(--ms-text-primary)" }}>Member Growth</h3>
           <div className="flex gap-1">
             {([30, 90, 365] as Days[]).map(d => (
               <button
                 key={d}
                 onClick={() => setDays(d)}
-                className={`px-3 py-1.5 rounded-md text-xs font-body font-medium transition-colors ${
-                  days === d ? "bg-[#1E3A5F] text-gold" : "text-cream-400 hover:text-cream-200"
-                }`}
+                className="px-3 py-1.5 rounded-md text-xs font-body font-medium transition-colors"
+                style={{
+                  background: days === d ? "var(--ms-surface-3)" : "transparent",
+                  color: days === d ? "#F5C842" : "var(--ms-text-muted)",
+                }}
               >
                 {d === 365 ? "1 year" : `${d} days`}
               </button>
@@ -336,15 +334,15 @@ const AdminRevenue = () => {
           </div>
         </div>
         {loading ? (
-          <div className="h-[280px] bg-white/5 rounded-lg animate-pulse" />
+          <div className="h-[280px] rounded-lg animate-pulse" style={{ background: "var(--ms-surface-2)" }} />
         ) : growthData.length === 0 ? (
-          <p className="text-[#5A7A9F] font-body text-center py-20">No data yet</p>
+          <p className="font-body text-center py-20" style={{ color: "var(--ms-text-muted)" }}>No data yet</p>
         ) : (
           <ResponsiveContainer width="100%" height={280}>
             <LineChart data={growthData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-              <CartesianGrid stroke="#1E3A5F" strokeDasharray="3 3" />
-              <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#5A7A9F", fontFamily: "DM Sans" }} />
-              <YAxis tick={{ fontSize: 11, fill: "#5A7A9F", fontFamily: "DM Sans" }} />
+              <CartesianGrid stroke="var(--ms-border)" strokeDasharray="3 3" />
+              <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#94A3B8", fontFamily: "DM Sans" }} />
+              <YAxis tick={{ fontSize: 11, fill: "#94A3B8", fontFamily: "DM Sans" }} />
               <Tooltip content={<ChartTooltip />} />
               <Line type="monotone" dataKey="count" stroke="#C9941E" strokeWidth={2} dot={false} />
             </LineChart>
@@ -354,13 +352,12 @@ const AdminRevenue = () => {
 
       {/* Section 3: Pie + Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Plan Breakdown */}
-        <div className="bg-[#102A4C] rounded-xl border border-[#1E3A5F]/50 p-6">
-          <h3 className="font-body text-base font-medium text-cream-100 mb-4">Plan Breakdown</h3>
+        <div className="rounded-xl p-6" style={{ background: "var(--ms-surface-1)", border: "1px solid var(--ms-border)" }}>
+          <h3 className="font-body text-base font-medium mb-4" style={{ color: "var(--ms-text-primary)" }}>Plan Breakdown</h3>
           {loading ? (
-            <div className="h-[200px] bg-white/5 rounded-lg animate-pulse" />
+            <div className="h-[200px] rounded-lg animate-pulse" style={{ background: "var(--ms-surface-2)" }} />
           ) : planData.every(d => d.value === 0) ? (
-            <p className="text-[#5A7A9F] font-body text-center py-16">No data yet</p>
+            <p className="font-body text-center py-16" style={{ color: "var(--ms-text-muted)" }}>No data yet</p>
           ) : (
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
@@ -370,12 +367,12 @@ const AdminRevenue = () => {
                   label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                 >
                   <Cell fill="#C9941E" />
-                  <Cell fill="#27AE8F" />
+                  <Cell fill="#10B981" />
                 </Pie>
                 <Legend
                   formatter={(value) => {
                     const item = planData.find(d => d.name === value);
-                    return <span className="text-xs font-body text-cream-300">{value}: {item?.value ?? 0}</span>;
+                    return <span className="text-xs font-body" style={{ color: "var(--ms-text-secondary)" }}>{value}: {item?.value ?? 0}</span>;
                   }}
                 />
               </PieChart>
@@ -383,20 +380,19 @@ const AdminRevenue = () => {
           )}
         </div>
 
-        {/* Platform Activity */}
-        <div className="bg-[#102A4C] rounded-xl border border-[#1E3A5F]/50 p-6">
-          <h3 className="font-body text-sm font-medium text-cream-200 mb-4">This Week</h3>
+        <div className="rounded-xl p-6" style={{ background: "var(--ms-surface-1)", border: "1px solid var(--ms-border)" }}>
+          <h3 className="font-body text-sm font-medium mb-4" style={{ color: "var(--ms-text-primary)" }}>This Week</h3>
           {loading ? (
             <div className="space-y-4">
-              {[1, 2, 3, 4].map(i => <div key={i} className="h-8 bg-white/5 rounded animate-pulse" />)}
+              {[1, 2, 3, 4].map(i => <div key={i} className="h-8 rounded animate-pulse" style={{ background: "var(--ms-surface-2)" }} />)}
             </div>
           ) : (
             <div className="space-y-4">
               {activityRows.map(r => (
                 <div key={r.label} className="flex items-center gap-3">
-                  <r.icon size={16} className="text-[#5A7A9F] shrink-0" />
-                  <span className="flex-1 text-[13px] font-body text-cream-300">{r.label}</span>
-                  <span className="text-sm font-body font-medium text-cream-100">{r.value}</span>
+                  <r.icon size={16} className="shrink-0" style={{ color: "var(--ms-text-muted)" }} />
+                  <span className="flex-1 text-[13px] font-body" style={{ color: "var(--ms-text-secondary)" }}>{r.label}</span>
+                  <span className="text-sm font-body font-medium" style={{ color: "var(--ms-text-primary)" }}>{r.value}</span>
                 </div>
               ))}
             </div>
@@ -405,13 +401,13 @@ const AdminRevenue = () => {
       </div>
 
       {/* Section 4: Recent Ticket Sales */}
-      <div className="bg-[#102A4C] rounded-xl border border-[#1E3A5F]/50 overflow-hidden">
+      <div className="rounded-xl overflow-hidden" style={{ background: "var(--ms-surface-1)", border: "1px solid var(--ms-border)" }}>
         <div className="flex items-center justify-between px-6 py-4">
-          <h3 className="font-body text-base font-medium text-cream-100">Recent Ticket Sales</h3>
+          <h3 className="font-body text-base font-medium" style={{ color: "var(--ms-text-primary)" }}>Recent Ticket Sales</h3>
           <select
             value={eventFilter}
             onChange={e => setEventFilter(e.target.value)}
-            className="bg-[#1E3A5F] text-cream-300 text-xs font-body rounded-lg px-3 py-1.5 border-none outline-none"
+            className="ms-input-dark text-xs rounded-lg px-3 py-1.5 w-auto"
           >
             <option value="all">All Events</option>
             {distinctEvents.map(title => (
@@ -422,27 +418,30 @@ const AdminRevenue = () => {
 
         {loading ? (
           <div className="px-6 pb-6 space-y-2">
-            {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-12 bg-white/5 rounded animate-pulse" />)}
+            {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-12 rounded animate-pulse" style={{ background: "var(--ms-surface-2)" }} />)}
           </div>
         ) : filteredTickets.length === 0 ? (
-          <p className="text-[#5A7A9F] font-body text-sm text-center py-10">No ticket sales yet</p>
+          <p className="font-body text-sm text-center py-10" style={{ color: "var(--ms-text-muted)" }}>No ticket sales yet</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm font-body">
               <thead>
-                <tr className="bg-[#0B1D3A]">
+                <tr style={{ background: "var(--ms-surface-2)" }}>
                   {["Event", "Member", "Amount", "Date", "Status"].map(h => (
-                    <th key={h} className="text-left py-2.5 px-4 text-[11px] font-semibold tracking-[0.8px] uppercase text-[#5A7A9F]">{h}</th>
+                    <th key={h} className="text-left py-2.5 px-4 text-[11px] font-semibold tracking-[0.8px] uppercase" style={{ color: "var(--ms-text-muted)" }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {filteredTickets.map(t => (
-                  <tr key={t.id} className="border-t border-[#1E3A5F]/50 hover:bg-[#0F2847] transition-colors">
-                    <td className="py-3 px-4 text-cream-200">{eventMap.get(t.event_id)?.title ?? "Unknown"}</td>
-                    <td className="py-3 px-4 text-cream-200">{profileMap.get(t.user_id) ?? "Unknown"}</td>
-                    <td className="py-3 px-4 text-cream-200">AUD ${((eventMap.get(t.event_id)?.price_pence ?? 0) / 100).toFixed(2)}</td>
-                    <td className="py-3 px-4 text-cream-300">{format(new Date(t.purchased_at), "d MMM yyyy")}</td>
+                  <tr key={t.id} className="transition-colors" style={{ borderTop: "1px solid var(--ms-border)" }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--ms-surface-2)"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "transparent"; }}
+                  >
+                    <td className="py-3 px-4" style={{ color: "var(--ms-text-primary)" }}>{eventMap.get(t.event_id)?.title ?? "Unknown"}</td>
+                    <td className="py-3 px-4" style={{ color: "var(--ms-text-primary)" }}>{profileMap.get(t.user_id) ?? "Unknown"}</td>
+                    <td className="py-3 px-4" style={{ color: "var(--ms-text-primary)" }}>AUD ${((eventMap.get(t.event_id)?.price_pence ?? 0) / 100).toFixed(2)}</td>
+                    <td className="py-3 px-4" style={{ color: "var(--ms-text-secondary)" }}>{format(new Date(t.purchased_at), "d MMM yyyy")}</td>
                     <td className="py-3 px-4"><StatusPill status={t.status} /></td>
                   </tr>
                 ))}

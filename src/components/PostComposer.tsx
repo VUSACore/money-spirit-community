@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
 
 type PostComposerProps = {
   value: string;
@@ -10,13 +8,13 @@ type PostComposerProps = {
 };
 
 const PostComposer = ({ value, onChange, onSubmit, disabled = false }: PostComposerProps) => (
-  <Card className="border bg-card shadow-none">
-    <CardContent className="p-4 space-y-3">
-      <Textarea
+  <div className="ms-card">
+    <div className="space-y-3">
+      <textarea
         placeholder="Share something with the community..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="min-h-[80px] bg-background border-input font-body resize-none"
+        className="ms-input-dark min-h-[80px] resize-none"
         aria-label="Share something with the community"
       />
       <div className="flex justify-end">
@@ -24,8 +22,8 @@ const PostComposer = ({ value, onChange, onSubmit, disabled = false }: PostCompo
           POST
         </Button>
       </div>
-    </CardContent>
-  </Card>
+    </div>
+  </div>
 );
 
 export default PostComposer;
