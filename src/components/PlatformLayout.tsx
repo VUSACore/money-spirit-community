@@ -73,6 +73,7 @@ const PlatformLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
 
   useBadgeNotification(profile?.user_id);
   useWeeklyArchetypeScore(profile?.user_id);
