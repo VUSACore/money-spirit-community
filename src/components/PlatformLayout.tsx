@@ -424,12 +424,10 @@ const PlatformLayout = () => {
                       <Bell size={20} style={{ color: "#94A3B8" }} />
                     </div>
                   )}
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-body font-semibold"
-                    style={{ background: "#C9941E", color: "#0A0D14" }}
-                  >
+                  <Link to="/profile" className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-body font-semibold"
+                    style={{ background: "#C9941E", color: "#0A0D14" }}>
                     {initials}
-                  </div>
+                  </Link>
                 </div>
               </div>
               <Outlet />
