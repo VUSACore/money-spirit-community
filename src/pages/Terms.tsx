@@ -1,7 +1,9 @@
 import PublicPageLayout from "@/components/PublicPageLayout";
+import SEOHead from "@/components/SEOHead";
 
 const Terms = () => (
   <PublicPageLayout>
+    <SEOHead title="Terms of Service — Money Spirit" description="The terms and conditions governing your use of the Money Spirit platform." />
     <h1 className="text-3xl font-heading text-foreground mb-2">Terms of Service</h1>
     <p className="text-sm font-body text-muted-foreground mb-8">Effective date: April 2026</p>
 

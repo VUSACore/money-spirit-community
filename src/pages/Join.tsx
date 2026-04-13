@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SEOHead from "@/components/SEOHead";
 import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
@@ -42,6 +43,7 @@ const Join = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <SEOHead title="Join Money Spirit — Your Financial Wellbeing Journey Starts Here" description="Become a member of Money Spirit. Access weekly money rituals, expert courses, live events and a community of migrant women building financial wellbeing." ogTitle="Join Money Spirit" ogDescription="Become a member of Money Spirit. Access weekly money rituals, expert courses, live events and a community of migrant women building financial wellbeing." />
       <header className="py-6 px-6 flex items-center justify-center gap-2.5">
         <LotusIcon className="text-accent" size={28} />
         <span className="text-primary font-heading text-xl tracking-wide">Money Spirit</span>
