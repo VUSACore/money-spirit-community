@@ -39,6 +39,7 @@ const InitialsAvatar = ({ name }: { name: string }) => {
 };
 
 const Community = () => {
+  const navigate = useNavigate();
   const profile = useProfile();
   const [posts, setPosts] = useState<PostWithAuthor[]>([]);
   const [newContent, setNewContent] = useState("");
