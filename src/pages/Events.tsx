@@ -38,17 +38,9 @@ const Events = () => {
 
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        const { data: tickets } = await supabase
-          .from("event_tickets")
-          .select("event_id")
-          .eq("user_id", user.id)
-          .eq("status", "active");
+        const { data: tickets } = await supabase.from("event_tickets").select("event_id").eq("user_id", user.id).eq("status", "active");
         setTicketedIds(new Set((tickets ?? []).map((t) => t.event_id)));
-
-        const { data: interests } = await supabase
-          .from("event_waitlist")
-          .select("event_id")
-          .eq("user_id", user.id);
+        const { data: interests } = await supabase.from("event_waitlist").select("event_id").eq("user_id", user.id);
         setInterestedIds(new Set((interests ?? []).map((t) => t.event_id)));
       }
 
@@ -66,18 +58,10 @@ const Events = () => {
     else {
       setTicketedIds((prev) => new Set(prev).add(eventId));
       toast({ title: "Ticket confirmed!", description: "You're all set." });
-      // Send ticket confirmation email
       const evt = events.find(e => e.id === eventId);
       if (evt && user.email && ticket) {
-        const { data: profile } = await supabase.from("profiles").select("display_name").eq("user_id", user.id).maybeSingle();
-        sendTicketConfirmation(
-          user.email,
-          profile?.display_name ?? "there",
-          evt.title,
-          format(new Date(evt.event_date), "EEEE, d MMMM yyyy"),
-          evt.is_virtual ? "Online event" : (evt.location ?? "Location TBA"),
-          ticket.id
-        );
+        const { data: prof } = await supabase.from("profiles").select("display_name").eq("user_id", user.id).maybeSingle();
+        sendTicketConfirmation(user.email, prof?.display_name ?? "there", evt.title, format(new Date(evt.event_date), "EEEE, d MMMM yyyy"), evt.is_virtual ? "Online event" : (evt.location ?? "Location TBA"), ticket.id);
       }
     }
     setClaimingId(null);
@@ -101,20 +85,15 @@ const Events = () => {
   if (loading) {
     return (
       <div className="p-8 max-w-5xl mx-auto">
-        <h1 className="text-3xl font-heading text-primary mb-2">Events</h1>
-        <p className="text-muted-foreground font-body mb-8">Workshops, circles and gatherings for the community.</p>
+        <h1 className="text-3xl font-heading mb-2" style={{ color: "var(--ms-text-primary)" }}>Events</h1>
+        <p className="font-body mb-8" style={{ color: "var(--ms-text-secondary)" }}>Workshops, circles and gatherings for the community.</p>
         <div className="grid gap-6 sm:grid-cols-2">
           {[1, 2].map((i) => (
-            <div key={i} className="rounded-2xl border border-border overflow-hidden bg-card">
-              <Skeleton className="h-40 w-full rounded-none bg-accent/10" />
+            <div key={i} className="ms-card overflow-hidden">
+              <Skeleton className="h-40 w-full rounded-none" style={{ background: "var(--ms-surface-3)" }} />
               <div className="p-5 space-y-3">
-                <Skeleton className="h-6 w-3/4 bg-accent/10" />
-                <Skeleton className="h-4 w-1/2 bg-accent/10" />
-                <Skeleton className="h-4 w-1/3 bg-accent/10" />
-                <div className="flex justify-between pt-2">
-                  <Skeleton className="h-6 w-16 bg-accent/10" />
-                  <Skeleton className="h-9 w-32 rounded-lg bg-accent/10" />
-                </div>
+                <Skeleton className="h-6 w-3/4" style={{ background: "var(--ms-surface-3)" }} />
+                <Skeleton className="h-4 w-1/2" style={{ background: "var(--ms-surface-3)" }} />
               </div>
             </div>
           ))}
@@ -125,11 +104,11 @@ const Events = () => {
 
   return (
     <div className="p-8 max-w-5xl mx-auto animate-fade-in">
-      <SEOHead title="Events — Money Spirit" description="Join live events, retreats and community sessions hosted by Money Spirit. Book your ticket and connect with your community." />
+      <SEOHead title="Events — Money Spirit" description="Join live events, retreats and community sessions hosted by Money Spirit." />
       <EducationBanner />
 
-      <h1 className="text-3xl font-heading text-primary mb-2">Events</h1>
-      <p className="text-muted-foreground font-body mb-8">Workshops, circles and gatherings for the community.</p>
+      <h1 className="text-3xl font-heading mb-2" style={{ color: "var(--ms-text-primary)" }}>Events</h1>
+      <p className="font-body mb-8" style={{ color: "var(--ms-text-secondary)" }}>Workshops, circles and gatherings for the community.</p>
 
       {events.length === 0 ? (
         <EmptyState icon={CalendarDays} heading="No upcoming events" body="Check back soon. New events and retreats are added regularly." />
@@ -140,25 +119,32 @@ const Events = () => {
             const hasInterest = interestedIds.has(event.id);
             const isFree = event.price_pence === 0;
             return (
-              <div key={event.id} className="rounded-2xl border border-border overflow-hidden bg-card shadow-sm hover:shadow-md transition-shadow animate-fade-in">
-                <div className="h-40 bg-primary flex items-center justify-center">
-                  <CalendarDays className="h-12 w-12 text-primary-foreground/30" />
+              <div key={event.id} className="ms-card overflow-hidden animate-fade-in p-0">
+                <div className="h-40 flex items-center justify-center" style={{ background: "var(--ms-surface-2)" }}>
+                  <CalendarDays className="h-12 w-12" style={{ color: "var(--ms-text-muted)", opacity: 0.4 }} />
                 </div>
                 <div className="p-5 space-y-3">
-                  <h2 className="text-xl font-heading text-primary leading-tight">{event.title}</h2>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground font-body">
-                    <CalendarDays className="h-4 w-4 text-accent" />
+                  <h2 className="text-xl font-heading leading-tight" style={{ color: "var(--ms-text-primary)" }}>{event.title}</h2>
+                  <div className="flex items-center gap-2 text-[13px] font-body" style={{ color: "var(--ms-text-secondary)" }}>
+                    <CalendarDays className="h-4 w-4" style={{ color: "#C9941E" }} />
                     {format(new Date(event.event_date), "EEEE d MMMM yyyy")}
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground font-body">
-                    {event.is_virtual ? (<><Globe className="h-4 w-4 text-accent" />Online event</>) : (<><MapPin className="h-4 w-4 text-accent" />{event.location ?? "Location TBA"}</>)}
+                  <div className="flex items-center gap-2 text-[13px] font-body" style={{ color: "var(--ms-text-secondary)" }}>
+                    {event.is_virtual ? (<><Globe className="h-4 w-4" style={{ color: "#C9941E" }} />Online event</>) : (<><MapPin className="h-4 w-4" style={{ color: "#C9941E" }} />{event.location ?? "Location TBA"}</>)}
                   </div>
                   <div className="flex items-center justify-between pt-2">
-                    <span className="text-lg font-heading font-bold text-accent">{formatPrice(event.price_pence)}</span>
+                    <span
+                      className="text-[12px] font-body font-medium px-3 py-1 rounded-full"
+                      style={{ background: "rgba(201,148,30,0.15)", color: "#F5C842" }}
+                    >
+                      {formatPrice(event.price_pence)}
+                    </span>
                     {hasTicket ? (
-                      <span className="inline-flex items-center gap-1.5 text-sm font-body font-semibold text-accent bg-accent/10 px-3 py-1.5 rounded-full"><Ticket className="h-4 w-4" /> Ticket confirmed</span>
+                      <span className="inline-flex items-center gap-1.5 text-sm font-body font-semibold px-3 py-1.5 rounded-full" style={{ background: "rgba(201,148,30,0.15)", color: "#F5C842" }}>
+                        <Ticket className="h-4 w-4" /> Ticket confirmed
+                      </span>
                     ) : hasInterest ? (
-                      <span className="inline-flex items-center gap-1.5 text-sm font-body font-semibold text-accent bg-accent/10 px-3 py-1.5 rounded-full">✓ Interest registered</span>
+                      <span className="inline-flex items-center gap-1.5 text-sm font-body font-semibold px-3 py-1.5 rounded-full" style={{ background: "rgba(201,148,30,0.15)", color: "#F5C842" }}>✓ Interest registered</span>
                     ) : (
                       <Button variant="gold" size="sm" disabled={claimingId === event.id} onClick={() => handleGetTicket(event)}>
                         {claimingId === event.id ? "Submitting…" : isFree ? "Get your ticket" : "Register your interest"}

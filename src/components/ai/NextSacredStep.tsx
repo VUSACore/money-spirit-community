@@ -6,7 +6,7 @@ import type { Tables } from "@/integrations/supabase/types";
 
 type Profile = Tables<"profiles">;
 
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const CACHE_TTL = 5 * 60 * 1000;
 
 const archetypeDisplay: Record<string, { name: string; accent: string }> = {
   giver: { name: "The Giver", accent: "#E8845C" },
@@ -69,24 +69,25 @@ const NextSacredStep = ({ userId, profile }: Props) => {
 
   return (
     <div
-      className="rounded-xl p-5 animate-slide-up"
+      className="ms-card-elevated animate-slide-up"
       style={{
-        background: "linear-gradient(135deg, hsl(220 72% 10%), hsl(220 72% 6%))",
+        background: "linear-gradient(135deg, var(--ms-surface-2), var(--ms-surface-1))",
         border: "1px solid rgba(201, 148, 30, 0.3)",
       }}
     >
       {/* Top row */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Sparkles size={16} className="text-gold" />
-          <span className="font-body text-xs uppercase tracking-widest text-gold">
+          <Sparkles size={16} style={{ color: "#F5C842" }} />
+          <span className="font-body text-xs uppercase tracking-widest" style={{ color: "#F5C842" }}>
             Your Next Sacred Step
           </span>
         </div>
         <button
           onClick={() => fetchStep(true)}
           disabled={loading}
-          className="text-navy-deep/50 hover:text-cream transition-colors disabled:opacity-50"
+          className="transition-colors disabled:opacity-50"
+          style={{ color: "var(--ms-text-muted)" }}
         >
           <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
         </button>
@@ -95,16 +96,16 @@ const NextSacredStep = ({ userId, profile }: Props) => {
       {/* Content */}
       {loading && !text ? (
         <div className="space-y-3">
-          <div className="h-4 w-full rounded bg-[hsl(220,60%,15%)] animate-pulse" />
-          <div className="h-4 w-3/4 rounded bg-[hsl(220,60%,15%)] animate-pulse" />
+          <div className="h-4 w-full rounded animate-pulse" style={{ background: "var(--ms-surface-3)" }} />
+          <div className="h-4 w-3/4 rounded animate-pulse" style={{ background: "var(--ms-surface-3)" }} />
         </div>
       ) : (
         <>
-          <p className="font-heading text-lg text-cream italic leading-relaxed">
+          <p className="font-heading text-lg italic leading-relaxed" style={{ color: "#F1F5F9" }}>
             {text}
           </p>
 
-          <div className="mt-4 pt-3 border-t border-[hsl(220,60%,15%)]">
+          <div className="mt-4 pt-3" style={{ borderTop: "1px solid var(--ms-border)" }}>
             <span
               className="inline-block px-3 py-1 rounded-full font-body text-xs"
               style={{

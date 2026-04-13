@@ -25,7 +25,6 @@ const Learn = () => {
 
       const ids = data.map((c) => c.id);
 
-      // Fetch lesson counts
       const { data: lessons } = await supabase
         .from("lessons")
         .select("course_id")
@@ -36,7 +35,6 @@ const Learn = () => {
         lessonCountMap[l.course_id] = (lessonCountMap[l.course_id] || 0) + 1;
       });
 
-      // Fetch enrolled counts
       const { data: enrollments } = await supabase
         .from("course_enrollments")
         .select("course_id")
@@ -70,14 +68,14 @@ const Learn = () => {
 
   return (
     <div className="p-6 md:p-8 animate-fade-in">
-      <SEOHead title="Courses & Learning — Money Spirit" description="Grow your financial knowledge with Money Spirit courses designed for migrant women. Learn at your own pace." />
-      <h1 className="font-heading text-3xl text-primary font-normal mb-1">Learn</h1>
-      <p className="font-body text-primary/70 text-base mb-6">Explore courses and resources.</p>
+      <SEOHead title="Courses & Learning — Money Spirit" description="Grow your financial knowledge with Money Spirit courses designed for migrant women." />
+      <h1 className="font-heading text-3xl font-normal mb-1" style={{ color: "var(--ms-text-primary)" }}>Learn</h1>
+      <p className="font-body text-base mb-6" style={{ color: "var(--ms-text-secondary)" }}>Explore courses and resources.</p>
 
       {isLoading ? (
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="animate-pulse bg-muted h-64 rounded-lg" />
+            <div key={i} className="animate-pulse h-64 rounded-lg" style={{ background: "var(--ms-surface-1)" }} />
           ))}
         </div>
       ) : (

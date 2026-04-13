@@ -29,8 +29,8 @@ const Forums = () => {
   if (loading) {
     return (
       <div className="p-8">
-        <h1 className="text-3xl font-heading text-primary font-normal mb-1">Forums</h1>
-        <p className="text-primary/70 font-body text-base">Loading...</p>
+        <h1 className="text-3xl font-heading font-normal mb-1" style={{ color: "var(--ms-text-primary)" }}>Forums</h1>
+        <p className="font-body text-base" style={{ color: "var(--ms-text-secondary)" }}>Loading...</p>
       </div>
     );
   }
@@ -41,8 +41,8 @@ const Forums = () => {
       {hasFinanceForum && <EducationBanner />}
 
       <div>
-        <h1 className="text-3xl font-heading text-primary font-normal mb-1">Forums</h1>
-        <p className="text-primary/70 font-body text-base mb-6">Join the conversation.</p>
+        <h1 className="text-3xl font-heading font-normal mb-1" style={{ color: "var(--ms-text-primary)" }}>Forums</h1>
+        <p className="font-body text-base mb-6" style={{ color: "var(--ms-text-secondary)" }}>Join the conversation.</p>
       </div>
 
       {forums.length === 0 ? (
@@ -52,17 +52,20 @@ const Forums = () => {
           {forums.map((forum) => (
             <div
               key={forum.id}
-              className="rounded-xl border border-stone-200 bg-white shadow-sm p-4 cursor-pointer hover:border-amber-400 hover:shadow-md transition-all duration-200"
+              className="ms-card-interactive"
             >
               <div className="flex items-start gap-3">
-                <MessageSquare className="h-5 w-5 text-amber-500 mt-0.5 shrink-0" />
+                <MessageSquare className="h-5 w-5 mt-0.5 shrink-0" style={{ color: "#C9941E" }} />
                 <div>
-                  <h3 className="font-heading text-base text-primary font-semibold leading-snug">{forum.title}</h3>
+                  <h3 className="font-heading text-base font-semibold leading-snug" style={{ color: "var(--ms-text-primary)" }}>{forum.title}</h3>
                   {forum.description && (
-                    <p className="text-sm font-body text-primary/60 mt-0.5 leading-relaxed">{forum.description}</p>
+                    <p className="text-[13px] font-body mt-0.5 leading-relaxed" style={{ color: "var(--ms-text-secondary)" }}>{forum.description}</p>
                   )}
                   {forum.is_finance && (
-                    <span className="inline-flex mt-2 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700 border border-amber-200">
+                    <span
+                      className="inline-flex mt-2 px-2.5 py-0.5 rounded-full text-[11px] font-medium"
+                      style={{ background: "rgba(201,148,30,0.10)", color: "#F5C842" }}
+                    >
                       Finance
                     </span>
                   )}

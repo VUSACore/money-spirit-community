@@ -50,6 +50,21 @@
 
     --font-heading: 'Cormorant Garamond', serif;
     --font-body: 'DM Sans', sans-serif;
+
+    /* Dark platform tokens */
+    --ms-base: #0A0D14;
+    --ms-surface-1: #111827;
+    --ms-surface-2: #1C2333;
+    --ms-surface-3: #242D3D;
+    --ms-border: rgba(255,255,255,0.06);
+    --ms-border-active: rgba(255,255,255,0.12);
+    --ms-text-primary: #F1F5F9;
+    --ms-text-secondary: #94A3B8;
+    --ms-text-muted: #475569;
+    --ms-success: #10B981;
+    --ms-warning: #F59E0B;
+    --ms-danger: #EF4444;
+    --ms-info: #3B82F6;
   }
 }
 
@@ -70,6 +85,57 @@
 @layer components {
   .ms-input {
     @apply w-full rounded-xl border border-navy bg-cream text-navy px-4 py-2.5 text-sm font-body placeholder:text-navy/40 focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold transition-colors;
+  }
+
+  /* Dark platform input */
+  .ms-input-dark {
+    background: var(--ms-surface-2);
+    border: 1px solid var(--ms-border-active);
+    color: var(--ms-text-primary);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    width: 100%;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .ms-input-dark::placeholder {
+    color: var(--ms-text-muted);
+  }
+  .ms-input-dark:focus {
+    border-color: #C9941E;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(201,148,30,0.15);
+  }
+
+  /* Dark card system */
+  .ms-card {
+    background: var(--ms-surface-1);
+    border: 1px solid var(--ms-border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .ms-card-elevated {
+    background: var(--ms-surface-2);
+    border: 1px solid var(--ms-border-active);
+    border-radius: 16px;
+    padding: 24px 28px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+  .ms-card-interactive {
+    background: var(--ms-surface-1);
+    border: 1px solid var(--ms-border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .ms-card-interactive:hover {
+    background: var(--ms-surface-2);
+    border-color: var(--ms-border-active);
+    transform: translateY(-1px);
   }
 
   .btn-gold {

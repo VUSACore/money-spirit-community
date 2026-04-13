@@ -3,13 +3,11 @@ import SEOHead from "@/components/SEOHead";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/components/PlatformLayout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import PostComposer from "@/components/PostComposer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Heart, PartyPopper, Sparkles, Zap } from "lucide-react";
 import EmptyState from "@/components/EmptyState";
 import { formatDistanceToNow } from "date-fns";
-import LotusIcon from "@/components/LotusIcon";
 import { createNotification } from "@/lib/actions/notifications";
 import { checkAndAwardPostBadges } from "@/lib/actions/badges";
 
@@ -33,8 +31,8 @@ const reactionConfig: { type: ReactionType; icon: typeof Heart; label: string }[
 const InitialsAvatar = ({ name }: { name: string }) => {
   const initials = name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
   return (
-    <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center shrink-0">
-      <span className="text-sm font-body font-semibold text-white">{initials}</span>
+    <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: "#C9941E" }}>
+      <span className="text-sm font-body font-semibold" style={{ color: "#0A0D14" }}>{initials}</span>
     </div>
   );
 };
@@ -114,7 +112,6 @@ const Community = () => {
       await supabase.from("post_reactions").delete().eq("post_id", postId).eq("user_id", userId).eq("type", type);
     } else {
       await supabase.from("post_reactions").insert({ post_id: postId, user_id: userId, type });
-      // Notify post author
       if (post.author_id !== userId) {
         const { data: actor } = await supabase.from("profiles").select("display_name").eq("user_id", userId).maybeSingle();
         const name = actor?.display_name ?? "Someone";
@@ -129,18 +126,16 @@ const Community = () => {
   if (loading) {
     return (
       <div className="p-8 max-w-3xl mx-auto space-y-6">
-        <h1 className="text-3xl font-heading text-foreground">Community</h1>
+        <h1 className="text-3xl font-heading" style={{ color: "var(--ms-text-primary)" }}>Community</h1>
         {[1, 2, 3].map((i) => (
-          <Card key={i} className="border bg-card shadow-none">
-            <CardContent className="p-5 space-y-3">
-              <div className="flex items-center gap-3">
-                <Skeleton className="w-10 h-10 rounded-full bg-accent/10" />
-                <div className="space-y-2"><Skeleton className="h-4 w-28 bg-accent/10" /><Skeleton className="h-3 w-16 bg-accent/10" /></div>
-              </div>
-              <Skeleton className="h-4 w-full bg-accent/10" />
-              <Skeleton className="h-4 w-2/3 bg-accent/10" />
-            </CardContent>
-          </Card>
+          <div key={i} className="ms-card space-y-3">
+            <div className="flex items-center gap-3">
+              <Skeleton className="w-10 h-10 rounded-full" style={{ background: "var(--ms-surface-3)" }} />
+              <div className="space-y-2"><Skeleton className="h-4 w-28" style={{ background: "var(--ms-surface-3)" }} /><Skeleton className="h-3 w-16" style={{ background: "var(--ms-surface-3)" }} /></div>
+            </div>
+            <Skeleton className="h-4 w-full" style={{ background: "var(--ms-surface-3)" }} />
+            <Skeleton className="h-4 w-2/3" style={{ background: "var(--ms-surface-3)" }} />
+          </div>
         ))}
       </div>
     );
@@ -149,7 +144,7 @@ const Community = () => {
   return (
     <div className="p-8 max-w-3xl mx-auto space-y-6 animate-fade-in">
       <SEOHead title="Community — Money Spirit" />
-      <h1 className="text-3xl font-heading text-foreground">Community</h1>
+      <h1 className="text-3xl font-heading" style={{ color: "var(--ms-text-primary)" }}>Community</h1>
 
       {!isGuest && (
         <PostComposer
@@ -162,8 +157,11 @@ const Community = () => {
 
       <div className="space-y-4">
         {visiblePosts.map((post) => (
-          <Card key={post.id} className="border bg-card shadow-none animate-fade-in">
-            <CardContent className="p-5 space-y-3">
+          <div key={post.id} className="ms-card animate-fade-in" style={{ transition: "border-color 0.15s ease" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--ms-border-active)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--ms-border)"; }}
+          >
+            <div className="space-y-3">
               <div className="flex items-center gap-3">
                 {post.author?.avatar_url ? (
                   <img src={post.author.avatar_url} alt={post.author.display_name} className="w-10 h-10 rounded-full object-cover" />
@@ -171,33 +169,44 @@ const Community = () => {
                   <InitialsAvatar name={post.author?.display_name ?? "?"} />
                 )}
                 <div>
-                  <p className="text-sm font-body font-semibold text-foreground">{post.author?.display_name ?? "Unknown"}</p>
-                  <p className="text-xs text-muted-foreground font-body">{formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}</p>
+                  <p className="text-sm font-body font-medium" style={{ color: "var(--ms-text-primary)" }}>{post.author?.display_name ?? "Unknown"}</p>
+                  <p className="text-xs font-body" style={{ color: "var(--ms-text-muted)" }}>{formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}</p>
                 </div>
-                {post.pinned && <span className="ml-auto text-xs font-body text-accent font-medium">Pinned</span>}
+                {post.pinned && (
+                  <span className="ml-auto text-[11px] font-body font-medium px-2 py-0.5 rounded-full" style={{ background: "rgba(201,148,30,0.15)", color: "#F5C842" }}>
+                    Pinned
+                  </span>
+                )}
               </div>
-              <p className="text-sm font-body text-foreground whitespace-pre-wrap">{post.content}</p>
+              <p className="text-[15px] font-body leading-[1.7] whitespace-pre-wrap" style={{ color: "var(--ms-text-secondary)" }}>{post.content}</p>
               <div className="flex items-center gap-1 pt-1">
                 {reactionConfig.map((r) => {
                   const count = post.reactions[r.type];
                   const active = post.userReactions.has(r.type);
                   return (
                     <button key={r.type} onClick={() => handleReaction(post.id, r.type)} disabled={isGuest}
-                      className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-body transition-colors ${active ? "bg-accent/15 text-accent" : "text-muted-foreground hover:bg-muted hover:text-foreground"} disabled:opacity-50 disabled:cursor-not-allowed`}>
+                      className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-body transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      style={{
+                        background: active ? "rgba(201,148,30,0.15)" : "transparent",
+                        color: active ? "#F5C842" : "var(--ms-text-muted)",
+                      }}
+                      onMouseEnter={(e) => { if (!active) (e.currentTarget as HTMLElement).style.color = "#F5C842"; }}
+                      onMouseLeave={(e) => { if (!active) (e.currentTarget as HTMLElement).style.color = "var(--ms-text-muted)"; }}
+                    >
                       <r.icon size={14} />
                       {count > 0 && <span>{count}</span>}
                     </button>
                   );
                 })}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         ))}
 
         {visiblePosts.length === 0 && (
           <EmptyState
             icon={Sparkles}
-            iconClassName="text-accent"
+            iconClassName="text-gold"
             heading="Be the first to share"
             body="Your community is gathering. Start the conversation by sharing your first post or financial win."
             ctaLabel={!isGuest ? "Share Your First Post" : undefined}
@@ -206,13 +215,11 @@ const Community = () => {
         )}
 
         {isGuest && posts.length > 5 && (
-          <Card className="border-accent bg-accent/5 shadow-none">
-            <CardContent className="p-6 text-center space-y-3">
-              <p className="font-heading text-xl text-foreground">Join Money Spirit to see more</p>
-              <p className="text-sm text-muted-foreground font-body">Become a member to access the full community feed, post, and react.</p>
-              <Button variant="gold" asChild><a href="/register">Join the Community</a></Button>
-            </CardContent>
-          </Card>
+          <div className="ms-card-elevated text-center space-y-3">
+            <p className="font-heading text-xl" style={{ color: "var(--ms-text-primary)" }}>Join Money Spirit to see more</p>
+            <p className="text-sm font-body" style={{ color: "var(--ms-text-secondary)" }}>Become a member to access the full community feed, post, and react.</p>
+            <Button variant="gold" asChild><a href="/register">Join the Community</a></Button>
+          </div>
         )}
       </div>
     </div>
