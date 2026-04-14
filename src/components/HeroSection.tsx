@@ -16,25 +16,32 @@ const HeroSection = () => {
 
       <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
         <img
-          src="/logo.png"
+          src="/mandala.png"
           alt="Money Spirit"
           style={{
-            width: 72, height: 72, margin: '0 auto 24px',
-            filter: 'drop-shadow(0 0 10px rgba(196,151,58,0.20))',
+            width: 'min(320px, 68vw)',
+            height: 'auto',
+            display: 'block',
+            margin: '0 auto 28px auto',
+            background: 'transparent',
+            border: 'none',
+            outline: 'none',
+            boxShadow: 'none',
+            filter: 'drop-shadow(0 0 24px rgba(196,151,58,0.18))',
           }}
         />
-        <h1 style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(44px, 8vw, 76px)',
-          fontWeight: 300,
-          color: '#F2EAD8',
-          letterSpacing: '-0.045em',
-          textShadow: '0 0 80px rgba(196,151,58,0.16)',
-          marginBottom: '16px',
-          lineHeight: 1.05,
+        <p style={{
+          fontFamily: "'Cormorant', 'Cormorant Garamond', Georgia, serif",
+          fontSize: 'clamp(18px, 4vw, 26px)',
+          fontWeight: 400,
+          letterSpacing: '0.25em',
+          color: '#C4973A',
+          textTransform: 'uppercase' as const,
+          margin: '0 auto 16px auto',
+          textAlign: 'center' as const,
         }}>
-          Money Spirit
-        </h1>
+          Money-Spirit
+        </p>
         <p style={{
           fontFamily: 'var(--font-display)',
           fontSize: 'clamp(18px, 3vw, 22px)',
