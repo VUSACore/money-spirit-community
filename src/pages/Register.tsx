@@ -51,7 +51,7 @@ const Register = () => {
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <img src="/logo.png" alt="Money Spirit" style={{ width: 64, height: 64, margin: '0 auto 16px', filter: 'drop-shadow(0 0 10px rgba(196,151,58,0.20))' }} />
-            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '26px', color: '#F2EAD8', marginBottom: '6px' }}>Money Spirit</h1>
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '26px', color: '#C4973A', fontWeight: 700, marginBottom: '6px' }}>Money Spirit</h1>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62' }}>Join Money Spirit</p>
           </div>
 

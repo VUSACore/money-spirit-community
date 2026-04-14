@@ -144,7 +144,7 @@ const PlatformLayout = () => {
             {/* Logo */}
             <div className="flex items-center gap-2.5 px-4 py-4 min-h-[56px]" style={{ borderBottom: '1px solid rgba(196,151,58,0.08)' }}>
               {sidebarExpanded && (
-                <span style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 400, letterSpacing: '-0.01em', color: '#C4973A', whiteSpace: 'nowrap' }}>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, letterSpacing: '-0.01em', color: '#C4973A', whiteSpace: 'nowrap' }}>
                   Money Spirit
                 </span>
               )}
@@ -318,7 +318,7 @@ const PlatformLayout = () => {
                 }}>
                   <div className="flex flex-col h-full">
                     <div className="px-6 py-6 flex items-center gap-2.5" style={{ borderBottom: '1px solid rgba(196,151,58,0.08)' }}>
-                      <span style={{ fontFamily: 'var(--font-display)', fontSize: '20px', color: '#C4973A' }}>Money Spirit</span>
+                      <span style={{ fontFamily: 'var(--font-display)', fontSize: '20px', color: '#C4973A', fontWeight: 700 }}>Money Spirit</span>
                     </div>
                     <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
                       {navItems.map((item) => {
@@ -359,7 +359,7 @@ const PlatformLayout = () => {
                   </div>
                 </SheetContent>
               </Sheet>
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', color: '#C4973A' }}>Money Spirit</span>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', color: '#C4973A', fontWeight: 700 }}>Money Spirit</span>
             </div>
             <div className="flex items-center gap-3">
               {profile?.user_id && (

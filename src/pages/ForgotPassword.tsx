@@ -34,7 +34,7 @@ const ForgotPassword = () => {
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <LotusIcon className="text-accent mx-auto mb-4" size={48} />
-            <h1 className="text-4xl font-heading text-primary mb-2">Money Spirit</h1>
+            <h1 className="text-4xl font-heading mb-2" style={{ color: '#C4973A', fontWeight: 700 }}>Money Spirit</h1>
             <p className="text-accent font-body">Reset your password</p>
           </div>
 
