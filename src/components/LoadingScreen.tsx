@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface LoadingScreenProps {
   onComplete: () => void;
@@ -24,11 +24,6 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         inset: 0,
         zIndex: 9999,
         backgroundColor: '#0B1F3A',
-        opacity,
-        transition: opacity === 1
-          ? 'opacity 0.5s ease-in'
-          : 'opacity 0.5s ease-out',
-        pointerEvents: 'all',
       }}
     >
       <video
