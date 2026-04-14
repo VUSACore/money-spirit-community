@@ -29,7 +29,7 @@ const Login = () => {
     setErrors({});
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     if (error) { setErrors({ general: error.message }); setLoading(false); return; }
-    navigate("/dashboard");
+    setShowLoading(true);
   };
 
   return (
