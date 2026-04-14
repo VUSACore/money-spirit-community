@@ -45,7 +45,7 @@ const Join = () => {
       <SEOHead title="Join Money Spirit — Your Financial Wellbeing Journey Starts Here" description="Become a member of Money Spirit. Access weekly money rituals, expert courses, live events and a community of migrant women building financial wellbeing." ogTitle="Join Money Spirit" ogDescription="Become a member of Money Spirit. Access weekly money rituals, expert courses, live events and a community of migrant women building financial wellbeing." />
       <header className="py-6 px-6 flex items-center justify-center gap-2.5">
         <LotusIcon className="text-accent" size={28} />
-        <span className="text-primary font-heading text-xl tracking-wide">Money Spirit</span>
+        <span className="font-heading text-xl tracking-wide" style={{ color: '#C4973A', fontWeight: 700 }}>Money Spirit</span>
       </header>
 
       <main className="flex-1 max-w-[860px] mx-auto px-6 pb-12">

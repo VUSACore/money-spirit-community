@@ -33,7 +33,7 @@ const HeroSection = () => {
         <p style={{
           fontFamily: "'Cormorant', 'Cormorant Garamond', Georgia, serif",
           fontSize: 'clamp(18px, 4vw, 26px)',
-          fontWeight: 400,
+          fontWeight: 700,
           letterSpacing: '0.25em',
           color: '#C4973A',
           textTransform: 'uppercase' as const,

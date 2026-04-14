@@ -16,7 +16,7 @@ const NotFound = () => {
   return (
     <div className="min-h-screen bg-sidebar-background flex flex-col items-center justify-center px-6 text-center">
       <LotusIcon className="text-accent" size={36} />
-      <p className="font-heading text-2xl text-accent mt-4 tracking-wide">Money Spirit</p>
+      <p className="font-heading text-2xl mt-4 tracking-wide" style={{ color: '#C4973A', fontWeight: 700 }}>Money Spirit</p>
       <p className="font-heading italic text-sm text-sidebar-foreground/50 mb-8">Spirit Inspired Freedom</p>
 
       <p className="font-heading text-[120px] leading-none text-accent/30 select-none">404</p>
