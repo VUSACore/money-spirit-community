@@ -90,7 +90,8 @@ const PlatformLayout = () => {
       setLoading(false);
     };
     load();
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && session) return;
       if (!session) navigate("/login", { replace: true });
     });
     return () => subscription.unsubscribe();

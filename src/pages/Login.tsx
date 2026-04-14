@@ -29,13 +29,14 @@ const Login = () => {
     setErrors({});
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     if (error) { setErrors({ general: error.message }); setLoading(false); return; }
+    setLoading(false);
     setShowLoading(true);
   };
 
   return (
     <>
       {showLoading && (
-        <LoadingScreen onComplete={() => navigate('/dashboard')} />
+        <LoadingScreen onComplete={() => navigate('/dashboard', { replace: true })} />
       )}
       <div className="min-h-screen flex flex-col" style={{ background: '#0B1F3A' }}>
       <div className="flex-1 flex items-center justify-center px-4">
