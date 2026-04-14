@@ -1,31 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface LoadingScreenProps {
   onComplete: () => void;
 }
 
 export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
-  const [opacity, setOpacity] = useState(0);
-
   useEffect(() => {
-    const fadeIn = setTimeout(() => {
-      setOpacity(1);
-    }, 50);
-
     const fallback = setTimeout(() => {
-      setOpacity(0);
-      setTimeout(onComplete, 500);
+      onComplete();
     }, 15000);
 
-    return () => {
-      clearTimeout(fadeIn);
-      clearTimeout(fallback);
-    };
+    return () => clearTimeout(fallback);
   }, [onComplete]);
 
   const handleVideoEnded = () => {
-    setOpacity(0);
-    setTimeout(onComplete, 500);
+    onComplete();
   };
 
   return (
@@ -35,11 +24,6 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         inset: 0,
         zIndex: 9999,
         backgroundColor: '#0B1F3A',
-        opacity,
-        transition: opacity === 1
-          ? 'opacity 0.5s ease-in'
-          : 'opacity 0.5s ease-out',
-        pointerEvents: 'all',
       }}
     >
       <video
