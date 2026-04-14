@@ -66,7 +66,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
           transition,
         }}
       >
-        <source src="/Money Spirit.mp4" type="video/mp4" />
+        <source src="/welcome.mp4" type="video/mp4" />
       </video>
     </div>
   );
