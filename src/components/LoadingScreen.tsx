@@ -5,27 +5,16 @@ interface LoadingScreenProps {
 }
 
 export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
-  const [opacity, setOpacity] = useState(0);
-
   useEffect(() => {
-    const fadeIn = setTimeout(() => {
-      setOpacity(1);
-    }, 50);
-
     const fallback = setTimeout(() => {
-      setOpacity(0);
-      setTimeout(onComplete, 500);
+      onComplete();
     }, 15000);
 
-    return () => {
-      clearTimeout(fadeIn);
-      clearTimeout(fallback);
-    };
+    return () => clearTimeout(fallback);
   }, [onComplete]);
 
   const handleVideoEnded = () => {
-    setOpacity(0);
-    setTimeout(onComplete, 500);
+    onComplete();
   };
 
   return (
