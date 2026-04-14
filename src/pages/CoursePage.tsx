@@ -1,12 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Lock, Circle } from "lucide-react";
+import { CheckCircle, Lock, Circle, GraduationCap } from "lucide-react";
 import EnrolmentGate from "@/components/learn/EnrolmentGate";
-import EducationBanner from "@/components/EducationBanner";
 import { getCourseProgress } from "@/lib/services/lessonService";
 
 const CoursePage = () => {
@@ -83,8 +81,15 @@ const CoursePage = () => {
   if (!course || !lessons) {
     return (
       <div className="p-6 md:p-8 animate-fade-in">
-        <div className="animate-pulse bg-muted h-8 w-64 rounded mb-4" />
-        <div className="animate-pulse bg-muted h-4 w-96 rounded" />
+        <div className="max-w-2xl mx-auto space-y-4">
+          <div className="animate-pulse h-8 w-64 rounded-lg" style={{ background: 'rgba(196,151,58,0.08)' }} />
+          <div className="animate-pulse h-4 w-96 rounded" style={{ background: 'rgba(196,151,58,0.06)' }} />
+          <div className="space-y-2 mt-8">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="animate-pulse h-12 rounded-lg" style={{ background: 'rgba(196,151,58,0.04)' }} />
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
@@ -128,66 +133,111 @@ const CoursePage = () => {
 
   return (
     <div className="p-6 md:p-8 animate-fade-in">
-      <h1 className="font-heading text-3xl text-primary mb-2">{course.title}</h1>
-      {course.description && (
-        <p className="font-body text-primary/60 mb-6 max-w-2xl leading-relaxed">{course.description}</p>
-      )}
+      <div className="max-w-2xl">
+        {/* Course title */}
+        <h1 style={{
+          fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: 300,
+          color: '#F2EAD8', letterSpacing: '-0.03em', marginBottom: '8px', lineHeight: 1.1,
+        }}>
+          {course.title}
+        </h1>
+        {course.description && (
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', lineHeight: 1.6, marginBottom: '24px', maxWidth: '560px' }}>
+            {course.description}
+          </p>
+        )}
 
-      {/* Progress bar */}
-      <div className="mb-6 max-w-xl">
-        <div className="flex items-center justify-between mb-1.5">
-          <span className="font-body text-sm text-primary/70">Progress</span>
-          <span className="font-body text-sm font-medium text-primary">{pct}%</span>
-        </div>
-        <div className="w-full h-2 rounded-full bg-accent/15 overflow-hidden">
-          <div
-            className="h-full bg-accent rounded-full transition-all duration-500"
-            style={{ width: `${pct}%` }}
-          />
-        </div>
-      </div>
-
-      {/* CTA */}
-      <Button asChild className="btn-gold rounded-lg font-body mb-8">
-        <Link to={ctaTarget}>{ctaLabel}</Link>
-      </Button>
-
-      <EducationBanner />
-
-      {/* Lesson list */}
-      <div className="mt-6 space-y-1 max-w-2xl">
-        {lessons.map((l, i) => {
-          const isDone = done.has(l.id);
-          const locked = isLessonLocked(i);
-          const duration = formatDuration(l.video_duration_seconds);
-
-          return (
-            <div key={l.id}>
-              {locked ? (
-                <div className="flex items-center gap-3 px-4 py-3 rounded-lg font-body text-sm text-muted-foreground/50 cursor-not-allowed">
-                  <Lock size={18} className="shrink-0" />
-                  <span className="flex-1">{l.title}</span>
-                  {duration && <span className="text-xs">{duration}</span>}
-                </div>
-              ) : (
-                <Link
-                  to={`/learn/${courseId}/${l.id}`}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg font-body text-sm text-primary hover:bg-muted transition-colors"
-                >
-                  {isDone ? (
-                    <CheckCircle size={18} className="text-accent shrink-0" />
-                  ) : (
-                    <Circle size={18} className="text-muted-foreground shrink-0" />
-                  )}
-                  <span className={`flex-1 ${isDone ? "line-through text-muted-foreground" : ""}`}>
-                    {l.title}
-                  </span>
-                  {duration && <span className="text-xs text-muted-foreground">{duration}</span>}
-                </Link>
-              )}
+        {/* Completed banner */}
+        {isCompleted && (
+          <div className="flex items-center gap-3 px-5 py-4 rounded-xl mb-6" style={{
+            background: 'rgba(39,174,143,0.08)', border: '1px solid rgba(39,174,143,0.20)',
+          }}>
+            <GraduationCap size={20} style={{ color: '#27AE8F' }} />
+            <div>
+              <p className="text-sm font-body font-medium" style={{ color: '#27AE8F' }}>Course completed</p>
+              <p className="text-xs font-body" style={{ color: '#27AE8F80' }}>You've finished all lessons in this course.</p>
             </div>
-          );
-        })}
+          </div>
+        )}
+
+        {/* Progress bar */}
+        {!isCompleted && (
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-2">
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500, color: '#A08B62', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Progress</span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 600, color: '#EEC96E' }}>{pct}%</span>
+            </div>
+            <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(196,151,58,0.12)' }}>
+              <div style={{
+                height: '100%', borderRadius: 'var(--r-pill)',
+                width: `${pct}%`,
+                background: 'linear-gradient(90deg, #8B6612 0%, #C4973A 50%, #EEC96E 100%)',
+                boxShadow: '0 0 8px rgba(238,201,110,0.35)',
+                transition: 'width 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              }} />
+            </div>
+            <p className="text-xs font-body mt-1.5" style={{ color: '#5C4E34' }}>
+              {progress?.completed_lessons ?? 0} of {progress?.total_lessons ?? lessons.length} lessons complete
+            </p>
+          </div>
+        )}
+
+        {/* CTA */}
+        <Button asChild variant="gold" className="mb-8">
+          <Link to={ctaTarget}>{ctaLabel}</Link>
+        </Button>
+
+        {/* Lesson list */}
+        <div className="space-y-1">
+          <p className="text-[11px] font-body font-semibold tracking-wider uppercase mb-3" style={{ color: '#A08B62' }}>Lessons</p>
+          {lessons.map((l, i) => {
+            const isDone = done.has(l.id);
+            const locked = isLessonLocked(i);
+            const duration = formatDuration(l.video_duration_seconds);
+            const isNext = progress?.next_incomplete_lesson_id === l.id;
+
+            return (
+              <div key={l.id}>
+                {locked ? (
+                  <div className="flex items-center gap-3 px-4 py-3 rounded-xl" style={{ color: '#5C4E34', opacity: 0.5 }}>
+                    <Lock size={16} className="shrink-0" />
+                    <span className="flex-1 text-sm font-body">{l.title}</span>
+                    {duration && <span className="text-xs font-body">{duration}</span>}
+                  </div>
+                ) : (
+                  <Link
+                    to={`/learn/${courseId}/${l.id}`}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors"
+                    style={{
+                      background: isNext ? 'rgba(196,151,58,0.08)' : 'transparent',
+                      border: isNext ? '1px solid rgba(196,151,58,0.15)' : '1px solid transparent',
+                    }}
+                    onMouseEnter={(e) => { if (!isNext) (e.currentTarget as HTMLElement).style.background = 'rgba(196,151,58,0.05)'; }}
+                    onMouseLeave={(e) => { if (!isNext) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+                  >
+                    {isDone ? (
+                      <CheckCircle size={16} className="shrink-0" style={{ color: '#27AE8F' }} />
+                    ) : (
+                      <Circle size={16} className="shrink-0" style={{ color: isNext ? '#C9941E' : '#5C4E34' }} />
+                    )}
+                    <span className="flex-1 text-sm font-body" style={{
+                      color: isDone ? '#5C4E34' : '#F2EAD8',
+                      textDecoration: isDone ? 'line-through' : 'none',
+                    }}>
+                      {l.title}
+                    </span>
+                    {isNext && (
+                      <span className="text-[10px] font-body font-medium px-2 py-0.5 rounded-full" style={{
+                        background: 'rgba(201,148,30,0.15)', color: '#EEC96E',
+                      }}>Next</span>
+                    )}
+                    {duration && <span className="text-xs font-body" style={{ color: '#5C4E34' }}>{duration}</span>}
+                  </Link>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

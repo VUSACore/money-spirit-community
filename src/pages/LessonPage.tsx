@@ -3,14 +3,12 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import EducationBanner from "@/components/EducationBanner";
 import {
   CheckCircle, PlayCircle, Lock, Circle, FileDown,
   ChevronLeft, ChevronRight, Trophy,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
-  getLessonProgress,
   saveWatchPosition,
   markLessonComplete,
 } from "@/lib/services/lessonService";
@@ -49,6 +47,9 @@ const LessonPage = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [showCelebration, setShowCelebration] = useState(false);
   const [markedComplete, setMarkedComplete] = useState(false);
+
+  // Reset markedComplete when lesson changes
+  useEffect(() => { setMarkedComplete(false); }, [lessonId]);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -184,12 +185,14 @@ const LessonPage = () => {
       setMarkedComplete(true);
       toast.success("Lesson complete! 🎉");
       queryClient.invalidateQueries({ queryKey: ["lesson_progress"] });
+      queryClient.invalidateQueries({ queryKey: ["course_progress_summary"] });
       if (courseCompleted) {
         setShowCelebration(true);
         queryClient.invalidateQueries({ queryKey: ["my_enrollments"] });
+        queryClient.invalidateQueries({ queryKey: ["enrolment_check"] });
       }
     },
-    onError: () => toast.error("Could not save progress."),
+    onError: () => toast.error("Could not save progress. Please try again."),
   });
 
   const handleMarkComplete = () => {
@@ -206,8 +209,10 @@ const LessonPage = () => {
   if (!lesson || !allLessons) {
     return (
       <div className="p-6 md:p-8 animate-fade-in">
-        <div className="animate-pulse bg-muted h-10 w-80 rounded mb-4" />
-        <div className="animate-pulse bg-muted h-64 w-full rounded-lg" />
+        <div className="max-w-3xl">
+          <div className="animate-pulse h-10 w-80 rounded mb-4" style={{ background: 'rgba(196,151,58,0.08)' }} />
+          <div className="animate-pulse aspect-video w-full rounded-xl mb-4" style={{ background: 'rgba(196,151,58,0.04)' }} />
+        </div>
       </div>
     );
   }
@@ -215,8 +220,7 @@ const LessonPage = () => {
   const videoType = detectVideoType(lesson.video_url);
   const formatDuration = (s: number | null) => {
     if (!s) return null;
-    const m = Math.floor(s / 60);
-    return `${m} min`;
+    return `${Math.floor(s / 60)} min`;
   };
 
   return (
@@ -224,8 +228,22 @@ const LessonPage = () => {
       <div className="flex flex-col lg:flex-row gap-8">
         {/* ── LEFT: main content ── */}
         <div className="flex-1 min-w-0">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-2 mb-4">
+            <Link to={`/learn/${courseId}`} className="text-xs font-body transition-colors" style={{ color: '#A08B62' }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#EEC96E'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#A08B62'; }}
+            >
+              {course?.title ?? "Course"}
+            </Link>
+            <span className="text-xs" style={{ color: '#5C4E34' }}>›</span>
+            <span className="text-xs font-body" style={{ color: '#F2EAD8' }}>
+              Lesson {currentIndex + 1} of {totalLessons}
+            </span>
+          </div>
+
           {/* Video player */}
-          <div className="aspect-video w-full rounded-lg overflow-hidden bg-sidebar mb-5">
+          <div className="aspect-video w-full rounded-xl overflow-hidden mb-5" style={{ background: 'rgba(6,9,18,0.8)' }}>
             {videoType === "youtube" && lesson.video_url && (
               <iframe
                 src={`https://www.youtube.com/embed/${extractYouTubeId(lesson.video_url)}?rel=0&modestbranding=1`}
@@ -252,33 +270,35 @@ const LessonPage = () => {
             )}
             {videoType === "none" && (
               <div className="w-full h-full flex items-center justify-center">
-                <PlayCircle size={64} className="text-muted-foreground/30" />
+                <PlayCircle size={64} style={{ color: 'rgba(201,148,30,0.2)' }} />
               </div>
             )}
           </div>
 
           {/* Title */}
-          <h1 className="font-heading text-2xl md:text-3xl text-primary mb-2 leading-tight">
+          <h1 style={{
+            fontFamily: 'var(--font-display)', fontSize: 'clamp(22px, 3vw, 30px)', fontWeight: 300,
+            color: '#F2EAD8', letterSpacing: '-0.02em', marginBottom: '8px', lineHeight: 1.2,
+          }}>
             {lesson.title}
           </h1>
 
-          {/* Manual complete button for iframes */}
-          {videoType !== "html5" && videoType !== "none" && !isCurrentCompleted && (
+          {/* Complete CTA / completed state */}
+          {isCurrentCompleted ? (
+            <div className="flex items-center gap-2 mt-2 mb-4">
+              <CheckCircle size={18} style={{ color: '#27AE8F' }} />
+              <span className="text-sm font-body font-medium" style={{ color: '#27AE8F' }}>Completed</span>
+            </div>
+          ) : (
             <Button
               onClick={handleMarkComplete}
               disabled={completeMutation.isPending || !userId}
-              className="btn-gold rounded-lg font-body mt-3 mb-4"
+              variant="gold"
+              className="mt-3 mb-4"
             >
               <CheckCircle size={16} className="mr-2" />
               {completeMutation.isPending ? "Saving…" : "Mark Lesson Complete"}
             </Button>
-          )}
-
-          {isCurrentCompleted && (
-            <div className="flex items-center gap-2 text-accent mt-1 mb-4">
-              <CheckCircle size={18} />
-              <span className="font-body text-sm font-medium">Completed</span>
-            </div>
           )}
 
           {/* Resource download */}
@@ -287,22 +307,18 @@ const LessonPage = () => {
               href={lesson.resource_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg border border-accent/40 bg-sidebar px-4 py-2.5 font-body text-sm text-primary-foreground hover:border-accent transition-colors mb-4"
+              className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 font-body text-sm transition-colors mb-4"
+              style={{ background: 'rgba(196,151,58,0.08)', border: '1px solid rgba(196,151,58,0.15)', color: '#D4C49A' }}
             >
-              <FileDown size={18} className="text-accent" />
+              <FileDown size={18} style={{ color: '#C9941E' }} />
               Download Resources
             </a>
           )}
 
-          {/* Education banner */}
-          <div className="my-6">
-            <EducationBanner />
-          </div>
-
           {/* Navigation */}
-          <div className="flex items-center justify-between gap-4 mt-8">
+          <div className="flex items-center justify-between gap-4 mt-8 pt-6" style={{ borderTop: '1px solid rgba(196,151,58,0.10)' }}>
             {prevLesson ? (
-              <Button asChild variant="ghost" className="font-body text-primary-foreground">
+              <Button asChild variant="ghost" className="font-body text-sm" style={{ color: '#A08B62' }}>
                 <Link to={`/learn/${courseId}/${prevLesson.id}`}>
                   <ChevronLeft size={16} className="mr-1" /> Previous
                 </Link>
@@ -313,32 +329,39 @@ const LessonPage = () => {
               <Button
                 asChild={isCurrentCompleted}
                 disabled={!isCurrentCompleted}
-                className="btn-gold rounded-lg font-body"
+                variant="gold"
+                className="font-body"
               >
                 {isCurrentCompleted ? (
                   <Link to={`/learn/${courseId}/${nextLesson.id}`}>
                     Next Lesson <ChevronRight size={16} className="ml-1" />
                   </Link>
                 ) : (
-                  <span>Next Lesson <ChevronRight size={16} className="ml-1" /></span>
+                  <span className="opacity-50">Next Lesson <ChevronRight size={16} className="ml-1" /></span>
                 )}
+              </Button>
+            ) : isCurrentCompleted ? (
+              <Button asChild variant="gold" className="font-body">
+                <Link to={`/learn/${courseId}`}>Back to Course</Link>
               </Button>
             ) : null}
           </div>
         </div>
 
         {/* ── RIGHT: sidebar ── */}
-        <aside className="hidden lg:block w-[280px] shrink-0">
-          <h3 className="font-body text-sm text-primary-foreground/70 font-medium mb-3">
+        <aside className="hidden lg:block w-[260px] shrink-0">
+          <p className="text-[11px] font-body font-semibold tracking-wider uppercase mb-3" style={{ color: '#A08B62' }}>
             Course Progress
-          </h3>
-          <div className="w-full h-1.5 rounded-full bg-sidebar-border overflow-hidden mb-1">
-            <div
-              className="h-full bg-accent rounded-full transition-all duration-500"
-              style={{ width: `${progressPct}%` }}
-            />
+          </p>
+          <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(196,151,58,0.12)', marginBottom: '4px' }}>
+            <div style={{
+              height: '100%', borderRadius: 'var(--r-pill)',
+              width: `${progressPct}%`,
+              background: 'linear-gradient(90deg, #8B6612, #C4973A, #EEC96E)',
+              transition: 'width 0.5s ease',
+            }} />
           </div>
-          <p className="font-body text-xs text-muted-foreground mb-6">
+          <p className="text-xs font-body mb-6" style={{ color: '#5C4E34' }}>
             {completedCount} of {totalLessons} lessons complete
           </p>
 
@@ -352,33 +375,33 @@ const LessonPage = () => {
               return (
                 <li key={l.id}>
                   {locked ? (
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded font-body text-xs text-muted-foreground/50 cursor-not-allowed">
-                      <Lock size={16} className="shrink-0" />
-                      <span className="flex-1 line-clamp-2">{l.title}</span>
-                      {duration && <span className="text-[11px] shrink-0">{duration}</span>}
+                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs" style={{ color: '#5C4E34', opacity: 0.5 }}>
+                      <Lock size={14} className="shrink-0" />
+                      <span className="flex-1 line-clamp-2 font-body">{l.title}</span>
                     </div>
                   ) : (
                     <Link
                       to={`/learn/${courseId}/${l.id}`}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded font-body text-xs transition-colors ${
-                        isCurrent
-                          ? "bg-sidebar-accent border-l-2 border-accent text-primary-foreground font-medium"
-                          : isDone
-                          ? "text-muted-foreground hover:bg-sidebar-accent/50"
-                          : "text-primary-foreground/80 hover:bg-sidebar-accent/50"
-                      }`}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs transition-colors"
+                      style={{
+                        fontFamily: 'var(--font-body)',
+                        background: isCurrent ? 'rgba(196,151,58,0.10)' : 'transparent',
+                        borderLeft: isCurrent ? '2px solid #C9941E' : '2px solid transparent',
+                        color: isDone ? '#5C4E34' : '#F2EAD8',
+                        fontWeight: isCurrent ? 500 : 400,
+                      }}
                     >
                       {isDone ? (
-                        <CheckCircle size={16} className="text-accent shrink-0" />
+                        <CheckCircle size={14} className="shrink-0" style={{ color: '#27AE8F' }} />
                       ) : isCurrent ? (
-                        <PlayCircle size={16} className="text-accent shrink-0" />
+                        <PlayCircle size={14} className="shrink-0" style={{ color: '#C9941E' }} />
                       ) : (
-                        <Circle size={16} className="shrink-0 text-muted-foreground" />
+                        <Circle size={14} className="shrink-0" style={{ color: '#5C4E34' }} />
                       )}
                       <span className={`flex-1 line-clamp-2 ${isDone ? "line-through" : ""}`}>
                         {l.title}
                       </span>
-                      {duration && <span className="text-[11px] text-muted-foreground shrink-0">{duration}</span>}
+                      {duration && <span className="text-[11px] shrink-0" style={{ color: '#5C4E34' }}>{duration}</span>}
                     </Link>
                   )}
                 </li>
@@ -390,23 +413,28 @@ const LessonPage = () => {
 
       {/* ── Celebration modal ── */}
       <Dialog open={showCelebration} onOpenChange={setShowCelebration}>
-        <DialogContent className="bg-sidebar border-accent text-center max-w-md p-10">
-          <div className="animate-celebration-icon mx-auto mb-4">
-            <Trophy size={64} className="text-accent" />
+        <DialogContent className="max-w-md p-10 text-center" style={{
+          background: 'rgba(11,31,58,0.98)', border: '1px solid rgba(201,148,30,0.25)',
+          borderRadius: '16px',
+        }}>
+          <div className="mx-auto mb-4">
+            <Trophy size={64} style={{ color: '#C9941E' }} />
           </div>
-          <h2 className="font-heading text-3xl text-accent mb-2">Course Complete!</h2>
-          <p className="font-body text-sm text-primary-foreground/80 mb-1">
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '30px', fontWeight: 300, color: '#EEC96E', marginBottom: '8px' }}>
+            Course Complete!
+          </h2>
+          <p className="text-sm font-body mb-1" style={{ color: '#F2EAD8' }}>
             {course?.title}
           </p>
-          <p className="font-body text-xs text-muted-foreground mb-8">
-            You have completed this course. Your achievement has been recorded and your badge has been awarded.
+          <p className="text-xs font-body mb-8" style={{ color: '#A08B62' }}>
+            You have completed this course. Your achievement has been recorded.
           </p>
           <div className="flex items-center justify-center gap-3">
-            <Button variant="ghost" onClick={() => navigate("/learn")} className="font-body text-primary-foreground">
+            <Button variant="ghost" onClick={() => navigate("/learn")} className="font-body" style={{ color: '#A08B62' }}>
               Back to Courses
             </Button>
-            <Button className="btn-gold rounded-lg font-body" onClick={() => navigate("/members")}>
-              View My Badges
+            <Button variant="gold" onClick={() => navigate(`/learn/${courseId}`)}>
+              View Course
             </Button>
           </div>
         </DialogContent>

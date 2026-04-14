@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { BookOpen } from "lucide-react";
+import { BookOpen, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { getCourseProgress } from "@/lib/services/lessonService";
 
@@ -18,7 +18,8 @@ const CourseCard = ({ id, title, description, lessonCount, enrolledCount, isEnro
   const enrol = useMutation({
     mutationFn: async () => {
       if (!userId) throw new Error("Please log in first.");
-      const { error } = await supabase.from("course_enrollments").insert({ course_id: id, user_id: userId });
+      const { error } = await supabase.from("course_enrollments")
+        .upsert({ course_id: id, user_id: userId }, { onConflict: "user_id,course_id" });
       if (error) throw error;
     },
     onSuccess: () => { toast.success("Enrolled successfully!"); queryClient.invalidateQueries({ queryKey: ["my_enrollments"] }); queryClient.invalidateQueries({ queryKey: ["published_courses"] }); },
@@ -31,13 +32,26 @@ const CourseCard = ({ id, title, description, lessonCount, enrolledCount, isEnro
     queryFn: () => getCourseProgress(userId!, id),
   });
 
+  const isComplete = progress && progress.completed_lessons === progress.total_lessons && progress.total_lessons > 0;
+  const hasStarted = progress && progress.completed_lessons > 0;
+
+  // Determine CTA destination — go to next lesson directly if in progress
+  let ctaTo = `/learn/${id}`;
+  if (hasStarted && !isComplete && progress?.next_incomplete_lesson_id) {
+    ctaTo = `/learn/${id}/${progress.next_incomplete_lesson_id}`;
+  }
+
   const card = (
     <div className="glass-interactive overflow-hidden p-0 animate-glass" style={{ animationDelay: `${index * 80}ms` }}>
       <div className="h-[160px] flex items-center justify-center" style={{
         background: 'linear-gradient(135deg, rgba(11,31,66,0.8) 0%, rgba(6,9,18,0.9) 100%)',
         borderRadius: '12px 12px 0 0',
       }}>
-        <BookOpen size={32} style={{ color: 'rgba(201,148,30,0.5)' }} />
+        {isComplete ? (
+          <CheckCircle2 size={32} style={{ color: '#27AE8F' }} />
+        ) : (
+          <BookOpen size={32} style={{ color: 'rgba(201,148,30,0.5)' }} />
+        )}
       </div>
 
       <div className="px-5 py-4 flex flex-col gap-2">
@@ -59,21 +73,25 @@ const CourseCard = ({ id, title, description, lessonCount, enrolledCount, isEnro
               <div style={{
                 height: '100%', borderRadius: 'var(--r-full)',
                 width: `${progress.percentage}%`,
-                background: 'linear-gradient(90deg, #C9941E, #F5C842)',
-                boxShadow: '0 0 8px rgba(245,200,66,0.4)',
+                background: isComplete
+                  ? 'linear-gradient(90deg, #1a8a6e, #27AE8F)'
+                  : 'linear-gradient(90deg, #C9941E, #F5C842)',
+                boxShadow: isComplete
+                  ? '0 0 8px rgba(39,174,143,0.4)'
+                  : '0 0 8px rgba(245,200,66,0.4)',
                 transition: 'width 0.5s ease',
               }} />
             </div>
-            <span style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: 'var(--text-4)', marginTop: '4px', display: 'block' }}>
-              {progress.percentage}% complete
+            <span style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: isComplete ? '#27AE8F' : 'var(--text-4)', marginTop: '4px', display: 'block' }}>
+              {isComplete ? 'Completed' : `${progress.percentage}% complete`}
             </span>
           </div>
         )}
 
         {isEnrolled ? (
           <Button asChild variant="gold" className="w-full mt-2">
-            <Link to={`/learn/${id}`}>
-              {progress && progress.completed_lessons === progress.total_lessons && progress.total_lessons > 0 ? "Review" : progress && progress.completed_lessons > 0 ? "Continue" : "Start"}
+            <Link to={ctaTo}>
+              {isComplete ? "Review" : hasStarted ? "Continue" : "Start"}
             </Link>
           </Button>
         ) : (
@@ -82,14 +100,14 @@ const CourseCard = ({ id, title, description, lessonCount, enrolledCount, isEnro
             disabled={enrol.isPending || !userId}
             className="btn-ghost w-full mt-2"
           >
-            {enrol.isPending ? "Enrolling..." : "Enrol Free"}
+            {enrol.isPending ? "Enrolling…" : "Enrol Free"}
           </button>
         )}
       </div>
     </div>
   );
 
-  if (isEnrolled) return <Link to={`/learn/${id}`} className="block">{card}</Link>;
+  if (isEnrolled) return <Link to={ctaTo} className="block">{card}</Link>;
   return card;
 };
 
