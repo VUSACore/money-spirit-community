@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import LotusIcon from "@/components/LotusIcon";
+import { BookOpen } from "lucide-react";
 
 interface EnrolmentGateProps {
   courseId: string;
@@ -18,9 +18,13 @@ const EnrolmentGate = ({ courseId, userId, title, description, lessonCount }: En
   const enrol = useMutation({
     mutationFn: async () => {
       if (!userId) throw new Error("Please log in to enrol.");
+      // Use upsert to avoid duplicate enrollment errors
       const { error } = await supabase
         .from("course_enrollments")
-        .insert({ course_id: courseId, user_id: userId });
+        .upsert(
+          { course_id: courseId, user_id: userId },
+          { onConflict: "user_id,course_id" }
+        );
       if (error) throw error;
     },
     onSuccess: () => {
@@ -35,24 +39,33 @@ const EnrolmentGate = ({ courseId, userId, title, description, lessonCount }: En
 
   return (
     <div className="flex items-center justify-center min-h-[60vh] animate-fade-in">
-      <div className="w-full max-w-lg rounded-lg bg-navy p-10 text-center">
-        <LotusIcon size={48} className="text-gold mx-auto mb-6" />
-        <h1 className="font-heading text-3xl text-cream mb-3">{title}</h1>
+      <div className="w-full max-w-lg text-center" style={{ padding: '48px 32px' }}>
+        <div className="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-6" style={{
+          background: 'rgba(201,148,30,0.12)', border: '1px solid rgba(201,148,30,0.25)',
+        }}>
+          <BookOpen size={28} style={{ color: '#C9941E' }} />
+        </div>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '32px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.02em', marginBottom: '12px' }}>
+          {title}
+        </h1>
         {description && (
-          <p className="font-body text-cream/70 mb-4 leading-relaxed">{description}</p>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', lineHeight: 1.6, marginBottom: '16px', maxWidth: '400px', marginLeft: 'auto', marginRight: 'auto' }}>
+            {description}
+          </p>
         )}
-        <p className="font-body text-sm text-cream/50 mb-8">
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: '#5C4E34', marginBottom: '32px' }}>
           {lessonCount} {lessonCount === 1 ? "lesson" : "lessons"} included
         </p>
         <Button
           onClick={() => enrol.mutate()}
           disabled={enrol.isPending || !userId}
-          className="bg-gold text-white hover:bg-gold/90 font-body text-base px-10 py-6"
+          variant="gold"
+          className="px-10 h-12 text-base"
         >
-          {enrol.isPending ? "Enrolling..." : "Enrol Free and Begin"}
+          {enrol.isPending ? "Enrolling…" : "Enrol Free and Begin"}
         </Button>
         {!userId && (
-          <p className="font-body text-xs text-cream/40 mt-4">
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: '#5C4E34', marginTop: '16px' }}>
             Please log in to enrol in this course.
           </p>
         )}

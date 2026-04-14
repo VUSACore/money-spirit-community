@@ -3,29 +3,68 @@ import SEOHead from "@/components/SEOHead";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Flame, BookOpen, CheckCircle2, AlertCircle } from "lucide-react";
+import { Flame, BookOpen, CheckCircle2, AlertCircle, GraduationCap } from "lucide-react";
 import NextSacredStep from "@/components/ai/NextSacredStep";
 import type { Tables } from "@/integrations/supabase/types";
 import { isProfileComplete, getProfileMissingFields } from "@/lib/profileCompletion";
 import { archetypeName as archNames, archetypeAccent as archAccents } from "@/lib/profileConstants";
+import { getCourseProgress, type CourseProgressSummary } from "@/lib/services/lessonService";
 
 type Profile = Tables<"profiles">;
+
+interface ActiveCourse {
+  courseId: string;
+  courseTitle: string;
+  progress: CourseProgressSummary;
+}
 
 const Dashboard = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [courseCount, setCourseCount] = useState<number | null>(null);
+  const [activeCourse, setActiveCourse] = useState<ActiveCourse | null>(null);
+  const [allCoursesComplete, setAllCoursesComplete] = useState(false);
+  const [noEnrollments, setNoEnrollments] = useState(false);
 
   useEffect(() => {
     const load = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { setLoading(false); return; }
-      const { data } = await supabase.from("profiles").select("*").eq("user_id", session.user.id).maybeSingle();
+      const uid = session.user.id;
+
+      const { data } = await supabase.from("profiles").select("*").eq("user_id", uid).maybeSingle();
       setProfile(data);
 
-      // Fetch course enrollment count for summary
-      const { count } = await supabase.from("course_enrollments").select("id", { count: "exact", head: true }).eq("user_id", session.user.id);
-      setCourseCount(count ?? 0);
+      // Fetch enrollments to find the active course
+      const { data: enrollments } = await supabase
+        .from("course_enrollments")
+        .select("course_id, completed_at")
+        .eq("user_id", uid);
+
+      if (!enrollments || enrollments.length === 0) {
+        setNoEnrollments(true);
+        setLoading(false);
+        return;
+      }
+
+      // Find first incomplete enrollment
+      const incomplete = enrollments.filter((e) => !e.completed_at);
+      if (incomplete.length === 0) {
+        setAllCoursesComplete(true);
+        setLoading(false);
+        return;
+      }
+
+      // Get progress for the first incomplete course
+      const courseId = incomplete[0].course_id;
+      const { data: courseData } = await supabase
+        .from("courses").select("title").eq("id", courseId).single();
+
+      const progress = await getCourseProgress(uid, courseId);
+      setActiveCourse({
+        courseId,
+        courseTitle: courseData?.title ?? "Course",
+        progress,
+      });
 
       setLoading(false);
     };
@@ -57,6 +96,25 @@ const Dashboard = () => {
   const streak = profile.ritual_streak ?? 0;
   const profileComplete = isProfileComplete(profile);
   const missingFields = getProfileMissingFields(profile);
+
+  // Determine learning CTA
+  let learningCta: { label: string; to: string; subtitle: string } | null = null;
+  if (activeCourse) {
+    const { progress, courseId, courseTitle } = activeCourse;
+    if (progress.completed_lessons === 0) {
+      learningCta = {
+        label: "Start learning",
+        to: progress.next_incomplete_lesson_id ? `/learn/${courseId}/${progress.next_incomplete_lesson_id}` : `/learn/${courseId}`,
+        subtitle: courseTitle,
+      };
+    } else if (progress.next_incomplete_lesson_id) {
+      learningCta = {
+        label: "Continue learning",
+        to: `/learn/${courseId}/${progress.next_incomplete_lesson_id}`,
+        subtitle: `${courseTitle} — ${progress.percentage}% complete`,
+      };
+    }
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-8" style={{ padding: 'clamp(24px, 4vw, 40px) clamp(20px, 5vw, 48px)' }}>
@@ -141,15 +199,8 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* Quick stats */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 ss-appear ss-appear-5">
-        <StatCard label="Ritual Streak" value={streak > 0 ? `${streak} weeks` : "Not started"} accent={streak > 0} />
-        <StatCard label="Courses Enrolled" value={courseCount !== null ? `${courseCount}` : "—"} accent={false} />
-        <StatCard label="Posts" value={`${profile.post_count ?? 0}`} accent={false} />
-      </div>
-
-      {/* Two cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ss-appear ss-appear-6">
+      {/* Two cards: Ritual + Learning */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ss-appear ss-appear-5">
         <div className="ss-interactive flex flex-col items-start gap-4" style={{ padding: '22px 24px' }}>
           <div className="flex items-center gap-2">
             <Flame size={20} style={{ color: '#C4973A' }} />
@@ -164,18 +215,58 @@ const Dashboard = () => {
         <div className="ss-interactive flex flex-col items-start gap-4" style={{ padding: '22px 24px' }}>
           <div className="flex items-center gap-2">
             <BookOpen size={20} style={{ color: '#C4973A' }} />
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#F2EAD8', letterSpacing: '-0.02em' }}>Continue learning</span>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#F2EAD8', letterSpacing: '-0.02em' }}>
+              {learningCta ? learningCta.label : allCoursesComplete ? "Learning complete" : "Start learning"}
+            </span>
           </div>
-          <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
-            Pick up where you left off on your {archName.toLowerCase()} learning path.
-          </p>
-          <Button variant="default" asChild><Link to="/learn">Go to lessons</Link></Button>
+          {learningCta ? (
+            <>
+              <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
+                {learningCta.subtitle}
+              </p>
+              {activeCourse && activeCourse.progress.total_lessons > 0 && (
+                <div className="w-full">
+                  <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(196,151,58,0.12)' }}>
+                    <div style={{
+                      height: '100%', borderRadius: 'var(--r-pill)',
+                      width: `${activeCourse.progress.percentage}%`,
+                      background: 'linear-gradient(90deg, #8B6612 0%, #C4973A 50%, #EEC96E 100%)',
+                      transition: 'width 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                    }} />
+                  </div>
+                </div>
+              )}
+              <Button variant="default" asChild><Link to={learningCta.to}>Go to lesson</Link></Button>
+            </>
+          ) : allCoursesComplete ? (
+            <>
+              <div className="flex items-center gap-2">
+                <GraduationCap size={16} style={{ color: '#27AE8F' }} />
+                <p style={{ color: '#27AE8F', fontSize: '13px', fontFamily: 'var(--font-body)' }}>All enrolled courses completed</p>
+              </div>
+              <Button variant="default" asChild><Link to="/learn">Browse courses</Link></Button>
+            </>
+          ) : noEnrollments ? (
+            <>
+              <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
+                Explore courses tailored to your {archName.toLowerCase()} journey.
+              </p>
+              <Button variant="default" asChild><Link to="/learn">Explore courses</Link></Button>
+            </>
+          ) : (
+            <>
+              <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
+                Pick up where you left off on your learning path.
+              </p>
+              <Button variant="default" asChild><Link to="/learn">Go to lessons</Link></Button>
+            </>
+          )}
         </div>
       </div>
 
       {/* Streak badge */}
       {streak > 0 && (
-        <div className="flex items-center gap-3 ss-appear ss-appear-7">
+        <div className="flex items-center gap-3 ss-appear ss-appear-6">
           <span
             className={streak >= 3 ? 'animate-streak-glow' : ''}
             style={{
@@ -197,12 +288,5 @@ const Dashboard = () => {
     </div>
   );
 };
-
-const StatCard = ({ label, value, accent }: { label: string; value: string; accent: boolean }) => (
-  <div className="ss-elevated" style={{ padding: '16px 20px' }}>
-    <p className="text-[11px] font-body font-medium tracking-wider uppercase mb-1" style={{ color: '#A08B62' }}>{label}</p>
-    <p className="font-heading text-xl" style={{ color: accent ? '#EEC96E' : '#F2EAD8' }}>{value}</p>
-  </div>
-);
 
 export default Dashboard;
