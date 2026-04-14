@@ -11,6 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
   const [loading, setLoading] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
 
   const validate = () => {
     const newErrors: typeof errors = {};
