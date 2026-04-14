@@ -192,9 +192,16 @@ const Onboarding = () => {
       tiktok_url: tiktokUrl || null,
       snapchat_username: snapchatUsername || null,
       website_url: websiteUrl || null,
-      profile_complete: true,
     };
     if (avatarUrl) update.avatar_url = avatarUrl;
+    // Compute profile_complete based on what was set during onboarding
+    // Required: display_name (already set), bio, location, pathway_type (already set)
+    // At this point bio and location are not collected in onboarding, so profile_complete stays false
+    // unless they were filled elsewhere. We compute it honestly.
+    const { data: existingProfile } = await supabase.from("profiles").select("display_name, bio, location, pathway_type").eq("user_id", uid).maybeSingle();
+    const merged = { ...existingProfile, ...update };
+    const hasRequired = !!(merged.display_name?.trim() && merged.bio?.trim() && merged.location?.trim() && merged.pathway_type);
+    update.profile_complete = hasRequired;
     await supabase.from("profiles").update(update).eq("user_id", uid);
     setSaving(false);
     toast.success(`Welcome to Money Spirit! Your journey begins now.`);
