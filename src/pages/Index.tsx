@@ -35,7 +35,7 @@ const Index = () => {
       />
       <HeroSection />
 
-      <section style={{ background: '#0B1525', padding: '80px 24px' }}>
+      <section style={{ background: '#0B1F3A', padding: '80px 24px' }}>
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
             {features.map((f) => (
@@ -55,7 +55,7 @@ const Index = () => {
         </div>
       </section>
 
-      <footer style={{ background: '#040810', borderTop: '1px solid rgba(196,151,58,0.08)', padding: '24px' }}>
+      <footer style={{ background: '#0B1F3A', borderTop: '1px solid rgba(196,151,58,0.08)', padding: '24px' }}>
         <div className="max-w-4xl mx-auto text-center">
           <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#5C4E34', lineHeight: 1.6 }}>
             Money Spirit provides financial education and community — not financial advice.

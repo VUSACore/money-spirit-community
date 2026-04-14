@@ -6,16 +6,12 @@ const HeroSection = () => {
     <section
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{
-        backgroundColor: "#0B1525",
-        backgroundImage: "radial-gradient(circle, rgba(196,151,58,0.06) 1px, transparent 1px)",
-        backgroundSize: "24px 24px",
+        backgroundColor: "#0B1F3A",
       }}
     >
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "radial-gradient(ellipse at center, rgba(196,151,58,0.06) 0%, transparent 70%)",
-        }}
+        style={{ background: "transparent" }}
       />
 
       <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
