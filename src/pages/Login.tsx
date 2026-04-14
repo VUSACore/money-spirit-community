@@ -31,7 +31,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#0B1525' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#0B1F3A' }}>
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">

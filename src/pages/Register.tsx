@@ -46,7 +46,7 @@ const Register = () => {
   const errorStyle: React.CSSProperties = { color: '#F87171', fontSize: '13px', fontFamily: 'var(--font-body)', marginTop: '4px' };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#0B1525' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#0B1F3A' }}>
       <div className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">

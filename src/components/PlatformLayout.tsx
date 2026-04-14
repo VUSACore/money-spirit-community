@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import NotificationBell from "@/components/notifications/NotificationBell";
-import SacredBackground from "@/components/SacredBackground";
+
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import type { TranslationKey } from "@/lib/i18n/translations";
@@ -103,7 +103,7 @@ const PlatformLayout = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--ss-abyss)" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0B1F3A" }}>
         <img src="/logo.png" alt="Money Spirit" style={{ width: 48, filter: 'drop-shadow(0 0 10px rgba(196,151,58,0.20))' }} className="animate-pulse" />
       </div>
     );
@@ -121,15 +121,10 @@ const PlatformLayout = () => {
             minHeight: '100vh',
             position: 'relative',
             overflow: 'hidden',
-            background: `
-              radial-gradient(ellipse 120% 60% at 50% -5%, rgba(196,151,58,0.18) 0%, rgba(11,21,37,0.60) 45%, transparent 70%),
-              radial-gradient(ellipse 80% 50% at 0% 60%, rgba(11,31,74,0.40) 0%, transparent 55%),
-              radial-gradient(ellipse 60% 40% at 100% 80%, rgba(196,151,58,0.06) 0%, transparent 50%),
-              linear-gradient(160deg, #040810 0%, #060C18 25%, #0B1525 55%, #0D1B2E 100%)
-            `,
+            background: `radial-gradient(ellipse 100% 100% at 50% 50%, #0B1F3A 60%, #081629 100%)`,
           }}
         >
-          <SacredBackground />
+          {/* SacredBackground removed — logo IS the mandala */}
 
           {/* Desktop sidebar */}
           <aside
