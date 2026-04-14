@@ -105,6 +105,7 @@ const Login = () => {
       </div>
       <EthicsFooter />
     </div>
+    </>
   );
 };
 
