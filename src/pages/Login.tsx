@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import EthicsFooter from "@/components/EthicsFooter";
+import LoadingScreen from "@/components/LoadingScreen";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
   const [loading, setLoading] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
 
   const validate = () => {
     const newErrors: typeof errors = {};
@@ -27,11 +29,15 @@ const Login = () => {
     setErrors({});
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     if (error) { setErrors({ general: error.message }); setLoading(false); return; }
-    navigate("/dashboard");
+    setShowLoading(true);
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#0B1F3A' }}>
+    <>
+      {showLoading && (
+        <LoadingScreen onComplete={() => navigate('/dashboard')} />
+      )}
+      <div className="min-h-screen flex flex-col" style={{ background: '#0B1F3A' }}>
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
@@ -99,6 +105,7 @@ const Login = () => {
       </div>
       <EthicsFooter />
     </div>
+    </>
   );
 };
 
