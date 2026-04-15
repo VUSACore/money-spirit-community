@@ -18,6 +18,8 @@ const PlatformLayout = lazy(() => import("./components/PlatformLayout"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Community = lazy(() => import("./pages/Community"));
 const Forums = lazy(() => import("./pages/Forums"));
+const ForumDetail = lazy(() => import("./pages/ForumDetail"));
+const ThreadDetail = lazy(() => import("./pages/ThreadDetail"));
 const Rituals = lazy(() => import("./pages/Rituals"));
 const Learn = lazy(() => import("./pages/Learn"));
 const CoursePage = lazy(() => import("./pages/CoursePage"));
@@ -63,6 +65,8 @@ const App = () => (
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/community" element={<Community />} />
                   <Route path="/forums" element={<Forums />} />
+                  <Route path="/forums/:slug" element={<ForumDetail />} />
+                  <Route path="/forums/:slug/:threadId" element={<ThreadDetail />} />
                   <Route path="/rituals" element={<Rituals />} />
                   <Route path="/learn" element={<Learn />} />
                   <Route path="/learn/:courseId" element={<CoursePage />} />
