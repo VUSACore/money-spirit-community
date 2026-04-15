@@ -6,10 +6,16 @@ import { useProfile } from "@/components/PlatformLayout";
 import { Button } from "@/components/ui/button";
 import PostComposer from "@/components/PostComposer";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Heart, PartyPopper, Sparkles, Zap } from "lucide-react";
+import { Heart, PartyPopper, Sparkles, Zap, Flag, MoreHorizontal } from "lucide-react";
 import EmptyState from "@/components/EmptyState";
 import { formatDistanceToNow } from "date-fns";
-
+import ReportDialog from "@/components/ReportDialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 type ReactionType = "heart" | "celebrate" | "inspire" | "spark";
 interface ReactionCount { heart: number; celebrate: number; inspire: number; spark: number; }
@@ -45,7 +51,11 @@ const Community = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const isGuest = profile?.role === "guest";
 
+  // Report state
+  const [reportTarget, setReportTarget] = useState<{ contentType: "post"; contentId: string } | null>(null);
+
   const fetchPosts = useCallback(async (uid: string | null) => {
+    // posts RLS already filters hidden=false for non-admin/mod
     const { data: postsData } = await supabase.from("posts").select("id, author_id, content, media_url, pinned, created_at").order("pinned", { ascending: false }).order("created_at", { ascending: false });
     if (!postsData) return;
     const authorIds = [...new Set(postsData.map((p) => p.author_id))];
@@ -142,16 +152,44 @@ const Community = () => {
                     <InitialsAvatar name={post.author?.display_name ?? "?"} />
                   )}
                 </button>
-                <div>
+                <div className="flex-1 min-w-0">
                   <button onClick={(e) => { e.stopPropagation(); navigate(`/members/${post.author_id}`); }} className="hover:underline" style={{ fontSize: '14px', fontFamily: 'var(--font-body)', fontWeight: 500, color: 'var(--text-1)' }}>{post.author?.display_name ?? "Unknown"}</button>
                   <p style={{ fontSize: '11px', fontFamily: 'var(--font-body)', color: 'var(--text-4)' }}>{formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}</p>
                 </div>
                 {post.pinned && (
-                  <span className="ml-auto" style={{
+                  <span style={{
                     background: 'rgba(245,200,66,0.10)', border: '1px solid rgba(245,200,66,0.25)',
                     borderRadius: 'var(--r-full)', padding: '2px 10px',
                     fontFamily: 'var(--font-body)', fontSize: '11px', color: 'var(--text-gold)',
                   }}>Pinned</span>
+                )}
+                {/* Report menu */}
+                {userId && post.author_id !== userId && !isGuest && (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="p-1.5 rounded-lg transition-colors hover:bg-white/5" style={{ color: 'var(--text-4)' }}>
+                        <MoreHorizontal size={16} />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      align="end"
+                      style={{
+                        background: 'rgba(12, 18, 33, 0.95)',
+                        backdropFilter: 'blur(24px)',
+                        border: '1px solid rgba(255,255,255,0.08)',
+                        borderRadius: 10,
+                      }}
+                    >
+                      <DropdownMenuItem
+                        onClick={() => setReportTarget({ contentType: "post", contentId: post.id })}
+                        className="flex items-center gap-2 cursor-pointer"
+                        style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--text-2)' }}
+                      >
+                        <Flag size={14} style={{ color: 'var(--text-3)' }} />
+                        Report post
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 )}
               </div>
               <p style={{ fontSize: '15px', fontFamily: 'var(--font-body)', color: 'var(--text-2)', lineHeight: 1.7 }} className="whitespace-pre-wrap">{post.content}</p>
@@ -192,6 +230,14 @@ const Community = () => {
           </div>
         )}
       </div>
+
+      {/* Report dialog */}
+      <ReportDialog
+        open={!!reportTarget}
+        onOpenChange={(open) => { if (!open) setReportTarget(null); }}
+        contentType={reportTarget?.contentType ?? "post"}
+        contentId={reportTarget?.contentId ?? ""}
+      />
     </div>
   );
 };
