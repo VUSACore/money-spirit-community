@@ -27,11 +27,58 @@ export function useBadgeNotification(userId: string | undefined) {
             .maybeSingle();
 
           if (badge) {
-            toast("Badge Unlocked!", {
-              description: badge.name,
-              duration: 4000,
-              position: "bottom-right",
-            });
+            toast(
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <div
+                  style={{
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "50%",
+                    background: `linear-gradient(135deg, ${badge.color}33, ${badge.color}11)`,
+                    border: `1.5px solid ${badge.color}66`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <span style={{ fontSize: "16px" }}>✨</span>
+                </div>
+                <div>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-display, 'Cormorant Garamond')",
+                      fontSize: "15px",
+                      fontWeight: 500,
+                      color: "#EEC96E",
+                      marginBottom: "2px",
+                    }}
+                  >
+                    Badge Unlocked
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-body, 'DM Sans')",
+                      fontSize: "13px",
+                      color: "#D4C49A",
+                    }}
+                  >
+                    {badge.name}
+                  </p>
+                </div>
+              </div>,
+              {
+                duration: 5000,
+                position: "bottom-right",
+                style: {
+                  background: "rgba(6, 12, 24, 0.96)",
+                  border: "1px solid rgba(196, 151, 58, 0.25)",
+                  borderRadius: "16px",
+                  boxShadow: "0 8px 32px rgba(196, 151, 58, 0.15)",
+                  padding: "16px 20px",
+                },
+              }
+            );
           }
         }
       )

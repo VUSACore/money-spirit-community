@@ -10,7 +10,6 @@ import { Heart, PartyPopper, Sparkles, Zap } from "lucide-react";
 import EmptyState from "@/components/EmptyState";
 import { formatDistanceToNow } from "date-fns";
 import { createNotification } from "@/lib/actions/notifications";
-import { checkAndAwardPostBadges } from "@/lib/actions/badges";
 
 type ReactionType = "heart" | "celebrate" | "inspire" | "spark";
 interface ReactionCount { heart: number; celebrate: number; inspire: number; spark: number; }
@@ -87,7 +86,6 @@ const Community = () => {
     if (!newContent.trim() || !userId) return;
     setPosting(true);
     await supabase.from("posts").insert({ author_id: userId, content: newContent.trim(), post_type: "standard" as const });
-    await checkAndAwardPostBadges(userId, "standard");
     setNewContent("");
     setPosting(false);
   };
