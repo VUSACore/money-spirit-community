@@ -116,7 +116,7 @@ const MobileBell = ({ userId }: { userId: string }) => {
   );
 };
 
-
+const PlatformLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState<Profile | null>(null);
