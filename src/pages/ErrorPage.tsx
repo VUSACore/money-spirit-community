@@ -1,19 +1,21 @@
 import LotusIcon from "@/components/LotusIcon";
+import SEOHead from "@/components/SEOHead";
 
 const ErrorPage = () => (
-  <div className="min-h-screen bg-sidebar-background flex flex-col items-center justify-center px-6 text-center">
+  <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center" style={{ background: '#0B1F3A' }}>
+    <SEOHead title="Something Went Wrong — Money Spirit" noindex />
     <LotusIcon className="text-accent" size={36} />
-    <p className="font-heading text-2xl text-accent mt-4 tracking-wide">Money Spirit</p>
-    <p className="font-heading italic text-sm text-sidebar-foreground/50 mb-8">Spirit Inspired Freedom</p>
+    <p style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: '#C4973A', fontWeight: 700, marginTop: '16px' }}>Money Spirit</p>
+    <p style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontSize: '13px', color: '#A08B62', marginBottom: '32px' }}>Spirit Inspired Freedom</p>
 
-    <p className="font-heading text-[120px] leading-none text-accent/30 select-none">500</p>
-    <h1 className="font-heading text-[32px] text-sidebar-foreground mt-2">Something unexpected happened</h1>
-    <p className="font-body text-base text-sidebar-foreground/60 max-w-[400px] mt-3 leading-relaxed">
-      We are sorry for the interruption. Our team has been notified. Please try refreshing the page or come back shortly.
+    <p style={{ fontFamily: 'var(--font-display)', fontSize: '80px', lineHeight: 1, color: 'rgba(196,151,58,0.15)', userSelect: 'none', fontWeight: 300 }}>500</p>
+    <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '28px', fontWeight: 300, color: '#F2EAD8', marginTop: '8px', letterSpacing: '-0.02em' }}>Something unexpected happened</h1>
+    <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', maxWidth: '400px', marginTop: '12px', lineHeight: 1.65 }}>
+      We're sorry for the interruption. Our team has been notified. Please try refreshing the page or come back shortly.
     </p>
     <button
       onClick={() => window.location.reload()}
-      className="btn-gold mt-8 px-8 py-3 rounded-lg font-body font-semibold text-sm"
+      className="btn-gold mt-8 px-8 py-3 rounded-full font-body font-semibold text-sm"
     >
       Refresh Page
     </button>
