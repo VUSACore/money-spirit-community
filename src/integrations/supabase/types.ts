@@ -1301,7 +1301,51 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string | null
+          display_name: string | null
+          id: string | null
+          location: string | null
+          pathway_type: Database["public"]["Enums"]["pathway_type"] | null
+          ritual_streak: number | null
+          show_bio: boolean | null
+          show_location: boolean | null
+          user_id: string | null
+          visible_in_directory: boolean | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          id?: string | null
+          location?: string | null
+          pathway_type?: Database["public"]["Enums"]["pathway_type"] | null
+          ritual_streak?: number | null
+          show_bio?: boolean | null
+          show_location?: boolean | null
+          user_id?: string | null
+          visible_in_directory?: boolean | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          id?: string | null
+          location?: string | null
+          pathway_type?: Database["public"]["Enums"]["pathway_type"] | null
+          ritual_streak?: number | null
+          show_bio?: boolean | null
+          show_location?: boolean | null
+          user_id?: string | null
+          visible_in_directory?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       auth_user_role: {
