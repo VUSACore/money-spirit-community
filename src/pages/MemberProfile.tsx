@@ -93,7 +93,7 @@ const MemberProfile = () => {
           <DetailRow icon={Globe} label="Originally from" value={profile.country_of_origin} />
           <DetailRow icon={MapPin} label="In Australia for" value={yearsLabel(profile.years_in_australia)} />
           {profile.show_marital_status && <DetailRow icon={Heart} label="Relationship" value={formatEnumLabel(profile.marital_status)} />}
-          {profile.show_children && <DetailRow icon={Users} label="Children" value={profile.number_of_children === 0 ? "No children" : `${profile.number_of_children} children`} />}
+          {profile.show_children && <DetailRow icon={Users} label="Children" value={profile.number_of_children != null ? (profile.number_of_children === 0 ? "No children" : `${profile.number_of_children} children`) : null} />}
           <DetailRow icon={Briefcase} label="Work" value={formatEnumLabel(profile.employment_type)} />
 
           {profile.financial_goals?.length > 0 && (
@@ -122,7 +122,6 @@ const MemberProfile = () => {
 
         <div className="space-y-6">
           <div className="ms-card">
-            <h3 className="text-sm font-body font-medium mb-3" style={{ color: "var(--ms-text-primary)" }}>Achievements</h3>
             <BadgeGrid userId={profile.user_id} />
           </div>
 
