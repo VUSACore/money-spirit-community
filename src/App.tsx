@@ -25,6 +25,7 @@ const Learn = lazy(() => import("./pages/Learn"));
 const CoursePage = lazy(() => import("./pages/CoursePage"));
 const LessonPage = lazy(() => import("./pages/LessonPage"));
 const Events = lazy(() => import("./pages/Events"));
+const EventDetail = lazy(() => import("./pages/EventDetail"));
 const Members = lazy(() => import("./pages/Members"));
 const Profile = lazy(() => import("./pages/Profile"));
 const MemberProfile = lazy(() => import("./pages/MemberProfile"));
