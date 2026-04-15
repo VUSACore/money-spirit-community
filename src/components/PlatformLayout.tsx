@@ -300,8 +300,9 @@ const PlatformLayout = () => {
                       } : {
                         background: 'transparent',
                         borderRadius: '10px',
+                        /* improved contrast for nav labels */
                         borderLeft: '2px solid transparent',
-                        color: 'rgba(160,139,98,0.80)',
+                        color: '#BBA96E',
                       }),
                     }}
                     onMouseEnter={(e) => {
@@ -313,7 +314,7 @@ const PlatformLayout = () => {
                     onMouseLeave={(e) => {
                       if (!active) {
                         (e.currentTarget as HTMLElement).style.background = 'transparent';
-                        (e.currentTarget as HTMLElement).style.color = 'rgba(160,139,98,0.80)';
+                        (e.currentTarget as HTMLElement).style.color = '#BBA96E';
                       }
                     }}
                   >
@@ -439,7 +440,7 @@ const PlatformLayout = () => {
                             style={{
                               fontFamily: 'var(--font-body)',
                               background: active ? 'rgba(196,151,58,0.12)' : 'transparent',
-                              color: active ? '#EEC96E' : 'rgba(160,139,98,0.80)',
+                              color: active ? '#EEC96E' : '#BBA96E',
                             }}
                           >
                             <item.icon size={18} />
@@ -505,7 +506,7 @@ const PlatformLayout = () => {
                   key={item.to}
                   to={item.to}
                   className="flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg text-[10px] transition-colors"
-                  style={{ fontFamily: 'var(--font-body)', color: active ? '#EEC96E' : '#5C4E34' }}
+                  style={{ fontFamily: 'var(--font-body)', color: active ? '#EEC96E' : '#9A8856' }}
                 >
                   <item.icon size={20} />
                   <span>{item.labelKey === "my_pathway" ? "Home" : t(item.labelKey)}</span>

@@ -10,6 +10,7 @@ import { Heart, PartyPopper, Sparkles, Zap, Flag, MoreHorizontal } from "lucide-
 import EmptyState from "@/components/EmptyState";
 import { formatDistanceToNow } from "date-fns";
 import ReportDialog from "@/components/ReportDialog";
+import { toast } from "sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -93,10 +94,17 @@ const Community = () => {
   }, []);
 
   const handlePost = async () => {
-    if (!newContent.trim() || !userId) return;
+    if (!newContent.trim() || !userId || posting) return;
     setPosting(true);
-    await supabase.from("posts").insert({ author_id: userId, content: newContent.trim(), post_type: "standard" as const });
+    const { error } = await supabase.from("posts").insert({ author_id: userId, content: newContent.trim(), post_type: "standard" as const });
+    if (error) {
+      console.error("[Community] post insert failed:", error);
+      toast.error(error.message || "Failed to create post.");
+      setPosting(false);
+      return;
+    }
     setNewContent("");
+    await fetchPosts(userId);
     setPosting(false);
   };
 

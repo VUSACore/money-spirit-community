@@ -49,7 +49,7 @@ const Profile = () => {
       </div>
 
       {/* Header */}
-      <div className="px-4 sm:px-6 md:px-8 max-w-5xl mx-auto" style={{ marginTop: -60 }}>
+      <div className="px-4 sm:px-6 md:px-8 max-w-5xl mx-auto" style={{ marginTop: -60, position: 'relative', zIndex: 2 }}>
         <div className="flex flex-col md:flex-row md:items-end gap-4">
           <div className="relative group shrink-0">
             {p.avatar_url ? (
