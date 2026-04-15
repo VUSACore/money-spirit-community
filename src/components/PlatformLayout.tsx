@@ -92,7 +92,7 @@ const PlatformLayout = () => {
     load();
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN" && session) return;
-      if (!session) navigate("/login", { replace: true });
+      if (!session && window.location.pathname !== "/login") navigate("/login", { replace: true });
     });
     return () => subscription.unsubscribe();
   }, [navigate]);
