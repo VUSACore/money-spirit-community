@@ -11,6 +11,7 @@ import {
   MessageSquare, Pin, Lock, ChevronLeft, Plus, X, ArrowLeft,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { toast } from "sonner";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Forum = Tables<"forums">;
@@ -96,12 +97,15 @@ const ForumDetail = () => {
   }, [slug, loadThreads]);
 
   const handleCreate = async () => {
+    console.log("[ForumDetail] handleCreate called", { title: title.trim(), body: body.trim(), profile: !!profile, submitting });
     if (!title.trim() || !body.trim() || !profile || submitting) return;
     setSubmitting(true);
 
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { setSubmitting(false); return; }
+    console.log("[ForumDetail] auth user:", user?.id, "profile role:", profile.role);
+    if (!user) { setSubmitting(false); toast.error("You must be logged in to create a thread."); return; }
 
+    console.log("[ForumDetail] inserting thread...", { forum_id: forum!.id, author_id: user.id });
     const { data, error } = await supabase
       .from("threads")
       .insert({
@@ -113,11 +117,16 @@ const ForumDetail = () => {
       .select("id")
       .single();
 
+    console.log("[ForumDetail] insert result:", { data, error });
+
     if (error || !data) {
+      console.error("[ForumDetail] thread insert failed:", error);
+      toast.error(error?.message || "Failed to create thread. You may not have permission.");
       setSubmitting(false);
       return;
     }
 
+    console.log("[ForumDetail] navigating to thread:", data.id);
     navigate(`/forums/${slug}/${data.id}`);
   };
 
