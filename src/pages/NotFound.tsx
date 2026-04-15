@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import LotusIcon from "@/components/LotusIcon";
 
 const NotFound = () => {
   const location = useLocation();
@@ -14,24 +13,31 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen bg-sidebar-background flex flex-col items-center justify-center px-6 text-center">
-      <LotusIcon className="text-accent" size={36} />
-      <p className="font-heading text-2xl mt-4 tracking-wide" style={{ color: '#C4973A', fontWeight: 700 }}>Money Spirit</p>
-      <p className="font-heading italic text-sm text-sidebar-foreground/50 mb-8">Spirit Inspired Freedom</p>
-
-      <p className="font-heading text-[120px] leading-none text-accent/30 select-none">404</p>
-      <h1 className="font-heading text-[32px] text-sidebar-foreground mt-2">This page has moved on its journey</h1>
-      <p className="font-body text-base text-sidebar-foreground/60 max-w-[400px] mt-3 leading-relaxed">
-        The page you are looking for does not exist or has been moved. Let us guide you back.
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center" style={{ background: '#0B1F3A' }}>
+      <p style={{
+        fontFamily: 'var(--font-display)', fontSize: '120px', lineHeight: 1,
+        color: 'rgba(196,151,58,0.12)', fontWeight: 300, userSelect: 'none',
+      }}>404</p>
+      <h1 style={{
+        fontFamily: 'var(--font-display)', fontSize: '28px', fontWeight: 400,
+        color: '#F2EAD8', marginTop: '8px', letterSpacing: '-0.02em',
+      }}>This page has moved on its journey</h1>
+      <p style={{
+        fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62',
+        maxWidth: '380px', marginTop: '12px', lineHeight: 1.65,
+      }}>
+        The page you're looking for doesn't exist or has been moved. Let us guide you back.
       </p>
       <div className="flex gap-3 mt-8">
         <button
           onClick={() => navigate(authed ? "/dashboard" : "/login")}
-          className="btn-gold px-8 py-3 rounded-lg font-body font-semibold text-sm"
+          className="btn-gold px-8 py-3"
         >
-          Go to Dashboard
+          {authed ? "Go to Dashboard" : "Sign In"}
         </button>
-        <Link to="/" className="px-8 py-3 rounded-lg font-body font-semibold text-sm text-sidebar-foreground/60 hover:text-sidebar-foreground border border-sidebar-foreground/20 hover:border-sidebar-foreground/40 transition-colors">
+        <Link to="/" className="px-8 py-3 rounded-full font-body text-sm transition-colors" style={{
+          color: '#A08B62', border: '1px solid rgba(196,151,58,0.20)',
+        }}>
           Back to Home
         </Link>
       </div>

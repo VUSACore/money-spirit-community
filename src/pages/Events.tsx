@@ -102,7 +102,7 @@ const Events = () => {
     return (
       <div className="p-8 max-w-5xl mx-auto">
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em', marginBottom: '8px' }}>Events</h1>
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', marginBottom: '32px' }}>Workshops, circles and gatherings for the community.</p>
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', marginBottom: '32px' }}>Workshops, circles, and gatherings to support your journey.</p>
         <div className="grid gap-6 sm:grid-cols-2">
           {[1, 2].map((i) => (
             <div key={i} className="ss-card overflow-hidden p-0">
@@ -192,10 +192,10 @@ const Events = () => {
       <SEOHead title="Events — Money Spirit" />
       <EducationBanner />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em', marginBottom: '8px' }}>Events</h1>
-      <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', marginBottom: '32px' }}>Workshops, circles and gatherings for the community.</p>
+      <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', marginBottom: '32px' }}>Workshops, circles, and gatherings to support your journey.</p>
 
       {upcoming.length === 0 && past.length === 0 ? (
-        <EmptyState icon={CalendarDays} heading="No events yet" body="Check back soon for upcoming workshops and gatherings." />
+        <EmptyState icon={CalendarDays} heading="Events are on the way" body="We're preparing meaningful gatherings. Check back soon." />
       ) : (
         <>
           {upcoming.length > 0 && (
@@ -205,7 +205,7 @@ const Events = () => {
           )}
           {upcoming.length === 0 && (
             <div className="mb-10">
-              <EmptyState icon={CalendarDays} heading="No upcoming events" body="New events are added regularly — check back soon." />
+              <EmptyState icon={CalendarDays} heading="No upcoming events right now" body="New events are added regularly. Check back soon or explore past events below." />
             </div>
           )}
           {past.length > 0 && (

@@ -88,7 +88,7 @@ const Members = () => {
       </div>
 
       {filtered.length === 0 ? (
-        <EmptyState icon={Users} heading="Your community is growing" body="Members who have chosen to appear in the directory will show here." />
+        <EmptyState icon={Users} heading="Your community is growing" body="Members who've chosen to be visible in the directory will appear here as the community grows." />
       ) : (
         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((member) => (

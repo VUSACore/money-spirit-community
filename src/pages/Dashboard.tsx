@@ -228,7 +228,7 @@ const Dashboard = () => {
           Welcome back, {profile.display_name}
         </h1>
         <p style={{ color: '#A08B62', fontSize: '14px', fontFamily: 'var(--font-body)' }}>
-          Your personalised pathway to financial wellbeing
+          Your sacred space for financial wellbeing
         </p>
       </div>
 
@@ -242,7 +242,7 @@ const Dashboard = () => {
                 Complete your profile
               </h3>
               <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)', marginBottom: '12px' }}>
-                Fill in the remaining details so other members can connect with you.
+                A few more details will help others in the community connect with you.
               </p>
               <div className="flex flex-wrap gap-2 mb-4">
                 {missingFields.map((field) => (
@@ -286,7 +286,7 @@ const Dashboard = () => {
             {archName}
           </h2>
           <p style={{ color: '#D4C49A', fontSize: '14px', lineHeight: 1.70, fontFamily: 'var(--font-body)' }}>
-            Your personalised {archName.toLowerCase()} pathway guides your financial wellbeing journey.
+            Your {archName.toLowerCase()} pathway shapes the guidance, rituals, and learning you receive.
           </p>
         </div>
       </div>
@@ -324,9 +324,9 @@ const Dashboard = () => {
 
           {ritualState.status === "no_ritual" && (
             <>
-              <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
-                A new ritual will be published on Monday. Check back soon.
-              </p>
+               <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
+                 A new ritual arrives each Monday. Check back soon.
+               </p>
               <Button variant="default" asChild><Link to="/rituals">View past rituals</Link></Button>
             </>
           )}
@@ -386,10 +386,10 @@ const Dashboard = () => {
               <Button variant="default" asChild><Link to="/learn">Browse courses</Link></Button>
             </>
           ) : noEnrollments ? (
-            <>
-              <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
-                Explore courses tailored to your {archName.toLowerCase()} journey.
-              </p>
+             <>
+               <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
+                 Discover courses designed for your {archName.toLowerCase()} journey.
+               </p>
               <Button variant="default" asChild><Link to="/learn">Explore courses</Link></Button>
             </>
           ) : (

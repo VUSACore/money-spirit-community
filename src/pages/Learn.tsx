@@ -43,7 +43,7 @@ const Learn = () => {
     <div className="p-6 md:p-8 ss-appear">
       <SEOHead title="Courses & Learning — Money Spirit" />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em', marginBottom: '4px' }}>Learn</h1>
-      <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', marginBottom: '24px' }}>Explore courses and resources.</p>
+      <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', marginBottom: '24px' }}>Courses and resources to deepen your financial wellbeing.</p>
 
       {isLoading ? (
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">

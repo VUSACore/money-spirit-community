@@ -3,9 +3,7 @@ import SEOHead from "@/components/SEOHead";
 import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import LotusIcon from "@/components/LotusIcon";
 import EthicsFooter from "@/components/EthicsFooter";
 import JoinComparisonTable from "@/components/JoinComparisonTable";
 
@@ -41,70 +39,76 @@ const Join = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen flex flex-col" style={{ background: '#0B1F3A' }}>
       <SEOHead title="Join Money Spirit — Your Financial Wellbeing Journey Starts Here" description="Become a member of Money Spirit. Access weekly money rituals, expert courses, live events and a community of migrant women building financial wellbeing." ogTitle="Join Money Spirit" ogDescription="Become a member of Money Spirit. Access weekly money rituals, expert courses, live events and a community of migrant women building financial wellbeing." />
       <header className="py-6 px-6 flex items-center justify-center gap-2.5">
-        <LotusIcon className="text-accent" size={28} />
-        <span className="font-heading text-xl tracking-wide" style={{ color: '#C4973A', fontWeight: 700 }}>Money Spirit</span>
+        <span style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: '#C4973A', fontWeight: 700 }}>Money Spirit</span>
       </header>
 
       <main className="flex-1 max-w-[860px] mx-auto px-6 pb-12">
         <section className="text-center pt-8 pb-14">
-          <h1 className="text-4xl md:text-5xl font-heading text-primary leading-tight mb-4">
+          <h1 style={{
+            fontFamily: 'var(--font-display)', fontSize: 'clamp(32px, 5vw, 48px)',
+            fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '16px',
+          }}>
             Join the Money Spirit Community
           </h1>
-          <p className="text-lg font-body text-muted-foreground max-w-xl mx-auto">
-            Inspiration, rituals and sisterhood for your financial wellbeing journey
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '16px', color: '#A08B62', maxWidth: '500px', margin: '0 auto' }}>
+            Rituals, learning, and sisterhood for your financial wellbeing journey
           </p>
         </section>
 
         <JoinComparisonTable />
 
         <div className="grid md:grid-cols-2 gap-6 mb-14">
-          <div className="rounded-2xl border border-border bg-card p-8 flex flex-col">
-            <p className="text-sm font-body font-semibold text-muted-foreground uppercase tracking-wider mb-1">Monthly</p>
+          <div className="ss-card flex flex-col">
+            <p style={{ fontSize: '11px', fontFamily: 'var(--font-body)', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#A08B62', marginBottom: '4px' }}>Monthly</p>
             <div className="mb-6">
-              <span className="text-4xl font-heading text-primary">AU$19</span>
-              <span className="text-muted-foreground font-body ml-1">/ month</span>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: '40px', fontWeight: 400, color: '#F2EAD8' }}>AU$19</span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#5C4E34', marginLeft: '6px' }}>/ month</span>
             </div>
             <ul className="space-y-3 mb-8 flex-1">
               {features.monthly.map((f) => (
-                <li key={f} className="flex items-start gap-2.5 text-sm font-body text-foreground">
-                  <Check className="h-4 w-4 text-accent mt-0.5 flex-shrink-0" /> {f}
+                <li key={f} className="flex items-start gap-2.5" style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: '#D4C49A' }}>
+                  <Check className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: '#C4973A' }} /> {f}
                 </li>
               ))}
             </ul>
-            <Button onClick={openModal} className="w-full bg-accent hover:bg-accent/90 text-white font-body font-semibold py-3 rounded-xl">Start Monthly</Button>
-            <p className="text-xs text-muted-foreground font-body text-center mt-3">Cancel anytime. No lock-in.</p>
+            <Button onClick={openModal} variant="gold" className="w-full btn-gold">Start Monthly</Button>
+            <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#5C4E34', textAlign: 'center', marginTop: '12px' }}>Cancel anytime. No lock-in.</p>
           </div>
 
-          <div className="rounded-2xl border-2 border-accent bg-card p-8 flex flex-col shadow-lg">
+          <div className="ss-elevated flex flex-col" style={{ border: '1px solid rgba(196,151,58,0.35)' }}>
             <div className="flex items-center gap-2 mb-1">
-              <p className="text-sm font-body font-semibold text-muted-foreground uppercase tracking-wider">Annual</p>
-              <span className="text-xs font-body font-bold text-accent bg-accent/10 px-2.5 py-0.5 rounded-full">Best Value</span>
+              <p style={{ fontSize: '11px', fontFamily: 'var(--font-body)', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#A08B62' }}>Annual</p>
+              <span style={{
+                fontSize: '11px', fontFamily: 'var(--font-body)', fontWeight: 600, color: '#EEC96E',
+                background: 'rgba(196,151,58,0.12)', border: '1px solid rgba(196,151,58,0.25)',
+                borderRadius: 'var(--r-pill)', padding: '2px 10px',
+              }}>Best Value</span>
             </div>
             <div className="mb-1">
-              <span className="text-4xl font-heading text-primary">AU$149</span>
-              <span className="text-muted-foreground font-body ml-1">/ year</span>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: '40px', fontWeight: 400, color: '#F2EAD8' }}>AU$149</span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#5C4E34', marginLeft: '6px' }}>/ year</span>
             </div>
-            <p className="text-sm font-body text-accent font-semibold mb-6">Save AU$79</p>
+            <p style={{ fontSize: '13px', fontFamily: 'var(--font-body)', fontWeight: 500, color: '#EEC96E', marginBottom: '24px' }}>Save AU$79</p>
             <ul className="space-y-3 mb-8 flex-1">
               {features.annual.map((f) => (
-                <li key={f} className="flex items-start gap-2.5 text-sm font-body text-foreground">
-                  <Check className="h-4 w-4 text-accent mt-0.5 flex-shrink-0" /> {f}
+                <li key={f} className="flex items-start gap-2.5" style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: '#D4C49A' }}>
+                  <Check className="h-4 w-4 mt-0.5 flex-shrink-0" style={{ color: '#C4973A' }} /> {f}
                 </li>
               ))}
             </ul>
-            <Button onClick={openModal} className="w-full bg-primary hover:bg-primary/90 text-white font-body font-semibold py-3 rounded-xl">Start Annual</Button>
-            <p className="text-xs text-muted-foreground font-body text-center mt-3">Cancel anytime. No lock-in.</p>
+            <Button onClick={openModal} variant="gold" className="w-full btn-gold">Start Annual</Button>
+            <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#5C4E34', textAlign: 'center', marginTop: '12px' }}>Cancel anytime. No lock-in.</p>
           </div>
         </div>
 
-        <p className="text-xs font-body text-muted-foreground text-center max-w-lg mx-auto leading-relaxed mb-4">
+        <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#5C4E34', textAlign: 'center', maxWidth: '480px', margin: '0 auto', lineHeight: 1.6 }}>
           Money Spirit provides financial education and community, not financial advice. Always consult a qualified financial adviser for advice tailored to your situation.
         </p>
-        <p className="text-center">
-          <Link to="/ethics" className="text-xs font-body text-accent hover:underline">Ethics &amp; Education Policy</Link>
+        <p className="text-center mt-3">
+          <Link to="/ethics" style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#C4973A', textDecoration: 'underline', textUnderlineOffset: '2px' }}>Ethics &amp; Education Policy</Link>
         </p>
       </main>
 
@@ -113,17 +117,17 @@ const Join = () => {
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="font-heading text-primary text-xl">
+            <DialogTitle style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 400, color: '#F2EAD8' }}>
               {submitted ? "You're on the list ✨" : "Membership is launching soon"}
             </DialogTitle>
           </DialogHeader>
           {submitted ? (
-            <p className="text-sm font-body text-muted-foreground">We'll let you know the moment doors open. Thank you for your interest.</p>
+            <p style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: '#A08B62' }}>We'll let you know the moment doors open. Thank you for your interest.</p>
           ) : (
             <form onSubmit={handleNotify} className="space-y-4">
-              <p className="text-sm font-body text-muted-foreground">Drop your email to be first to know.</p>
-              <Input type="email" required placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="ms-input" />
-              <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-white font-body font-semibold rounded-xl">Notify Me</Button>
+              <p style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: '#A08B62' }}>Drop your email to be first to know.</p>
+              <input type="email" required placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="ms-input-dark" />
+              <Button type="submit" variant="gold" className="w-full btn-gold">Notify Me</Button>
             </form>
           )}
         </DialogContent>

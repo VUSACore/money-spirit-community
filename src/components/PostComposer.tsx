@@ -11,15 +11,15 @@ const PostComposer = ({ value, onChange, onSubmit, disabled = false }: PostCompo
   <div className="ss-card">
     <div className="space-y-3">
       <textarea
-        placeholder="Share something with the community..."
+        placeholder="Share a thought, a win, or something on your mind…"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="ms-input-dark min-h-[80px] resize-none"
-        aria-label="Share something with the community"
+        aria-label="Share with the community"
       />
       <div className="flex justify-end">
         <Button variant="gold" onClick={onSubmit} disabled={disabled} className="btn-gold">
-          POST
+          Share
         </Button>
       </div>
     </div>
