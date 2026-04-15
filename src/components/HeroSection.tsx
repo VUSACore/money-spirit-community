@@ -4,68 +4,99 @@ import { Button } from "@/components/ui/button";
 const HeroSection = () => {
   return (
     <section
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      style={{
-        backgroundColor: "#0B1F3A",
-      }}
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      style={{ backgroundColor: "#0B1F3A" }}
     >
       <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: "transparent" }}
-      />
+        style={{
+          animation: "heroFadeUp 0.9s ease-out forwards",
+          opacity: 0,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
+          padding: "0 24px",
+        }}
+      >
+        {/* Lotus with radial glow */}
+        <div className="relative" style={{ marginBottom: 40 }}>
+          <div
+            style={{
+              position: "absolute",
+              inset: "-70px",
+              background:
+                "radial-gradient(ellipse 420px 420px at center, rgba(201,148,30,0.12) 0%, transparent 70%)",
+              zIndex: 0,
+              pointerEvents: "none",
+            }}
+          />
+          <img
+            src="/mandala.png"
+            alt="Money Spirit"
+            style={{
+              width: "min(280px, 64vw)",
+              height: "auto",
+              display: "block",
+              position: "relative",
+              zIndex: 1,
+              filter: "drop-shadow(0 0 24px rgba(196,151,58,0.18))",
+            }}
+          />
+        </div>
 
-      <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
-        <img
-          src="/mandala.png"
-          alt="Money Spirit"
+        {/* Gold rule */}
+        <div
           style={{
-            width: 'min(320px, 68vw)',
-            height: 'auto',
-            display: 'block',
-            margin: '0 auto 28px auto',
-            background: 'transparent',
-            border: 'none',
-            outline: 'none',
-            boxShadow: 'none',
-            filter: 'drop-shadow(0 0 24px rgba(196,151,58,0.18))',
+            width: 48,
+            height: 1,
+            background: "#C9941E",
+            opacity: 0.6,
+            margin: "0 auto 24px auto",
           }}
         />
-        <p style={{
-          fontFamily: "'Cormorant', 'Cormorant Garamond', Georgia, serif",
-          fontSize: 'clamp(18px, 4vw, 26px)',
-          fontWeight: 700,
-          letterSpacing: '0.25em',
-          color: '#C4973A',
-          textTransform: 'uppercase' as const,
-          margin: '0 auto 16px auto',
-          textAlign: 'center' as const,
-        }}>
-          Money-Spirit
-        </p>
-        <p style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(18px, 3vw, 22px)',
-          fontStyle: 'italic',
-          fontWeight: 300,
-          color: '#C4973A',
-          letterSpacing: '0.02em',
-          marginBottom: '48px',
-        }}>
+
+        {/* Tagline */}
+        <p
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontSize: "clamp(18px, 3vw, 22px)",
+            fontStyle: "italic",
+            fontWeight: 300,
+            color: "#C9941E",
+            letterSpacing: "0.12em",
+            marginBottom: 48,
+          }}
+        >
           Spirit Inspired Freedom
         </p>
-        <Button variant="gold" size="lg" className="text-base px-10 py-6 btn-gold" asChild>
-          <Link to="/join">Join the Community</Link>
-        </Button>
-        <p style={{ marginTop: '24px', fontSize: '14px', fontFamily: 'var(--font-body)', color: '#5C4E34' }}>
+
+        {/* CTA */}
+        <div style={{ marginBottom: 16 }}>
+          <Button variant="gold" size="lg" className="text-base px-10 py-6 btn-gold" asChild>
+            <Link to="/join">Join the Community</Link>
+          </Button>
+        </div>
+
+        {/* Sign in */}
+        <p style={{ fontSize: 14, fontFamily: "var(--font-body)", color: "#5C4E34" }}>
           Already a member?{" "}
-          <Link to="/login" style={{ color: '#C4973A', textDecoration: 'underline', textUnderlineOffset: '2px' }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#EEC96E'; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#C4973A'; }}
+          <Link
+            to="/login"
+            style={{ color: "#C9941E", textDecoration: "underline", textUnderlineOffset: "2px" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#EEC96E"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#C9941E"; }}
           >
             Sign in
           </Link>
         </p>
       </div>
+
+      <style>{`
+        @keyframes heroFadeUp {
+          from { opacity: 0; transform: translateY(18px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </section>
   );
 };
