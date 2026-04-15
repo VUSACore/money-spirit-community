@@ -4,6 +4,7 @@ import {
   ritualReminderEmail,
   archetypeRevealEmail,
 } from "./templates";
+import { supabase } from "@/integrations/supabase/client";
 
 interface SendEmailParams {
   to: string;
@@ -13,28 +14,12 @@ interface SendEmailParams {
 
 async function sendEmail({ to, subject, html }: SendEmailParams): Promise<void> {
   try {
-    const apiKey = import.meta.env.VITE_RESEND_API_KEY;
-    if (!apiKey || apiKey === "re_placeholder_replace_with_real_key") {
-      console.warn("[Email] Resend API key not configured — skipping send to", to);
-      return;
-    }
-
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: "Money Spirit <hello@moneyspirit.com.au>",
-        to: [to],
-        subject,
-        html,
-      }),
+    const { error } = await supabase.functions.invoke("send-email", {
+      body: { to, subject, html },
     });
 
-    if (!response.ok) {
-      console.error("[Email] Send failed:", await response.text());
+    if (error) {
+      console.error("[Email] Send failed:", error.message);
     }
   } catch (err) {
     console.error("[Email] Send error:", err);
