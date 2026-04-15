@@ -209,6 +209,7 @@ const ForumDetail = () => {
           />
           <div className="flex justify-end">
             <Button
+              type="button"
               variant="gold"
               className="btn-gold"
               disabled={!title.trim() || !body.trim() || submitting}
