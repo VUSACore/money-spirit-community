@@ -156,7 +156,7 @@ const EventDetail = () => {
   /* ---------- LOADING ---------- */
   if (loading) {
     return (
-      <div className="p-8 max-w-3xl mx-auto space-y-6">
+      <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto space-y-6">
         <Skeleton className="h-8 w-48" style={{ background: "rgba(255,255,255,0.06)" }} />
         <Skeleton className="h-48 w-full rounded-xl" style={{ background: "rgba(255,255,255,0.06)" }} />
         <Skeleton className="h-6 w-64" style={{ background: "rgba(255,255,255,0.06)" }} />
@@ -167,7 +167,7 @@ const EventDetail = () => {
   /* ---------- NOT FOUND ---------- */
   if (notFound || !event) {
     return (
-      <div className="p-8 max-w-3xl mx-auto">
+      <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto">
         <EmptyState icon={CalendarDays} heading="Event not found" body="This event doesn't exist or has been removed." ctaLabel="Back to Events" onCta={() => navigate("/events")} />
       </div>
     );
@@ -286,7 +286,7 @@ const EventDetail = () => {
   };
 
   return (
-    <div className="p-8 max-w-3xl mx-auto space-y-6 ss-appear">
+    <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto space-y-6 ss-appear">
       <SEOHead title={`${event.title} — Money Spirit Events`} />
 
       {/* Breadcrumb */}
@@ -303,11 +303,11 @@ const EventDetail = () => {
       {/* Hero banner */}
       <div className="rounded-xl overflow-hidden" style={{
         background: "linear-gradient(145deg, rgba(17,32,54,0.90), rgba(6,12,24,0.95))",
-        padding: "48px 32px",
+        padding: "clamp(28px, 5vw, 48px) clamp(16px, 4vw, 32px)",
         textAlign: "center",
       }}>
         <Sparkles className="mx-auto mb-4" size={32} style={{ color: "rgba(196,151,58,0.3)" }} />
-        <h1 style={{ fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 300, color: "var(--text-1)", letterSpacing: "-0.03em" }}>
+        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 4vw, 32px)", fontWeight: 300, color: "var(--text-1)", letterSpacing: "-0.03em" }}>
           {event.title}
         </h1>
       </div>

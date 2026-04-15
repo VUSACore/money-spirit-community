@@ -189,7 +189,7 @@ const ThreadDetail = () => {
 
   if (loading) {
     return (
-      <div className="p-8 max-w-3xl mx-auto space-y-4">
+      <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto space-y-4">
         <Skeleton className="h-6 w-32" style={{ background: "rgba(255,255,255,0.06)" }} />
         <Skeleton className="h-10 w-3/4" style={{ background: "rgba(255,255,255,0.06)" }} />
         <Skeleton className="h-32 w-full rounded-xl" style={{ background: "rgba(255,255,255,0.06)" }} />
@@ -199,7 +199,7 @@ const ThreadDetail = () => {
 
   if (notFound) {
     return (
-      <div className="p-8 max-w-3xl mx-auto">
+      <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto">
         <EmptyState
           icon={MessageSquare}
           heading="Thread not found"
@@ -212,7 +212,7 @@ const ThreadDetail = () => {
   }
 
   return (
-    <div className="p-8 max-w-3xl mx-auto space-y-6 ss-appear">
+    <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto space-y-6 ss-appear">
       <SEOHead title={`${thread?.title} — Money Spirit Forums`} />
 
       {/* Breadcrumb */}

@@ -45,6 +45,7 @@ const Admin = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabId>(tabIdFromParam(tabParam) || "users");
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const t = tabIdFromParam(tabParam);
@@ -82,10 +83,11 @@ const Admin = () => {
         linear-gradient(180deg, #060912 0%, #080D1A 40%, #0C1221 100%)
       `,
     }}>
+      {/* Desktop sidebar - hidden on mobile */}
       <aside
         onMouseEnter={() => setSidebarExpanded(true)}
         onMouseLeave={() => setSidebarExpanded(false)}
-        className="flex flex-col fixed inset-y-0 left-0 z-30 overflow-hidden"
+        className="hidden md:flex flex-col fixed inset-y-0 left-0 z-30 overflow-hidden"
         style={{
           width: sidebarExpanded ? 240 : 64,
           background: 'rgba(8, 13, 26, 0.7)',
@@ -148,26 +150,92 @@ const Admin = () => {
         </div>
       </aside>
 
-      <main
-        className="flex-1 min-h-screen overflow-y-auto p-8"
+      {/* Mobile header */}
+      <header
+        className="fixed top-0 left-0 right-0 z-40 md:hidden flex items-center justify-between px-4"
         style={{
-          marginLeft: sidebarExpanded ? 240 : 64,
+          height: 56,
+          background: 'rgba(6, 12, 24, 0.90)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
+        }}
+      >
+        <div className="flex items-center gap-2">
+          <LotusIcon className="text-gold shrink-0" size={20} />
+          <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 400, color: 'var(--gold-base)' }}>Admin</span>
+        </div>
+        <button onClick={() => navigate("/dashboard")} style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: 'var(--text-3)' }}>
+          ← Platform
+        </button>
+      </header>
+
+      {/* Mobile tab bar — horizontal scroll */}
+      <div
+        className="fixed top-14 left-0 right-0 z-30 md:hidden overflow-x-auto scrollbar-hide"
+        style={{
+          background: 'rgba(6, 12, 24, 0.85)',
+          backdropFilter: 'blur(16px)',
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
+        }}
+      >
+        <div className="flex gap-1 px-3 py-2 min-w-max">
+          {tabs.map((tab) => {
+            const active = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => { handleTabChange(tab.id); setMobileMenuOpen(false); }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors"
+                style={{
+                  fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500,
+                  background: active ? 'rgba(201,148,30,0.15)' : 'transparent',
+                  color: active ? 'var(--gold-bright)' : 'var(--text-3)',
+                  border: active ? '1px solid rgba(201,148,30,0.25)' : '1px solid transparent',
+                }}
+              >
+                <tab.icon size={14} />
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <main
+        className="flex-1 min-h-screen overflow-y-auto p-4 pt-28 md:pt-8 md:p-8"
+        style={{
+          marginLeft: 0,
           transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
-        <div className="md:hidden glass-card mb-6">
-          <p style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: 'var(--text-2)' }}>The admin panel is best viewed on desktop.</p>
+        <div className="hidden md:block" style={{
+          marginLeft: sidebarExpanded ? 240 : 64,
+          transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        }}>
+          {activeTab === "users" && <AdminUsers />}
+          {activeTab === "content" && <AdminContent />}
+          {activeTab === "courses" && <AdminCourses />}
+          {activeTab === "rituals" && <AdminRituals />}
+          {activeTab === "events" && <AdminEvents />}
+          {activeTab === "revenue" && <AdminRevenue />}
+          {activeTab === "intelligence" && <FounderIntelligence />}
+          {activeTab === "fms" && <FMSLeadBoard />}
+          {activeTab === "settings" && <AdminSettings />}
+          {activeTab === "audit" && <AdminAuditLog />}
         </div>
-        {activeTab === "users" && <AdminUsers />}
-        {activeTab === "content" && <AdminContent />}
-        {activeTab === "courses" && <AdminCourses />}
-        {activeTab === "rituals" && <AdminRituals />}
-        {activeTab === "events" && <AdminEvents />}
-        {activeTab === "revenue" && <AdminRevenue />}
-        {activeTab === "intelligence" && <FounderIntelligence />}
-        {activeTab === "fms" && <FMSLeadBoard />}
-        {activeTab === "settings" && <AdminSettings />}
-        {activeTab === "audit" && <AdminAuditLog />}
+        <div className="md:hidden">
+          {activeTab === "users" && <AdminUsers />}
+          {activeTab === "content" && <AdminContent />}
+          {activeTab === "courses" && <AdminCourses />}
+          {activeTab === "rituals" && <AdminRituals />}
+          {activeTab === "events" && <AdminEvents />}
+          {activeTab === "revenue" && <AdminRevenue />}
+          {activeTab === "intelligence" && <FounderIntelligence />}
+          {activeTab === "fms" && <FMSLeadBoard />}
+          {activeTab === "settings" && <AdminSettings />}
+          {activeTab === "audit" && <AdminAuditLog />}
+        </div>
       </main>
     </div>
   );

@@ -348,7 +348,7 @@ const LessonPage = () => {
           </div>
         </div>
 
-        {/* ── RIGHT: sidebar ── */}
+        {/* ── RIGHT: sidebar (desktop) ── */}
         <aside className="hidden lg:block w-[260px] shrink-0">
           <p className="text-[11px] font-body font-semibold tracking-wider uppercase mb-3" style={{ color: '#A08B62' }}>
             Course Progress
@@ -409,6 +409,27 @@ const LessonPage = () => {
             })}
           </ol>
         </aside>
+
+        {/* ── Mobile lesson progress bar ── */}
+        <div className="lg:hidden mt-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-body font-semibold tracking-wider uppercase" style={{ color: '#A08B62' }}>
+              Progress
+            </span>
+            <span className="text-xs font-body font-medium" style={{ color: '#EEC96E' }}>{progressPct}%</span>
+          </div>
+          <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(196,151,58,0.12)' }}>
+            <div style={{
+              height: '100%', borderRadius: 'var(--r-pill)',
+              width: `${progressPct}%`,
+              background: 'linear-gradient(90deg, #8B6612, #C4973A, #EEC96E)',
+              transition: 'width 0.5s ease',
+            }} />
+          </div>
+          <p className="text-xs font-body mt-1" style={{ color: '#5C4E34' }}>
+            {completedCount} of {totalLessons} lessons complete
+          </p>
+        </div>
       </div>
 
       {/* ── Celebration modal ── */}

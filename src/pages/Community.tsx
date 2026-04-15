@@ -116,7 +116,7 @@ const Community = () => {
 
   if (loading) {
     return (
-      <div className="p-8 max-w-3xl mx-auto space-y-6">
+      <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto space-y-6">
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: 'var(--text-1)', letterSpacing: '-0.03em' }}>Community</h1>
         {[1, 2, 3].map((i) => (
           <div key={i} className="glass-card space-y-3">
@@ -132,9 +132,9 @@ const Community = () => {
   }
 
   return (
-    <div className="p-8 max-w-3xl mx-auto space-y-6 animate-glass">
+    <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto space-y-6 animate-glass">
       <SEOHead title="Community — Money Spirit" />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: 'var(--text-1)', letterSpacing: '-0.03em' }}>Community</h1>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: 300, color: 'var(--text-1)', letterSpacing: '-0.03em' }}>Community</h1>
 
       {!isGuest && (
         <PostComposer value={newContent} onChange={setNewContent} onSubmit={handlePost} disabled={posting || !newContent.trim()} />
@@ -142,7 +142,7 @@ const Community = () => {
 
       <div className="space-y-3">
         {visiblePosts.map((post) => (
-          <div key={post.id} className="glass-interactive" style={{ padding: '20px 24px', marginBottom: '0' }}>
+          <div key={post.id} className="glass-interactive" style={{ padding: 'clamp(14px, 3vw, 20px) clamp(16px, 3vw, 24px)', marginBottom: '0' }}>
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <button onClick={(e) => { e.stopPropagation(); navigate(`/members/${post.author_id}`); }} className="shrink-0">
