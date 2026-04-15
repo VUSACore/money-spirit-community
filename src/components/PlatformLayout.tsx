@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext, useContext } from "react";
+import { useEffect, useState, useRef, createContext, useContext } from "react";
 import { useNavigate, Outlet, NavLink, useLocation, Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import NotificationBell from "@/components/notifications/NotificationBell";
+import NotificationPanel from "@/components/notifications/NotificationPanel";
+import { getUnreadCount } from "@/lib/actions/notifications";
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
@@ -64,6 +66,54 @@ const tooltipStyle: React.CSSProperties = {
   color: '#D4C49A',
   boxShadow: 'inset 0 1px 0 rgba(238,201,110,0.15), 0 8px 24px rgba(0,0,0,0.50)',
   whiteSpace: 'nowrap',
+};
+
+/** Compact bell for mobile header — shows unread dot + opens panel */
+const MobileBell = ({ userId }: { userId: string }) => {
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    getUnreadCount(userId).then(setUnreadCount);
+    const channel = supabase
+      .channel(`mobile-notif-${userId}`)
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${userId}` }, () => {
+        getUnreadCount(userId).then(setUnreadCount);
+      })
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "notifications", filter: `user_id=eq.${userId}` }, () => {
+        getUnreadCount(userId).then(setUnreadCount);
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [userId]);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    if (open) document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button onClick={() => setOpen(!open)} className="relative p-1" aria-label="Notifications">
+        <Bell size={20} style={{ color: unreadCount > 0 ? '#EEC96E' : 'rgba(160,139,98,0.60)', transition: 'color 0.2s ease' }} />
+        {unreadCount > 0 && (
+          <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-[16px] flex items-center justify-center rounded-full text-[10px] font-semibold px-1"
+            style={{ background: '#C4973A', color: '#0B1525', boxShadow: '0 0 8px rgba(196,151,58,0.40)' }}>
+            {unreadCount > 9 ? "9+" : unreadCount}
+          </span>
+        )}
+      </button>
+      {open && (
+        <div className="fixed inset-x-0 top-[56px] z-50 px-3">
+          <NotificationPanel userId={userId} onClose={() => setOpen(false)} onCountChange={setUnreadCount} />
+        </div>
+      )}
+    </div>
+  );
 };
 
 const PlatformLayout = () => {
@@ -364,9 +414,7 @@ const PlatformLayout = () => {
             </div>
             <div className="flex items-center gap-3">
               {profile?.user_id && (
-                <div className="relative">
-                  <Bell size={20} style={{ color: 'rgba(160,139,98,0.60)' }} />
-                </div>
+                <MobileBell userId={profile.user_id} />
               )}
               <div
                 className="flex items-center justify-center"
