@@ -314,7 +314,7 @@ const PlatformLayout = () => {
                     onMouseLeave={(e) => {
                       if (!active) {
                         (e.currentTarget as HTMLElement).style.background = 'transparent';
-                        (e.currentTarget as HTMLElement).style.color = 'rgba(160,139,98,0.80)';
+                        (e.currentTarget as HTMLElement).style.color = '#BBA96E';
                       }
                     }}
                   >
