@@ -11,12 +11,30 @@ interface EmptyStateProps {
 }
 
 const EmptyState = ({ icon: Icon, iconClassName = "", heading, body, ctaLabel, onCta }: EmptyStateProps) => (
-  <div className="flex flex-col items-center justify-center min-h-[300px] text-center px-4">
-    <Icon size={40} className={iconClassName + " mb-4"} style={{ color: iconClassName ? undefined : "var(--ms-text-muted)" }} />
-    <h2 className="font-heading text-2xl mb-2" style={{ color: "var(--ms-text-primary)" }}>{heading}</h2>
-    <p className="font-body text-sm max-w-[320px] leading-relaxed" style={{ color: "var(--ms-text-secondary)" }}>{body}</p>
+  <div className="flex flex-col items-center justify-center min-h-[260px] text-center px-6 py-10">
+    <div className="w-14 h-14 rounded-full flex items-center justify-center mb-5" style={{
+      background: 'rgba(196,151,58,0.08)',
+      border: '1px solid rgba(196,151,58,0.15)',
+    }}>
+      <Icon size={24} className={iconClassName} style={{ color: iconClassName ? undefined : '#C4973A' }} />
+    </div>
+    <h2 style={{
+      fontFamily: 'var(--font-display)',
+      fontSize: '22px',
+      fontWeight: 400,
+      color: '#F2EAD8',
+      letterSpacing: '-0.02em',
+      marginBottom: '8px',
+    }}>{heading}</h2>
+    <p style={{
+      fontFamily: 'var(--font-body)',
+      fontSize: '14px',
+      color: '#A08B62',
+      maxWidth: '340px',
+      lineHeight: 1.65,
+    }}>{body}</p>
     {ctaLabel && onCta && (
-      <Button variant="gold" className="mt-5" onClick={onCta}>{ctaLabel}</Button>
+      <Button variant="gold" className="mt-6 btn-gold" onClick={onCta}>{ctaLabel}</Button>
     )}
   </div>
 );
