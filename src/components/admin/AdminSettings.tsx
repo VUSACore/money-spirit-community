@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { format } from "date-fns";
-import { Download, Eye } from "lucide-react";
+import { Download, Eye, CheckCircle, Loader2 } from "lucide-react";
 import {
   welcomeEmail,
   ticketConfirmationEmail,
@@ -25,14 +25,22 @@ const FLAG_KEYS = [
 const AdminSettings = () => {
   const [settings, setSettings] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [savedKey, setSavedKey] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
   const [previewHtml, setPreviewHtml] = useState<string | null>(null);
   const [previewTitle, setPreviewTitle] = useState("");
   const { toast } = useToast();
 
   const load = async () => {
-    const { data } = await supabase.from("platform_settings" as any).select("*");
+    setLoadError(null);
+    const { data, error } = await supabase.from("platform_settings" as any).select("*");
+    if (error) {
+      setLoadError(error.message);
+      setLoading(false);
+      return;
+    }
     const map: Record<string, string> = {};
     (data || []).forEach((row: any) => { map[row.key] = row.value; });
     setSettings(map);
@@ -41,56 +49,69 @@ const AdminSettings = () => {
 
   useEffect(() => { load(); }, []);
 
-  const updateSetting = async (key: string, value: string) => {
+  const updateSetting = async (key: string, value: string): Promise<boolean> => {
     setSettings(prev => ({ ...prev, [key]: value }));
     const { error } = await supabase
       .from("platform_settings" as any)
       .update({ value, updated_at: new Date().toISOString() } as any)
       .eq("key", key);
-    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+    if (error) {
+      toast({ title: "Save failed", description: error.message, variant: "destructive" });
+      return false;
+    }
+    return true;
   };
 
-  const savePlatformIdentity = async () => {
-    setSaving(true);
-    await Promise.all([
-      updateSetting("platform_name", settings.platform_name || "Money Spirit"),
-      updateSetting("logo_url", settings.logo_url || ""),
-    ]);
+  const logSettingsChange = async (targetId: string, metadata: Record<string, any>) => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
       await supabase.from("audit_logs").insert({
         action: "settings_change",
         actor_id: user.id,
         target_type: "platform_settings",
-        target_id: "platform_identity",
-        metadata: { platform_name: settings.platform_name, logo_url: settings.logo_url },
+        target_id: targetId,
+        metadata,
       });
     }
-    toast({ title: "Settings saved" });
+  };
+
+  const savePlatformIdentity = async () => {
+    setSaving(true);
+    const results = await Promise.all([
+      updateSetting("platform_name", settings.platform_name || "Money Spirit"),
+      updateSetting("logo_url", settings.logo_url || ""),
+    ]);
+    if (results.every(Boolean)) {
+      await logSettingsChange("platform_identity", {
+        platform_name: settings.platform_name,
+        logo_url: settings.logo_url,
+      });
+      toast({ title: "Settings saved" });
+      setSavedKey("identity");
+      setTimeout(() => setSavedKey(null), 2000);
+    }
     setSaving(false);
   };
 
   const toggleFlag = async (key: string) => {
     const current = settings[key] === "true";
     const newVal = (!current).toString();
-    await updateSetting(key, newVal);
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      await supabase.from("audit_logs").insert({
-        action: "settings_change",
-        actor_id: user.id,
-        target_type: "platform_settings",
-        target_id: key,
-        metadata: { key, from: settings[key], to: newVal },
-      });
+    const success = await updateSetting(key, newVal);
+    if (success) {
+      await logSettingsChange(key, { key, from: current.toString(), to: newVal });
+      setSavedKey(key);
+      setTimeout(() => setSavedKey(null), 2000);
+    } else {
+      // Revert optimistic update
+      setSettings(prev => ({ ...prev, [key]: current.toString() }));
     }
   };
 
   const exportMembers = async () => {
     setExporting(true);
-    const { data } = await supabase.from("profiles").select("*");
-    if (!data || data.length === 0) {
-      toast({ title: "No data to export" });
+    const { data, error } = await supabase.from("profiles").select("*");
+    if (error || !data || data.length === 0) {
+      toast({ title: error ? "Export failed" : "No data to export", description: error?.message, variant: error ? "destructive" : undefined });
       setExporting(false);
       return;
     }
@@ -104,11 +125,26 @@ const AdminSettings = () => {
     a.href = URL.createObjectURL(blob);
     a.download = `members-export-${format(new Date(), "yyyy-MM-dd")}.csv`;
     a.click();
+    await logSettingsChange("member_export", { row_count: data.length });
     toast({ title: "Export complete" });
     setExporting(false);
   };
 
   if (loading) return <p className="text-muted-foreground font-body">Loading settings…</p>;
+
+  if (loadError) {
+    return (
+      <div className="max-w-2xl space-y-4">
+        <h2 className="text-2xl font-heading text-primary">Platform Settings</h2>
+        <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-6">
+          <p className="font-body text-sm text-destructive">Failed to load settings: {loadError}</p>
+          <Button variant="outline" size="sm" className="mt-3" onClick={() => { setLoading(true); load(); }}>
+            Retry
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl space-y-8">
@@ -116,7 +152,14 @@ const AdminSettings = () => {
 
       {/* Platform Identity */}
       <section className="rounded-xl border border-border bg-card p-6 space-y-4">
-        <h3 className="font-heading text-lg text-primary">Platform Identity</h3>
+        <div className="flex items-center justify-between">
+          <h3 className="font-heading text-lg text-primary">Platform Identity</h3>
+          {savedKey === "identity" && (
+            <span className="flex items-center gap-1 text-xs font-body text-teal-400">
+              <CheckCircle size={12} /> Saved
+            </span>
+          )}
+        </div>
         <div>
           <Label className="font-body text-sm">Platform Name</Label>
           <Input
@@ -134,7 +177,7 @@ const AdminSettings = () => {
           />
         </div>
         <Button variant="gold" disabled={saving} onClick={savePlatformIdentity}>
-          {saving ? "Saving…" : "Save"}
+          {saving ? <><Loader2 size={14} className="animate-spin mr-1.5" /> Saving…</> : "Save"}
         </Button>
       </section>
 
@@ -147,10 +190,17 @@ const AdminSettings = () => {
               <p className="font-body text-sm font-medium">{f.label}</p>
               <p className="font-body text-xs text-muted-foreground">{f.desc}</p>
             </div>
-            <Switch
-              checked={settings[f.key] === "true"}
-              onCheckedChange={() => toggleFlag(f.key)}
-            />
+            <div className="flex items-center gap-2">
+              {savedKey === f.key && (
+                <span className="text-xs font-body text-teal-400 flex items-center gap-1">
+                  <CheckCircle size={12} /> Saved
+                </span>
+              )}
+              <Switch
+                checked={settings[f.key] === "true"}
+                onCheckedChange={() => toggleFlag(f.key)}
+              />
+            </div>
           </div>
         ))}
       </section>
@@ -187,7 +237,8 @@ const AdminSettings = () => {
             <p className="font-body text-xs text-muted-foreground">Download profiles as CSV</p>
           </div>
           <Button variant="ghost" size="sm" disabled={exporting} onClick={exportMembers}>
-            <Download size={14} /> {exporting ? "Exporting…" : "Export CSV"}
+            {exporting ? <Loader2 size={14} className="animate-spin mr-1.5" /> : <Download size={14} className="mr-1.5" />}
+            {exporting ? "Exporting…" : "Export CSV"}
           </Button>
         </div>
       </section>
