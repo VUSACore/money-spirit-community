@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import NotificationBell from "@/components/notifications/NotificationBell";
+import NotificationPanel from "@/components/notifications/NotificationPanel";
+import { getUnreadCount } from "@/lib/actions/notifications";
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
