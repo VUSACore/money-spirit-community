@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import EthicsFooter from "@/components/EthicsFooter";
 import LoadingScreen from "@/components/LoadingScreen";
+import SEOHead from "@/components/SEOHead";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -39,6 +40,7 @@ const Login = () => {
         <LoadingScreen onComplete={() => navigate('/dashboard', { replace: true })} />
       )}
       {!showLoading && <div className="min-h-screen flex flex-col" style={{ background: '#0B1F3A' }}>
+      <SEOHead title="Sign In — Money Spirit" description="Sign in to your Money Spirit account to access your dashboard, rituals, courses and community." />
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
