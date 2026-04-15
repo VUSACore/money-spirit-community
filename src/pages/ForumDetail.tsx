@@ -105,12 +105,20 @@ const ForumDetail = () => {
     console.log("[ForumDetail] auth user:", user?.id, "profile role:", profile.role);
     if (!user) { setSubmitting(false); toast.error("You must be logged in to create a thread."); return; }
 
-    console.log("[ForumDetail] inserting thread...", { forum_id: forum!.id, author_id: user.id });
+    const { data: profileRow } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("user_id", user.id)
+      .single();
+
+    if (!profileRow) { setSubmitting(false); toast.error("Profile not found."); return; }
+
+    console.log("[ForumDetail] inserting thread...", { forum_id: forum!.id, author_id: profileRow.id });
     const { data, error } = await supabase
       .from("threads")
       .insert({
         forum_id: forum!.id,
-        author_id: user.id,
+        author_id: profileRow.id,
         title: title.trim(),
         body: body.trim(),
       })
