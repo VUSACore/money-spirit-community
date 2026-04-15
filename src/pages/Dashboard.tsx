@@ -3,7 +3,7 @@ import SEOHead from "@/components/SEOHead";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Flame, BookOpen, CheckCircle2, AlertCircle, GraduationCap, Sparkles } from "lucide-react";
+import { Flame, BookOpen, CheckCircle2, AlertCircle, GraduationCap, Sparkles, X, Home } from "lucide-react";
 import NextSacredStep from "@/components/ai/NextSacredStep";
 import type { Tables } from "@/integrations/supabase/types";
 import { isProfileComplete, getProfileMissingFields } from "@/lib/profileCompletion";
@@ -12,6 +12,68 @@ import { getCourseProgress, type CourseProgressSummary } from "@/lib/services/le
 import { startOfWeek, endOfWeek, format } from "date-fns";
 
 type Profile = Tables<"profiles">;
+
+const leadTypeLabels: Record<string, string> = {
+  first_home_buyer: "buying your first home",
+  refinancer: "refinancing your mortgage",
+  wealth_builder: "building long-term wealth",
+  protection: "protecting your family's financial future",
+  investment_property: "investment property",
+};
+
+const FMSBridgePrompt = ({ profile }: { profile: Profile }) => {
+  const [dismissed, setDismissed] = useState(false);
+
+  const dismiss = async () => {
+    setDismissed(true);
+    await supabase
+      .from("profiles")
+      .update({ fms_referral_dismissed: true } as any)
+      .eq("user_id", profile.user_id);
+  };
+
+  if (dismissed) return null;
+
+  const leadType = profile.fms_lead_type ?? "";
+  const context = leadTypeLabels[leadType] ?? "your financial journey";
+  const isStrong = profile.fms_signal_type === "strong";
+
+  return (
+    <div className="ss-elevated ss-appear ss-appear-5" style={{
+      position: 'relative', padding: '24px 28px',
+      borderLeft: '3px solid #27AE8F',
+    }}>
+      <button onClick={dismiss} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors" aria-label="Dismiss">
+        <X size={16} />
+      </button>
+      <div className="flex items-start gap-3">
+        <Home size={20} className="shrink-0 mt-0.5" style={{ color: '#27AE8F' }} />
+        <div>
+          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 400, color: '#F2EAD8', marginBottom: '6px' }}>
+            {isStrong ? "Ready to take the next step?" : "Something to consider"}
+          </h3>
+          <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)', marginBottom: '12px' }}>
+            Based on your goals around {context}, you might benefit from a confidential conversation with our finance and mortgage partner.
+            {isStrong
+              ? " Many members in a similar position have found this helpful."
+              : " No pressure — just an option when you're ready."}
+          </p>
+          <p style={{ color: '#8B7D5E', fontSize: '11px', fontStyle: 'italic', fontFamily: 'var(--font-body)', marginBottom: '16px' }}>
+            This is not financial advice. A licensed broker will assess your individual situation.
+          </p>
+          <div className="flex items-center gap-3">
+            <Button variant="default" size="sm" asChild>
+              <a href="https://www.fmsfinance.com.au" target="_blank" rel="noopener noreferrer">Learn More</a>
+            </Button>
+            <button onClick={dismiss} className="font-body text-xs text-muted-foreground hover:text-foreground transition-colors">
+              Not right now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 interface ActiveCourse {
   courseId: string;
@@ -234,6 +296,11 @@ const Dashboard = () => {
         <div className="ss-appear ss-appear-4">
           <NextSacredStep userId={profile.user_id} profile={profile} />
         </div>
+      )}
+
+      {/* FMS Bridge Prompt — soft, dismissible, only when signal is meaningful */}
+      {profile.onboarding_complete && !profile.fms_referral_dismissed && profile.fms_referral_eligible && (profile.fms_signal_type === "strong" || profile.fms_signal_type === "possible") && (
+        <FMSBridgePrompt profile={profile} />
       )}
 
       {/* Two cards: Ritual + Learning */}

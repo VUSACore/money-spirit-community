@@ -36,6 +36,21 @@ export type FMSSummary = {
   high_confidence: number;
   by_lead_type: Record<string, number>;
   scored_this_week: number;
+  avg_score: number;
+};
+
+export type PlatformMetrics = {
+  total_members: number;
+  active_members: number;
+  new_members_this_week: number;
+  rituals_this_week: number;
+  posts_this_week: number;
+  courses_published: number;
+  total_enrollments: number;
+  total_completions: number;
+  churn_risk_count: number;
+  archetype_distribution: Record<string, number>;
+  fms_summary: FMSSummary;
 };
 
 export type AdminContext = {
@@ -47,6 +62,7 @@ export type AdminContext = {
   top_archetype: string;
 };
 
+/* ── Archetype trends (real data) ── */
 export async function getArchetypeTrends(): Promise<ArchetypeTrendData[]> {
   const now = new Date();
   const months: ArchetypeTrendData[] = [];
@@ -74,6 +90,7 @@ export async function getArchetypeTrends(): Promise<ArchetypeTrendData[]> {
   return months;
 }
 
+/* ── Churn risk (real data) ── */
 export async function getChurnRiskMembers(): Promise<ChurnRiskMember[]> {
   const fourteenDaysAgo = new Date(Date.now() - 14 * 86400000).toISOString();
 
@@ -87,7 +104,6 @@ export async function getChurnRiskMembers(): Promise<ChurnRiskMember[]> {
 
   if (!profiles || profiles.length === 0) return [];
 
-  // Filter out those with recent ritual completions
   const userIds = profiles.map((p) => p.user_id);
   const { data: recentRituals } = await supabase
     .from("ritual_completions")
@@ -95,9 +111,18 @@ export async function getChurnRiskMembers(): Promise<ChurnRiskMember[]> {
     .in("user_id", userIds)
     .gte("completed_at", fourteenDaysAgo);
 
-  const activeUserIds = new Set((recentRituals || []).map((r) => r.user_id));
+  // Also check recent posts
+  const { data: recentPosts } = await supabase
+    .from("posts")
+    .select("author_id")
+    .in("author_id", userIds)
+    .gte("created_at", fourteenDaysAgo);
 
-  // Get memberships
+  const activeUserIds = new Set([
+    ...(recentRituals || []).map((r) => r.user_id),
+    ...(recentPosts || []).map((p) => p.author_id),
+  ]);
+
   const { data: memberships } = await supabase
     .from("memberships")
     .select("user_id, plan, status")
@@ -110,7 +135,7 @@ export async function getChurnRiskMembers(): Promise<ChurnRiskMember[]> {
   for (const p of profiles) {
     if (activeUserIds.has(p.user_id)) continue;
     const membership = membershipMap.get(p.user_id);
-    if (!membership) continue; // only active members
+    if (!membership) continue;
     result.push({
       id: p.id,
       user_id: p.user_id,
@@ -127,8 +152,8 @@ export async function getChurnRiskMembers(): Promise<ChurnRiskMember[]> {
   return result;
 }
 
+/* ── Retreat demand (real data) ── */
 export async function getRetreatDemandSignals(): Promise<RetreatDemand> {
-  // Get all active tickets grouped by user
   const { data: tickets } = await supabase
     .from("event_tickets")
     .select("user_id")
@@ -141,17 +166,14 @@ export async function getRetreatDemandSignals(): Promise<RetreatDemand> {
     .filter(([, c]) => c >= 2)
     .sort((a, b) => b[1] - a[1]);
 
-  // Get waitlist count
   const { count: waitlistCount } = await supabase
     .from("event_waitlist")
     .select("id", { count: "exact", head: true });
 
-  // Get profiles for top attendees
   const topIds = highDemandUserIds.slice(0, 5).map(([id]) => id);
-  const { data: topProfiles } = await supabase
-    .from("profiles")
-    .select("user_id, display_name, pathway_type")
-    .in("user_id", topIds);
+  const { data: topProfiles } = topIds.length > 0
+    ? await supabase.from("profiles").select("user_id, display_name, pathway_type").in("user_id", topIds)
+    : { data: [] };
 
   const profileMap = new Map((topProfiles || []).map((p) => [p.user_id, p]));
   const top_attendees = highDemandUserIds.slice(0, 5).map(([uid, count]) => {
@@ -164,17 +186,14 @@ export async function getRetreatDemandSignals(): Promise<RetreatDemand> {
     };
   });
 
-  return {
-    high_demand_count: highDemandUserIds.length,
-    waitlist_count: waitlistCount || 0,
-    top_attendees,
-  };
+  return { high_demand_count: highDemandUserIds.length, waitlist_count: waitlistCount || 0, top_attendees };
 }
 
+/* ── FMS summary (real data) ── */
 export async function getFMSSummary(): Promise<FMSSummary> {
   const { data } = await supabase
     .from("profiles")
-    .select("fms_referral_eligible, fms_confidence, fms_lead_type, fms_last_scored_at")
+    .select("fms_referral_eligible, fms_confidence, fms_lead_type, fms_last_scored_at, fms_score")
     .not("fms_last_scored_at", "is", null);
 
   const profiles = data || [];
@@ -184,77 +203,115 @@ export async function getFMSSummary(): Promise<FMSSummary> {
   let total_eligible = 0;
   let high_confidence = 0;
   let scored_this_week = 0;
+  let scoreSum = 0;
+  let scoreCount = 0;
 
   profiles.forEach((p) => {
     if (p.fms_referral_eligible) total_eligible++;
     if (p.fms_confidence === "high") high_confidence++;
     if (p.fms_last_scored_at && p.fms_last_scored_at > sevenDaysAgo) scored_this_week++;
     if (p.fms_lead_type) by_lead_type[p.fms_lead_type] = (by_lead_type[p.fms_lead_type] || 0) + 1;
+    if (typeof p.fms_score === "number") { scoreSum += p.fms_score; scoreCount++; }
   });
 
-  return { total_eligible, high_confidence, by_lead_type, scored_this_week };
+  return {
+    total_eligible,
+    high_confidence,
+    by_lead_type,
+    scored_this_week,
+    avg_score: scoreCount > 0 ? Math.round(scoreSum / scoreCount) : 0,
+  };
 }
 
-export async function getWeeklyAIDigest(): Promise<string> {
-  const CACHE_KEY = "founder_digest";
+/* ── Full platform metrics (real data) ── */
+export async function getPlatformMetrics(): Promise<PlatformMetrics> {
+  const sevenDaysAgo = new Date(Date.now() - 7 * 86400000).toISOString();
+
+  const [
+    { count: totalMembers },
+    { count: activeMembers },
+    { count: newMembers },
+    { count: ritualsWeek },
+    { count: postsWeek },
+    { count: coursesPublished },
+    { count: totalEnrollments },
+    { count: totalCompletions },
+    archetypeData,
+    fmsSummary,
+    churnMembers,
+  ] = await Promise.all([
+    supabase.from("profiles").select("id", { count: "exact", head: true }).eq("onboarding_complete", true),
+    supabase.from("memberships").select("id", { count: "exact", head: true }).eq("status", "active"),
+    supabase.from("profiles").select("id", { count: "exact", head: true }).gte("created_at", sevenDaysAgo),
+    supabase.from("ritual_completions").select("id", { count: "exact", head: true }).gte("completed_at", sevenDaysAgo),
+    supabase.from("posts").select("id", { count: "exact", head: true }).gte("created_at", sevenDaysAgo),
+    supabase.from("courses").select("id", { count: "exact", head: true }).eq("published", true),
+    supabase.from("course_enrollments").select("id", { count: "exact", head: true }),
+    supabase.from("course_enrollments").select("id", { count: "exact", head: true }).not("completed_at", "is", null),
+    supabase.from("profiles").select("pathway_type").eq("onboarding_complete", true),
+    getFMSSummary(),
+    getChurnRiskMembers(),
+  ]);
+
+  const archetype_distribution: Record<string, number> = {};
+  (archetypeData.data || []).forEach((p) => {
+    if (p.pathway_type) archetype_distribution[p.pathway_type] = (archetype_distribution[p.pathway_type] || 0) + 1;
+  });
+
+  return {
+    total_members: totalMembers || 0,
+    active_members: activeMembers || 0,
+    new_members_this_week: newMembers || 0,
+    rituals_this_week: ritualsWeek || 0,
+    posts_this_week: postsWeek || 0,
+    courses_published: coursesPublished || 0,
+    total_enrollments: totalEnrollments || 0,
+    total_completions: totalCompletions || 0,
+    churn_risk_count: churnMembers.length,
+    archetype_distribution,
+    fms_summary: fmsSummary,
+  };
+}
+
+/* ── AI Digest with fallback ── */
+const archetypeNames: Record<string, string> = {
+  giver: "Giver", keeper: "Keeper", rebel: "Rebel", seeker: "Seeker", achiever: "Achiever",
+};
+
+export async function getWeeklyAIDigest(metrics?: PlatformMetrics): Promise<{ text: string; isAI: boolean }> {
+  const CACHE_KEY = "founder_digest_v2";
   const ONE_HOUR = 60 * 60 * 1000;
 
   try {
     const cached = sessionStorage.getItem(CACHE_KEY);
     if (cached) {
-      const { text, timestamp } = JSON.parse(cached);
-      if (Date.now() - timestamp < ONE_HOUR) return text;
+      const parsed = JSON.parse(cached);
+      if (Date.now() - parsed.timestamp < ONE_HOUR) return { text: parsed.text, isAI: parsed.isAI };
     }
   } catch {}
 
-  // Gather stats
-  const { count: activeMemberCount } = await supabase
-    .from("memberships")
-    .select("id", { count: "exact", head: true })
-    .eq("status", "active");
+  // Get metrics if not passed
+  const m = metrics ?? await getPlatformMetrics();
 
-  const sevenDaysAgo = new Date(Date.now() - 7 * 86400000).toISOString();
+  // Build factual summary (used as fallback too)
+  const topArchetype = Object.entries(m.archetype_distribution).sort((a, b) => b[1] - a[1])[0];
+  const topArchName = topArchetype ? (archetypeNames[topArchetype[0]] || topArchetype[0]) : "unknown";
 
-  const { count: newMembersThisWeek } = await supabase
-    .from("memberships")
-    .select("id", { count: "exact", head: true })
-    .gte("created_at", sevenDaysAgo);
+  const factualSummary = `This week: ${m.total_members} total members (${m.active_members} active subscriptions, ${m.new_members_this_week} new). ${m.rituals_this_week} rituals completed, ${m.posts_this_week} community posts. ${m.total_enrollments} course enrolments across ${m.courses_published} published courses (${m.total_completions} completed). ${m.churn_risk_count} members showing churn risk. FMS pipeline: ${m.fms_summary.total_eligible} eligible leads, ${m.fms_summary.high_confidence} high confidence (avg score: ${m.fms_summary.avg_score}). Top archetype: The ${topArchName}.`;
 
-  const { count: ritualCompletionsThisWeek } = await supabase
-    .from("ritual_completions")
-    .select("id", { count: "exact", head: true })
-    .gte("completed_at", sevenDaysAgo);
-
-  const churnMembers = await getChurnRiskMembers();
-  const fmsSummary = await getFMSSummary();
-
-  // Top archetype this month
-  const monthStart = startOfMonth(new Date()).toISOString();
-  const { data: monthProfiles } = await supabase
-    .from("profiles")
-    .select("pathway_type")
-    .eq("onboarding_complete", true)
-    .gte("created_at", monthStart);
-
-  const archetypeCounts: Record<string, number> = {};
-  (monthProfiles || []).forEach((p) => {
-    if (p.pathway_type) archetypeCounts[p.pathway_type] = (archetypeCounts[p.pathway_type] || 0) + 1;
-  });
-  const topArchetype = Object.entries(archetypeCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || "seeker";
-
-  const archetypeNames: Record<string, string> = {
-    giver: "Giver", keeper: "Keeper", rebel: "Rebel", seeker: "Seeker", achiever: "Achiever",
-  };
-
-  const systemPrompt = "You are the Money Spirit Founder Intelligence engine writing a private weekly briefing for Madhu Chaudhuri, the founder of Money Spirit and director of FMS mortgage brokerage. Write in a warm, direct, founder-to-founder tone. Be concise and action-oriented. Maximum 4 short paragraphs. No bullet points. No headings. Plain prose only.";
-
-  const userPrompt = `This week on Money Spirit: ${activeMemberCount || 0} active members, ${newMembersThisWeek || 0} new this week. ${ritualCompletionsThisWeek || 0} rituals completed. ${churnMembers.length} members showing churn risk signals. Top archetype this month: The ${archetypeNames[topArchetype] || topArchetype}. FMS leads: ${fmsSummary.total_eligible} eligible, ${fmsSummary.high_confidence} high confidence. Write Madhu a brief founder intelligence summary covering: community health, engagement trends, FMS opportunity, and one recommended action for this week.`;
-
-  const text = await callGemini(userPrompt, systemPrompt);
-
+  // Try AI digest
   try {
-    sessionStorage.setItem(CACHE_KEY, JSON.stringify({ text, timestamp: Date.now() }));
-  } catch {}
+    const systemPrompt = "You are the Money Spirit Founder Intelligence engine writing a private weekly briefing for Madhu Chaudhuri, the founder of Money Spirit and director of FMS mortgage brokerage. Write in a warm, direct, founder-to-founder tone. Be concise and action-oriented. Maximum 3 short paragraphs. No bullet points. No headings. Plain prose only. Ground every observation in the numbers provided — do not invent metrics. If data is thin, say so honestly rather than inflating.";
 
-  return text;
+    const userPrompt = `Platform metrics this week:\n${factualSummary}\n\nWrite Madhu a brief founder intelligence summary covering: community health, engagement quality, FMS opportunity, and one specific recommended action for this week. Be honest about what the data shows — do not overstate.`;
+
+    const text = await callGemini(userPrompt, systemPrompt);
+
+    try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ text, timestamp: Date.now(), isAI: true })); } catch {}
+    return { text, isAI: true };
+  } catch {
+    // Fallback: structured factual summary
+    try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ text: factualSummary, timestamp: Date.now(), isAI: false })); } catch {}
+    return { text: factualSummary, isAI: false };
+  }
 }

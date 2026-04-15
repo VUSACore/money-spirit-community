@@ -26,6 +26,7 @@ export function useFMSScoring(userId: string | undefined) {
             fms_rationale: result.fms_rationale,
             fms_confidence: result.fms_confidence,
             fms_referral_eligible: result.fms_referral_eligible,
+            fms_signal_type: result.fms_signal_type,
             fms_last_scored_at: new Date().toISOString(),
           } as any)
           .eq("user_id", userId);
