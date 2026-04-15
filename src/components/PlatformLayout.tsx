@@ -186,6 +186,7 @@ const DesktopBell = ({ userId, expanded }: { userId: string; expanded: boolean }
   );
 };
 
+const PlatformLayout = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
