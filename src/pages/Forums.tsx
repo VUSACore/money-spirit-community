@@ -27,15 +27,15 @@ const Forums = () => {
 
   if (loading) {
     return (
-      <div className="p-8">
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: 'var(--text-1)', letterSpacing: '-0.03em' }}>Forums</h1>
+      <div className="p-4 sm:p-6 md:p-8">
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: 300, color: 'var(--text-1)', letterSpacing: '-0.03em' }}>Forums</h1>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-3)', marginTop: '4px' }}>Loading forums…</p>
       </div>
     );
   }
 
   return (
-    <div className="p-8 max-w-4xl mx-auto space-y-6 ss-appear">
+    <div className="p-4 sm:p-6 md:p-8 max-w-4xl mx-auto space-y-6 ss-appear">
       <SEOHead title="Community Forums — Money Spirit" description="Join the conversation." />
       {hasFinanceForum && <EducationBanner />}
 

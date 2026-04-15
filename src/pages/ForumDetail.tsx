@@ -140,7 +140,7 @@ const ForumDetail = () => {
 
   if (loading) {
     return (
-      <div className="p-8 max-w-4xl mx-auto space-y-4">
+      <div className="p-4 sm:p-6 md:p-8 max-w-4xl mx-auto space-y-4">
         <Skeleton className="h-8 w-48" style={{ background: "rgba(255,255,255,0.06)" }} />
         <Skeleton className="h-4 w-72" style={{ background: "rgba(255,255,255,0.06)" }} />
         {[1, 2, 3].map(i => (
@@ -152,14 +152,14 @@ const ForumDetail = () => {
 
   if (notFound) {
     return (
-      <div className="p-8 max-w-4xl mx-auto">
+      <div className="p-4 sm:p-6 md:p-8 max-w-4xl mx-auto">
         <EmptyState icon={MessageSquare} heading="Forum not found" body="This forum doesn't exist or may have been removed." ctaLabel="Back to Forums" onCta={() => navigate("/forums")} />
       </div>
     );
   }
 
   return (
-    <div className="p-8 max-w-4xl mx-auto space-y-6 ss-appear">
+    <div className="p-4 sm:p-6 md:p-8 max-w-4xl mx-auto space-y-6 ss-appear">
       <SEOHead title={`${forum?.title} — Money Spirit Forums`} />
 
       {/* Breadcrumb */}

@@ -50,7 +50,7 @@ const Members = () => {
 
   if (loading) {
     return (
-      <div className="p-8 max-w-6xl mx-auto">
+      <div className="p-4 sm:p-6 md:p-8 max-w-6xl mx-auto">
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: 'var(--text-1)', letterSpacing: '-0.03em', marginBottom: '8px' }}>Our Community</h1>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-3)', marginBottom: '32px' }}>The women walking this path with you</p>
         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
@@ -66,7 +66,7 @@ const Members = () => {
   }
 
   return (
-    <div className="p-8 max-w-6xl mx-auto animate-glass">
+    <div className="p-4 sm:p-6 md:p-8 max-w-6xl mx-auto animate-glass">
       <SEOHead title="Members — Money Spirit" />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: 'var(--text-1)', letterSpacing: '-0.03em', marginBottom: '8px' }}>Our Community</h1>
       <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-3)', marginBottom: '24px' }}>The women walking this path with you</p>

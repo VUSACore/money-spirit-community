@@ -156,7 +156,7 @@ const EventDetail = () => {
   /* ---------- LOADING ---------- */
   if (loading) {
     return (
-      <div className="p-8 max-w-3xl mx-auto space-y-6">
+      <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto space-y-6">
         <Skeleton className="h-8 w-48" style={{ background: "rgba(255,255,255,0.06)" }} />
         <Skeleton className="h-48 w-full rounded-xl" style={{ background: "rgba(255,255,255,0.06)" }} />
         <Skeleton className="h-6 w-64" style={{ background: "rgba(255,255,255,0.06)" }} />
@@ -167,7 +167,7 @@ const EventDetail = () => {
   /* ---------- NOT FOUND ---------- */
   if (notFound || !event) {
     return (
-      <div className="p-8 max-w-3xl mx-auto">
+      <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto">
         <EmptyState icon={CalendarDays} heading="Event not found" body="This event doesn't exist or has been removed." ctaLabel="Back to Events" onCta={() => navigate("/events")} />
       </div>
     );
@@ -286,7 +286,7 @@ const EventDetail = () => {
   };
 
   return (
-    <div className="p-8 max-w-3xl mx-auto space-y-6 ss-appear">
+    <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto space-y-6 ss-appear">
       <SEOHead title={`${event.title} — Money Spirit Events`} />
 
       {/* Breadcrumb */}

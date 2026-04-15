@@ -100,7 +100,7 @@ const Events = () => {
 
   if (loading) {
     return (
-      <div className="p-8 max-w-5xl mx-auto">
+      <div className="p-4 sm:p-6 md:p-8 max-w-5xl mx-auto">
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em', marginBottom: '8px' }}>Events</h1>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', marginBottom: '32px' }}>Workshops, circles, and gatherings to support your journey.</p>
         <div className="grid gap-6 sm:grid-cols-2">
@@ -188,7 +188,7 @@ const Events = () => {
   };
 
   return (
-    <div className="p-8 max-w-5xl mx-auto ss-appear">
+    <div className="p-4 sm:p-6 md:p-8 max-w-5xl mx-auto ss-appear">
       <SEOHead title="Events — Money Spirit" />
       <EducationBanner />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em', marginBottom: '8px' }}>Events</h1>
