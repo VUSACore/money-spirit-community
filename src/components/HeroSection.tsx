@@ -18,31 +18,6 @@ const HeroSection = () => {
           padding: "0 24px",
         }}
       >
-        {/* Lotus with radial glow */}
-        <div className="relative" style={{ marginBottom: 40 }}>
-          <div
-            style={{
-              position: "absolute",
-              inset: "-70px",
-              background:
-                "radial-gradient(ellipse 420px 420px at center, rgba(201,148,30,0.12) 0%, transparent 70%)",
-              zIndex: 0,
-              pointerEvents: "none",
-            }}
-          />
-          <img
-            src="/mandala.png"
-            alt="Money Spirit"
-            style={{
-              width: "min(280px, 64vw)",
-              height: "auto",
-              display: "block",
-              position: "relative",
-              zIndex: 1,
-              filter: "drop-shadow(0 0 24px rgba(196,151,58,0.18))",
-            }}
-          />
-        </div>
 
         {/* Gold rule */}
         <div
