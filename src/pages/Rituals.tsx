@@ -201,15 +201,32 @@ const Rituals = () => {
           )}
 
           {completed ? (
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 py-4">
-                <CheckCircle2 size={28} style={{ color: '#4DB89A' }} />
-                <p style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 400, color: '#4DB89A' }}>Ritual complete. Well done.</p>
+            <div className="ritual-complete-card with-glow space-y-4" style={{
+              background: 'linear-gradient(135deg, rgba(196,151,58,0.06) 0%, rgba(238,201,110,0.03) 100%)',
+              border: '1px solid rgba(196,151,58,0.18)',
+              borderRadius: '16px', padding: '24px 28px',
+            }}>
+              <div className="flex items-center gap-4">
+                <div style={{
+                  width: '44px', height: '44px', borderRadius: '50%',
+                  background: 'linear-gradient(135deg, rgba(196,151,58,0.15), rgba(238,201,110,0.08))',
+                  border: '1px solid rgba(238,201,110,0.25)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0,
+                }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="ritual-check-svg">
+                    <path d="M5 13l4 4L19 7" stroke="#EEC96E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <div>
+                  <p style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 400, color: '#EEC96E', letterSpacing: '-0.02em' }}>Ritual complete</p>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: '#A08B62', marginTop: '2px' }}>Your intention has been set for this week.</p>
+                </div>
               </div>
               {savedReflection && (
                 <div style={{
                   background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(196,151,58,0.10)',
-                  borderRadius: '12px', padding: '16px 20px',
+                  borderRadius: '12px', padding: '16px 20px', marginTop: '8px',
                 }}>
                   <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.10em', textTransform: 'uppercase', color: '#5C4E34', marginBottom: '8px' }}>Your reflection</p>
                   <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D4C49A', lineHeight: 1.75, whiteSpace: 'pre-wrap' }}>{savedReflection}</p>
