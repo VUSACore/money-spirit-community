@@ -18,7 +18,7 @@ interface CourseGridProps {
 
 const CourseGrid = ({ courses, enrolledIds, userId }: CourseGridProps) => {
   if (courses.length === 0) {
-    return <EmptyState icon={BookOpen} heading="Courses coming soon" body="Your learning journey is being prepared. Check back shortly." />;
+    return <EmptyState icon={BookOpen} heading="New courses on the way" body="We're crafting learning experiences for your journey. Check back soon." />;
   }
 
   return (

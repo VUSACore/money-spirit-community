@@ -257,8 +257,8 @@ const Rituals = () => {
         <EmptyState
           icon={Sparkles}
           iconClassName="text-gold"
-          heading="Your next ritual is being prepared"
-          body="A new money ritual will be published on Monday. In the meantime, explore your past rituals below."
+          heading="A new ritual is on its way"
+          body="Your next money ritual will arrive on Monday. In the meantime, revisit your past rituals below."
         />
       )}
 

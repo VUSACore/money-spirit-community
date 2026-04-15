@@ -219,7 +219,7 @@ const Community = () => {
         ))}
 
         {visiblePosts.length === 0 && (
-          <EmptyState icon={Sparkles} iconClassName="text-gold" heading="Be the first to share" body="Your community is gathering. Start the conversation by sharing your first post or financial win." ctaLabel={!isGuest ? "Share Your First Post" : undefined} onCta={!isGuest ? () => document.querySelector("textarea")?.focus() : undefined} />
+          <EmptyState icon={Sparkles} iconClassName="text-gold" heading="Start the conversation" body="Share a thought, celebrate a win, or ask the community something. Your voice matters here." ctaLabel={!isGuest ? "Write your first post" : undefined} onCta={!isGuest ? () => document.querySelector("textarea")?.focus() : undefined} />
         )}
 
         {isGuest && posts.length > 5 && (

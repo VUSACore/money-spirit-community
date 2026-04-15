@@ -41,11 +41,11 @@ const Forums = () => {
 
       <div>
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: 'var(--text-1)', letterSpacing: '-0.03em', marginBottom: '4px' }}>Forums</h1>
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-3)', marginBottom: '24px' }}>Join the conversation.</p>
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-3)', marginBottom: '24px' }}>Deeper conversations about money, life, and wellbeing.</p>
       </div>
 
       {forums.length === 0 ? (
-        <EmptyState icon={MessageSquare} heading="No forums yet" body="Forums are being set up. Check back soon." />
+        <EmptyState icon={MessageSquare} heading="Forums are on the way" body="We're setting up spaces for deeper conversations. Check back soon." />
       ) : (
         <div className="space-y-2">
           {forums.map((forum) => (
