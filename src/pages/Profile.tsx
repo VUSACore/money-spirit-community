@@ -53,9 +53,9 @@ const Profile = () => {
         <div className="flex flex-col md:flex-row md:items-end gap-4">
           <div className="relative group shrink-0">
             {p.avatar_url ? (
-              <img src={p.avatar_url} alt={profile.display_name} className="w-24 h-24 rounded-full object-cover" style={{ border: "3px solid var(--ms-base)" }} />
+              <img src={p.avatar_url} alt={profile.display_name} className="w-24 h-24 rounded-full object-cover" style={{ border: "3px solid #0B1525" }} />
             ) : (
-              <div className="w-24 h-24 rounded-full flex items-center justify-center" style={{ background: "#C9941E", border: "3px solid var(--ms-base)" }}>
+              <div className="w-24 h-24 rounded-full flex items-center justify-center" style={{ background: "#C9941E", border: "3px solid #0B1525" }}>
                 <span className="font-heading text-2xl font-bold" style={{ color: "#0A0D14" }}>{getInitials(profile.display_name)}</span>
               </div>
             )}
@@ -63,8 +63,8 @@ const Profile = () => {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 flex-wrap">
               <h1 className="font-heading text-xl sm:text-[28px] font-medium" style={{ color: "#F2EAD8" }}>{profile.display_name}</h1>
-              <Button variant="ghost" size="sm" onClick={() => setEditOpen(true)} className="text-xs font-body gap-1" style={{ color: "var(--ms-text-muted)" }}>
-                <Pencil size={14} /> Edit Profile
+              <Button variant="ghost" size="sm" onClick={() => setEditOpen(true)} className="text-xs font-body gap-1" style={{ color: "#A08B62" }}>
+                <Pencil size={14} /> Edit
               </Button>
             </div>
             {archName && (
@@ -79,8 +79,8 @@ const Profile = () => {
               { label: "Streak", value: profile.ritual_streak },
             ].map((s) => (
               <div key={s.label} className="text-center">
-                <div className="font-heading text-2xl" style={{ color: "var(--ms-text-primary)" }}>{s.value}</div>
-                <div className="text-[11px] font-body" style={{ color: "var(--ms-text-muted)" }}>{s.label}</div>
+                <div className="font-heading text-2xl" style={{ color: "#F2EAD8" }}>{s.value}</div>
+                <div className="text-[11px] font-body" style={{ color: "#A08B62" }}>{s.label}</div>
               </div>
             ))}
           </div>
