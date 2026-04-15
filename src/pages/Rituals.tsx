@@ -9,7 +9,7 @@ import { Flame, CheckCircle2, Sparkles, Calendar } from "lucide-react";
 import { startOfWeek, endOfWeek, format } from "date-fns";
 import type { Tables } from "@/integrations/supabase/types";
 import EducationBanner from "@/components/EducationBanner";
-import { checkAndAwardRitualBadges } from "@/lib/actions/badges";
+
 import { toast } from "@/hooks/use-toast";
 
 type Ritual = Tables<"rituals">;
@@ -118,8 +118,6 @@ const Rituals = () => {
         content: `✨ Completed this week's ritual: "${currentRitual.title}"\n\n${reflection.trim()}`,
       });
     }
-
-    await checkAndAwardRitualBadges(userId);
 
     // Re-fetch streak after completion (trigger updates it)
     const { data: updatedProfile } = await supabase

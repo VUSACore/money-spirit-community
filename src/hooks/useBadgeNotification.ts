@@ -27,10 +27,18 @@ export function useBadgeNotification(userId: string | undefined) {
             .maybeSingle();
 
           if (badge) {
-            toast("Badge Unlocked!", {
+            toast("✨ Badge Unlocked", {
               description: badge.name,
-              duration: 4000,
+              duration: 5000,
               position: "bottom-right",
+              style: {
+                background: "rgba(6, 12, 24, 0.96)",
+                border: "1px solid rgba(196, 151, 58, 0.25)",
+                borderRadius: "16px",
+                boxShadow: "0 8px 32px rgba(196, 151, 58, 0.15)",
+                fontFamily: "var(--font-body, 'DM Sans')",
+                color: "#EEC96E",
+              },
             });
           }
         }
