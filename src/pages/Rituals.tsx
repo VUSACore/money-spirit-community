@@ -5,11 +5,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Flame, CheckCircle2, Sparkles } from "lucide-react";
+import { Flame, CheckCircle2, Sparkles, Calendar } from "lucide-react";
 import { startOfWeek, endOfWeek, format } from "date-fns";
 import type { Tables } from "@/integrations/supabase/types";
 import EducationBanner from "@/components/EducationBanner";
 import { checkAndAwardRitualBadges } from "@/lib/actions/badges";
+import { toast } from "@/hooks/use-toast";
 
 type Ritual = Tables<"rituals">;
 
@@ -24,12 +25,14 @@ const Rituals = () => {
   const [currentRitual, setCurrentRitual] = useState<Ritual | null>(null);
   const [pastRituals, setPastRituals] = useState<Ritual[]>([]);
   const [completed, setCompleted] = useState(false);
+  const [savedReflection, setSavedReflection] = useState<string | null>(null);
   const [reflection, setReflection] = useState("");
   const [shareToFeed, setShareToFeed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [pastCompletions, setPastCompletions] = useState<Set<string>>(new Set());
+  const [pastCompletions, setPastCompletions] = useState<Map<string, string | null>>(new Map());
+  const [ritualStreak, setRitualStreak] = useState(0);
 
   useEffect(() => {
     const load = async () => {
@@ -37,15 +40,48 @@ const Rituals = () => {
       const uid = session?.user?.id ?? null;
       setUserId(uid);
       const { start, end } = getCurrentWeekRange();
-      const { data: current } = await supabase.from("rituals").select("*").gte("week_of", start).lte("week_of", end).eq("published", true).limit(1).maybeSingle();
+
+      const { data: current } = await supabase
+        .from("rituals")
+        .select("*")
+        .gte("week_of", start)
+        .lte("week_of", end)
+        .eq("published", true)
+        .limit(1)
+        .maybeSingle();
       setCurrentRitual(current);
-      const { data: past } = await supabase.from("rituals").select("*").lt("week_of", start).eq("published", true).order("week_of", { ascending: false });
+
+      const { data: past } = await supabase
+        .from("rituals")
+        .select("*")
+        .lt("week_of", start)
+        .eq("published", true)
+        .order("week_of", { ascending: false });
       setPastRituals(past ?? []);
+
       if (uid) {
-        const { data: completions } = await supabase.from("ritual_completions").select("ritual_id").eq("user_id", uid);
-        const completedIds = new Set((completions ?? []).map((c) => c.ritual_id));
-        setPastCompletions(completedIds);
-        if (current && completedIds.has(current.id)) setCompleted(true);
+        // Get all completions for this user
+        const { data: completions } = await supabase
+          .from("ritual_completions")
+          .select("ritual_id, reflection")
+          .eq("user_id", uid);
+
+        const completionMap = new Map<string, string | null>();
+        (completions ?? []).forEach((c) => completionMap.set(c.ritual_id, c.reflection));
+        setPastCompletions(completionMap);
+
+        if (current && completionMap.has(current.id)) {
+          setCompleted(true);
+          setSavedReflection(completionMap.get(current.id) ?? null);
+        }
+
+        // Get streak
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("ritual_streak")
+          .eq("user_id", uid)
+          .maybeSingle();
+        setRitualStreak(profile?.ritual_streak ?? 0);
       }
       setLoading(false);
     };
@@ -55,39 +91,102 @@ const Rituals = () => {
   const handleComplete = async () => {
     if (!userId || !currentRitual) return;
     setSubmitting(true);
-    await supabase.from("ritual_completions").insert({ user_id: userId, ritual_id: currentRitual.id, reflection: reflection.trim() || null, shared_to_feed: shareToFeed });
-    if (shareToFeed && reflection.trim()) {
-      await supabase.from("posts").insert({ author_id: userId, post_type: "ritual_share" as const, content: `✨ Completed this week's ritual: "${currentRitual.title}"\n\n${reflection.trim()}` });
+
+    const { error } = await supabase.from("ritual_completions").insert({
+      user_id: userId,
+      ritual_id: currentRitual.id,
+      reflection: reflection.trim() || null,
+      shared_to_feed: shareToFeed,
+    });
+
+    if (error) {
+      // Unique constraint violation means already completed
+      if (error.code === "23505") {
+        setCompleted(true);
+        toast({ title: "Already completed", description: "You've already completed this ritual." });
+      } else {
+        toast({ title: "Error", description: "Could not save your completion. Please try again.", variant: "destructive" });
+      }
+      setSubmitting(false);
+      return;
     }
+
+    if (shareToFeed && reflection.trim()) {
+      await supabase.from("posts").insert({
+        author_id: userId,
+        post_type: "ritual_share" as const,
+        content: `✨ Completed this week's ritual: "${currentRitual.title}"\n\n${reflection.trim()}`,
+      });
+    }
+
     await checkAndAwardRitualBadges(userId);
+
+    // Re-fetch streak after completion (trigger updates it)
+    const { data: updatedProfile } = await supabase
+      .from("profiles")
+      .select("ritual_streak")
+      .eq("user_id", userId)
+      .maybeSingle();
+    setRitualStreak(updatedProfile?.ritual_streak ?? ritualStreak + 1);
+
     setCompleted(true);
-    setPastCompletions((prev) => new Set(prev).add(currentRitual.id));
+    setSavedReflection(reflection.trim() || null);
+    setPastCompletions((prev) => new Map(prev).set(currentRitual.id, reflection.trim() || null));
     setSubmitting(false);
+
+    toast({ title: "Ritual complete ✨", description: "Your completion has been saved." });
   };
 
   if (loading) {
     return (
       <div className="p-8 flex items-center justify-center min-h-[50vh]">
-        <p style={{ fontFamily: 'var(--font-body)', color: '#A08B62' }}>Loading…</p>
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#C4973A', borderTopColor: 'transparent' }} />
+          <p style={{ fontFamily: 'var(--font-body)', color: '#A08B62', fontSize: '14px' }}>Loading rituals…</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="p-8 max-w-3xl mx-auto space-y-8 ss-appear">
+    <div className="p-4 sm:p-8 max-w-3xl mx-auto space-y-8 ss-appear">
       <SEOHead title="Rituals — Money Spirit" />
       <EducationBanner />
 
-      <div className="flex items-center gap-3">
-        <Sparkles size={32} style={{ color: '#EEC96E' }} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em' }}>Rituals</h1>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="flex items-center gap-3">
+          <Sparkles size={32} style={{ color: '#EEC96E' }} />
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em' }}>Rituals</h1>
+        </div>
+        {ritualStreak > 0 && (
+          <span
+            className={ritualStreak >= 3 ? 'animate-streak-glow' : ''}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '6px',
+              background: 'rgba(196,151,58,0.09)',
+              border: '1px solid rgba(196,151,58,0.22)',
+              borderRadius: 'var(--r-pill)',
+              padding: '7px 16px',
+              fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500,
+              color: '#EEC96E',
+            }}
+          >
+            <Flame size={16} />
+            {ritualStreak} week streak
+          </span>
+        )}
       </div>
 
       {currentRitual ? (
-        <div className="ss-elevated ss-appear ss-appear-1 space-y-5" style={{ padding: '36px 40px' }}>
+        <div className="ss-elevated ss-appear ss-appear-1 space-y-5" style={{ padding: 'clamp(24px, 4vw, 36px) clamp(20px, 4vw, 40px)' }}>
           <div>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C4973A', marginBottom: '10px' }}>This week's ritual</p>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '34px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em' }}>{currentRitual.title}</h2>
+            <div className="flex items-center gap-2 mb-2">
+              <Calendar size={14} style={{ color: '#C4973A' }} />
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C4973A' }}>
+                Week of {format(new Date(currentRitual.week_of), "d MMM yyyy")}
+              </p>
+            </div>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.5vw, 34px)', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em' }}>{currentRitual.title}</h2>
           </div>
 
           <p style={{ fontSize: '15px', fontFamily: 'var(--font-body)', color: '#D4C49A', lineHeight: 1.75 }}>{currentRitual.description}</p>
@@ -102,15 +201,32 @@ const Rituals = () => {
           )}
 
           {completed ? (
-            <div className="flex items-center gap-3 py-4 relative animate-celebration">
-              <CheckCircle2 size={28} style={{ color: '#4DB89A' }} />
-              <p style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 400, color: '#4DB89A' }}>Ritual complete. Well done.</p>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 py-4">
+                <CheckCircle2 size={28} style={{ color: '#4DB89A' }} />
+                <p style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 400, color: '#4DB89A' }}>Ritual complete. Well done.</p>
+              </div>
+              {savedReflection && (
+                <div style={{
+                  background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(196,151,58,0.10)',
+                  borderRadius: '12px', padding: '16px 20px',
+                }}>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.10em', textTransform: 'uppercase', color: '#5C4E34', marginBottom: '8px' }}>Your reflection</p>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D4C49A', lineHeight: 1.75, whiteSpace: 'pre-wrap' }}>{savedReflection}</p>
+                </div>
+              )}
             </div>
           ) : (
             <div className="space-y-4">
               <div className="space-y-2">
-                <label style={{ fontSize: '14px', fontFamily: 'var(--font-body)', fontWeight: 500, color: '#F2EAD8' }}>Your reflection (optional — just for you)</label>
-                <textarea value={reflection} onChange={(e) => setReflection(e.target.value)} placeholder="Write your thoughts here..." className="ms-input-dark min-h-[100px]" style={{ resize: 'vertical' }} />
+                <label style={{ fontSize: '14px', fontFamily: 'var(--font-body)', fontWeight: 500, color: '#F2EAD8' }}>Your reflection (optional)</label>
+                <textarea
+                  value={reflection}
+                  onChange={(e) => setReflection(e.target.value)}
+                  placeholder="Write your thoughts here…"
+                  className="ms-input-dark min-h-[100px] w-full"
+                  style={{ resize: 'vertical', fontSize: '15px', lineHeight: 1.7 }}
+                />
               </div>
               <div className="flex items-center gap-2">
                 <Checkbox id="share" checked={shareToFeed} onCheckedChange={(v) => setShareToFeed(v === true)} />
@@ -123,36 +239,57 @@ const Rituals = () => {
           )}
         </div>
       ) : (
-        <EmptyState icon={Sparkles} iconClassName="text-gold" heading="Your ritual is being prepared" body="A new money ritual will be published shortly. Come back on Monday." />
+        <EmptyState
+          icon={Sparkles}
+          iconClassName="text-gold"
+          heading="Your next ritual is being prepared"
+          body="A new money ritual will be published on Monday. In the meantime, explore your past rituals below."
+        />
       )}
 
       {pastRituals.length > 0 && (
-        <div className="space-y-3">
+        <div className="space-y-3 ss-appear ss-appear-2">
           <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', fontWeight: 400, color: '#F2EAD8', letterSpacing: '-0.02em' }}>Past Rituals</h3>
           <Accordion type="single" collapsible className="space-y-2">
-            {pastRituals.map((ritual) => (
-              <AccordionItem key={ritual.id} value={ritual.id} className="ss-interactive" style={{ padding: '12px 16px', borderRadius: 'var(--r-md)' }}>
-                <AccordionTrigger className="hover:no-underline" style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#F2EAD8' }}>
-                  <div className="flex items-center gap-2 text-left">
-                    {pastCompletions.has(ritual.id) ? (
-                      <CheckCircle2 className="shrink-0" size={16} style={{ color: '#4DB89A' }} />
-                    ) : (
-                      <div className="w-4 h-4 rounded-full border shrink-0" style={{ borderColor: '#5C4E34' }} />
-                    )}
-                    <span>{ritual.title}</span>
-                    <span style={{ fontSize: '12px', marginLeft: '8px', color: '#5C4E34' }}>{format(new Date(ritual.week_of), "d MMM yyyy")}</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="space-y-3 pb-4">
-                  <p style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: '#D4C49A' }}>{ritual.description}</p>
-                  {ritual.reflection_prompt && (
-                    <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(196,151,58,0.12)', borderRadius: '12px', padding: '16px 20px' }}>
-                      <p style={{ fontFamily: 'var(--font-display)', fontSize: '14px', fontStyle: 'italic', color: '#A08B62' }}>{ritual.reflection_prompt}</p>
+            {pastRituals.map((ritual) => {
+              const isComplete = pastCompletions.has(ritual.id);
+              const pastReflection = pastCompletions.get(ritual.id);
+              return (
+                <AccordionItem key={ritual.id} value={ritual.id} className="ss-interactive" style={{ padding: '12px 16px', borderRadius: 'var(--r-md)' }}>
+                  <AccordionTrigger className="hover:no-underline" style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#F2EAD8' }}>
+                    <div className="flex items-center gap-2 text-left">
+                      {isComplete ? (
+                        <CheckCircle2 className="shrink-0" size={16} style={{ color: '#4DB89A' }} />
+                      ) : (
+                        <div className="w-4 h-4 rounded-full border shrink-0" style={{ borderColor: '#5C4E34' }} />
+                      )}
+                      <span>{ritual.title}</span>
+                      <span style={{ fontSize: '12px', marginLeft: '8px', color: '#5C4E34' }}>{format(new Date(ritual.week_of), "d MMM yyyy")}</span>
                     </div>
-                  )}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
+                  </AccordionTrigger>
+                  <AccordionContent className="space-y-3 pb-4">
+                    <p style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: '#D4C49A' }}>{ritual.description}</p>
+                    {ritual.reflection_prompt && (
+                      <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(196,151,58,0.12)', borderRadius: '12px', padding: '16px 20px' }}>
+                        <p style={{ fontFamily: 'var(--font-display)', fontSize: '14px', fontStyle: 'italic', color: '#A08B62' }}>{ritual.reflection_prompt}</p>
+                      </div>
+                    )}
+                    {isComplete && pastReflection && (
+                      <div style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(196,151,58,0.10)', borderRadius: '12px', padding: '14px 18px' }}>
+                        <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.10em', textTransform: 'uppercase', color: '#5C4E34', marginBottom: '6px' }}>Your reflection</p>
+                        <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: '#D4C49A', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{pastReflection}</p>
+                      </div>
+                    )}
+                    {isComplete && !pastReflection && (
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 size={14} style={{ color: '#4DB89A' }} />
+                        <span style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: '#4DB89A' }}>Completed</span>
+                      </div>
+                    )}
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
           </Accordion>
         </div>
       )}

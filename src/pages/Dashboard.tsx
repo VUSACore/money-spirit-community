@@ -3,12 +3,13 @@ import SEOHead from "@/components/SEOHead";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Flame, BookOpen, CheckCircle2, AlertCircle, GraduationCap } from "lucide-react";
+import { Flame, BookOpen, CheckCircle2, AlertCircle, GraduationCap, Sparkles } from "lucide-react";
 import NextSacredStep from "@/components/ai/NextSacredStep";
 import type { Tables } from "@/integrations/supabase/types";
 import { isProfileComplete, getProfileMissingFields } from "@/lib/profileCompletion";
 import { archetypeName as archNames, archetypeAccent as archAccents } from "@/lib/profileConstants";
 import { getCourseProgress, type CourseProgressSummary } from "@/lib/services/lessonService";
+import { startOfWeek, endOfWeek, format } from "date-fns";
 
 type Profile = Tables<"profiles">;
 
@@ -18,12 +19,19 @@ interface ActiveCourse {
   progress: CourseProgressSummary;
 }
 
+type RitualState = 
+  | { status: "loading" }
+  | { status: "no_ritual" }
+  | { status: "incomplete"; title: string }
+  | { status: "completed"; title: string };
+
 const Dashboard = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeCourse, setActiveCourse] = useState<ActiveCourse | null>(null);
   const [allCoursesComplete, setAllCoursesComplete] = useState(false);
   const [noEnrollments, setNoEnrollments] = useState(false);
+  const [ritualState, setRitualState] = useState<RitualState>({ status: "loading" });
 
   useEffect(() => {
     const load = async () => {
@@ -34,7 +42,39 @@ const Dashboard = () => {
       const { data } = await supabase.from("profiles").select("*").eq("user_id", uid).maybeSingle();
       setProfile(data);
 
-      // Fetch enrollments to find the active course
+      // Fetch ritual state
+      const now = new Date();
+      const monday = startOfWeek(now, { weekStartsOn: 1 });
+      const sunday = endOfWeek(now, { weekStartsOn: 1 });
+      const start = format(monday, "yyyy-MM-dd");
+      const end = format(sunday, "yyyy-MM-dd");
+
+      const { data: currentRitual } = await supabase
+        .from("rituals")
+        .select("id, title")
+        .gte("week_of", start)
+        .lte("week_of", end)
+        .eq("published", true)
+        .limit(1)
+        .maybeSingle();
+
+      if (!currentRitual) {
+        setRitualState({ status: "no_ritual" });
+      } else {
+        const { data: completion } = await supabase
+          .from("ritual_completions")
+          .select("id")
+          .eq("user_id", uid)
+          .eq("ritual_id", currentRitual.id)
+          .maybeSingle();
+
+        setRitualState(completion
+          ? { status: "completed", title: currentRitual.title }
+          : { status: "incomplete", title: currentRitual.title }
+        );
+      }
+
+      // Fetch enrollments
       const { data: enrollments } = await supabase
         .from("course_enrollments")
         .select("course_id, completed_at")
@@ -46,7 +86,6 @@ const Dashboard = () => {
         return;
       }
 
-      // Find first incomplete enrollment
       const incomplete = enrollments.filter((e) => !e.completed_at);
       if (incomplete.length === 0) {
         setAllCoursesComplete(true);
@@ -54,7 +93,6 @@ const Dashboard = () => {
         return;
       }
 
-      // Get progress for the first incomplete course
       const courseId = incomplete[0].course_id;
       const { data: courseData } = await supabase
         .from("courses").select("title").eq("id", courseId).single();
@@ -97,7 +135,6 @@ const Dashboard = () => {
   const profileComplete = isProfileComplete(profile);
   const missingFields = getProfileMissingFields(profile);
 
-  // Determine learning CTA
   let learningCta: { label: string; to: string; subtitle: string } | null = null;
   if (activeCourse) {
     const { progress, courseId, courseTitle } = activeCourse;
@@ -201,17 +238,52 @@ const Dashboard = () => {
 
       {/* Two cards: Ritual + Learning */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ss-appear ss-appear-5">
+        {/* Ritual card — live state */}
         <div className="ss-interactive flex flex-col items-start gap-4" style={{ padding: '22px 24px' }}>
           <div className="flex items-center gap-2">
-            <Flame size={20} style={{ color: '#C4973A' }} />
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#F2EAD8', letterSpacing: '-0.02em' }}>This week's ritual</span>
+            {ritualState.status === "completed" ? (
+              <CheckCircle2 size={20} style={{ color: '#4DB89A' }} />
+            ) : (
+              <Sparkles size={20} style={{ color: '#C4973A' }} />
+            )}
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#F2EAD8', letterSpacing: '-0.02em' }}>
+              {ritualState.status === "completed" ? "Ritual complete" : "This week's ritual"}
+            </span>
           </div>
-          <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
-            Stay aligned with your financial intentions through a guided practice.
-          </p>
-          <Button variant="gold" asChild><Link to="/rituals">Complete it</Link></Button>
+
+          {ritualState.status === "loading" && (
+            <p style={{ color: '#A08B62', fontSize: '13px', fontFamily: 'var(--font-body)' }}>Loading…</p>
+          )}
+
+          {ritualState.status === "no_ritual" && (
+            <>
+              <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
+                A new ritual will be published on Monday. Check back soon.
+              </p>
+              <Button variant="default" asChild><Link to="/rituals">View past rituals</Link></Button>
+            </>
+          )}
+
+          {ritualState.status === "incomplete" && (
+            <>
+              <p style={{ color: '#D4C49A', fontSize: '14px', fontFamily: 'var(--font-body)', lineHeight: 1.6 }}>
+                {ritualState.title}
+              </p>
+              <Button variant="gold" asChild><Link to="/rituals">Complete it</Link></Button>
+            </>
+          )}
+
+          {ritualState.status === "completed" && (
+            <>
+              <p style={{ color: '#4DB89A', fontSize: '13px', fontFamily: 'var(--font-body)', lineHeight: 1.6 }}>
+                {ritualState.title}
+              </p>
+              <Button variant="default" asChild><Link to="/rituals">View rituals</Link></Button>
+            </>
+          )}
         </div>
 
+        {/* Learning card */}
         <div className="ss-interactive flex flex-col items-start gap-4" style={{ padding: '22px 24px' }}>
           <div className="flex items-center gap-2">
             <BookOpen size={20} style={{ color: '#C4973A' }} />
