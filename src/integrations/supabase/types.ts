@@ -123,6 +123,7 @@ export type Database = {
         Row: {
           content_id: string
           content_type: string
+          created_at: string
           id: string
           moderator_note: string | null
           reason: string
@@ -134,6 +135,7 @@ export type Database = {
         Insert: {
           content_id: string
           content_type: string
+          created_at?: string
           id?: string
           moderator_note?: string | null
           reason: string
@@ -145,6 +147,7 @@ export type Database = {
         Update: {
           content_id?: string
           content_type?: string
+          created_at?: string
           id?: string
           moderator_note?: string | null
           reason?: string
