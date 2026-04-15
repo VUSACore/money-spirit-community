@@ -60,7 +60,7 @@ const Register = () => {
             border: '1px solid rgba(196,151,58,0.18)',
             borderRadius: 'var(--r-xl)',
             boxShadow: 'inset 0 1px 0 rgba(238,201,110,0.20), 0 24px 60px rgba(0,0,0,0.60)',
-            padding: '40px 36px',
+            padding: 'clamp(24px, 5vw, 40px) clamp(20px, 5vw, 36px)',
             backdropFilter: 'blur(20px)',
           }}>
             <form onSubmit={handleSubmit} className="space-y-5">
