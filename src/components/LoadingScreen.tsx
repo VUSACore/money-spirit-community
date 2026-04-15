@@ -24,6 +24,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         inset: 0,
         zIndex: 9999,
         backgroundColor: '#0B1F3A',
+        overflow: 'hidden',
       }}
     >
       <video
@@ -35,8 +36,8 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          position: 'absolute',
-          inset: 0,
+          position: 'relative',
+          zIndex: 1,
           display: 'block',
         }}
       >
