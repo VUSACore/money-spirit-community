@@ -236,6 +236,11 @@ const Dashboard = () => {
         </div>
       )}
 
+      {/* FMS Bridge Prompt — soft, dismissible, only when signal is meaningful */}
+      {profile.onboarding_complete && !profile.fms_referral_dismissed && profile.fms_referral_eligible && (profile.fms_signal_type === "strong" || profile.fms_signal_type === "possible") && (
+        <FMSBridgePrompt profile={profile} />
+      )}
+
       {/* Two cards: Ritual + Learning */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ss-appear ss-appear-5">
         {/* Ritual card — live state */}
