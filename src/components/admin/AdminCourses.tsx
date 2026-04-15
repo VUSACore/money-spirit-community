@@ -20,7 +20,7 @@ const logAudit = async (action: string, targetType: string, targetId: string, me
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
   await supabase.from("audit_logs").insert({
-    action, actor_id: user.id, target_type: targetType, target_id: targetId, metadata,
+    action, actor_id: user.id, target_type: targetType, target_id: targetId, metadata: metadata as any,
   });
 };
 
