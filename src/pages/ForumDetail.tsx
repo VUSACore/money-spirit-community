@@ -11,6 +11,7 @@ import {
   MessageSquare, Pin, Lock, ChevronLeft, Plus, X, ArrowLeft,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { toast } from "sonner";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Forum = Tables<"forums">;
