@@ -1,21 +1,29 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface LoadingScreenProps {
   onComplete: () => void;
 }
 
 export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   useEffect(() => {
     const fallback = setTimeout(() => {
       onComplete();
     }, 15000);
 
+    // Force play the video in case autoPlay is blocked
+    const video = videoRef.current;
+    if (video) {
+      video.load();
+      video.play().catch(() => {
+        // autoplay blocked — skip to dashboard
+        onComplete();
+      });
+    }
+
     return () => clearTimeout(fallback);
   }, [onComplete]);
-
-  const handleVideoEnded = () => {
-    onComplete();
-  };
 
   return (
     <div
@@ -24,25 +32,26 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         inset: 0,
         zIndex: 9999,
         backgroundColor: '#0B1F3A',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         overflow: 'hidden',
       }}
     >
       <video
+        ref={videoRef}
         autoPlay
         muted
         playsInline
-        onEnded={handleVideoEnded}
+        onEnded={onComplete}
+        src="/welcomeV6.mp4"
         style={{
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          position: 'relative',
-          zIndex: 1,
           display: 'block',
         }}
-      >
-        <source src="/welcomeV6.mp4" type="video/mp4" />
-      </video>
+      />
       <button
         onClick={onComplete}
         style={{
@@ -53,7 +62,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
           background: 'rgba(255,255,255,0.15)',
           backdropFilter: 'blur(8px)',
           border: '1px solid rgba(196,151,58,0.3)',
-          borderRadius: 'var(--r-pill, 999px)',
+          borderRadius: '999px',
           padding: '8px 24px',
           color: '#C4973A',
           fontFamily: 'var(--font-body)',
