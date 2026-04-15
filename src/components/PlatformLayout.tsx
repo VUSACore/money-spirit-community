@@ -116,7 +116,78 @@ const MobileBell = ({ userId }: { userId: string }) => {
   );
 };
 
+/** Desktop sidebar bell — works expanded and collapsed */
+const DesktopBell = ({ userId, expanded }: { userId: string; expanded: boolean }) => {
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    getUnreadCount(userId).then(setUnreadCount);
+    const channel = supabase
+      .channel(`desktop-notif-${userId}`)
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${userId}` }, () => {
+        getUnreadCount(userId).then(setUnreadCount);
+      })
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "notifications", filter: `user_id=eq.${userId}` }, () => {
+        getUnreadCount(userId).then(setUnreadCount);
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [userId]);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    if (open) document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  const displayCount = unreadCount > 9 ? "9+" : unreadCount;
+
+  return (
+    <div className="relative pt-2" ref={ref}>
+      <button
+        onClick={() => setOpen(!open)}
+        className="relative flex items-center gap-3 w-full transition-colors rounded-lg"
+        style={{
+          padding: expanded ? '10px 16px' : '10px 0',
+          justifyContent: expanded ? 'flex-start' : 'center',
+          height: 44,
+          fontFamily: 'var(--font-body)',
+          fontSize: '13px',
+          fontWeight: 400,
+          color: unreadCount > 0 ? '#EEC96E' : 'rgba(160,139,98,0.80)',
+        }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(196,151,58,0.07)'; }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+        aria-label="Notifications"
+      >
+        <div className="relative shrink-0">
+          <Bell size={18} />
+          {unreadCount > 0 && (
+            <span
+              className="absolute -top-1.5 -right-1.5 min-w-[16px] h-[16px] flex items-center justify-center rounded-full text-[9px] font-bold px-1"
+              style={{ background: '#C4973A', color: '#0B1525', boxShadow: '0 0 8px rgba(196,151,58,0.40)' }}
+            >
+              {displayCount}
+            </span>
+          )}
+        </div>
+        {expanded && <span>Notifications</span>}
+      </button>
+      {open && (
+        <div className="absolute left-full bottom-0 ml-2 z-50" style={{ minWidth: 380 }}>
+          <NotificationPanel userId={userId} onClose={() => setOpen(false)} onCountChange={setUnreadCount} compact />
+        </div>
+      )}
+    </div>
+  );
+};
+
 const PlatformLayout = () => {
+
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -269,23 +340,8 @@ const PlatformLayout = () => {
 
             {/* Bottom section */}
             <div className="px-2 pb-3 space-y-1" style={{ borderTop: '1px solid rgba(196,151,58,0.08)', background: 'rgba(4,8,16,0.40)' }}>
-              {profile?.user_id && sidebarExpanded && (
-                <div className="pt-2">
-                  <NotificationBell userId={profile.user_id} />
-                  <Link to="/settings/notifications" className="block px-3 text-[11px] transition-colors" style={{ fontFamily: 'var(--font-body)', color: '#5C4E34' }}>
-                    Notification settings
-                  </Link>
-                </div>
-              )}
-              {!sidebarExpanded && profile?.user_id && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <NavLink to="/settings/notifications" className="flex justify-center py-2">
-                      <Bell size={18} style={{ color: 'rgba(160,139,98,0.60)', transition: 'color 0.15s ease' }} />
-                    </NavLink>
-                  </TooltipTrigger>
-                  <TooltipContent side="right" sideOffset={16} style={tooltipStyle}>Notifications</TooltipContent>
-                </Tooltip>
+              {profile?.user_id && (
+                <DesktopBell userId={profile.user_id} expanded={sidebarExpanded} />
               )}
 
               {profile?.role === "admin" && sidebarExpanded && (
