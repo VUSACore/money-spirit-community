@@ -3,7 +3,7 @@ import SEOHead from "@/components/SEOHead";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Flame, BookOpen, CheckCircle2, AlertCircle, GraduationCap, Sparkles } from "lucide-react";
+import { Flame, BookOpen, CheckCircle2, AlertCircle, GraduationCap, Sparkles, X, Home } from "lucide-react";
 import NextSacredStep from "@/components/ai/NextSacredStep";
 import type { Tables } from "@/integrations/supabase/types";
 import { isProfileComplete, getProfileMissingFields } from "@/lib/profileCompletion";
