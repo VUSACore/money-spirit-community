@@ -39,8 +39,6 @@ export function useBadgeNotification(userId: string | undefined) {
                 fontFamily: "var(--font-body, 'DM Sans')",
                 color: "#EEC96E",
               },
-              },
-            });
             });
           }
         }
