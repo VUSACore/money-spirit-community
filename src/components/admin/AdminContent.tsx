@@ -131,16 +131,14 @@ const AdminContent = () => {
     }
 
     // Update the report itself
-    const update: Record<string, any> = {
-      resolved_by: user.id,
-      resolved_at: new Date().toISOString(),
-      moderator_note: notes[r.id] || null,
-    };
-    if (action !== "dismiss") update.resolved = true;
-
     const { error } = await supabase
       .from("content_reports")
-      .update(update)
+      .update({
+        resolved_by: user.id,
+        resolved_at: new Date().toISOString(),
+        moderator_note: notes[r.id] || null,
+        resolved: action !== "dismiss",
+      })
       .eq("id", r.id);
 
     if (error) {
