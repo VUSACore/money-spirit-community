@@ -269,23 +269,8 @@ const PlatformLayout = () => {
 
             {/* Bottom section */}
             <div className="px-2 pb-3 space-y-1" style={{ borderTop: '1px solid rgba(196,151,58,0.08)', background: 'rgba(4,8,16,0.40)' }}>
-              {profile?.user_id && sidebarExpanded && (
-                <div className="pt-2">
-                  <NotificationBell userId={profile.user_id} />
-                  <Link to="/settings/notifications" className="block px-3 text-[11px] transition-colors" style={{ fontFamily: 'var(--font-body)', color: '#5C4E34' }}>
-                    Notification settings
-                  </Link>
-                </div>
-              )}
-              {!sidebarExpanded && profile?.user_id && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <NavLink to="/settings/notifications" className="flex justify-center py-2">
-                      <Bell size={18} style={{ color: 'rgba(160,139,98,0.60)', transition: 'color 0.15s ease' }} />
-                    </NavLink>
-                  </TooltipTrigger>
-                  <TooltipContent side="right" sideOffset={16} style={tooltipStyle}>Notifications</TooltipContent>
-                </Tooltip>
+              {profile?.user_id && (
+                <DesktopBell userId={profile.user_id} expanded={sidebarExpanded} />
               )}
 
               {profile?.role === "admin" && sidebarExpanded && (
