@@ -29,7 +29,7 @@ const Forums = () => {
     return (
       <div className="p-8">
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: 'var(--text-1)', letterSpacing: '-0.03em' }}>Forums</h1>
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-3)' }}>Loading...</p>
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-3)', marginTop: '4px' }}>Loading forums…</p>
       </div>
     );
   }
