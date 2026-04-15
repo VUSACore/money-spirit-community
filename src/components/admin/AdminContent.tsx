@@ -17,6 +17,7 @@ type Report = {
   resolved_by: string | null;
   resolved_at: string | null;
   moderator_note: string | null;
+  created_at: string;
   reporter_name?: string;
   content_preview?: string;
   content_hidden?: boolean;
@@ -277,7 +278,7 @@ const AdminContent = () => {
                     )}
                   </div>
                   <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "var(--text-4)", whiteSpace: "nowrap" }}>
-                    {format(new Date(r.resolved_at || r.resolved_by ? r.resolved_at! : (r as any).created_at), "d MMM yyyy, h:mma")}
+                    {format(new Date(r.created_at), "d MMM yyyy, h:mma")}
                   </span>
                 </div>
 
