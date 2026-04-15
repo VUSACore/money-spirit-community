@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import SEOHead from "@/components/SEOHead";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect } from "react";
@@ -133,6 +134,7 @@ const CoursePage = () => {
 
   return (
     <div className="p-6 md:p-8 animate-fade-in">
+      <SEOHead title={`${course.title} — Money Spirit`} description={course.description || "A Money Spirit course to support your financial wellbeing."} noindex />
       <div className="max-w-2xl">
         {/* Course title */}
         <h1 style={{

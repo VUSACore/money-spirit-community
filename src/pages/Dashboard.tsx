@@ -217,7 +217,7 @@ const Dashboard = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8" style={{ padding: 'clamp(24px, 4vw, 40px) clamp(20px, 5vw, 48px)' }}>
-      <SEOHead title="Dashboard — Money Spirit" />
+      <SEOHead title="Dashboard — Money Spirit" description="Your personal financial wellbeing dashboard." noindex />
 
       {/* Welcome heading */}
       <div className="ss-appear ss-appear-1">
