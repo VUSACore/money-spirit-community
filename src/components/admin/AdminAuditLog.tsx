@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
+import { CalendarIcon, ChevronLeft, ChevronRight, ClipboardList, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import EmptyState from "@/components/EmptyState";
 
 type AuditEntry = {
   id: string;
@@ -22,7 +23,36 @@ type AuditEntry = {
   target_name?: string;
 };
 
-const ACTION_TYPES = ["all", "role_change", "suspend", "unsuspend", "content_resolve", "content_dismiss", "settings_change", "ritual_publish", "course_publish"];
+const ACTION_TYPES = [
+  "all",
+  "role_change",
+  "suspend",
+  "unsuspend",
+  "content_resolve",
+  "content_dismiss",
+  "content_hide",
+  "content_lock",
+  "settings_change",
+  "ritual_publish",
+  "course_publish",
+  "event_create",
+  "event_update",
+];
+
+const ACTION_LABELS: Record<string, string> = {
+  role_change: "Role Change",
+  suspend: "Suspend",
+  unsuspend: "Unsuspend",
+  content_resolve: "Content Resolved",
+  content_dismiss: "Content Dismissed",
+  content_hide: "Content Hidden",
+  content_lock: "Thread Locked",
+  settings_change: "Settings Change",
+  ritual_publish: "Ritual Publish",
+  course_publish: "Course Publish",
+  event_create: "Event Created",
+  event_update: "Event Updated",
+};
 
 const ACTION_COLORS: Record<string, string> = {
   role_change: "bg-blue-500/15 text-blue-400",
@@ -30,7 +60,13 @@ const ACTION_COLORS: Record<string, string> = {
   unsuspend: "bg-teal-500/15 text-teal-400",
   content_resolve: "bg-accent/15 text-accent",
   content_dismiss: "bg-muted text-muted-foreground",
+  content_hide: "bg-destructive/15 text-destructive",
+  content_lock: "bg-yellow-500/15 text-yellow-400",
   settings_change: "bg-purple-500/15 text-purple-400",
+  ritual_publish: "bg-teal-500/15 text-teal-400",
+  course_publish: "bg-blue-500/15 text-blue-400",
+  event_create: "bg-accent/15 text-accent",
+  event_update: "bg-purple-500/15 text-purple-400",
 };
 
 const PAGE_SIZE = 50;
@@ -46,14 +82,13 @@ const AdminAuditLog = () => {
 
   const load = async () => {
     setLoading(true);
-    let query = supabase
+    const { data } = await supabase
       .from("audit_logs")
       .select("*")
       .order("created_at", { ascending: false })
       .limit(1000);
 
-    const { data } = await query;
-    if (!data) { setLoading(false); return; }
+    if (!data) { setEntries([]); setLoading(false); return; }
 
     // Resolve actor/target names
     const userIds = new Set<string>();
@@ -62,22 +97,30 @@ const AdminAuditLog = () => {
       if (e.target_id) userIds.add(e.target_id);
     });
 
-    const { data: profiles } = await supabase
-      .from("profiles")
-      .select("user_id, display_name, id")
-      .or(`user_id.in.(${[...userIds].join(",")}),id.in.(${[...userIds].join(",")})`);
+    const idArr = [...userIds];
+    let nameByUserId = new Map<string, string>();
+    let nameById = new Map<string, string>();
 
-    const nameByUserId = new Map<string, string>();
-    const nameById = new Map<string, string>();
-    (profiles || []).forEach(p => {
-      nameByUserId.set(p.user_id, p.display_name);
-      nameById.set(p.id, p.display_name);
-    });
+    if (idArr.length > 0) {
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("user_id, display_name, id")
+        .or(`user_id.in.(${idArr.join(",")}),id.in.(${idArr.join(",")})`);
+
+      (profiles || []).forEach(p => {
+        nameByUserId.set(p.user_id, p.display_name);
+        nameById.set(p.id, p.display_name);
+      });
+    }
 
     setEntries(data.map(e => ({
       ...e,
       actor_name: nameByUserId.get(e.actor_id) || nameById.get(e.actor_id) || e.actor_id?.slice(0, 8),
-      target_name: nameByUserId.get(e.target_id) || nameById.get(e.target_id) || e.target_id?.slice(0, 8),
+      target_name:
+        (e.metadata as any)?.user_name ||
+        nameByUserId.get(e.target_id) ||
+        nameById.get(e.target_id) ||
+        (e.target_id?.length > 20 ? e.target_id.slice(0, 8) + "…" : e.target_id),
     })));
     setLoading(false);
   };
@@ -89,7 +132,10 @@ const AdminAuditLog = () => {
     if (actionFilter !== "all") result = result.filter(e => e.action === actionFilter);
     if (search.trim()) {
       const q = search.toLowerCase();
-      result = result.filter(e => e.actor_name?.toLowerCase().includes(q));
+      result = result.filter(e =>
+        e.actor_name?.toLowerCase().includes(q) ||
+        e.target_name?.toLowerCase().includes(q)
+      );
     }
     if (fromDate) result = result.filter(e => new Date(e.created_at) >= fromDate);
     if (toDate) {
@@ -105,23 +151,32 @@ const AdminAuditLog = () => {
 
   const formatDetails = (action: string, meta: any) => {
     if (!meta || typeof meta !== "object") return "";
-    if (action === "role_change") return `Role: ${meta.from} → ${meta.to}`;
-    if (action === "suspend") return `Reason: ${meta.reason || "—"}`;
-    if (action === "settings_change") return `${meta.key || ""}: ${meta.from} → ${meta.to}`;
-    return JSON.stringify(meta).slice(0, 100);
+    if (action === "role_change") return `${meta.from} → ${meta.to}`;
+    if (action === "suspend") return meta.reason || "—";
+    if (action === "unsuspend") return meta.user_name || "";
+    if (action === "settings_change") return `${meta.key || meta.platform_name ? "identity" : ""}: ${meta.from ?? ""} → ${meta.to ?? ""}`;
+    if (action.startsWith("content_")) return `${meta.content_type || ""} ${meta.note ? "— " + meta.note : ""}`;
+    const str = JSON.stringify(meta);
+    return str.length > 2 ? str.slice(0, 120) : "";
   };
 
   return (
     <div>
-      <h2 className="text-2xl font-heading text-primary mb-6">Audit Log</h2>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-heading text-primary">Audit Log</h2>
+        <button onClick={load} className="p-2 rounded-lg text-muted-foreground hover:bg-muted/50 transition-colors">
+          <RefreshCw size={16} />
+        </button>
+      </div>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-3 mb-6">
         <Select value={actionFilter} onValueChange={v => { setActionFilter(v); setPage(0); }}>
           <SelectTrigger className="w-[180px] ms-input"><SelectValue placeholder="All Actions" /></SelectTrigger>
           <SelectContent>
-            {ACTION_TYPES.map(a => (
-              <SelectItem key={a} value={a}>{a === "all" ? "All Actions" : a.replace(/_/g, " ")}</SelectItem>
+            <SelectItem value="all">All Actions</SelectItem>
+            {ACTION_TYPES.filter(a => a !== "all").map(a => (
+              <SelectItem key={a} value={a}>{ACTION_LABELS[a] || a.replace(/_/g, " ")}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -151,7 +206,7 @@ const AdminAuditLog = () => {
         </Popover>
 
         <Input
-          placeholder="Search by actor…"
+          placeholder="Search by actor or target…"
           value={search}
           onChange={e => { setSearch(e.target.value); setPage(0); }}
           className="ms-input max-w-[200px]"
@@ -165,9 +220,16 @@ const AdminAuditLog = () => {
       </div>
 
       {loading ? (
-        <p className="text-muted-foreground font-body">Loading audit log…</p>
+        <div className="flex items-center gap-2 py-12 justify-center text-muted-foreground font-body text-sm">
+          <RefreshCw size={16} className="animate-spin" /> Loading audit log…
+        </div>
       ) : paged.length === 0 ? (
-        <p className="text-muted-foreground font-body text-center py-12">No audit log entries yet</p>
+        <EmptyState
+          icon={ClipboardList}
+          iconClassName="text-muted-foreground"
+          heading={entries.length === 0 ? "No audit log entries yet" : "No matching entries"}
+          body={entries.length === 0 ? "Admin actions will appear here as they happen." : "Try adjusting your filters."}
+        />
       ) : (
         <>
           <div className="rounded-xl border border-border overflow-hidden">
@@ -189,7 +251,7 @@ const AdminAuditLog = () => {
                     </TableCell>
                     <TableCell>
                       <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-body ${ACTION_COLORS[e.action] || "bg-muted text-muted-foreground"}`}>
-                        {e.action.replace(/_/g, " ")}
+                        {ACTION_LABELS[e.action] || e.action.replace(/_/g, " ")}
                       </span>
                     </TableCell>
                     <TableCell className="font-body text-sm">{e.actor_name}</TableCell>
