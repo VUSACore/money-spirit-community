@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import EthicsFooter from "@/components/EthicsFooter";
+import SEOHead from "@/components/SEOHead";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#0B1F3A' }}>
+      <SEOHead title="Create Account — Money Spirit" description="Join Money Spirit. Create your free account to access rituals, courses, events and a supportive community for financial wellbeing." />
       <div className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">

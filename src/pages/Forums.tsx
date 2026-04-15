@@ -36,7 +36,7 @@ const Forums = () => {
 
   return (
     <div className="p-4 sm:p-6 md:p-8 max-w-4xl mx-auto space-y-6 ss-appear">
-      <SEOHead title="Community Forums — Money Spirit" description="Join the conversation." />
+      <SEOHead title="Community Forums — Money Spirit" description="Join deeper conversations about money, life, and wellbeing with women on the same journey." />
       {hasFinanceForum && <EducationBanner />}
 
       <div>

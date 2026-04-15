@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import EthicsFooter from "@/components/EthicsFooter";
+import SEOHead from "@/components/SEOHead";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -29,6 +30,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#0B1F3A' }}>
+      <SEOHead title="Reset Password — Money Spirit" description="Reset your Money Spirit password. Enter your email and we'll send you a secure reset link." />
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">

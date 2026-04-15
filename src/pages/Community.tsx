@@ -133,7 +133,7 @@ const Community = () => {
 
   return (
     <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto space-y-6 animate-glass">
-      <SEOHead title="Community — Money Spirit" />
+      <SEOHead title="Community Feed — Money Spirit" description="Connect with women on the same financial wellbeing journey. Share wins, reflections, and support." />
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: 300, color: 'var(--text-1)', letterSpacing: '-0.03em' }}>Community</h1>
 
       {!isGuest && (

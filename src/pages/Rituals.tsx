@@ -148,7 +148,7 @@ const Rituals = () => {
 
   return (
     <div className="p-4 sm:p-8 max-w-3xl mx-auto space-y-8 ss-appear">
-      <SEOHead title="Rituals — Money Spirit" />
+      <SEOHead title="Weekly Money Rituals — Money Spirit" description="Guided weekly practices to build a conscious, healthy relationship with your money." />
       <EducationBanner />
 
       <div className="flex items-center justify-between flex-wrap gap-3">

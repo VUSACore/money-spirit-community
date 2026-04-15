@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import SEOHead from "@/components/SEOHead";
 
 const NotFound = () => {
   const location = useLocation();
@@ -14,6 +15,7 @@ const NotFound = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center" style={{ background: '#0B1F3A' }}>
+      <SEOHead title="Page Not Found — Money Spirit" description="The page you're looking for doesn't exist or has been moved." />
       <p style={{
         fontFamily: 'var(--font-display)', fontSize: '120px', lineHeight: 1,
         color: 'rgba(196,151,58,0.12)', fontWeight: 300, userSelect: 'none',
