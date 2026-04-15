@@ -1,12 +1,14 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Sparkles, RefreshCw } from "lucide-react";
 import { getNextSacredStep } from "@/lib/ai/archetypeAI";
-import { supabase } from "@/integrations/supabase/client";
+import { getArchetypeFallback } from "@/lib/ai/geminiClient";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Profile = Tables<"profiles">;
 
 const CACHE_TTL = 5 * 60 * 1000;
+const HISTORY_KEY_PREFIX = "sacred_step_history_";
+const MAX_HISTORY = 5;
 
 const archetypeDisplay: Record<string, { name: string; accent: string }> = {
   giver: { name: "The Giver", accent: "#D4856A" },
@@ -21,29 +23,72 @@ interface Props {
   profile: Profile;
 }
 
+function getHistory(userId: string): string[] {
+  try {
+    const raw = sessionStorage.getItem(HISTORY_KEY_PREFIX + userId);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function pushHistory(userId: string, text: string) {
+  const history = getHistory(userId);
+  // Don't add duplicates
+  if (history[history.length - 1] === text) return;
+  history.push(text);
+  if (history.length > MAX_HISTORY) history.shift();
+  sessionStorage.setItem(HISTORY_KEY_PREFIX + userId, JSON.stringify(history));
+}
+
 const NextSacredStep = ({ userId, profile }: Props) => {
   const [text, setText] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isFallback, setIsFallback] = useState(false);
+  const fetchingRef = useRef(false);
 
   const cacheKey = `next_sacred_step_${userId}`;
 
   const fetchStep = useCallback(async (skipCache = false) => {
+    // Prevent double-submit
+    if (fetchingRef.current) return;
+
     if (!skipCache) {
       try {
         const cached = sessionStorage.getItem(cacheKey);
         if (cached) {
-          const { text: cachedText, timestamp } = JSON.parse(cached);
-          if (Date.now() - timestamp < CACHE_TTL) { setText(cachedText); return; }
+          const { text: cachedText, timestamp, fallback } = JSON.parse(cached);
+          if (Date.now() - timestamp < CACHE_TTL) {
+            setText(cachedText);
+            setIsFallback(!!fallback);
+            return;
+          }
         }
       } catch { /* ignore */ }
     }
+
+    fetchingRef.current = true;
     setLoading(true);
+    setIsFallback(false);
+
     try {
-      const { count } = await supabase.from("course_enrollments").select("id", { count: "exact", head: true }).eq("user_id", userId).not("completed_at", "is", null);
-      const result = await getNextSacredStep(profile, count ?? 0);
+      const history = getHistory(userId);
+      const result = await getNextSacredStep(profile, 0, history);
       setText(result);
-      sessionStorage.setItem(cacheKey, JSON.stringify({ text: result, timestamp: Date.now() }));
-    } finally { setLoading(false); }
+      pushHistory(userId, result);
+      sessionStorage.setItem(cacheKey, JSON.stringify({ text: result, timestamp: Date.now(), fallback: false }));
+    } catch {
+      // Gemini failed — use archetype-aware fallback
+      const history = getHistory(userId);
+      const fallbackText = getArchetypeFallback(profile.pathway_type, history);
+      setText(fallbackText);
+      setIsFallback(true);
+      pushHistory(userId, fallbackText);
+      sessionStorage.setItem(cacheKey, JSON.stringify({ text: fallbackText, timestamp: Date.now(), fallback: true }));
+    } finally {
+      setLoading(false);
+      fetchingRef.current = false;
+    }
   }, [userId, profile, cacheKey]);
 
   useEffect(() => {
@@ -73,6 +118,7 @@ const NextSacredStep = ({ userId, profile }: Props) => {
           disabled={loading}
           className="transition-colors disabled:opacity-50"
           style={{ color: '#5C4E34' }}
+          aria-label="Refresh sacred step"
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#C4973A'; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#5C4E34'; }}
         >
@@ -90,10 +136,12 @@ const NextSacredStep = ({ userId, profile }: Props) => {
           <p style={{
             fontFamily: 'var(--font-display)', fontSize: '20px', fontStyle: 'italic',
             fontWeight: 300, color: '#F2EAD8', lineHeight: 1.75, letterSpacing: '-0.01em',
+            opacity: loading ? 0.5 : 1,
+            transition: 'opacity 0.3s ease',
           }}>
             {text}
           </p>
-          <div className="mt-4 pt-3" style={{ borderTop: '1px solid rgba(196,151,58,0.12)' }}>
+          <div className="mt-4 pt-3 flex items-center gap-2" style={{ borderTop: '1px solid rgba(196,151,58,0.12)' }}>
             <span style={{
               display: 'inline-block',
               background: 'rgba(196,151,58,0.10)',
@@ -105,6 +153,14 @@ const NextSacredStep = ({ userId, profile }: Props) => {
             }}>
               {info.name}
             </span>
+            {isFallback && (
+              <span style={{
+                fontFamily: 'var(--font-body)', fontSize: '10px', color: '#8B7D5E',
+                fontStyle: 'italic',
+              }}>
+                Guidance from your archetype
+              </span>
+            )}
           </div>
         </>
       )}
