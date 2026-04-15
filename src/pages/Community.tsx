@@ -10,6 +10,7 @@ import { Heart, PartyPopper, Sparkles, Zap, Flag, MoreHorizontal } from "lucide-
 import EmptyState from "@/components/EmptyState";
 import { formatDistanceToNow } from "date-fns";
 import ReportDialog from "@/components/ReportDialog";
+import { toast } from "sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
