@@ -303,11 +303,11 @@ const EventDetail = () => {
       {/* Hero banner */}
       <div className="rounded-xl overflow-hidden" style={{
         background: "linear-gradient(145deg, rgba(17,32,54,0.90), rgba(6,12,24,0.95))",
-        padding: "48px 32px",
+        padding: "clamp(28px, 5vw, 48px) clamp(16px, 4vw, 32px)",
         textAlign: "center",
       }}>
         <Sparkles className="mx-auto mb-4" size={32} style={{ color: "rgba(196,151,58,0.3)" }} />
-        <h1 style={{ fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 300, color: "var(--text-1)", letterSpacing: "-0.03em" }}>
+        <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 4vw, 32px)", fontWeight: 300, color: "var(--text-1)", letterSpacing: "-0.03em" }}>
           {event.title}
         </h1>
       </div>
