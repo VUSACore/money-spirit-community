@@ -44,6 +44,7 @@ const Admin = () => {
   const { tabId: tabParam } = useParams<{ tabId?: string }>();
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabId>(tabIdFromParam(tabParam) || "users");
+  const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
