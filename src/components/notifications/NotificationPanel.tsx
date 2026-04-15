@@ -36,7 +36,7 @@ const NotificationPanel = ({ userId, onClose, onCountChange }: NotificationPanel
   const handleMarkAllRead = async () => { await markAllAsRead(userId); setNotifications((prev) => prev.map((n) => ({ ...n, read: true }))); onCountChange(0); };
 
   return (
-    <div className="w-[360px] max-h-[480px] overflow-hidden flex flex-col" style={{
+    <div className="w-full md:w-[360px] max-h-[480px] overflow-hidden flex flex-col" style={{
       background: 'rgba(8, 13, 26, 0.90)',
       backdropFilter: 'blur(40px)',
       WebkitBackdropFilter: 'blur(40px)',
