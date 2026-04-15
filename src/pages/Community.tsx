@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Heart, PartyPopper, Sparkles, Zap } from "lucide-react";
 import EmptyState from "@/components/EmptyState";
 import { formatDistanceToNow } from "date-fns";
-import { createNotification } from "@/lib/actions/notifications";
+
 
 type ReactionType = "heart" | "celebrate" | "inspire" | "spark";
 interface ReactionCount { heart: number; celebrate: number; inspire: number; spark: number; }
@@ -98,10 +98,6 @@ const Community = () => {
       await supabase.from("post_reactions").delete().eq("post_id", postId).eq("user_id", userId).eq("type", type);
     } else {
       await supabase.from("post_reactions").insert({ post_id: postId, user_id: userId, type });
-      if (post.author_id !== userId) {
-        const { data: actor } = await supabase.from("profiles").select("display_name").eq("user_id", userId).maybeSingle();
-        await createNotification(post.author_id, "reaction", `${actor?.display_name ?? "Someone"} reacted to your post`, `/community`);
-      }
     }
     await fetchPosts(userId);
   };
