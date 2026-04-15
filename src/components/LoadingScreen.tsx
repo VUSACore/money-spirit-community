@@ -40,7 +40,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
           display: 'block',
         }}
       >
-        <source src="/welcomeV5.mp4" type="video/mp4" />
+        <source src="/welcomeV6.mp4" type="video/mp4" />
       </video>
       <button
         onClick={onComplete}
