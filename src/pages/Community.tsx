@@ -210,7 +210,7 @@ const Community = () => {
                       className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       style={{
                         fontFamily: 'var(--font-body)', fontSize: '12px',
-                        background: active ? 'rgba(201,148,30,0.15)' : 'transparent',
+                        background: active ? 'rgba(248,220,138,0.40)' : 'transparent',
                         color: active ? 'var(--text-gold)' : 'var(--text-4)',
                       }}
                       onMouseEnter={(e) => { if (!active) (e.currentTarget as HTMLElement).style.color = 'var(--text-gold)'; }}

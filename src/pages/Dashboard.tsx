@@ -247,7 +247,7 @@ const Dashboard = () => {
               <div className="flex flex-wrap gap-2 mb-4">
                 {missingFields.map((field) => (
                   <span key={field} className="text-[11px] font-body px-2.5 py-1 rounded-full" style={{
-                    background: 'rgba(201,148,30,0.12)', border: '1px solid rgba(201,148,30,0.25)', color: '#F8DC8A',
+                    background: 'rgba(248,220,138,0.36)', border: '1px solid rgba(201,148,30,0.25)', color: '#F8DC8A',
                   }}>
                     {field}
                   </span>

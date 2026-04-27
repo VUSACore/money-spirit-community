@@ -99,7 +99,7 @@ const MobileBell = ({ userId }: { userId: string }) => {
   return (
     <div className="relative" ref={ref}>
       <button onClick={() => setOpen(!open)} className="relative p-1" aria-label="Notifications">
-        <Bell size={20} style={{ color: unreadCount > 0 ? '#F8DC8A' : 'rgba(160,139,98,0.60)', transition: 'color 0.2s ease' }} />
+        <Bell size={20} style={{ color: unreadCount > 0 ? '#F8DC8A' : 'rgba(216,200,150,0.85)', transition: 'color 0.2s ease' }} />
         {unreadCount > 0 && (
           <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-[16px] flex items-center justify-center rounded-full text-[10px] font-semibold px-1"
             style={{ background: '#E0B040', color: '#004a93', boxShadow: '0 0 8px rgba(224,176,64,0.40)' }}>
@@ -158,7 +158,7 @@ const DesktopBell = ({ userId, expanded }: { userId: string; expanded: boolean }
           fontFamily: 'var(--font-body)',
           fontSize: '13px',
           fontWeight: 400,
-          color: unreadCount > 0 ? '#F8DC8A' : 'rgba(160,139,98,0.80)',
+          color: unreadCount > 0 ? '#F8DC8A' : 'rgba(216,200,150,0.95)',
         }}
         onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(224,176,64,0.07)'; }}
         onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
@@ -549,7 +549,7 @@ const PlatformLayout = () => {
                 <div className="flex items-center gap-4">
                   {profile?.user_id && (
                     <div className="relative">
-                      <Bell size={20} style={{ color: 'rgba(160,139,98,0.60)', cursor: 'pointer', transition: 'color 0.15s ease' }} />
+                      <Bell size={20} style={{ color: 'rgba(216,200,150,0.85)', cursor: 'pointer', transition: 'color 0.15s ease' }} />
                     </div>
                   )}
                   <Link to="/profile"

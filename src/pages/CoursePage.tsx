@@ -230,7 +230,7 @@ const CoursePage = () => {
                     </span>
                     {isNext && (
                       <span className="text-[10px] font-body font-medium px-2 py-0.5 rounded-full" style={{
-                        background: 'rgba(201,148,30,0.15)', color: '#F8DC8A',
+                        background: 'rgba(248,220,138,0.40)', color: '#F8DC8A',
                       }}>Next</span>
                     )}
                     {duration && <span className="text-xs font-body" style={{ color: '#D8C896' }}>{duration}</span>}

@@ -79,7 +79,7 @@ const Admin = () => {
   return (
     <div className="min-h-screen flex platform-bg" style={{
       background: `
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201, 148, 30, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(248,220,138, 0.08) 0%, transparent 60%),
         linear-gradient(180deg, #060912 0%, #080D1A 40%, #0C1221 100%)
       `,
     }}>
@@ -119,7 +119,7 @@ const Admin = () => {
                   height: 44,
                   fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500,
                   ...(active ? {
-                    background: 'rgba(201, 148, 30, 0.12)',
+                    background: 'rgba(248,220,138, 0.12)',
                     borderRadius: '12px',
                     borderLeft: '2px solid rgba(245,200,66,0.6)',
                     boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.24)',
@@ -189,7 +189,7 @@ const Admin = () => {
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors"
                 style={{
                   fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500,
-                  background: active ? 'rgba(201,148,30,0.15)' : 'transparent',
+                  background: active ? 'rgba(248,220,138,0.40)' : 'transparent',
                   color: active ? 'var(--gold-bright)' : 'var(--text-3)',
                   border: active ? '1px solid rgba(201,148,30,0.25)' : '1px solid transparent',
                 }}

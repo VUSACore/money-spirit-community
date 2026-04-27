@@ -65,7 +65,7 @@ function StatusPill({ status }: { status: string }) {
     cancelled: { bg: "rgba(239,68,68,0.2)", color: "#FCA5A5" },
     refunded: { bg: "rgba(239,68,68,0.2)", color: "#FCA5A5" },
   };
-  const s = styles[status] ?? { bg: "rgba(201,148,30,0.2)", color: "#F5C842" };
+  const s = styles[status] ?? { bg: "rgba(248,220,138,0.44)", color: "#F5C842" };
   return (
     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" style={{ background: s.bg, color: s.color }}>
       {status}

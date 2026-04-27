@@ -202,7 +202,7 @@ const AdminContent = () => {
             {t.id === "pending" && pendingCount > 0 && (
               <span style={{
                 marginLeft: 6,
-                background: "rgba(201,148,30,0.2)",
+                background: "rgba(248,220,138,0.44)",
                 color: "var(--gold-bright)",
                 borderRadius: 99,
                 padding: "1px 7px",
@@ -256,7 +256,7 @@ const AdminContent = () => {
                     </span>
                     <span style={{
                       background: "rgba(201,148,30,0.1)",
-                      border: "1px solid rgba(201,148,30,0.2)",
+                      border: "1px solid rgba(248,220,138,0.44)",
                       borderRadius: 6,
                       padding: "2px 8px",
                       fontFamily: "var(--font-body)",

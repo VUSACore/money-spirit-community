@@ -270,7 +270,7 @@ const LessonPage = () => {
             )}
             {videoType === "none" && (
               <div className="w-full h-full flex items-center justify-center">
-                <PlayCircle size={64} style={{ color: 'rgba(201,148,30,0.2)' }} />
+                <PlayCircle size={64} style={{ color: 'rgba(248,220,138,0.44)' }} />
               </div>
             )}
           </div>

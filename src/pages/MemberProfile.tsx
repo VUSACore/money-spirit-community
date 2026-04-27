@@ -101,7 +101,7 @@ const MemberProfile = () => {
               <p className="text-xs font-body mb-2" style={{ color: "var(--ms-text-muted)" }}>Financial Goals</p>
               <div className="flex flex-wrap gap-1.5">
                 {(profile.financial_goals as string[]).map((g: string) => (
-                  <span key={g} className="text-[11px] font-body px-2.5 py-1 rounded-full" style={{ background: "rgba(201,148,30,0.12)", color: "#F5C842" }}>{g}</span>
+                  <span key={g} className="text-[11px] font-body px-2.5 py-1 rounded-full" style={{ background: "rgba(248,220,138,0.36)", color: "#F5C842" }}>{g}</span>
                 ))}
               </div>
             </div>
@@ -111,7 +111,7 @@ const MemberProfile = () => {
               <p className="text-xs font-body mb-2" style={{ color: "var(--ms-text-muted)" }}>Interests</p>
               <div className="flex flex-wrap gap-1.5">
                 {(profile.interests as string[]).map((i: string) => (
-                  <span key={i} className="text-[11px] font-body px-2.5 py-1 rounded-full" style={{ background: "rgba(201,148,30,0.12)", color: "#F5C842" }}>{i}</span>
+                  <span key={i} className="text-[11px] font-body px-2.5 py-1 rounded-full" style={{ background: "rgba(248,220,138,0.36)", color: "#F5C842" }}>{i}</span>
                 ))}
               </div>
             </div>

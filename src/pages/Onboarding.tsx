@@ -348,7 +348,7 @@ const Onboarding = () => {
           <h1 className="text-3xl font-heading" style={{ color: "#fff" }}>Your Money Spirit Path</h1>
           <p className="font-body text-sm" style={{ color: "#C9941E" }}>Question {step + 1} of {TOTAL_STEPS}</p>
         </div>
-        <div className="w-full h-1.5 rounded-full mb-8 overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
+        <div className="w-full h-1.5 rounded-full mb-8 overflow-hidden" style={{ background: "rgba(255,255,255,0.28)" }}>
           <div className="h-full rounded-full transition-all duration-300" style={{ width: `${progress}%`, background: "#C9941E" }} />
         </div>
         <h2 className="font-heading text-[28px] text-center mb-6 animate-slide-up leading-tight" style={{ color: "#F1F5F9" }} key={step}>
@@ -361,7 +361,7 @@ const Onboarding = () => {
                 return (
                   <button key={idx} onClick={() => setLifeStage(opt.value)}
                     className="w-full text-left px-5 py-4 rounded-xl border-2 font-body text-base transition-all duration-200"
-                    style={{ borderColor: selected ? "#C9941E" : "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)", color: selected ? "#F5C842" : "#E2E8F0" }}>
+                    style={{ borderColor: selected ? "#C9941E" : "rgba(255,255,255,0.28)", background: "rgba(255,255,255,0.18)", color: selected ? "#F5C842" : "#E2E8F0" }}>
                     {opt.label}
                   </button>
                 );
@@ -371,7 +371,7 @@ const Onboarding = () => {
                 return (
                   <button key={idx} onClick={() => { const next = [...answers]; next[step - 1] = idx; setAnswers(next); }}
                     className="w-full text-left px-5 py-4 rounded-xl border-2 font-body text-base transition-all duration-200"
-                    style={{ borderColor: selected ? "#C9941E" : "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)", color: selected ? "#F5C842" : "#E2E8F0" }}>
+                    style={{ borderColor: selected ? "#C9941E" : "rgba(255,255,255,0.28)", background: "rgba(255,255,255,0.18)", color: selected ? "#F5C842" : "#E2E8F0" }}>
                     {opt.label}
                   </button>
                 );

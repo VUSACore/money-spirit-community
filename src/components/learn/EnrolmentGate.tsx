@@ -41,7 +41,7 @@ const EnrolmentGate = ({ courseId, userId, title, description, lessonCount }: En
     <div className="flex items-center justify-center min-h-[60vh] animate-fade-in">
       <div className="w-full max-w-lg text-center" style={{ padding: '48px 32px' }}>
         <div className="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-6" style={{
-          background: 'rgba(201,148,30,0.12)', border: '1px solid rgba(201,148,30,0.25)',
+          background: 'rgba(248,220,138,0.36)', border: '1px solid rgba(201,148,30,0.25)',
         }}>
           <BookOpen size={28} style={{ color: '#C9941E' }} />
         </div>

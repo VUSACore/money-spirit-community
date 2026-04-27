@@ -232,7 +232,7 @@ const ThreadDetail = () => {
         <div className="flex items-center gap-2 mb-3 flex-wrap">
           {thread?.pinned && (
             <span className="flex items-center gap-1" style={{
-              background: "rgba(201,148,30,0.1)", border: "1px solid rgba(201,148,30,0.2)",
+              background: "rgba(201,148,30,0.1)", border: "1px solid rgba(248,220,138,0.44)",
               borderRadius: 6, padding: "2px 8px",
               fontFamily: "var(--font-body)", fontSize: 11, fontWeight: 600, color: "var(--gold-base)",
             }}>
@@ -345,7 +345,7 @@ const ThreadDetail = () => {
                       style={{
                         fontFamily: "var(--font-body)", fontSize: 12,
                         color: reply.user_upvoted ? "var(--gold-bright)" : "var(--text-4)",
-                        background: reply.user_upvoted ? "rgba(201,148,30,0.12)" : "transparent",
+                        background: reply.user_upvoted ? "rgba(248,220,138,0.36)" : "transparent",
                       }}
                     >
                       <ThumbsUp size={13} />
