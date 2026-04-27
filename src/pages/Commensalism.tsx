@@ -171,30 +171,60 @@ export default function Commensalism() {
           )}
         </Tabs>
 
-        {/* Legend */}
+        {/* Pathway legend */}
         <div
-          className="mt-6 p-4 rounded-xl flex flex-wrap gap-3 items-center"
+          className="mt-6 p-4 md:p-5 rounded-xl"
           style={{
             background: "rgba(6,12,24,0.55)",
             border: "1px solid rgba(196,151,58,0.12)",
             fontFamily: "var(--font-body)",
-            fontSize: 12,
-            color: "#D4C49A",
           }}
         >
-          <span style={{ color: "#BBA96E", fontWeight: 500 }}>Density:</span>
-          <span className="inline-flex items-center gap-2">
-            <span
-              style={{
-                width: 120,
-                height: 10,
-                borderRadius: 6,
-                background: "linear-gradient(90deg, #4DB89A, #6B9EC4, #EEC96E, #D4856A, #A87CC4)",
-                display: "inline-block",
-              }}
-            />
-            <span style={{ color: "#A08B62" }}>low → high</span>
-          </span>
+          <div
+            className="mb-3 flex items-center gap-2"
+            style={{ color: "#EEC96E", fontSize: 13, fontWeight: 600, letterSpacing: "0.02em" }}
+          >
+            <span>Pathway colours</span>
+            <span style={{ color: "#A08B62", fontWeight: 400, fontSize: 11 }}>
+              · each glow on the map represents one of these archetypes
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2.5">
+            {PATHWAYS.map((p) => (
+              <div key={p.key} className="flex items-start gap-2.5">
+                <span
+                  aria-hidden
+                  style={{
+                    width: 14,
+                    height: 14,
+                    borderRadius: "50%",
+                    background: p.color,
+                    boxShadow: `0 0 12px ${p.color}, inset 0 0 4px rgba(255,255,255,0.25)`,
+                    flexShrink: 0,
+                    marginTop: 2,
+                  }}
+                />
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ color: "#F2EAD8", fontSize: 13, fontWeight: 500 }}>{p.label}</div>
+                  <div style={{ color: "#A08B62", fontSize: 11.5, lineHeight: 1.35 }}>{p.meaning}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p
+            className="mt-3 pt-3"
+            style={{
+              borderTop: "1px solid rgba(196,151,58,0.10)",
+              color: "#A08B62",
+              fontSize: 11,
+              lineHeight: 1.5,
+            }}
+          >
+            Brighter, denser glows = more members of that pathway in the area. Locations are rounded to
+            roughly 110&nbsp;km — never exact.
+          </p>
         </div>
       </div>
     </>
