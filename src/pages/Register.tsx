@@ -52,11 +52,29 @@ const Register = () => {
     if (!validate()) return;
     setLoading(true);
     setErrors({});
-    const { error } = await supabase.auth.signUp({
+    const { data: signUpData, error } = await supabase.auth.signUp({
       email: email.trim(), password,
       options: { data: { display_name: displayName.trim() }, emailRedirectTo: window.location.origin },
     });
     if (error) { setErrors({ general: error.message }); setLoading(false); return; }
+
+    // Record affiliate referral if applicable
+    const userId = signUpData.user?.id;
+    if (affiliate && userId) {
+      try {
+        await supabase.from("affiliate_referrals" as any).insert({
+          affiliate_id: affiliate.id,
+          user_id: userId,
+        });
+        await supabase.from("profiles").update({
+          referred_by_affiliate_id: affiliate.id,
+          affiliate_discount_percent: affiliate.discount_percent,
+        } as any).eq("user_id", userId);
+      } catch {
+        // non-blocking
+      }
+    }
+
     navigate("/onboarding");
   };
 
