@@ -24,6 +24,7 @@ const tabs = [
   { id: "revenue", label: "Revenue", icon: DollarSign },
   { id: "intelligence", label: "Intelligence", icon: Brain },
   { id: "fms", label: "FMS Leads", icon: Target },
+  { id: "affiliates", label: "Affiliates", icon: Share2 },
   { id: "settings", label: "Settings", icon: Settings },
   { id: "audit", label: "Audit Log", icon: ClipboardList },
 ] as const;
