@@ -7,6 +7,7 @@ import SEOHead from "@/components/SEOHead";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,6 +15,22 @@ const Register = () => {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [affiliate, setAffiliate] = useState<{ id: string; name: string; discount_percent: number } | null>(null);
+
+  // Look up affiliate from ?ref=code
+  useEffect(() => {
+    const code = searchParams.get("ref");
+    if (!code) return;
+    (async () => {
+      const { data } = await supabase
+        .from("affiliates" as any)
+        .select("id, name, discount_percent")
+        .eq("code", code)
+        .eq("active", true)
+        .maybeSingle();
+      if (data) setAffiliate(data as any);
+    })();
+  }, [searchParams]);
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
