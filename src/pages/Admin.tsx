@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Users, Flame, CalendarDays, DollarSign, Brain, Target, FileText, BookOpen, Settings, ClipboardList } from "lucide-react";
+import { Users, Flame, CalendarDays, DollarSign, Brain, Target, FileText, BookOpen, Settings, ClipboardList, Share2 } from "lucide-react";
 import LotusIcon from "@/components/LotusIcon";
 import AdminUsers from "@/components/admin/AdminUsers";
 import AdminRituals from "@/components/admin/AdminRituals";
@@ -13,6 +13,7 @@ import AdminContent from "@/components/admin/AdminContent";
 import AdminCourses from "@/components/admin/AdminCourses";
 import AdminSettings from "@/components/admin/AdminSettings";
 import AdminAuditLog from "@/components/admin/AdminAuditLog";
+import AdminAffiliates from "@/components/admin/AdminAffiliates";
 
 const tabs = [
   { id: "users", label: "Users", icon: Users },
@@ -23,6 +24,7 @@ const tabs = [
   { id: "revenue", label: "Revenue", icon: DollarSign },
   { id: "intelligence", label: "Intelligence", icon: Brain },
   { id: "fms", label: "FMS Leads", icon: Target },
+  { id: "affiliates", label: "Affiliates", icon: Share2 },
   { id: "settings", label: "Settings", icon: Settings },
   { id: "audit", label: "Audit Log", icon: ClipboardList },
 ] as const;
@@ -34,6 +36,7 @@ const tabIdFromParam = (param?: string): TabId | null => {
     users: "users", content: "content", courses: "courses",
     rituals: "rituals", events: "events", revenue: "revenue",
     intelligence: "intelligence", "fms-leads": "fms", fms: "fms",
+    affiliates: "affiliates",
     settings: "settings", audit: "audit",
   };
   return param ? map[param] ?? null : null;
@@ -221,6 +224,7 @@ const Admin = () => {
           {activeTab === "revenue" && <AdminRevenue />}
           {activeTab === "intelligence" && <FounderIntelligence />}
           {activeTab === "fms" && <FMSLeadBoard />}
+          {activeTab === "affiliates" && <AdminAffiliates />}
           {activeTab === "settings" && <AdminSettings />}
           {activeTab === "audit" && <AdminAuditLog />}
         </div>
@@ -233,6 +237,7 @@ const Admin = () => {
           {activeTab === "revenue" && <AdminRevenue />}
           {activeTab === "intelligence" && <FounderIntelligence />}
           {activeTab === "fms" && <FMSLeadBoard />}
+          {activeTab === "affiliates" && <AdminAffiliates />}
           {activeTab === "settings" && <AdminSettings />}
           {activeTab === "audit" && <AdminAuditLog />}
         </div>

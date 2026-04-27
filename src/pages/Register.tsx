@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import EthicsFooter from "@/components/EthicsFooter";
@@ -7,6 +7,7 @@ import SEOHead from "@/components/SEOHead";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,6 +15,22 @@ const Register = () => {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [affiliate, setAffiliate] = useState<{ id: string; name: string; discount_percent: number } | null>(null);
+
+  // Look up affiliate from ?ref=code
+  useEffect(() => {
+    const code = searchParams.get("ref");
+    if (!code) return;
+    (async () => {
+      const { data } = await supabase
+        .from("affiliates" as any)
+        .select("id, name, discount_percent")
+        .eq("code", code)
+        .eq("active", true)
+        .maybeSingle();
+      if (data) setAffiliate(data as any);
+    })();
+  }, [searchParams]);
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -35,11 +52,29 @@ const Register = () => {
     if (!validate()) return;
     setLoading(true);
     setErrors({});
-    const { error } = await supabase.auth.signUp({
+    const { data: signUpData, error } = await supabase.auth.signUp({
       email: email.trim(), password,
       options: { data: { display_name: displayName.trim() }, emailRedirectTo: window.location.origin },
     });
     if (error) { setErrors({ general: error.message }); setLoading(false); return; }
+
+    // Record affiliate referral if applicable
+    const userId = signUpData.user?.id;
+    if (affiliate && userId) {
+      try {
+        await supabase.from("affiliate_referrals" as any).insert({
+          affiliate_id: affiliate.id,
+          user_id: userId,
+        });
+        await supabase.from("profiles").update({
+          referred_by_affiliate_id: affiliate.id,
+          affiliate_discount_percent: affiliate.discount_percent,
+        } as any).eq("user_id", userId);
+      } catch {
+        // non-blocking
+      }
+    }
+
     navigate("/onboarding");
   };
 
@@ -55,6 +90,19 @@ const Register = () => {
             <img src="/logo.png" alt="Money Spirit" style={{ width: 64, height: 64, margin: '0 auto 16px', filter: 'drop-shadow(0 0 10px rgba(196,151,58,0.20))' }} />
             <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '26px', color: '#C4973A', fontWeight: 700, marginBottom: '6px' }}>Money Spirit</h1>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62' }}>Join Money Spirit</p>
+            {affiliate && (
+              <div style={{
+                marginTop: 16,
+                background: 'rgba(196,151,58,0.10)',
+                border: '1px solid rgba(196,151,58,0.30)',
+                borderRadius: 12,
+                padding: '10px 14px',
+                fontFamily: 'var(--font-body)', fontSize: 13, color: '#C4973A',
+              }}>
+                Referred by <strong>{affiliate.name}</strong>
+                {affiliate.discount_percent > 0 && ` · ${affiliate.discount_percent}% off your subscription`}
+              </div>
+            )}
           </div>
 
           <div style={{

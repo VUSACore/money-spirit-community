@@ -14,6 +14,89 @@ export type Database = {
   }
   public: {
     Tables: {
+      affiliate_referrals: {
+        Row: {
+          affiliate_id: string
+          commission_amount_pence: number
+          commission_paid: boolean
+          created_at: string
+          id: string
+          paid_at: string | null
+          paid_by: string | null
+          signed_up_at: string
+          user_id: string
+        }
+        Insert: {
+          affiliate_id: string
+          commission_amount_pence?: number
+          commission_paid?: boolean
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          paid_by?: string | null
+          signed_up_at?: string
+          user_id: string
+        }
+        Update: {
+          affiliate_id?: string
+          commission_amount_pence?: number
+          commission_paid?: boolean
+          created_at?: string
+          id?: string
+          paid_at?: string | null
+          paid_by?: string | null
+          signed_up_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_referrals_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      affiliates: {
+        Row: {
+          active: boolean
+          code: string
+          commission_percent: number
+          created_at: string
+          created_by: string
+          discount_percent: number
+          id: string
+          name: string
+          notes: string | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          commission_percent?: number
+          created_at?: string
+          created_by: string
+          discount_percent?: number
+          id?: string
+          name: string
+          notes?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          commission_percent?: number
+          created_at?: string
+          created_by?: string
+          discount_percent?: number
+          id?: string
+          name?: string
+          notes?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
@@ -911,6 +994,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          affiliate_discount_percent: number | null
           archetype_score: Json | null
           avatar_url: string | null
           bio: string | null
@@ -942,6 +1026,7 @@ export type Database = {
           pathway_type: Database["public"]["Enums"]["pathway_type"] | null
           post_count: number | null
           profile_complete: boolean | null
+          referred_by_affiliate_id: string | null
           ritual_streak: number
           role: Database["public"]["Enums"]["user_role"]
           show_bio: boolean
@@ -959,6 +1044,7 @@ export type Database = {
           years_in_australia: string | null
         }
         Insert: {
+          affiliate_discount_percent?: number | null
           archetype_score?: Json | null
           avatar_url?: string | null
           bio?: string | null
@@ -990,6 +1076,7 @@ export type Database = {
           pathway_type?: Database["public"]["Enums"]["pathway_type"] | null
           post_count?: number | null
           profile_complete?: boolean | null
+          referred_by_affiliate_id?: string | null
           ritual_streak?: number
           role?: Database["public"]["Enums"]["user_role"]
           show_bio?: boolean
@@ -1007,6 +1094,7 @@ export type Database = {
           years_in_australia?: string | null
         }
         Update: {
+          affiliate_discount_percent?: number | null
           archetype_score?: Json | null
           avatar_url?: string | null
           bio?: string | null
@@ -1038,6 +1126,7 @@ export type Database = {
           pathway_type?: Database["public"]["Enums"]["pathway_type"] | null
           post_count?: number | null
           profile_complete?: boolean | null
+          referred_by_affiliate_id?: string | null
           ritual_streak?: number
           role?: Database["public"]["Enums"]["user_role"]
           show_bio?: boolean
@@ -1054,7 +1143,15 @@ export type Database = {
           website_url?: string | null
           years_in_australia?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_referred_by_affiliate_id_fkey"
+            columns: ["referred_by_affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliates"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       recording_consents: {
         Row: {
