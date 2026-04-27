@@ -548,9 +548,7 @@ const PlatformLayout = () => {
                 </h2>
                 <div className="flex items-center gap-4">
                   {profile?.user_id && (
-                    <div className="relative">
-                      <Bell size={20} style={{ color: 'rgba(160,139,98,0.60)', cursor: 'pointer', transition: 'color 0.15s ease' }} />
-                    </div>
+                    <MobileBell userId={profile.user_id} />
                   )}
                   <Link to="/profile"
                     className="flex items-center justify-center"
