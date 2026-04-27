@@ -49,10 +49,10 @@ const FMSBridgePrompt = ({ profile }: { profile: Profile }) => {
       <div className="flex items-start gap-3">
         <Home size={20} className="shrink-0 mt-0.5" style={{ color: '#27AE8F' }} />
         <div>
-          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 400, color: '#F2EAD8', marginBottom: '6px' }}>
+          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 400, color: '#FFFFFF', marginBottom: '6px' }}>
             {isStrong ? "Ready to take the next step?" : "Something to consider"}
           </h3>
-          <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)', marginBottom: '12px' }}>
+          <p style={{ color: '#D8C896', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)', marginBottom: '12px' }}>
             Based on your goals around {context}, you might benefit from a confidential conversation with our finance and mortgage partner.
             {isStrong
               ? " Many members in a similar position have found this helpful."
@@ -175,8 +175,8 @@ const Dashboard = () => {
     return (
       <div className="p-8 flex items-center justify-center min-h-[50vh]">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#C4973A', borderTopColor: 'transparent' }} />
-          <p style={{ color: '#A08B62', fontSize: '14px', fontFamily: 'var(--font-body)' }}>Loading your dashboard…</p>
+          <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#E0B040', borderTopColor: 'transparent' }} />
+          <p style={{ color: '#D8C896', fontSize: '14px', fontFamily: 'var(--font-body)' }}>Loading your dashboard…</p>
         </div>
       </div>
     );
@@ -185,7 +185,7 @@ const Dashboard = () => {
   if (!profile) {
     return (
       <div className="p-8 flex items-center justify-center min-h-[50vh]">
-        <p style={{ color: '#A08B62', fontSize: '14px', fontFamily: 'var(--font-body)' }}>Unable to load your profile. Please try refreshing.</p>
+        <p style={{ color: '#D8C896', fontSize: '14px', fontFamily: 'var(--font-body)' }}>Unable to load your profile. Please try refreshing.</p>
       </div>
     );
   }
@@ -223,11 +223,11 @@ const Dashboard = () => {
       <div className="ss-appear ss-appear-1">
         <h1 style={{
           fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 300,
-          letterSpacing: '-0.035em', color: '#F2EAD8', marginBottom: '6px', lineHeight: 1.1,
+          letterSpacing: '-0.035em', color: '#FFFFFF', marginBottom: '6px', lineHeight: 1.1,
         }}>
           Welcome back, {profile.display_name}
         </h1>
-        <p style={{ color: '#A08B62', fontSize: '14px', fontFamily: 'var(--font-body)' }}>
+        <p style={{ color: '#D8C896', fontSize: '14px', fontFamily: 'var(--font-body)' }}>
           Your sacred space for financial wellbeing
         </p>
       </div>
@@ -238,16 +238,16 @@ const Dashboard = () => {
           <div className="flex items-start gap-3">
             <AlertCircle size={20} className="shrink-0 mt-0.5" style={{ color: '#C9941E' }} />
             <div className="flex-1">
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 400, color: '#F2EAD8', marginBottom: '6px' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 400, color: '#FFFFFF', marginBottom: '6px' }}>
                 Complete your profile
               </h3>
-              <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)', marginBottom: '12px' }}>
+              <p style={{ color: '#D8C896', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)', marginBottom: '12px' }}>
                 A few more details will help others in the community connect with you.
               </p>
               <div className="flex flex-wrap gap-2 mb-4">
                 {missingFields.map((field) => (
                   <span key={field} className="text-[11px] font-body px-2.5 py-1 rounded-full" style={{
-                    background: 'rgba(201,148,30,0.12)', border: '1px solid rgba(201,148,30,0.25)', color: '#EEC96E',
+                    background: 'rgba(201,148,30,0.12)', border: '1px solid rgba(201,148,30,0.25)', color: '#F8DC8A',
                   }}>
                     {field}
                   </span>
@@ -285,7 +285,7 @@ const Dashboard = () => {
           }}>
             {archName}
           </h2>
-          <p style={{ color: '#D4C49A', fontSize: '14px', lineHeight: 1.70, fontFamily: 'var(--font-body)' }}>
+          <p style={{ color: '#F0E8D4', fontSize: '14px', lineHeight: 1.70, fontFamily: 'var(--font-body)' }}>
             Your {archName.toLowerCase()} pathway shapes the guidance, rituals, and learning you receive.
           </p>
         </div>
@@ -311,20 +311,20 @@ const Dashboard = () => {
             {ritualState.status === "completed" ? (
               <CheckCircle2 size={20} style={{ color: '#4DB89A' }} />
             ) : (
-              <Sparkles size={20} style={{ color: '#C4973A' }} />
+              <Sparkles size={20} style={{ color: '#E0B040' }} />
             )}
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#F2EAD8', letterSpacing: '-0.02em' }}>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
               {ritualState.status === "completed" ? "Ritual complete" : "This week's ritual"}
             </span>
           </div>
 
           {ritualState.status === "loading" && (
-            <p style={{ color: '#A08B62', fontSize: '13px', fontFamily: 'var(--font-body)' }}>Loading…</p>
+            <p style={{ color: '#D8C896', fontSize: '13px', fontFamily: 'var(--font-body)' }}>Loading…</p>
           )}
 
           {ritualState.status === "no_ritual" && (
             <>
-               <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
+               <p style={{ color: '#D8C896', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
                  A new ritual arrives each Monday. Check back soon.
                </p>
               <Button variant="default" asChild><Link to="/rituals">View past rituals</Link></Button>
@@ -333,7 +333,7 @@ const Dashboard = () => {
 
           {ritualState.status === "incomplete" && (
             <>
-              <p style={{ color: '#D4C49A', fontSize: '14px', fontFamily: 'var(--font-body)', lineHeight: 1.6 }}>
+              <p style={{ color: '#F0E8D4', fontSize: '14px', fontFamily: 'var(--font-body)', lineHeight: 1.6 }}>
                 {ritualState.title}
               </p>
               <Button variant="gold" asChild><Link to="/rituals">Complete it</Link></Button>
@@ -353,23 +353,23 @@ const Dashboard = () => {
         {/* Learning card */}
         <div className="ss-interactive flex flex-col items-start gap-4" style={{ padding: '22px 24px' }}>
           <div className="flex items-center gap-2">
-            <BookOpen size={20} style={{ color: '#C4973A' }} />
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#F2EAD8', letterSpacing: '-0.02em' }}>
+            <BookOpen size={20} style={{ color: '#E0B040' }} />
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
               {learningCta ? learningCta.label : allCoursesComplete ? "Learning complete" : "Start learning"}
             </span>
           </div>
           {learningCta ? (
             <>
-              <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
+              <p style={{ color: '#D8C896', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
                 {learningCta.subtitle}
               </p>
               {activeCourse && activeCourse.progress.total_lessons > 0 && (
                 <div className="w-full">
-                  <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(196,151,58,0.12)' }}>
+                  <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(224,176,64,0.12)' }}>
                     <div style={{
                       height: '100%', borderRadius: 'var(--r-pill)',
                       width: `${activeCourse.progress.percentage}%`,
-                      background: 'linear-gradient(90deg, #8B6612 0%, #C4973A 50%, #EEC96E 100%)',
+                      background: 'linear-gradient(90deg, #8B6612 0%, #E0B040 50%, #F8DC8A 100%)',
                       transition: 'width 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
                     }} />
                   </div>
@@ -387,14 +387,14 @@ const Dashboard = () => {
             </>
           ) : noEnrollments ? (
              <>
-               <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
+               <p style={{ color: '#D8C896', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
                  Discover courses designed for your {archName.toLowerCase()} journey.
                </p>
               <Button variant="default" asChild><Link to="/learn">Explore courses</Link></Button>
             </>
           ) : (
             <>
-              <p style={{ color: '#A08B62', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
+              <p style={{ color: '#D8C896', fontSize: '13px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
                 Pick up where you left off on your learning path.
               </p>
               <Button variant="default" asChild><Link to="/learn">Go to lessons</Link></Button>
@@ -410,13 +410,13 @@ const Dashboard = () => {
             className={streak >= 3 ? 'animate-streak-glow' : ''}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '6px',
-              background: 'rgba(196,151,58,0.09)',
-              border: '1px solid rgba(196,151,58,0.22)',
+              background: 'rgba(224,176,64,0.09)',
+              border: '1px solid rgba(224,176,64,0.22)',
               borderRadius: 'var(--r-pill)',
               padding: '7px 16px',
-              boxShadow: 'inset 0 1px 0 rgba(238,201,110,0.10), 0 0 12px rgba(196,151,58,0.10)',
+              boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.10), 0 0 12px rgba(224,176,64,0.10)',
               fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500,
-              color: '#EEC96E',
+              color: '#F8DC8A',
             }}
           >
             <Flame size={16} />

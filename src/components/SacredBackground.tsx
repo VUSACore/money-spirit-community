@@ -8,7 +8,7 @@ const SacredBackground = () => (
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g stroke="rgba(196,151,58,0.04)" strokeWidth="0.5" fill="none">
+      <g stroke="rgba(224,176,64,0.04)" strokeWidth="0.5" fill="none">
         {[40, 80, 120, 160, 200, 240, 280].map((r) => (
           <circle key={r} cx="300" cy="300" r={r} />
         ))}
@@ -44,7 +44,7 @@ const SacredBackground = () => (
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g stroke="rgba(196,151,58,0.025)" strokeWidth="0.5" fill="none">
+      <g stroke="rgba(224,176,64,0.025)" strokeWidth="0.5" fill="none">
         {[20, 40, 60, 80, 100, 120, 140].map((r) => (
           <circle key={r} cx="150" cy="150" r={r} />
         ))}

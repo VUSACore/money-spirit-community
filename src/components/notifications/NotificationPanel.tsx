@@ -60,22 +60,22 @@ const NotificationPanel = ({ userId, onClose, onCountChange, compact = true }: N
       background: 'rgba(6, 12, 24, 0.96)',
       backdropFilter: 'blur(40px)',
       WebkitBackdropFilter: 'blur(40px)',
-      border: '1px solid rgba(196,151,58,0.15)',
+      border: '1px solid rgba(224,176,64,0.15)',
       borderRadius: '16px',
-      boxShadow: 'inset 0 1px 0 rgba(238,201,110,0.08), 0 24px 60px rgba(0,0,0,0.65)',
+      boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.08), 0 24px 60px rgba(0,0,0,0.65)',
     }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-3.5" style={{ borderBottom: '1px solid rgba(196,151,58,0.10)' }}>
-        <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: '17px', color: '#F2EAD8', letterSpacing: '-0.02em' }}>
+      <div className="flex items-center justify-between px-5 py-3.5" style={{ borderBottom: '1px solid rgba(224,176,64,0.10)' }}>
+        <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: '17px', color: '#FFFFFF', letterSpacing: '-0.02em' }}>
           Notifications
         </h3>
         {notifications.some((n) => !n.read) && (
           <button
             onClick={handleMarkAllRead}
-            style={{ fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500, color: '#C4973A' }}
+            style={{ fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500, color: '#E0B040' }}
             className="hover:underline transition-colors"
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#EEC96E'; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#C4973A'; }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#F8DC8A'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#E0B040'; }}
           >
             Mark all read
           </button>
@@ -88,10 +88,10 @@ const NotificationPanel = ({ userId, onClose, onCountChange, compact = true }: N
           <div className="p-4 space-y-3">
             {[1, 2, 3].map((i) => (
               <div key={i} className="flex items-start gap-3 p-2">
-                <Skeleton className="w-8 h-8 rounded-full shrink-0" style={{ background: 'rgba(196,151,58,0.08)' }} />
+                <Skeleton className="w-8 h-8 rounded-full shrink-0" style={{ background: 'rgba(224,176,64,0.08)' }} />
                 <div className="flex-1 space-y-1.5">
-                  <Skeleton className="h-3.5 w-3/4" style={{ background: 'rgba(196,151,58,0.08)' }} />
-                  <Skeleton className="h-3 w-1/2" style={{ background: 'rgba(196,151,58,0.05)' }} />
+                  <Skeleton className="h-3.5 w-3/4" style={{ background: 'rgba(224,176,64,0.08)' }} />
+                  <Skeleton className="h-3 w-1/2" style={{ background: 'rgba(224,176,64,0.05)' }} />
                 </div>
               </div>
             ))}
@@ -99,7 +99,7 @@ const NotificationPanel = ({ userId, onClose, onCountChange, compact = true }: N
         ) : displayItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-14 px-4">
             <Bell size={28} style={{ color: '#5C4E34' }} className="mb-3" />
-            <p style={{ fontFamily: 'var(--font-display)', fontSize: '16px', color: '#D4C49A', letterSpacing: '-0.02em' }}>
+            <p style={{ fontFamily: 'var(--font-display)', fontSize: '16px', color: '#F0E8D4', letterSpacing: '-0.02em' }}>
               You're all caught up
             </p>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: '#5C4E34', marginTop: '6px' }}>
@@ -117,11 +117,11 @@ const NotificationPanel = ({ userId, onClose, onCountChange, compact = true }: N
                   onClick={() => handleClick(notif)}
                   className="w-full flex items-start gap-3 px-5 py-3 text-left transition-colors"
                   style={{
-                    borderBottom: idx < displayItems.length - 1 ? '1px solid rgba(196,151,58,0.06)' : 'none',
-                    background: !notif.read ? 'rgba(196,151,58,0.05)' : 'transparent',
+                    borderBottom: idx < displayItems.length - 1 ? '1px solid rgba(224,176,64,0.06)' : 'none',
+                    background: !notif.read ? 'rgba(224,176,64,0.05)' : 'transparent',
                   }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(196,151,58,0.09)'; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = !notif.read ? 'rgba(196,151,58,0.05)' : 'transparent'; }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(224,176,64,0.09)'; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = !notif.read ? 'rgba(224,176,64,0.05)' : 'transparent'; }}
                 >
                   <span className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${cfg.bg}`}>
                     <Icon size={15} />
@@ -130,14 +130,14 @@ const NotificationPanel = ({ userId, onClose, onCountChange, compact = true }: N
                     {notif.title && (
                       <p style={{
                         fontSize: '13px', fontFamily: 'var(--font-body)', fontWeight: 500,
-                        color: '#F2EAD8', lineHeight: 1.4,
+                        color: '#FFFFFF', lineHeight: 1.4,
                       }}>
                         {notif.title}
                       </p>
                     )}
                     <p className="line-clamp-2" style={{
                       fontSize: '12px', fontFamily: 'var(--font-body)',
-                      color: '#D4C49A', lineHeight: 1.5,
+                      color: '#F0E8D4', lineHeight: 1.5,
                     }}>
                       {notif.message}
                     </p>
@@ -151,7 +151,7 @@ const NotificationPanel = ({ userId, onClose, onCountChange, compact = true }: N
                   {!notif.read && (
                     <span
                       className="w-2 h-2 rounded-full shrink-0 mt-2"
-                      style={{ background: '#EEC96E', boxShadow: '0 0 8px rgba(238,201,110,0.50)' }}
+                      style={{ background: '#F8DC8A', boxShadow: '0 0 8px rgba(248,220,138,0.50)' }}
                     />
                   )}
                 </button>
@@ -165,13 +165,13 @@ const NotificationPanel = ({ userId, onClose, onCountChange, compact = true }: N
       {(hasMore || !loading) && displayItems.length > 0 && (
         <div
           className="flex items-center justify-between px-5 py-3"
-          style={{ borderTop: '1px solid rgba(196,151,58,0.08)' }}
+          style={{ borderTop: '1px solid rgba(224,176,64,0.08)' }}
         >
           {hasMore ? (
             <Link
               to="/settings/notifications"
               onClick={onClose}
-              style={{ fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500, color: '#C4973A' }}
+              style={{ fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500, color: '#E0B040' }}
               className="hover:underline"
             >
               View all notifications
