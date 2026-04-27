@@ -13,6 +13,7 @@ import AdminContent from "@/components/admin/AdminContent";
 import AdminCourses from "@/components/admin/AdminCourses";
 import AdminSettings from "@/components/admin/AdminSettings";
 import AdminAuditLog from "@/components/admin/AdminAuditLog";
+import AdminAffiliates from "@/components/admin/AdminAffiliates";
 
 const tabs = [
   { id: "users", label: "Users", icon: Users },
