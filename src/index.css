@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,opsz,wght@0,14..40,300;0,14..40,400;0,14..40,500;0,14..40,600;1,14..40,300;1,14..40,400;1,14..40,500&family=Outfit:wght@300;400;500;600&display=swap');
+/* Apple iOS system typography — uses San Francisco on Apple devices,
+   with native system fallbacks elsewhere. No webfont download required. */
 
 @tailwind base;
 @tailwind components;
@@ -69,8 +70,10 @@
   --shadow-gold: 0 0 32px rgba(196,151,58,0.14);
   --shadow-gold-strong: 0 0 48px rgba(196,151,58,0.22);
 
-  --font-display: 'Cormorant', 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Outfit', system-ui, sans-serif;
+  /* Apple iOS system stack — SF Pro on Apple devices, native fallbacks elsewhere */
+  --font-system: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  --font-display: var(--font-system);
+  --font-body: var(--font-system);
 
   /* Shadcn compat tokens */
   --background: 218 40% 6%;
@@ -293,7 +296,7 @@ p, span, div, label, button {
     background: var(--ss-gold-gradient);
     background-size: 200% 200%;
     color: #0B1525;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-system);
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.04em;
@@ -316,7 +319,7 @@ p, span, div, label, button {
     border: 1px solid rgba(196,151,58,0.20);
     border-radius: var(--r-pill);
     color: #D4C49A;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-system);
     font-size: 14px;
     font-weight: 400;
     padding: 11px 28px;
@@ -335,7 +338,7 @@ p, span, div, label, button {
     border: 1px solid rgba(196,151,58,0.22);
     border-radius: var(--r-pill);
     color: #F2EAD8;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-system);
     font-size: 14px;
     font-weight: 400;
     padding: 11px 28px;
