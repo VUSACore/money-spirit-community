@@ -107,9 +107,9 @@ const EditProfileDrawer = ({ open, onClose }: EditProfileDrawerProps) => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/40 z-50" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/70 z-50" onClick={onClose} />
       <div className="fixed top-0 right-0 bottom-0 z-50 overflow-y-auto"
-        style={{ width: "min(420px, 100vw)", background: "var(--ms-surface-1)", borderLeft: "1px solid var(--ms-border)" }}>
+        style={{ width: "min(420px, 100vw)", background: "#0B1F3A", borderLeft: "1px solid var(--ms-border)", boxShadow: "-12px 0 40px rgba(0,0,0,0.5)" }}>
         <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: "1px solid var(--ms-border)" }}>
           <h2 className="text-base font-body font-medium" style={{ color: "var(--ms-text-primary)" }}>Edit Profile</h2>
           <button onClick={onClose}><X size={20} style={{ color: "var(--ms-text-muted)" }} /></button>
