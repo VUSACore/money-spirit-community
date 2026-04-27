@@ -341,9 +341,6 @@ const PlatformLayout = () => {
 
             {/* Bottom section */}
             <div className="px-2 pb-3 space-y-1" style={{ borderTop: '1px solid rgba(196,151,58,0.08)', background: 'rgba(4,8,16,0.40)' }}>
-              {profile?.user_id && (
-                <DesktopBell userId={profile.user_id} expanded={sidebarExpanded} />
-              )}
 
               {profile?.role === "admin" && sidebarExpanded && (
                 <Link to="/admin" className="flex items-center gap-2 px-3 py-2 text-xs transition-colors" style={{ fontFamily: 'var(--font-body)', color: '#EEC96E' }}>
