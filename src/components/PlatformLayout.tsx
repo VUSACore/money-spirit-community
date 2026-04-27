@@ -52,7 +52,7 @@ const getInitials = (name: string) =>
 
 const getPageTitle = (pathname: string, t: (key: TranslationKey) => string) => {
   const item = navItems.find((n) => pathname.startsWith(n.to));
-  if (item) return t(item.labelKey);
+  if (item) return item.useLiteral ? item.label : t(item.labelKey);
   if (pathname.startsWith("/settings")) return "Settings";
   return "Money Spirit";
 };
@@ -322,7 +322,7 @@ const PlatformLayout = () => {
                   >
                     <item.icon size={18} className="shrink-0" />
                     {sidebarExpanded && (
-                      <span style={{ opacity: 1, transition: 'opacity 0.15s ease' }}>{t(item.labelKey)}</span>
+                      <span style={{ opacity: 1, transition: 'opacity 0.15s ease' }}>{item.useLiteral ? item.label : t(item.labelKey)}</span>
                     )}
                   </NavLink>
                 );
@@ -332,7 +332,7 @@ const PlatformLayout = () => {
                     <Tooltip key={item.to}>
                       <TooltipTrigger asChild>{navButton}</TooltipTrigger>
                       <TooltipContent side="right" sideOffset={16} style={tooltipStyle}>
-                        {t(item.labelKey)}
+                        {item.useLiteral ? item.label : t(item.labelKey)}
                       </TooltipContent>
                     </Tooltip>
                   );
@@ -443,7 +443,7 @@ const PlatformLayout = () => {
                             }}
                           >
                             <item.icon size={18} />
-                            {t(item.labelKey)}
+                            {item.useLiteral ? item.label : t(item.labelKey)}
                           </NavLink>
                         );
                       })}
@@ -508,7 +508,7 @@ const PlatformLayout = () => {
                   style={{ fontFamily: 'var(--font-body)', color: active ? '#EEC96E' : '#9A8856' }}
                 >
                   <item.icon size={20} />
-                  <span>{item.labelKey === "my_pathway" ? "Home" : t(item.labelKey)}</span>
+                  <span>{item.useLiteral ? item.label : (item.labelKey === "my_pathway" ? "Home" : t(item.labelKey))}</span>
                 </NavLink>
               );
             })}
