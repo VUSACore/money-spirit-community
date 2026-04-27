@@ -70,8 +70,10 @@
   --shadow-gold: 0 0 32px rgba(196,151,58,0.14);
   --shadow-gold-strong: 0 0 48px rgba(196,151,58,0.22);
 
-  --font-display: 'Cormorant', 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Outfit', system-ui, sans-serif;
+  /* Apple iOS system stack — SF Pro on Apple devices, native fallbacks elsewhere */
+  --font-system: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  --font-display: var(--font-system);
+  --font-body: var(--font-system);
 
   /* Shadcn compat tokens */
   --background: 218 40% 6%;
