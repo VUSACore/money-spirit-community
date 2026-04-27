@@ -47,7 +47,7 @@ const Register = () => {
   const errorStyle: React.CSSProperties = { color: '#F87171', fontSize: '13px', fontFamily: 'var(--font-body)', marginTop: '4px' };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#4169E1' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#005eb8' }}>
       <SEOHead title="Create Account — Money Spirit" description="Join Money Spirit. Create your free account to access rituals, courses, events and a supportive community for financial wellbeing." />
       <div className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md">

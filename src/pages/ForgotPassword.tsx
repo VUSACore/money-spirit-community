@@ -29,7 +29,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#4169E1' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#005eb8' }}>
       <SEOHead title="Reset Password — Money Spirit" description="Reset your Money Spirit password. Enter your email and we'll send you a secure reset link." />
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-md">

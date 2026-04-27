@@ -39,7 +39,7 @@ const Join = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#4169E1' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#005eb8' }}>
       <SEOHead title="Join Money Spirit — Your Financial Wellbeing Journey Starts Here" description="Become a member of Money Spirit. Access weekly money rituals, expert courses, live events and a community of migrant women building financial wellbeing." ogTitle="Join Money Spirit" ogDescription="Become a member of Money Spirit. Access weekly money rituals, expert courses, live events and a community of migrant women building financial wellbeing." />
       <header className="py-6 px-6 flex items-center justify-center gap-2.5">
         <span style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: '#C4973A', fontWeight: 700 }}>Money Spirit</span>
