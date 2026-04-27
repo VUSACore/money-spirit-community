@@ -36,6 +36,7 @@ const tabIdFromParam = (param?: string): TabId | null => {
     users: "users", content: "content", courses: "courses",
     rituals: "rituals", events: "events", revenue: "revenue",
     intelligence: "intelligence", "fms-leads": "fms", fms: "fms",
+    affiliates: "affiliates",
     settings: "settings", audit: "audit",
   };
   return param ? map[param] ?? null : null;
