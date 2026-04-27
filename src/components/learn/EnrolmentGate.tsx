@@ -53,7 +53,7 @@ const EnrolmentGate = ({ courseId, userId, title, description, lessonCount }: En
             {description}
           </p>
         )}
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: '#5C4E34', marginBottom: '32px' }}>
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: '#D8C896', marginBottom: '32px' }}>
           {lessonCount} {lessonCount === 1 ? "lesson" : "lessons"} included
         </p>
         <Button
@@ -65,7 +65,7 @@ const EnrolmentGate = ({ courseId, userId, title, description, lessonCount }: En
           {enrol.isPending ? "Enrolling…" : "Enrol Free and Begin"}
         </Button>
         {!userId && (
-          <p style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: '#5C4E34', marginTop: '16px' }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: '#D8C896', marginTop: '16px' }}>
             Please log in to enrol in this course.
           </p>
         )}

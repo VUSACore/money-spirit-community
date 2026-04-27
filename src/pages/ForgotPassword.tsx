@@ -41,7 +41,7 @@ const ForgotPassword = () => {
           {sent ? (
             <div style={{
               background: 'rgba(13,27,46,0.70)',
-              border: '1px solid rgba(224,176,64,0.18)',
+              border: '1px solid rgba(248,220,138,0.42)',
               borderRadius: 'var(--r-xl)',
               boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.20), 0 24px 60px rgba(0,0,0,0.60)',
               padding: '40px 36px',
@@ -53,7 +53,7 @@ const ForgotPassword = () => {
                   background: 'rgba(39,174,143,0.12)',
                   border: '1px solid rgba(39,174,143,0.25)',
                 }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#27AE8F" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3DD4A8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
                 </div>
                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#F0E8D4', lineHeight: 1.6 }}>
                   We've sent a reset link to <span style={{ color: '#F8DC8A', fontWeight: 500 }}>{email}</span>. Please check your inbox.
@@ -66,7 +66,7 @@ const ForgotPassword = () => {
           ) : (
             <div style={{
               background: 'rgba(13,27,46,0.70)',
-              border: '1px solid rgba(224,176,64,0.18)',
+              border: '1px solid rgba(248,220,138,0.42)',
               borderRadius: 'var(--r-xl)',
               boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.20), 0 24px 60px rgba(0,0,0,0.60)',
               padding: '40px 36px',
@@ -77,7 +77,7 @@ const ForgotPassword = () => {
                   <div style={{
                     background: 'rgba(220,38,38,0.10)', border: '1px solid rgba(220,38,38,0.30)',
                     borderRadius: '12px', padding: '12px 16px',
-                    fontFamily: 'var(--font-body)', fontSize: '14px', color: '#F87171',
+                    fontFamily: 'var(--font-body)', fontSize: '14px', color: '#FCA5A5',
                   }}>
                     {error}
                   </div>
@@ -92,7 +92,7 @@ const ForgotPassword = () => {
                   {loading ? "Sending…" : "Send Reset Link"}
                 </Button>
 
-                <p style={{ textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '14px', color: '#5C4E34' }}>
+                <p style={{ textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896' }}>
                   Remember your password?{" "}
                   <Link to="/login" style={{ color: '#E0B040', fontWeight: 500 }}>Sign in</Link>
                 </p>

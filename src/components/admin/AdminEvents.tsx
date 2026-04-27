@@ -317,7 +317,7 @@ const AdminEvents = () => {
             </div>
 
             {/* Toggles */}
-            <div className="space-y-3 pt-1" style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 12 }}>
+            <div className="space-y-3 pt-1" style={{ borderTop: "1px solid rgba(255,255,255,0.22)", paddingTop: 12 }}>
               <div className="flex items-center gap-3">
                 <Switch checked={modal?.published ?? false} onCheckedChange={v => setModal(prev => ({ ...prev!, published: v }))} />
                 <Label className="font-body text-sm">Published</Label>

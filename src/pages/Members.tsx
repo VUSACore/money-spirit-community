@@ -56,8 +56,8 @@ const Members = () => {
         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="glass-card space-y-3">
-              <Skeleton className="h-14 w-14 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }} />
-              <Skeleton className="h-5 w-32" style={{ background: 'rgba(255,255,255,0.06)' }} />
+              <Skeleton className="h-14 w-14 rounded-full" style={{ background: 'rgba(255,255,255,0.22)' }} />
+              <Skeleton className="h-5 w-32" style={{ background: 'rgba(255,255,255,0.22)' }} />
             </div>
           ))}
         </div>

@@ -83,8 +83,8 @@ const CoursePage = () => {
     return (
       <div className="p-6 md:p-8 animate-fade-in">
         <div className="max-w-2xl mx-auto space-y-4">
-          <div className="animate-pulse h-8 w-64 rounded-lg" style={{ background: 'rgba(224,176,64,0.08)' }} />
-          <div className="animate-pulse h-4 w-96 rounded" style={{ background: 'rgba(224,176,64,0.06)' }} />
+          <div className="animate-pulse h-8 w-64 rounded-lg" style={{ background: 'rgba(248,220,138,0.32)' }} />
+          <div className="animate-pulse h-4 w-96 rounded" style={{ background: 'rgba(248,220,138,0.30)' }} />
           <div className="space-y-2 mt-8">
             {[1, 2, 3].map((i) => (
               <div key={i} className="animate-pulse h-12 rounded-lg" style={{ background: 'rgba(224,176,64,0.04)' }} />
@@ -154,10 +154,10 @@ const CoursePage = () => {
           <div className="flex items-center gap-3 px-5 py-4 rounded-xl mb-6" style={{
             background: 'rgba(39,174,143,0.08)', border: '1px solid rgba(39,174,143,0.20)',
           }}>
-            <GraduationCap size={20} style={{ color: '#27AE8F' }} />
+            <GraduationCap size={20} style={{ color: '#3DD4A8' }} />
             <div>
-              <p className="text-sm font-body font-medium" style={{ color: '#27AE8F' }}>Course completed</p>
-              <p className="text-xs font-body" style={{ color: '#27AE8F80' }}>You've finished all lessons in this course.</p>
+              <p className="text-sm font-body font-medium" style={{ color: '#3DD4A8' }}>Course completed</p>
+              <p className="text-xs font-body" style={{ color: '#3DD4A880' }}>You've finished all lessons in this course.</p>
             </div>
           </div>
         )}
@@ -169,7 +169,7 @@ const CoursePage = () => {
               <span style={{ fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500, color: '#D8C896', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Progress</span>
               <span style={{ fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 600, color: '#F8DC8A' }}>{pct}%</span>
             </div>
-            <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(224,176,64,0.12)' }}>
+            <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(248,220,138,0.36)' }}>
               <div style={{
                 height: '100%', borderRadius: 'var(--r-pill)',
                 width: `${pct}%`,
@@ -178,7 +178,7 @@ const CoursePage = () => {
                 transition: 'width 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
               }} />
             </div>
-            <p className="text-xs font-body mt-1.5" style={{ color: '#5C4E34' }}>
+            <p className="text-xs font-body mt-1.5" style={{ color: '#D8C896' }}>
               {progress?.completed_lessons ?? 0} of {progress?.total_lessons ?? lessons.length} lessons complete
             </p>
           </div>
@@ -201,7 +201,7 @@ const CoursePage = () => {
             return (
               <div key={l.id}>
                 {locked ? (
-                  <div className="flex items-center gap-3 px-4 py-3 rounded-xl" style={{ color: '#5C4E34', opacity: 0.5 }}>
+                  <div className="flex items-center gap-3 px-4 py-3 rounded-xl" style={{ color: '#D8C896', opacity: 0.5 }}>
                     <Lock size={16} className="shrink-0" />
                     <span className="flex-1 text-sm font-body">{l.title}</span>
                     {duration && <span className="text-xs font-body">{duration}</span>}
@@ -211,19 +211,19 @@ const CoursePage = () => {
                     to={`/learn/${courseId}/${l.id}`}
                     className="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors"
                     style={{
-                      background: isNext ? 'rgba(224,176,64,0.08)' : 'transparent',
+                      background: isNext ? 'rgba(248,220,138,0.32)' : 'transparent',
                       border: isNext ? '1px solid rgba(224,176,64,0.15)' : '1px solid transparent',
                     }}
                     onMouseEnter={(e) => { if (!isNext) (e.currentTarget as HTMLElement).style.background = 'rgba(224,176,64,0.05)'; }}
                     onMouseLeave={(e) => { if (!isNext) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
                   >
                     {isDone ? (
-                      <CheckCircle size={16} className="shrink-0" style={{ color: '#27AE8F' }} />
+                      <CheckCircle size={16} className="shrink-0" style={{ color: '#3DD4A8' }} />
                     ) : (
-                      <Circle size={16} className="shrink-0" style={{ color: isNext ? '#C9941E' : '#5C4E34' }} />
+                      <Circle size={16} className="shrink-0" style={{ color: isNext ? '#C9941E' : '#D8C896' }} />
                     )}
                     <span className="flex-1 text-sm font-body" style={{
-                      color: isDone ? '#5C4E34' : '#FFFFFF',
+                      color: isDone ? '#D8C896' : '#FFFFFF',
                       textDecoration: isDone ? 'line-through' : 'none',
                     }}>
                       {l.title}
@@ -233,7 +233,7 @@ const CoursePage = () => {
                         background: 'rgba(201,148,30,0.15)', color: '#F8DC8A',
                       }}>Next</span>
                     )}
-                    {duration && <span className="text-xs font-body" style={{ color: '#5C4E34' }}>{duration}</span>}
+                    {duration && <span className="text-xs font-body" style={{ color: '#D8C896' }}>{duration}</span>}
                   </Link>
                 )}
               </div>

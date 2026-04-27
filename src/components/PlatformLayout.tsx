@@ -226,7 +226,7 @@ const PlatformLayout = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "#005eb8" }}>
-        <img src="/logo.png" alt="Money Spirit" style={{ width: 48, filter: 'drop-shadow(0 0 10px rgba(224,176,64,0.20))' }} className="animate-pulse" />
+        <img src="/logo.png" alt="Money Spirit" style={{ width: 48, filter: 'drop-shadow(0 0 10px rgba(248,220,138,0.44))' }} className="animate-pulse" />
       </div>
     );
   }
@@ -258,13 +258,13 @@ const PlatformLayout = () => {
               background: 'rgba(6, 12, 24, 0.82)',
               backdropFilter: 'blur(32px)',
               WebkitBackdropFilter: 'blur(32px)',
-              borderRight: '1px solid rgba(224,176,64,0.12)',
-              boxShadow: 'inset -1px 0 0 rgba(224,176,64,0.06), 8px 0 32px rgba(0,0,0,0.40)',
+              borderRight: '1px solid rgba(248,220,138,0.36)',
+              boxShadow: 'inset -1px 0 0 rgba(248,220,138,0.30), 8px 0 32px rgba(0,0,0,0.40)',
               transition: 'width 0.30s cubic-bezier(0.4, 0, 0.2, 1)',
             }}
           >
             {/* Logo */}
-            <div className="flex items-center gap-2.5 px-4 py-4 min-h-[56px]" style={{ borderBottom: '1px solid rgba(224,176,64,0.08)' }}>
+            <div className="flex items-center gap-2.5 px-4 py-4 min-h-[56px]" style={{ borderBottom: '1px solid rgba(248,220,138,0.32)' }}>
               {sidebarExpanded && (
                 <span style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, letterSpacing: '-0.01em', color: '#E0B040', whiteSpace: 'nowrap' }}>
                   Money Spirit
@@ -292,10 +292,10 @@ const PlatformLayout = () => {
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       ...(active ? {
-                        background: 'rgba(224,176,64,0.12)',
+                        background: 'rgba(248,220,138,0.36)',
                         borderRadius: '10px',
                         borderLeft: '2px solid rgba(248,220,138,0.65)',
-                        boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.12), 0 0 16px rgba(224,176,64,0.08)',
+                        boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.12), 0 0 16px rgba(248,220,138,0.32)',
                         color: '#F8DC8A',
                       } : {
                         background: 'transparent',
@@ -340,7 +340,7 @@ const PlatformLayout = () => {
             </nav>
 
             {/* Bottom section */}
-            <div className="px-2 pb-3 space-y-1" style={{ borderTop: '1px solid rgba(224,176,64,0.08)', background: 'rgba(4,8,16,0.40)' }}>
+            <div className="px-2 pb-3 space-y-1" style={{ borderTop: '1px solid rgba(248,220,138,0.32)', background: 'rgba(4,8,16,0.40)' }}>
               {profile?.user_id && (
                 <DesktopBell userId={profile.user_id} expanded={sidebarExpanded} />
               )}
@@ -384,7 +384,7 @@ const PlatformLayout = () => {
                           width: 32, height: 32, borderRadius: '50%',
                           background: 'var(--ss-gold-gradient)',
                           border: '1.5px solid rgba(248,220,138,0.40)',
-                          boxShadow: '0 0 16px rgba(224,176,64,0.20)',
+                          boxShadow: '0 0 16px rgba(248,220,138,0.44)',
                           fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 600,
                           color: '#004a93',
                         }}
@@ -409,7 +409,7 @@ const PlatformLayout = () => {
               background: 'rgba(4, 8, 16, 0.75)',
               backdropFilter: 'blur(24px)',
               WebkitBackdropFilter: 'blur(24px)',
-              borderBottom: '1px solid rgba(224,176,64,0.10)',
+              borderBottom: '1px solid rgba(248,220,138,0.34)',
               boxShadow: '0 1px 0 rgba(224,176,64,0.05)',
             }}
           >
@@ -425,7 +425,7 @@ const PlatformLayout = () => {
                   backdropFilter: 'blur(32px)',
                 }}>
                   <div className="flex flex-col h-full">
-                    <div className="px-6 py-6 flex items-center gap-2.5" style={{ borderBottom: '1px solid rgba(224,176,64,0.08)' }}>
+                    <div className="px-6 py-6 flex items-center gap-2.5" style={{ borderBottom: '1px solid rgba(248,220,138,0.32)' }}>
                       <span style={{ fontFamily: 'var(--font-display)', fontSize: '20px', color: '#E0B040', fontWeight: 700 }}>Money Spirit</span>
                     </div>
                     <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
@@ -439,7 +439,7 @@ const PlatformLayout = () => {
                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors"
                             style={{
                               fontFamily: 'var(--font-body)',
-                              background: active ? 'rgba(224,176,64,0.12)' : 'transparent',
+                              background: active ? 'rgba(248,220,138,0.36)' : 'transparent',
                               color: active ? '#F8DC8A' : '#BBA96E',
                             }}
                           >
@@ -455,7 +455,7 @@ const PlatformLayout = () => {
                         Admin Panel
                       </Link>
                     )}
-                    <div className="px-4 py-4 space-y-2" style={{ borderTop: '1px solid rgba(224,176,64,0.08)', background: 'rgba(4,8,16,0.40)' }}>
+                    <div className="px-4 py-4 space-y-2" style={{ borderTop: '1px solid rgba(248,220,138,0.32)', background: 'rgba(4,8,16,0.40)' }}>
                       <p className="text-sm truncate" style={{ fontFamily: 'var(--font-body)', fontWeight: 500, color: '#FFFFFF' }}>
                         {profile?.display_name ?? "Member"}
                       </p>
@@ -479,7 +479,7 @@ const PlatformLayout = () => {
                   width: 32, height: 32, borderRadius: '50%',
                   background: 'var(--ss-gold-gradient)',
                   border: '1.5px solid rgba(248,220,138,0.40)',
-                  boxShadow: '0 0 16px rgba(224,176,64,0.20)',
+                  boxShadow: '0 0 16px rgba(248,220,138,0.44)',
                   fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 600,
                   color: '#004a93',
                 }}
@@ -496,7 +496,7 @@ const PlatformLayout = () => {
               background: 'rgba(4,8,16,0.85)',
               backdropFilter: 'blur(24px)',
               WebkitBackdropFilter: 'blur(24px)',
-              borderTop: '1px solid rgba(224,176,64,0.10)',
+              borderTop: '1px solid rgba(248,220,138,0.34)',
             }}
           >
             {navItems.slice(0, 5).map((item) => {
@@ -506,7 +506,7 @@ const PlatformLayout = () => {
                   key={item.to}
                   to={item.to}
                   className="flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg text-[10px] transition-colors"
-                  style={{ fontFamily: 'var(--font-body)', color: active ? '#F8DC8A' : '#9A8856' }}
+                  style={{ fontFamily: 'var(--font-body)', color: active ? '#F8DC8A' : '#D8C896' }}
                 >
                   <item.icon size={20} />
                   <span>{item.labelKey === "my_pathway" ? "Home" : t(item.labelKey)}</span>
@@ -532,7 +532,7 @@ const PlatformLayout = () => {
                   background: 'rgba(4, 8, 16, 0.75)',
                   backdropFilter: 'blur(24px)',
                   WebkitBackdropFilter: 'blur(24px)',
-                  borderBottom: '1px solid rgba(224,176,64,0.10)',
+                  borderBottom: '1px solid rgba(248,220,138,0.34)',
                   boxShadow: '0 1px 0 rgba(224,176,64,0.05)',
                 }}
               >
@@ -558,7 +558,7 @@ const PlatformLayout = () => {
                       width: 32, height: 32, borderRadius: '50%',
                       background: 'var(--ss-gold-gradient)',
                       border: '1.5px solid rgba(248,220,138,0.40)',
-                      boxShadow: '0 0 16px rgba(224,176,64,0.20)',
+                      boxShadow: '0 0 16px rgba(248,220,138,0.44)',
                       fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 600,
                       color: '#004a93',
                     }}

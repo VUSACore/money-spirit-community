@@ -93,8 +93,8 @@ const Admin = () => {
           background: 'rgba(8, 13, 26, 0.7)',
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',
-          borderRight: '1px solid rgba(255,255,255,0.06)',
-          boxShadow: 'inset -1px 0 0 rgba(255,255,255,0.04), 4px 0 24px rgba(0,0,0,0.3)',
+          borderRight: '1px solid rgba(255,255,255,0.22)',
+          boxShadow: 'inset -1px 0 0 rgba(255,255,255,0.18), 4px 0 24px rgba(0,0,0,0.3)',
           transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
@@ -122,7 +122,7 @@ const Admin = () => {
                     background: 'rgba(201, 148, 30, 0.12)',
                     borderRadius: '12px',
                     borderLeft: '2px solid rgba(245,200,66,0.6)',
-                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)',
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.24)',
                     color: 'var(--gold-bright)',
                   } : {
                     background: 'transparent',
@@ -131,7 +131,7 @@ const Admin = () => {
                     color: 'var(--text-3)',
                   }),
                 }}
-                onMouseEnter={(e) => { if (!active) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
+                onMouseEnter={(e) => { if (!active) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.22)'; }}
                 onMouseLeave={(e) => { if (!active) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
               >
                 <tab.icon size={18} className="shrink-0" style={{ color: active ? 'var(--gold-bright)' : 'var(--text-3)' }} />
@@ -141,7 +141,7 @@ const Admin = () => {
           })}
         </nav>
 
-        <div className="px-3 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="px-3 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.22)' }}>
           {sidebarExpanded && (
             <button onClick={() => navigate("/dashboard")} style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: 'var(--text-3)' }} className="transition-colors">
               ← Back to platform
@@ -158,7 +158,7 @@ const Admin = () => {
           background: 'rgba(6, 12, 24, 0.90)',
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          borderBottom: '1px solid rgba(255,255,255,0.22)',
         }}
       >
         <div className="flex items-center gap-2">
@@ -176,7 +176,7 @@ const Admin = () => {
         style={{
           background: 'rgba(6, 12, 24, 0.85)',
           backdropFilter: 'blur(16px)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          borderBottom: '1px solid rgba(255,255,255,0.22)',
         }}
       >
         <div className="flex gap-1 px-3 py-2 min-w-max">

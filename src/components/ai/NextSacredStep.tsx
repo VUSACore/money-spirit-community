@@ -117,10 +117,10 @@ const NextSacredStep = ({ userId, profile }: Props) => {
           onClick={() => fetchStep(true)}
           disabled={loading}
           className="transition-colors disabled:opacity-50"
-          style={{ color: '#5C4E34' }}
+          style={{ color: '#D8C896' }}
           aria-label="Refresh sacred step"
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#E0B040'; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#5C4E34'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#D8C896'; }}
         >
           <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
         </button>
@@ -128,8 +128,8 @@ const NextSacredStep = ({ userId, profile }: Props) => {
 
       {loading && !text ? (
         <div className="space-y-3">
-          <div className="h-4 w-full rounded animate-pulse" style={{ background: 'rgba(224,176,64,0.08)' }} />
-          <div className="h-4 w-3/4 rounded animate-pulse" style={{ background: 'rgba(224,176,64,0.08)' }} />
+          <div className="h-4 w-full rounded animate-pulse" style={{ background: 'rgba(248,220,138,0.32)' }} />
+          <div className="h-4 w-3/4 rounded animate-pulse" style={{ background: 'rgba(248,220,138,0.32)' }} />
         </div>
       ) : (
         <>
@@ -141,10 +141,10 @@ const NextSacredStep = ({ userId, profile }: Props) => {
           }}>
             {text}
           </p>
-          <div className="mt-4 pt-3 flex items-center gap-2" style={{ borderTop: '1px solid rgba(224,176,64,0.12)' }}>
+          <div className="mt-4 pt-3 flex items-center gap-2" style={{ borderTop: '1px solid rgba(248,220,138,0.36)' }}>
             <span style={{
               display: 'inline-block',
-              background: 'rgba(224,176,64,0.10)',
+              background: 'rgba(248,220,138,0.34)',
               border: '1px solid rgba(224,176,64,0.25)',
               borderRadius: 'var(--r-pill)',
               padding: '4px 14px',

@@ -106,8 +106,8 @@ const Events = () => {
         <div className="grid gap-6 sm:grid-cols-2">
           {[1, 2].map((i) => (
             <div key={i} className="ss-card overflow-hidden p-0">
-              <Skeleton className="h-40 w-full rounded-none" style={{ background: 'rgba(224,176,64,0.06)' }} />
-              <div className="p-5 space-y-3"><Skeleton className="h-6 w-3/4" style={{ background: 'rgba(224,176,64,0.06)' }} /></div>
+              <Skeleton className="h-40 w-full rounded-none" style={{ background: 'rgba(248,220,138,0.30)' }} />
+              <div className="p-5 space-y-3"><Skeleton className="h-6 w-3/4" style={{ background: 'rgba(248,220,138,0.30)' }} /></div>
             </div>
           ))}
         </div>

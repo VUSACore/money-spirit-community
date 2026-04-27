@@ -157,9 +157,9 @@ const EventDetail = () => {
   if (loading) {
     return (
       <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto space-y-6">
-        <Skeleton className="h-8 w-48" style={{ background: "rgba(255,255,255,0.06)" }} />
-        <Skeleton className="h-48 w-full rounded-xl" style={{ background: "rgba(255,255,255,0.06)" }} />
-        <Skeleton className="h-6 w-64" style={{ background: "rgba(255,255,255,0.06)" }} />
+        <Skeleton className="h-8 w-48" style={{ background: "rgba(255,255,255,0.22)" }} />
+        <Skeleton className="h-48 w-full rounded-xl" style={{ background: "rgba(255,255,255,0.22)" }} />
+        <Skeleton className="h-6 w-64" style={{ background: "rgba(255,255,255,0.22)" }} />
       </div>
     );
   }

@@ -190,9 +190,9 @@ const ThreadDetail = () => {
   if (loading) {
     return (
       <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto space-y-4">
-        <Skeleton className="h-6 w-32" style={{ background: "rgba(255,255,255,0.06)" }} />
-        <Skeleton className="h-10 w-3/4" style={{ background: "rgba(255,255,255,0.06)" }} />
-        <Skeleton className="h-32 w-full rounded-xl" style={{ background: "rgba(255,255,255,0.06)" }} />
+        <Skeleton className="h-6 w-32" style={{ background: "rgba(255,255,255,0.22)" }} />
+        <Skeleton className="h-10 w-3/4" style={{ background: "rgba(255,255,255,0.22)" }} />
+        <Skeleton className="h-32 w-full rounded-xl" style={{ background: "rgba(255,255,255,0.22)" }} />
       </div>
     );
   }
@@ -283,7 +283,7 @@ const ThreadDetail = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" style={{
                   background: "rgba(12,18,33,0.95)", backdropFilter: "blur(24px)",
-                  border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10,
+                  border: "1px solid rgba(255,255,255,0.24)", borderRadius: 10,
                 }}>
                   <DropdownMenuItem
                     onClick={() => setReportTarget({ contentType: "thread", contentId: thread.id })}
@@ -316,7 +316,7 @@ const ThreadDetail = () => {
               <div className="flex items-start gap-3">
                 <button onClick={() => navigate(`/members/${reply.author_id}`)} className="shrink-0 mt-0.5">
                   {reply.author_avatar ? (
-                    <img src={reply.author_avatar} alt={reply.author_name} className="w-8 h-8 rounded-full object-cover" style={{ border: "1px solid rgba(255,255,255,0.08)" }} />
+                    <img src={reply.author_avatar} alt={reply.author_name} className="w-8 h-8 rounded-full object-cover" style={{ border: "1px solid rgba(255,255,255,0.24)" }} />
                   ) : (
                     <InitialsAvatar name={reply.author_name || "?"} size={32} />
                   )}

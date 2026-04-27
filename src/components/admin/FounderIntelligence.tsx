@@ -22,17 +22,17 @@ import {
 } from "@/lib/services/intelligenceService";
 
 const archetypeColors: Record<string, string> = {
-  giver: "#E8845C", keeper: "#5B8DB8", rebel: "#9B59B6", seeker: "#27AE8F", achiever: "#C9941E",
+  giver: "#FFA37A", keeper: "#7BB0E0", rebel: "#C490DA", seeker: "#3DD4A8", achiever: "#C9941E",
 };
 const archetypeNames: Record<string, string> = {
   giver: "The Giver", keeper: "The Keeper", rebel: "The Rebel", seeker: "The Seeker", achiever: "The Achiever",
 };
 const leadTypeConfig: Record<string, { label: string; color: string }> = {
-  first_home_buyer: { label: "First Home Buyer", color: "#5B8DB8" },
-  refinancer: { label: "Refinancer", color: "#9B59B6" },
+  first_home_buyer: { label: "First Home Buyer", color: "#7BB0E0" },
+  refinancer: { label: "Refinancer", color: "#C490DA" },
   wealth_builder: { label: "Wealth Builder", color: "#C9941E" },
-  protection: { label: "Protection", color: "#27AE8F" },
-  investment_property: { label: "Investment Property", color: "#E8845C" },
+  protection: { label: "Protection", color: "#3DD4A8" },
+  investment_property: { label: "Investment Property", color: "#FFA37A" },
 };
 
 const FounderIntelligence = () => {
@@ -168,7 +168,7 @@ const FounderIntelligence = () => {
             { label: "Churn Risk", value: metrics.churn_risk_count, warn: metrics.churn_risk_count > 0 },
           ].map((s) => (
             <div key={s.label} className="rounded-xl p-4" style={{ background: "hsl(220 72% 10%)", border: "1px solid hsl(220 50% 20%)" }}>
-              <p className="font-heading text-3xl text-primary-foreground" style={s.warn ? { color: "#E8845C" } : undefined}>{s.value}</p>
+              <p className="font-heading text-3xl text-primary-foreground" style={s.warn ? { color: "#FFA37A" } : undefined}>{s.value}</p>
               <p className="font-body text-[11px] text-primary-foreground/40 mt-1">{s.label}</p>
             </div>
           ))}
@@ -256,7 +256,7 @@ const FounderIntelligence = () => {
               <div className="flex flex-wrap gap-2 mt-3">
                 {Object.entries(metrics.archetype_distribution).sort((a, b) => b[1] - a[1]).map(([arch, count]) => (
                   <span key={arch} className="flex items-center gap-1.5 font-body text-[12px] px-2.5 py-1 rounded-full"
-                    style={{ background: `${archetypeColors[arch] || "#6B7280"}15`, color: archetypeColors[arch] || "#6B7280" }}>
+                    style={{ background: `${archetypeColors[arch] || "#A8B0BC"}15`, color: archetypeColors[arch] || "#A8B0BC" }}>
                     {archetypeNames[arch] || arch}: {count}
                   </span>
                 ))}
@@ -278,7 +278,7 @@ const FounderIntelligence = () => {
           <Skeleton className="h-48 w-full rounded-xl" style={{ background: "hsl(220 72% 10%)" }} />
         ) : churnMembers.length === 0 ? (
           <div className="rounded-lg p-4 font-body text-sm"
-            style={{ background: "hsl(165 60% 38% / 0.1)", border: "1px solid hsl(165 60% 38% / 0.3)", color: "#27AE8F" }}>
+            style={{ background: "hsl(165 60% 38% / 0.1)", border: "1px solid hsl(165 60% 38% / 0.3)", color: "#3DD4A8" }}>
             No churn risk detected this week. Your community is active and engaged.
           </div>
         ) : (
@@ -310,13 +310,13 @@ const FounderIntelligence = () => {
                       <td className="px-4 py-3">
                         {m.pathway_type && (
                           <span className="font-body text-xs px-2 py-0.5 rounded-full"
-                            style={{ background: `${archetypeColors[m.pathway_type] || "#6B7280"}26`, color: archetypeColors[m.pathway_type] || "#6B7280" }}>
+                            style={{ background: `${archetypeColors[m.pathway_type] || "#A8B0BC"}26`, color: archetypeColors[m.pathway_type] || "#A8B0BC" }}>
                             {archetypeNames[m.pathway_type]}
                           </span>
                         )}
                       </td>
                       <td className="px-4 py-3">
-                        <span className="font-body text-xs" style={{ color: "#E8845C" }}>
+                        <span className="font-body text-xs" style={{ color: "#FFA37A" }}>
                           {Math.round((Date.now() - new Date(m.last_active_at).getTime()) / 86400000)}d ago
                         </span>
                       </td>
@@ -328,7 +328,7 @@ const FounderIntelligence = () => {
                       </td>
                       <td className="px-4 py-3">
                         <span className="font-body text-sm font-semibold"
-                          style={{ color: (m.fms_score || 0) >= 70 ? "#27AE8F" : (m.fms_score || 0) >= 40 ? "#C9941E" : "hsl(220 30% 50%)" }}>
+                          style={{ color: (m.fms_score || 0) >= 70 ? "#3DD4A8" : (m.fms_score || 0) >= 40 ? "#C9941E" : "hsl(220 30% 50%)" }}>
                           {m.fms_score ?? "—"}
                         </span>
                       </td>
@@ -419,7 +419,7 @@ const FounderIntelligence = () => {
               <div className="mt-4">
                 <div className="flex w-full h-3 rounded-full overflow-hidden" style={{ background: "hsl(220 50% 15%)" }}>
                   {Object.entries(fms.by_lead_type).map(([type, count]) => (
-                    <div key={type} style={{ width: `${(count / fmsTotal) * 100}%`, background: leadTypeConfig[type]?.color || "#6B7280" }} />
+                    <div key={type} style={{ width: `${(count / fmsTotal) * 100}%`, background: leadTypeConfig[type]?.color || "#A8B0BC" }} />
                   ))}
                 </div>
                 <div className="flex flex-wrap gap-3 mt-2">

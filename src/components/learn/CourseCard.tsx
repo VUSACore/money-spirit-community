@@ -48,7 +48,7 @@ const CourseCard = ({ id, title, description, lessonCount, enrolledCount, isEnro
         borderRadius: '12px 12px 0 0',
       }}>
         {isComplete ? (
-          <CheckCircle2 size={32} style={{ color: '#27AE8F' }} />
+          <CheckCircle2 size={32} style={{ color: '#3DD4A8' }} />
         ) : (
           <BookOpen size={32} style={{ color: 'rgba(201,148,30,0.5)' }} />
         )}
@@ -69,12 +69,12 @@ const CourseCard = ({ id, title, description, lessonCount, enrolledCount, isEnro
 
         {isEnrolled && progress && progress.total_lessons > 0 && (
           <div className="mt-1">
-            <div className="w-full overflow-hidden" style={{ height: '4px', borderRadius: 'var(--r-full)', background: 'rgba(255,255,255,0.08)' }}>
+            <div className="w-full overflow-hidden" style={{ height: '4px', borderRadius: 'var(--r-full)', background: 'rgba(255,255,255,0.24)' }}>
               <div style={{
                 height: '100%', borderRadius: 'var(--r-full)',
                 width: `${progress.percentage}%`,
                 background: isComplete
-                  ? 'linear-gradient(90deg, #1a8a6e, #27AE8F)'
+                  ? 'linear-gradient(90deg, #1a8a6e, #3DD4A8)'
                   : 'linear-gradient(90deg, #C9941E, #F5C842)',
                 boxShadow: isComplete
                   ? '0 0 8px rgba(39,174,143,0.4)'
@@ -82,7 +82,7 @@ const CourseCard = ({ id, title, description, lessonCount, enrolledCount, isEnro
                 transition: 'width 0.5s ease',
               }} />
             </div>
-            <span style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: isComplete ? '#27AE8F' : 'var(--text-4)', marginTop: '4px', display: 'block' }}>
+            <span style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: isComplete ? '#3DD4A8' : 'var(--text-4)', marginTop: '4px', display: 'block' }}>
               {isComplete ? 'Completed' : `${progress.percentage}% complete`}
             </span>
           </div>

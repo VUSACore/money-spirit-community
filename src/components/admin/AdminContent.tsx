@@ -183,7 +183,7 @@ const AdminContent = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", paddingBottom: 1 }}>
+      <div className="flex gap-1 mb-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.22)", paddingBottom: 1 }}>
         {TABS.map(t => (
           <button
             key={t.id}
@@ -242,7 +242,7 @@ const AdminContent = () => {
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span style={{
-                      background: "rgba(255,255,255,0.06)",
+                      background: "rgba(255,255,255,0.22)",
                       borderRadius: 6,
                       padding: "2px 8px",
                       fontFamily: "var(--font-body)",
@@ -267,7 +267,7 @@ const AdminContent = () => {
                       {REASON_LABELS[r.reason] || r.reason}
                     </span>
                     {r.content_hidden && (
-                      <span className="flex items-center gap-1" style={{ fontSize: 11, fontFamily: "var(--font-body)", color: "#ef4444" }}>
+                      <span className="flex items-center gap-1" style={{ fontSize: 11, fontFamily: "var(--font-body)", color: "#FCA5A5" }}>
                         <EyeOff size={12} /> Hidden
                       </span>
                     )}
@@ -289,13 +289,13 @@ const AdminContent = () => {
 
                 {/* Content preview */}
                 {r.content_preview ? (
-                  <div style={{ borderLeft: "2px solid rgba(255,255,255,0.08)", paddingLeft: 12, marginBottom: 12 }}>
+                  <div style={{ borderLeft: "2px solid rgba(255,255,255,0.24)", paddingLeft: 12, marginBottom: 12 }}>
                     <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "var(--text-3)", fontStyle: "italic", lineHeight: 1.6 }}>
                       {r.content_preview}
                     </p>
                   </div>
                 ) : (
-                  <div style={{ borderLeft: "2px solid rgba(255,255,255,0.08)", paddingLeft: 12, marginBottom: 12 }}>
+                  <div style={{ borderLeft: "2px solid rgba(255,255,255,0.24)", paddingLeft: 12, marginBottom: 12 }}>
                     <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "var(--text-4)", fontStyle: "italic" }}>
                       Content not found or deleted
                     </p>
@@ -317,7 +317,7 @@ const AdminContent = () => {
                       value={notes[r.id] || ""}
                       onChange={e => setNotes(prev => ({ ...prev, [r.id]: e.target.value }))}
                       className="ms-input text-sm"
-                      style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", color: "var(--text-2)" }}
+                      style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.24)", color: "var(--text-2)" }}
                     />
                     <div className="flex flex-wrap items-center gap-2">
                       <Button

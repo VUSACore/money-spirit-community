@@ -34,7 +34,7 @@ const BadgeGrid = ({ userId, compact = false }: BadgeGridProps) => {
           <LucideBadgeIcon key={badge.id} iconSlug={badge.icon_slug ?? "award"} color={badge.color} name={badge.name} description={badge.description} size="sm" earned />
         ))}
         {remaining > 0 && (
-          <span className="h-8 px-2 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.04)', fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 500, color: 'var(--text-4)' }}>+{remaining}</span>
+          <span className="h-8 px-2 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.18)', fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 500, color: 'var(--text-4)' }}>+{remaining}</span>
         )}
       </div>
     );
@@ -58,8 +58,8 @@ const BadgeGrid = ({ userId, compact = false }: BadgeGridProps) => {
                   borderRadius: 'var(--r-md)',
                   boxShadow: `0 0 12px ${badge.color}26`,
                 } : {
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  background: 'rgba(255,255,255,0.18)',
+                  border: '1px solid rgba(255,255,255,0.24)',
                   borderRadius: 'var(--r-md)',
                   opacity: 0.4,
                 }),

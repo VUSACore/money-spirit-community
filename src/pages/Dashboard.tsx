@@ -41,13 +41,13 @@ const FMSBridgePrompt = ({ profile }: { profile: Profile }) => {
   return (
     <div className="ss-elevated ss-appear ss-appear-5" style={{
       position: 'relative', padding: '24px 28px',
-      borderLeft: '3px solid #27AE8F',
+      borderLeft: '3px solid #3DD4A8',
     }}>
       <button onClick={dismiss} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors" aria-label="Dismiss">
         <X size={16} />
       </button>
       <div className="flex items-start gap-3">
-        <Home size={20} className="shrink-0 mt-0.5" style={{ color: '#27AE8F' }} />
+        <Home size={20} className="shrink-0 mt-0.5" style={{ color: '#3DD4A8' }} />
         <div>
           <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 400, color: '#FFFFFF', marginBottom: '6px' }}>
             {isStrong ? "Ready to take the next step?" : "Something to consider"}
@@ -265,8 +265,8 @@ const Dashboard = () => {
         <div className="ss-appear ss-appear-2 flex items-center gap-2 px-4 py-3 rounded-xl" style={{
           background: 'rgba(39,174,143,0.08)', border: '1px solid rgba(39,174,143,0.20)',
         }}>
-          <CheckCircle2 size={16} style={{ color: '#27AE8F' }} />
-          <span className="text-[13px] font-body" style={{ color: '#27AE8F' }}>Profile complete</span>
+          <CheckCircle2 size={16} style={{ color: '#3DD4A8' }} />
+          <span className="text-[13px] font-body" style={{ color: '#3DD4A8' }}>Profile complete</span>
         </div>
       )}
 
@@ -365,7 +365,7 @@ const Dashboard = () => {
               </p>
               {activeCourse && activeCourse.progress.total_lessons > 0 && (
                 <div className="w-full">
-                  <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(224,176,64,0.12)' }}>
+                  <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(248,220,138,0.36)' }}>
                     <div style={{
                       height: '100%', borderRadius: 'var(--r-pill)',
                       width: `${activeCourse.progress.percentage}%`,
@@ -380,8 +380,8 @@ const Dashboard = () => {
           ) : allCoursesComplete ? (
             <>
               <div className="flex items-center gap-2">
-                <GraduationCap size={16} style={{ color: '#27AE8F' }} />
-                <p style={{ color: '#27AE8F', fontSize: '13px', fontFamily: 'var(--font-body)' }}>All enrolled courses completed</p>
+                <GraduationCap size={16} style={{ color: '#3DD4A8' }} />
+                <p style={{ color: '#3DD4A8', fontSize: '13px', fontFamily: 'var(--font-body)' }}>All enrolled courses completed</p>
               </div>
               <Button variant="default" asChild><Link to="/learn">Browse courses</Link></Button>
             </>
@@ -414,7 +414,7 @@ const Dashboard = () => {
               border: '1px solid rgba(224,176,64,0.22)',
               borderRadius: 'var(--r-pill)',
               padding: '7px 16px',
-              boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.10), 0 0 12px rgba(224,176,64,0.10)',
+              boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.10), 0 0 12px rgba(248,220,138,0.34)',
               fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500,
               color: '#F8DC8A',
             }}

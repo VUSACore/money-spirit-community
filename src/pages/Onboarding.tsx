@@ -18,10 +18,10 @@ type ArchetypeKey = "giver" | "keeper" | "rebel" | "seeker" | "achiever";
 type LifeStage = "under_30" | "30_to_40" | "40_to_50" | "50_plus";
 
 const archetypeInfo: Record<ArchetypeKey, { name: string; description: string; accent: string }> = {
-  giver: { name: "The Giver", description: "You lead with generosity and care deeply about providing for others. Your financial journey is rooted in love, community, and the desire to uplift those around you.", accent: "#E8845C" },
-  keeper: { name: "The Keeper", description: "You value security above all else. Building a solid foundation, protecting what you have, and planning carefully are the pillars of your financial wellbeing.", accent: "#5B8DB8" },
-  rebel: { name: "The Rebel", description: "You reject traditional money rules and forge your own path. Bold, unconventional, and courageous — you are not afraid to challenge the system and rewrite the rules of wealth.", accent: "#9B59B6" },
-  seeker: { name: "The Seeker", description: "You are on a journey of discovery. Curious, open-minded, and always learning — you approach money with wonder and a desire to understand the deeper purpose it can serve in your life.", accent: "#27AE8F" },
+  giver: { name: "The Giver", description: "You lead with generosity and care deeply about providing for others. Your financial journey is rooted in love, community, and the desire to uplift those around you.", accent: "#FFA37A" },
+  keeper: { name: "The Keeper", description: "You value security above all else. Building a solid foundation, protecting what you have, and planning carefully are the pillars of your financial wellbeing.", accent: "#7BB0E0" },
+  rebel: { name: "The Rebel", description: "You reject traditional money rules and forge your own path. Bold, unconventional, and courageous — you are not afraid to challenge the system and rewrite the rules of wealth.", accent: "#C490DA" },
+  seeker: { name: "The Seeker", description: "You are on a journey of discovery. Curious, open-minded, and always learning — you approach money with wonder and a desire to understand the deeper purpose it can serve in your life.", accent: "#3DD4A8" },
   achiever: { name: "The Achiever", description: "You are driven, ambitious, and focused on growth. You set bold financial goals and pursue them with discipline, strategy, and an unstoppable belief in what is possible.", accent: "#C9941E" },
 };
 

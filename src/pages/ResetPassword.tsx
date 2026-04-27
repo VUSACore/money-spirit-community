@@ -36,7 +36,7 @@ const ResetPassword = () => {
   };
 
   const labelStyle: React.CSSProperties = { display: 'block', fontFamily: 'var(--font-body)', fontSize: '13px', color: '#D8C896', marginBottom: '6px' };
-  const errorStyle: React.CSSProperties = { color: '#F87171', fontSize: '13px', fontFamily: 'var(--font-body)', marginTop: '4px' };
+  const errorStyle: React.CSSProperties = { color: '#FCA5A5', fontSize: '13px', fontFamily: 'var(--font-body)', marginTop: '4px' };
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#005eb8' }}>
@@ -51,7 +51,7 @@ const ResetPassword = () => {
           {!ready ? (
             <div style={{
               background: 'rgba(13,27,46,0.70)',
-              border: '1px solid rgba(224,176,64,0.18)',
+              border: '1px solid rgba(248,220,138,0.42)',
               borderRadius: 'var(--r-xl)',
               boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.20), 0 24px 60px rgba(0,0,0,0.60)',
               padding: '40px 36px',
@@ -66,7 +66,7 @@ const ResetPassword = () => {
           ) : (
             <div style={{
               background: 'rgba(13,27,46,0.70)',
-              border: '1px solid rgba(224,176,64,0.18)',
+              border: '1px solid rgba(248,220,138,0.42)',
               borderRadius: 'var(--r-xl)',
               boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.20), 0 24px 60px rgba(0,0,0,0.60)',
               padding: '40px 36px',
@@ -77,7 +77,7 @@ const ResetPassword = () => {
                   <div style={{
                     background: 'rgba(220,38,38,0.10)', border: '1px solid rgba(220,38,38,0.30)',
                     borderRadius: '12px', padding: '12px 16px',
-                    fontFamily: 'var(--font-body)', fontSize: '14px', color: '#F87171',
+                    fontFamily: 'var(--font-body)', fontSize: '14px', color: '#FCA5A5',
                   }}>
                     {errors.general}
                   </div>

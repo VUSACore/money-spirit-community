@@ -62,8 +62,8 @@ function ChartTooltip({ active, payload, label }: any) {
 function StatusPill({ status }: { status: string }) {
   const styles: Record<string, { bg: string; color: string }> = {
     active: { bg: "rgba(16,185,129,0.2)", color: "#10B981" },
-    cancelled: { bg: "rgba(239,68,68,0.2)", color: "#EF4444" },
-    refunded: { bg: "rgba(239,68,68,0.2)", color: "#EF4444" },
+    cancelled: { bg: "rgba(239,68,68,0.2)", color: "#FCA5A5" },
+    refunded: { bg: "rgba(239,68,68,0.2)", color: "#FCA5A5" },
   };
   const s = styles[status] ?? { bg: "rgba(201,148,30,0.2)", color: "#F5C842" };
   return (

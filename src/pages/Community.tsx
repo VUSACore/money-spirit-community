@@ -129,10 +129,10 @@ const Community = () => {
         {[1, 2, 3].map((i) => (
           <div key={i} className="glass-card space-y-3">
             <div className="flex items-center gap-3">
-              <Skeleton className="w-10 h-10 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }} />
-              <div className="space-y-2"><Skeleton className="h-4 w-28" style={{ background: 'rgba(255,255,255,0.06)' }} /><Skeleton className="h-3 w-16" style={{ background: 'rgba(255,255,255,0.06)' }} /></div>
+              <Skeleton className="w-10 h-10 rounded-full" style={{ background: 'rgba(255,255,255,0.22)' }} />
+              <div className="space-y-2"><Skeleton className="h-4 w-28" style={{ background: 'rgba(255,255,255,0.22)' }} /><Skeleton className="h-3 w-16" style={{ background: 'rgba(255,255,255,0.22)' }} /></div>
             </div>
-            <Skeleton className="h-4 w-full" style={{ background: 'rgba(255,255,255,0.06)' }} />
+            <Skeleton className="h-4 w-full" style={{ background: 'rgba(255,255,255,0.22)' }} />
           </div>
         ))}
       </div>
@@ -184,7 +184,7 @@ const Community = () => {
                       style={{
                         background: 'rgba(12, 18, 33, 0.95)',
                         backdropFilter: 'blur(24px)',
-                        border: '1px solid rgba(255,255,255,0.08)',
+                        border: '1px solid rgba(255,255,255,0.24)',
                         borderRadius: 10,
                       }}
                     >
