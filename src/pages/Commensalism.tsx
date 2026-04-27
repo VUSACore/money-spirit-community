@@ -16,6 +16,15 @@ const TILE_URL = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
 const TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>';
 
+const PATHWAYS: { key: string; label: string; color: string; meaning: string }[] = [
+  { key: "giver",    label: "The Giver",    color: "#D4856A", meaning: "Generous, family-first money flow" },
+  { key: "keeper",   label: "The Keeper",   color: "#6B9EC4", meaning: "Saver, security-led, careful" },
+  { key: "rebel",    label: "The Rebel",    color: "#A87CC4", meaning: "Independent, unconventional path" },
+  { key: "seeker",   label: "The Seeker",   color: "#4DB89A", meaning: "Curious, learning, exploring" },
+  { key: "achiever", label: "The Achiever", color: "#C4973A", meaning: "Driven, growth & ambition" },
+  { key: "unknown",  label: "Not yet set",  color: "#EEC96E", meaning: "Member hasn't chosen a pathway" },
+];
+
 function MapView({
   points,
   center,
@@ -29,7 +38,13 @@ function MapView({
   minZoom: number;
   maxBounds?: [[number, number], [number, number]];
 }) {
-  const heatPoints = points.map((p) => ({ lat: p.approx_lat, lng: p.approx_lng }));
+  // Group points by pathway so each pathway gets its own colored heat layer
+  const grouped = PATHWAYS.map((pw) => ({
+    ...pw,
+    points: points
+      .filter((p) => (p.pathway_type ?? "unknown") === pw.key)
+      .map((p) => ({ lat: p.approx_lat, lng: p.approx_lng })),
+  }));
 
   return (
     <div
@@ -51,7 +66,11 @@ function MapView({
         style={{ height: "100%", width: "100%", background: "#04101F" }}
       >
         <TileLayer attribution={TILE_ATTRIBUTION} url={TILE_URL} />
-        <HeatLayer points={heatPoints} />
+        {grouped.map((g) =>
+          g.points.length > 0 ? (
+            <HeatLayer key={g.key} points={g.points} color={g.color} radius={32} blur={22} />
+          ) : null,
+        )}
       </MapContainer>
 
       <div
