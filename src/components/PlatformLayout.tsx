@@ -77,7 +77,7 @@ const MobileBell = ({ userId }: { userId: string }) => {
   useEffect(() => {
     getUnreadCount(userId).then(setUnreadCount);
     const channel = supabase
-      .channel(`mobile-notif-${userId}`)
+      .channel(`mobile-notif-${userId}-${Math.random().toString(36).slice(2)}`)
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${userId}` }, () => {
         getUnreadCount(userId).then(setUnreadCount);
       })
@@ -125,7 +125,7 @@ const DesktopBell = ({ userId, expanded }: { userId: string; expanded: boolean }
   useEffect(() => {
     getUnreadCount(userId).then(setUnreadCount);
     const channel = supabase
-      .channel(`desktop-notif-${userId}`)
+      .channel(`desktop-notif-${userId}-${Math.random().toString(36).slice(2)}`)
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${userId}` }, () => {
         getUnreadCount(userId).then(setUnreadCount);
       })
