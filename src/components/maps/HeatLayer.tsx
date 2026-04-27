@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useMap } from "react-leaflet";
 import L from "leaflet";
-import "leaflet.heat";
+import "leaflet.heat/dist/leaflet-heat.js";
 
 type Point = { lat: number; lng: number; intensity?: number };
 
