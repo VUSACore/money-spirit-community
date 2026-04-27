@@ -4,8 +4,9 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Compass, Users, MessageSquare, Flame, BookOpen, CalendarDays,
-  Contact, LogOut, Shield, Menu, Bell,
+  Contact, LogOut, Shield, Menu, Bell, Globe2,
 } from "lucide-react";
+import { recordViewerLocation } from "@/lib/actions/userLocation";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import NotificationBell from "@/components/notifications/NotificationBell";
 import NotificationPanel from "@/components/notifications/NotificationPanel";
@@ -36,6 +37,7 @@ const navItems: { labelKey: TranslationKey; label: string; to: string; icon: typ
   { labelKey: "learn", label: "Learn", to: "/learn", icon: BookOpen },
   { labelKey: "events", label: "Events", to: "/events", icon: CalendarDays },
   { labelKey: "members", label: "Members", to: "/members", icon: Contact },
+  { labelKey: "members", label: "Commensalism", to: "/commensalism", icon: Globe2 },
 ];
 
 const accentMap: Record<string, string> = {
