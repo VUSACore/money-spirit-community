@@ -17,7 +17,7 @@ const TagSelect = ({ options, selected, onChange }: TagSelectProps) => (
           }}
           className="px-3 py-1.5 rounded-full text-sm font-body transition-all"
           style={{
-            background: active ? "rgba(201,148,30,0.15)" : "var(--ms-surface-2)",
+            background: active ? "rgba(248,220,138,0.40)" : "var(--ms-surface-2)",
             border: active ? "1px solid #C9941E" : "1px solid var(--ms-border)",
             color: active ? "#F5C842" : "var(--ms-text-muted)",
           }}

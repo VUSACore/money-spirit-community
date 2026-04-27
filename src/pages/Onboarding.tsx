@@ -18,10 +18,10 @@ type ArchetypeKey = "giver" | "keeper" | "rebel" | "seeker" | "achiever";
 type LifeStage = "under_30" | "30_to_40" | "40_to_50" | "50_plus";
 
 const archetypeInfo: Record<ArchetypeKey, { name: string; description: string; accent: string }> = {
-  giver: { name: "The Giver", description: "You lead with generosity and care deeply about providing for others. Your financial journey is rooted in love, community, and the desire to uplift those around you.", accent: "#E8845C" },
-  keeper: { name: "The Keeper", description: "You value security above all else. Building a solid foundation, protecting what you have, and planning carefully are the pillars of your financial wellbeing.", accent: "#5B8DB8" },
-  rebel: { name: "The Rebel", description: "You reject traditional money rules and forge your own path. Bold, unconventional, and courageous — you are not afraid to challenge the system and rewrite the rules of wealth.", accent: "#9B59B6" },
-  seeker: { name: "The Seeker", description: "You are on a journey of discovery. Curious, open-minded, and always learning — you approach money with wonder and a desire to understand the deeper purpose it can serve in your life.", accent: "#27AE8F" },
+  giver: { name: "The Giver", description: "You lead with generosity and care deeply about providing for others. Your financial journey is rooted in love, community, and the desire to uplift those around you.", accent: "#FFA37A" },
+  keeper: { name: "The Keeper", description: "You value security above all else. Building a solid foundation, protecting what you have, and planning carefully are the pillars of your financial wellbeing.", accent: "#7BB0E0" },
+  rebel: { name: "The Rebel", description: "You reject traditional money rules and forge your own path. Bold, unconventional, and courageous — you are not afraid to challenge the system and rewrite the rules of wealth.", accent: "#C490DA" },
+  seeker: { name: "The Seeker", description: "You are on a journey of discovery. Curious, open-minded, and always learning — you approach money with wonder and a desire to understand the deeper purpose it can serve in your life.", accent: "#3DD4A8" },
   achiever: { name: "The Achiever", description: "You are driven, ambitious, and focused on growth. You set bold financial goals and pursue them with discipline, strategy, and an unstoppable belief in what is possible.", accent: "#C9941E" },
 };
 
@@ -348,7 +348,7 @@ const Onboarding = () => {
           <h1 className="text-3xl font-heading" style={{ color: "#fff" }}>Your Money Spirit Path</h1>
           <p className="font-body text-sm" style={{ color: "#C9941E" }}>Question {step + 1} of {TOTAL_STEPS}</p>
         </div>
-        <div className="w-full h-1.5 rounded-full mb-8 overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
+        <div className="w-full h-1.5 rounded-full mb-8 overflow-hidden" style={{ background: "rgba(255,255,255,0.28)" }}>
           <div className="h-full rounded-full transition-all duration-300" style={{ width: `${progress}%`, background: "#C9941E" }} />
         </div>
         <h2 className="font-heading text-[28px] text-center mb-6 animate-slide-up leading-tight" style={{ color: "#F1F5F9" }} key={step}>
@@ -361,7 +361,7 @@ const Onboarding = () => {
                 return (
                   <button key={idx} onClick={() => setLifeStage(opt.value)}
                     className="w-full text-left px-5 py-4 rounded-xl border-2 font-body text-base transition-all duration-200"
-                    style={{ borderColor: selected ? "#C9941E" : "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)", color: selected ? "#F5C842" : "#E2E8F0" }}>
+                    style={{ borderColor: selected ? "#C9941E" : "rgba(255,255,255,0.28)", background: "rgba(255,255,255,0.18)", color: selected ? "#F5C842" : "#E2E8F0" }}>
                     {opt.label}
                   </button>
                 );
@@ -371,7 +371,7 @@ const Onboarding = () => {
                 return (
                   <button key={idx} onClick={() => { const next = [...answers]; next[step - 1] = idx; setAnswers(next); }}
                     className="w-full text-left px-5 py-4 rounded-xl border-2 font-body text-base transition-all duration-200"
-                    style={{ borderColor: selected ? "#C9941E" : "rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.05)", color: selected ? "#F5C842" : "#E2E8F0" }}>
+                    style={{ borderColor: selected ? "#C9941E" : "rgba(255,255,255,0.28)", background: "rgba(255,255,255,0.18)", color: selected ? "#F5C842" : "#E2E8F0" }}>
                     {opt.label}
                   </button>
                 );

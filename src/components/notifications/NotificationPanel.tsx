@@ -65,7 +65,7 @@ const NotificationPanel = ({ userId, onClose, onCountChange, compact = true }: N
       boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.08), 0 24px 60px rgba(0,0,0,0.65)',
     }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-3.5" style={{ borderBottom: '1px solid rgba(224,176,64,0.10)' }}>
+      <div className="flex items-center justify-between px-5 py-3.5" style={{ borderBottom: '1px solid rgba(248,220,138,0.34)' }}>
         <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: '17px', color: '#FFFFFF', letterSpacing: '-0.02em' }}>
           Notifications
         </h3>
@@ -88,9 +88,9 @@ const NotificationPanel = ({ userId, onClose, onCountChange, compact = true }: N
           <div className="p-4 space-y-3">
             {[1, 2, 3].map((i) => (
               <div key={i} className="flex items-start gap-3 p-2">
-                <Skeleton className="w-8 h-8 rounded-full shrink-0" style={{ background: 'rgba(224,176,64,0.08)' }} />
+                <Skeleton className="w-8 h-8 rounded-full shrink-0" style={{ background: 'rgba(248,220,138,0.32)' }} />
                 <div className="flex-1 space-y-1.5">
-                  <Skeleton className="h-3.5 w-3/4" style={{ background: 'rgba(224,176,64,0.08)' }} />
+                  <Skeleton className="h-3.5 w-3/4" style={{ background: 'rgba(248,220,138,0.32)' }} />
                   <Skeleton className="h-3 w-1/2" style={{ background: 'rgba(224,176,64,0.05)' }} />
                 </div>
               </div>
@@ -98,11 +98,11 @@ const NotificationPanel = ({ userId, onClose, onCountChange, compact = true }: N
           </div>
         ) : displayItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-14 px-4">
-            <Bell size={28} style={{ color: '#5C4E34' }} className="mb-3" />
+            <Bell size={28} style={{ color: '#D8C896' }} className="mb-3" />
             <p style={{ fontFamily: 'var(--font-display)', fontSize: '16px', color: '#F0E8D4', letterSpacing: '-0.02em' }}>
               You're all caught up
             </p>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: '#5C4E34', marginTop: '6px' }}>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: '#D8C896', marginTop: '6px' }}>
               Notifications will appear here as you engage
             </p>
           </div>
@@ -117,7 +117,7 @@ const NotificationPanel = ({ userId, onClose, onCountChange, compact = true }: N
                   onClick={() => handleClick(notif)}
                   className="w-full flex items-start gap-3 px-5 py-3 text-left transition-colors"
                   style={{
-                    borderBottom: idx < displayItems.length - 1 ? '1px solid rgba(224,176,64,0.06)' : 'none',
+                    borderBottom: idx < displayItems.length - 1 ? '1px solid rgba(248,220,138,0.30)' : 'none',
                     background: !notif.read ? 'rgba(224,176,64,0.05)' : 'transparent',
                   }}
                   onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(224,176,64,0.09)'; }}
@@ -143,7 +143,7 @@ const NotificationPanel = ({ userId, onClose, onCountChange, compact = true }: N
                     </p>
                     <p style={{
                       fontSize: '11px', fontFamily: 'var(--font-body)',
-                      color: '#5C4E34', marginTop: '3px',
+                      color: '#D8C896', marginTop: '3px',
                     }}>
                       {formatDistanceToNow(new Date(notif.created_at), { addSuffix: true })}
                     </p>
@@ -165,7 +165,7 @@ const NotificationPanel = ({ userId, onClose, onCountChange, compact = true }: N
       {(hasMore || !loading) && displayItems.length > 0 && (
         <div
           className="flex items-center justify-between px-5 py-3"
-          style={{ borderTop: '1px solid rgba(224,176,64,0.08)' }}
+          style={{ borderTop: '1px solid rgba(248,220,138,0.32)' }}
         >
           {hasMore ? (
             <Link
@@ -183,7 +183,7 @@ const NotificationPanel = ({ userId, onClose, onCountChange, compact = true }: N
             to="/settings/notifications"
             onClick={onClose}
             className="flex items-center gap-1.5 hover:underline"
-            style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: '#5C4E34' }}
+            style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: '#D8C896' }}
           >
             <Settings size={12} />
             Settings

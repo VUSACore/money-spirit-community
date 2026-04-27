@@ -65,14 +65,14 @@ const Forums = () => {
                   <div className="flex items-center gap-2 mt-2">
                     {forum.is_finance && (
                       <span style={{
-                        background: 'rgba(224,176,64,0.08)', border: '1px solid rgba(224,176,64,0.18)',
+                        background: 'rgba(248,220,138,0.32)', border: '1px solid rgba(248,220,138,0.42)',
                         borderRadius: 'var(--r-pill)', padding: '2px 10px',
                         fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 500, color: 'var(--gold-base)',
                       }}>Finance</span>
                     )}
                     {forum.requires_member && (
                       <span style={{
-                        background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
+                        background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.24)',
                         borderRadius: 'var(--r-pill)', padding: '2px 10px',
                         fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 500, color: 'var(--text-4)',
                       }}>Members only</span>

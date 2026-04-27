@@ -6,7 +6,7 @@ const headerHtml = `
 </div>`;
 
 const footerHtml = `
-<hr style="border:none;border-top:1px solid rgba(201,148,30,0.2);margin-top:32px;" />
+<hr style="border:none;border-top:1px solid rgba(248,220,138,0.44);margin-top:32px;" />
 <div style="padding-top:20px;">
   <p style="font-family:Arial,sans-serif;font-size:12px;color:#6E94C8;line-height:1.6;margin:0 0 8px;">
     Money Spirit provides financial education only — not financial advice.

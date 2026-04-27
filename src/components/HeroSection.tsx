@@ -53,7 +53,7 @@ const HeroSection = () => {
         </div>
 
         {/* Sign in */}
-        <p style={{ fontSize: 14, fontFamily: "var(--font-body)", color: "#5C4E34" }}>
+        <p style={{ fontSize: 14, fontFamily: "var(--font-body)", color: "#D8C896" }}>
           Already a member?{" "}
           <Link
             to="/login"

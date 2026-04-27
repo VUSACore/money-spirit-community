@@ -13,7 +13,7 @@ interface EmptyStateProps {
 const EmptyState = ({ icon: Icon, iconClassName = "", heading, body, ctaLabel, onCta }: EmptyStateProps) => (
   <div className="flex flex-col items-center justify-center min-h-[260px] text-center px-6 py-10">
     <div className="w-14 h-14 rounded-full flex items-center justify-center mb-5" style={{
-      background: 'rgba(224,176,64,0.08)',
+      background: 'rgba(248,220,138,0.32)',
       border: '1px solid rgba(224,176,64,0.15)',
     }}>
       <Icon size={24} className={iconClassName} style={{ color: iconClassName ? undefined : '#E0B040' }} />

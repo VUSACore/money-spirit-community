@@ -51,7 +51,7 @@ const Login = () => {
 
           <div style={{
             background: 'rgba(13,27,46,0.70)',
-            border: '1px solid rgba(224,176,64,0.18)',
+            border: '1px solid rgba(248,220,138,0.42)',
             borderRadius: 'var(--r-xl)',
             boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.20), 0 24px 60px rgba(0,0,0,0.60)',
             padding: 'clamp(24px, 5vw, 40px) clamp(20px, 5vw, 36px)',
@@ -62,7 +62,7 @@ const Login = () => {
                 <div style={{
                   background: 'rgba(220,38,38,0.10)', border: '1px solid rgba(220,38,38,0.30)',
                   borderRadius: '12px', padding: '12px 16px',
-                  fontFamily: 'var(--font-body)', fontSize: '14px', color: '#F87171',
+                  fontFamily: 'var(--font-body)', fontSize: '14px', color: '#FCA5A5',
                 }}>
                   {errors.general}
                 </div>
@@ -71,13 +71,13 @@ const Login = () => {
               <div>
                 <label style={{ display: 'block', fontFamily: 'var(--font-body)', fontSize: '13px', color: '#D8C896', marginBottom: '6px' }}>Email</label>
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="ms-input-dark" placeholder="you@example.com" />
-                {errors.email && <p style={{ color: '#F87171', fontSize: '13px', fontFamily: 'var(--font-body)', marginTop: '4px' }}>{errors.email}</p>}
+                {errors.email && <p style={{ color: '#FCA5A5', fontSize: '13px', fontFamily: 'var(--font-body)', marginTop: '4px' }}>{errors.email}</p>}
               </div>
 
               <div>
                 <label style={{ display: 'block', fontFamily: 'var(--font-body)', fontSize: '13px', color: '#D8C896', marginBottom: '6px' }}>Password</label>
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="ms-input-dark" placeholder="••••••••" />
-                {errors.password && <p style={{ color: '#F87171', fontSize: '13px', fontFamily: 'var(--font-body)', marginTop: '4px' }}>{errors.password}</p>}
+                {errors.password && <p style={{ color: '#FCA5A5', fontSize: '13px', fontFamily: 'var(--font-body)', marginTop: '4px' }}>{errors.password}</p>}
               </div>
 
               <div className="text-right">
@@ -93,7 +93,7 @@ const Login = () => {
                 {loading ? "Signing in..." : "Sign in"}
               </Button>
 
-              <p style={{ textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '14px', color: '#5C4E34' }}>
+              <p style={{ textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896' }}>
                 Don't have an account?{" "}
                 <Link to="/register" style={{ color: '#E0B040', fontWeight: 500 }}
                   onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#F8DC8A'; }}

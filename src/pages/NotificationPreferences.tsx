@@ -81,7 +81,7 @@ const NotificationPreferences = () => {
   if (loading) {
     return (
       <div className="p-6 md:p-10 max-w-2xl mx-auto space-y-6">
-        <div className="h-8 w-64 rounded animate-pulse" style={{ background: 'rgba(224,176,64,0.08)' }} />
+        <div className="h-8 w-64 rounded animate-pulse" style={{ background: 'rgba(248,220,138,0.32)' }} />
         {[1, 2, 3].map(i => (
           <div key={i} className="h-16 rounded-xl animate-pulse" style={{ background: 'rgba(224,176,64,0.04)' }} />
         ))}

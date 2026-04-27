@@ -44,7 +44,7 @@ const Register = () => {
   };
 
   const labelStyle: React.CSSProperties = { display: 'block', fontFamily: 'var(--font-body)', fontSize: '13px', color: '#D8C896', marginBottom: '6px' };
-  const errorStyle: React.CSSProperties = { color: '#F87171', fontSize: '13px', fontFamily: 'var(--font-body)', marginTop: '4px' };
+  const errorStyle: React.CSSProperties = { color: '#FCA5A5', fontSize: '13px', fontFamily: 'var(--font-body)', marginTop: '4px' };
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#005eb8' }}>
@@ -52,14 +52,14 @@ const Register = () => {
       <div className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <img src="/logo.png" alt="Money Spirit" style={{ width: 64, height: 64, margin: '0 auto 16px', filter: 'drop-shadow(0 0 10px rgba(224,176,64,0.20))' }} />
+            <img src="/logo.png" alt="Money Spirit" style={{ width: 64, height: 64, margin: '0 auto 16px', filter: 'drop-shadow(0 0 10px rgba(248,220,138,0.44))' }} />
             <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '26px', color: '#E0B040', fontWeight: 700, marginBottom: '6px' }}>Money Spirit</h1>
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896' }}>Join Money Spirit</p>
           </div>
 
           <div style={{
             background: 'rgba(13,27,46,0.70)',
-            border: '1px solid rgba(224,176,64,0.18)',
+            border: '1px solid rgba(248,220,138,0.42)',
             borderRadius: 'var(--r-xl)',
             boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.20), 0 24px 60px rgba(0,0,0,0.60)',
             padding: 'clamp(24px, 5vw, 40px) clamp(20px, 5vw, 36px)',
@@ -70,7 +70,7 @@ const Register = () => {
                 <div style={{
                   background: 'rgba(220,38,38,0.10)', border: '1px solid rgba(220,38,38,0.30)',
                   borderRadius: '12px', padding: '12px 16px',
-                  fontFamily: 'var(--font-body)', fontSize: '14px', color: '#F87171',
+                  fontFamily: 'var(--font-body)', fontSize: '14px', color: '#FCA5A5',
                 }}>
                   {errors.general}
                 </div>
@@ -118,7 +118,7 @@ const Register = () => {
                 {loading ? "Creating account..." : "Join Money Spirit"}
               </Button>
 
-              <p style={{ textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '14px', color: '#5C4E34' }}>
+              <p style={{ textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896' }}>
                 Already have an account?{" "}
                 <Link to="/login" style={{ color: '#E0B040', fontWeight: 500 }}>Sign in</Link>
               </p>

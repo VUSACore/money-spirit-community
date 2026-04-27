@@ -41,7 +41,7 @@ const EnrolmentGate = ({ courseId, userId, title, description, lessonCount }: En
     <div className="flex items-center justify-center min-h-[60vh] animate-fade-in">
       <div className="w-full max-w-lg text-center" style={{ padding: '48px 32px' }}>
         <div className="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-6" style={{
-          background: 'rgba(201,148,30,0.12)', border: '1px solid rgba(201,148,30,0.25)',
+          background: 'rgba(248,220,138,0.36)', border: '1px solid rgba(201,148,30,0.25)',
         }}>
           <BookOpen size={28} style={{ color: '#C9941E' }} />
         </div>
@@ -53,7 +53,7 @@ const EnrolmentGate = ({ courseId, userId, title, description, lessonCount }: En
             {description}
           </p>
         )}
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: '#5C4E34', marginBottom: '32px' }}>
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: '#D8C896', marginBottom: '32px' }}>
           {lessonCount} {lessonCount === 1 ? "lesson" : "lessons"} included
         </p>
         <Button
@@ -65,7 +65,7 @@ const EnrolmentGate = ({ courseId, userId, title, description, lessonCount }: En
           {enrol.isPending ? "Enrolling…" : "Enrol Free and Begin"}
         </Button>
         {!userId && (
-          <p style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: '#5C4E34', marginTop: '16px' }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: '#D8C896', marginTop: '16px' }}>
             Please log in to enrol in this course.
           </p>
         )}

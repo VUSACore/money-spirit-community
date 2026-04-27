@@ -18,7 +18,7 @@ const NotFound = () => {
       <SEOHead title="Page Not Found — Money Spirit" description="The page you're looking for doesn't exist or has been moved." />
       <p style={{
         fontFamily: 'var(--font-display)', fontSize: '120px', lineHeight: 1,
-        color: 'rgba(224,176,64,0.12)', fontWeight: 300, userSelect: 'none',
+        color: 'rgba(248,220,138,0.36)', fontWeight: 300, userSelect: 'none',
       }}>404</p>
       <h1 style={{
         fontFamily: 'var(--font-display)', fontSize: '28px', fontWeight: 400,
@@ -38,7 +38,7 @@ const NotFound = () => {
           {authed ? "Go to Dashboard" : "Sign In"}
         </button>
         <Link to="/" className="px-8 py-3 rounded-full font-body text-sm transition-colors" style={{
-          color: '#D8C896', border: '1px solid rgba(224,176,64,0.20)',
+          color: '#D8C896', border: '1px solid rgba(248,220,138,0.44)',
         }}>
           Back to Home
         </Link>

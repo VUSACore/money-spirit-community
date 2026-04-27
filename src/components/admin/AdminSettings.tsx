@@ -213,7 +213,7 @@ const AdminSettings = () => {
             { label: "Preview Welcome Email", html: welcomeEmail("Aisha", "The Keeper") },
             { label: "Preview Ticket Confirmation", html: ticketConfirmationEmail("Aisha", "Money & Mindset Live Session", "Saturday, 12 April 2026", "Online via Zoom", "TKT-12345678") },
             { label: "Preview Ritual Reminder", html: ritualReminderEmail("Aisha", "The Money Breath", "Take three deep breaths and ask yourself: where am I holding financial tension today?") },
-            { label: "Preview Archetype Reveal", html: archetypeRevealEmail("Aisha", "The Keeper", "You value security above all else. Building a solid foundation, protecting what you have, and planning carefully are the pillars of your financial wellbeing.", "#5B8DB8") },
+            { label: "Preview Archetype Reveal", html: archetypeRevealEmail("Aisha", "The Keeper", "You value security above all else. Building a solid foundation, protecting what you have, and planning carefully are the pillars of your financial wellbeing.", "#7BB0E0") },
           ].map((t) => (
             <Button
               key={t.label}

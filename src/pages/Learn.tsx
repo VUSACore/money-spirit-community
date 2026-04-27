@@ -48,7 +48,7 @@ const Learn = () => {
       {isLoading ? (
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="animate-pulse h-64 rounded-xl" style={{ background: 'rgba(224,176,64,0.06)' }} />
+            <div key={i} className="animate-pulse h-64 rounded-xl" style={{ background: 'rgba(248,220,138,0.30)' }} />
           ))}
         </div>
       ) : (

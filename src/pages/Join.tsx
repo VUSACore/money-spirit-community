@@ -65,7 +65,7 @@ const Join = () => {
             <p style={{ fontSize: '11px', fontFamily: 'var(--font-body)', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#D8C896', marginBottom: '4px' }}>Monthly</p>
             <div className="mb-6">
               <span style={{ fontFamily: 'var(--font-display)', fontSize: '40px', fontWeight: 400, color: '#FFFFFF' }}>AU$19</span>
-              <span style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#5C4E34', marginLeft: '6px' }}>/ month</span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896', marginLeft: '6px' }}>/ month</span>
             </div>
             <ul className="space-y-3 mb-8 flex-1">
               {features.monthly.map((f) => (
@@ -75,7 +75,7 @@ const Join = () => {
               ))}
             </ul>
             <Button onClick={openModal} variant="gold" className="w-full btn-gold">Start Monthly</Button>
-            <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#5C4E34', textAlign: 'center', marginTop: '12px' }}>Cancel anytime. No lock-in.</p>
+            <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#D8C896', textAlign: 'center', marginTop: '12px' }}>Cancel anytime. No lock-in.</p>
           </div>
 
           <div className="ss-elevated flex flex-col" style={{ border: '1px solid rgba(224,176,64,0.35)' }}>
@@ -83,13 +83,13 @@ const Join = () => {
               <p style={{ fontSize: '11px', fontFamily: 'var(--font-body)', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#D8C896' }}>Annual</p>
               <span style={{
                 fontSize: '11px', fontFamily: 'var(--font-body)', fontWeight: 600, color: '#F8DC8A',
-                background: 'rgba(224,176,64,0.12)', border: '1px solid rgba(224,176,64,0.25)',
+                background: 'rgba(248,220,138,0.36)', border: '1px solid rgba(224,176,64,0.25)',
                 borderRadius: 'var(--r-pill)', padding: '2px 10px',
               }}>Best Value</span>
             </div>
             <div className="mb-1">
               <span style={{ fontFamily: 'var(--font-display)', fontSize: '40px', fontWeight: 400, color: '#FFFFFF' }}>AU$149</span>
-              <span style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#5C4E34', marginLeft: '6px' }}>/ year</span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896', marginLeft: '6px' }}>/ year</span>
             </div>
             <p style={{ fontSize: '13px', fontFamily: 'var(--font-body)', fontWeight: 500, color: '#F8DC8A', marginBottom: '24px' }}>Save AU$79</p>
             <ul className="space-y-3 mb-8 flex-1">
@@ -100,11 +100,11 @@ const Join = () => {
               ))}
             </ul>
             <Button onClick={openModal} variant="gold" className="w-full btn-gold">Start Annual</Button>
-            <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#5C4E34', textAlign: 'center', marginTop: '12px' }}>Cancel anytime. No lock-in.</p>
+            <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#D8C896', textAlign: 'center', marginTop: '12px' }}>Cancel anytime. No lock-in.</p>
           </div>
         </div>
 
-        <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#5C4E34', textAlign: 'center', maxWidth: '480px', margin: '0 auto', lineHeight: 1.6 }}>
+        <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#D8C896', textAlign: 'center', maxWidth: '480px', margin: '0 auto', lineHeight: 1.6 }}>
           Money Spirit provides financial education and community, not financial advice. Always consult a qualified financial adviser for advice tailored to your situation.
         </p>
         <p className="text-center mt-3">

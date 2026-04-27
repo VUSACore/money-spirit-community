@@ -210,7 +210,7 @@ const LessonPage = () => {
     return (
       <div className="p-6 md:p-8 animate-fade-in">
         <div className="max-w-3xl">
-          <div className="animate-pulse h-10 w-80 rounded mb-4" style={{ background: 'rgba(224,176,64,0.08)' }} />
+          <div className="animate-pulse h-10 w-80 rounded mb-4" style={{ background: 'rgba(248,220,138,0.32)' }} />
           <div className="animate-pulse aspect-video w-full rounded-xl mb-4" style={{ background: 'rgba(224,176,64,0.04)' }} />
         </div>
       </div>
@@ -236,7 +236,7 @@ const LessonPage = () => {
             >
               {course?.title ?? "Course"}
             </Link>
-            <span className="text-xs" style={{ color: '#5C4E34' }}>›</span>
+            <span className="text-xs" style={{ color: '#D8C896' }}>›</span>
             <span className="text-xs font-body" style={{ color: '#FFFFFF' }}>
               Lesson {currentIndex + 1} of {totalLessons}
             </span>
@@ -270,7 +270,7 @@ const LessonPage = () => {
             )}
             {videoType === "none" && (
               <div className="w-full h-full flex items-center justify-center">
-                <PlayCircle size={64} style={{ color: 'rgba(201,148,30,0.2)' }} />
+                <PlayCircle size={64} style={{ color: 'rgba(248,220,138,0.44)' }} />
               </div>
             )}
           </div>
@@ -286,8 +286,8 @@ const LessonPage = () => {
           {/* Complete CTA / completed state */}
           {isCurrentCompleted ? (
             <div className="flex items-center gap-2 mt-2 mb-4">
-              <CheckCircle size={18} style={{ color: '#27AE8F' }} />
-              <span className="text-sm font-body font-medium" style={{ color: '#27AE8F' }}>Completed</span>
+              <CheckCircle size={18} style={{ color: '#3DD4A8' }} />
+              <span className="text-sm font-body font-medium" style={{ color: '#3DD4A8' }}>Completed</span>
             </div>
           ) : (
             <Button
@@ -308,7 +308,7 @@ const LessonPage = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 font-body text-sm transition-colors mb-4"
-              style={{ background: 'rgba(224,176,64,0.08)', border: '1px solid rgba(224,176,64,0.15)', color: '#F0E8D4' }}
+              style={{ background: 'rgba(248,220,138,0.32)', border: '1px solid rgba(224,176,64,0.15)', color: '#F0E8D4' }}
             >
               <FileDown size={18} style={{ color: '#C9941E' }} />
               Download Resources
@@ -316,7 +316,7 @@ const LessonPage = () => {
           )}
 
           {/* Navigation */}
-          <div className="flex items-center justify-between gap-4 mt-8 pt-6" style={{ borderTop: '1px solid rgba(224,176,64,0.10)' }}>
+          <div className="flex items-center justify-between gap-4 mt-8 pt-6" style={{ borderTop: '1px solid rgba(248,220,138,0.34)' }}>
             {prevLesson ? (
               <Button asChild variant="ghost" className="font-body text-sm" style={{ color: '#D8C896' }}>
                 <Link to={`/learn/${courseId}/${prevLesson.id}`}>
@@ -353,7 +353,7 @@ const LessonPage = () => {
           <p className="text-[11px] font-body font-semibold tracking-wider uppercase mb-3" style={{ color: '#D8C896' }}>
             Course Progress
           </p>
-          <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(224,176,64,0.12)', marginBottom: '4px' }}>
+          <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(248,220,138,0.36)', marginBottom: '4px' }}>
             <div style={{
               height: '100%', borderRadius: 'var(--r-pill)',
               width: `${progressPct}%`,
@@ -361,7 +361,7 @@ const LessonPage = () => {
               transition: 'width 0.5s ease',
             }} />
           </div>
-          <p className="text-xs font-body mb-6" style={{ color: '#5C4E34' }}>
+          <p className="text-xs font-body mb-6" style={{ color: '#D8C896' }}>
             {completedCount} of {totalLessons} lessons complete
           </p>
 
@@ -375,7 +375,7 @@ const LessonPage = () => {
               return (
                 <li key={l.id}>
                   {locked ? (
-                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs" style={{ color: '#5C4E34', opacity: 0.5 }}>
+                    <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs" style={{ color: '#D8C896', opacity: 0.5 }}>
                       <Lock size={14} className="shrink-0" />
                       <span className="flex-1 line-clamp-2 font-body">{l.title}</span>
                     </div>
@@ -385,23 +385,23 @@ const LessonPage = () => {
                       className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs transition-colors"
                       style={{
                         fontFamily: 'var(--font-body)',
-                        background: isCurrent ? 'rgba(224,176,64,0.10)' : 'transparent',
+                        background: isCurrent ? 'rgba(248,220,138,0.34)' : 'transparent',
                         borderLeft: isCurrent ? '2px solid #C9941E' : '2px solid transparent',
-                        color: isDone ? '#5C4E34' : '#FFFFFF',
+                        color: isDone ? '#D8C896' : '#FFFFFF',
                         fontWeight: isCurrent ? 500 : 400,
                       }}
                     >
                       {isDone ? (
-                        <CheckCircle size={14} className="shrink-0" style={{ color: '#27AE8F' }} />
+                        <CheckCircle size={14} className="shrink-0" style={{ color: '#3DD4A8' }} />
                       ) : isCurrent ? (
                         <PlayCircle size={14} className="shrink-0" style={{ color: '#C9941E' }} />
                       ) : (
-                        <Circle size={14} className="shrink-0" style={{ color: '#5C4E34' }} />
+                        <Circle size={14} className="shrink-0" style={{ color: '#D8C896' }} />
                       )}
                       <span className={`flex-1 line-clamp-2 ${isDone ? "line-through" : ""}`}>
                         {l.title}
                       </span>
-                      {duration && <span className="text-[11px] shrink-0" style={{ color: '#5C4E34' }}>{duration}</span>}
+                      {duration && <span className="text-[11px] shrink-0" style={{ color: '#D8C896' }}>{duration}</span>}
                     </Link>
                   )}
                 </li>
@@ -418,7 +418,7 @@ const LessonPage = () => {
             </span>
             <span className="text-xs font-body font-medium" style={{ color: '#F8DC8A' }}>{progressPct}%</span>
           </div>
-          <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(224,176,64,0.12)' }}>
+          <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(248,220,138,0.36)' }}>
             <div style={{
               height: '100%', borderRadius: 'var(--r-pill)',
               width: `${progressPct}%`,
@@ -426,7 +426,7 @@ const LessonPage = () => {
               transition: 'width 0.5s ease',
             }} />
           </div>
-          <p className="text-xs font-body mt-1" style={{ color: '#5C4E34' }}>
+          <p className="text-xs font-body mt-1" style={{ color: '#D8C896' }}>
             {completedCount} of {totalLessons} lessons complete
           </p>
         </div>

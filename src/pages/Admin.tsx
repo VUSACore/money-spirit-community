@@ -79,7 +79,7 @@ const Admin = () => {
   return (
     <div className="min-h-screen flex platform-bg" style={{
       background: `
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201, 148, 30, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(248,220,138, 0.08) 0%, transparent 60%),
         linear-gradient(180deg, #060912 0%, #080D1A 40%, #0C1221 100%)
       `,
     }}>
@@ -93,8 +93,8 @@ const Admin = () => {
           background: 'rgba(8, 13, 26, 0.7)',
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',
-          borderRight: '1px solid rgba(255,255,255,0.06)',
-          boxShadow: 'inset -1px 0 0 rgba(255,255,255,0.04), 4px 0 24px rgba(0,0,0,0.3)',
+          borderRight: '1px solid rgba(255,255,255,0.22)',
+          boxShadow: 'inset -1px 0 0 rgba(255,255,255,0.18), 4px 0 24px rgba(0,0,0,0.3)',
           transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
@@ -119,10 +119,10 @@ const Admin = () => {
                   height: 44,
                   fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500,
                   ...(active ? {
-                    background: 'rgba(201, 148, 30, 0.12)',
+                    background: 'rgba(248,220,138, 0.12)',
                     borderRadius: '12px',
                     borderLeft: '2px solid rgba(245,200,66,0.6)',
-                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)',
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.24)',
                     color: 'var(--gold-bright)',
                   } : {
                     background: 'transparent',
@@ -131,7 +131,7 @@ const Admin = () => {
                     color: 'var(--text-3)',
                   }),
                 }}
-                onMouseEnter={(e) => { if (!active) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
+                onMouseEnter={(e) => { if (!active) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.22)'; }}
                 onMouseLeave={(e) => { if (!active) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
               >
                 <tab.icon size={18} className="shrink-0" style={{ color: active ? 'var(--gold-bright)' : 'var(--text-3)' }} />
@@ -141,7 +141,7 @@ const Admin = () => {
           })}
         </nav>
 
-        <div className="px-3 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="px-3 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.22)' }}>
           {sidebarExpanded && (
             <button onClick={() => navigate("/dashboard")} style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: 'var(--text-3)' }} className="transition-colors">
               ← Back to platform
@@ -158,7 +158,7 @@ const Admin = () => {
           background: 'rgba(6, 12, 24, 0.90)',
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          borderBottom: '1px solid rgba(255,255,255,0.22)',
         }}
       >
         <div className="flex items-center gap-2">
@@ -176,7 +176,7 @@ const Admin = () => {
         style={{
           background: 'rgba(6, 12, 24, 0.85)',
           backdropFilter: 'blur(16px)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          borderBottom: '1px solid rgba(255,255,255,0.22)',
         }}
       >
         <div className="flex gap-1 px-3 py-2 min-w-max">
@@ -189,7 +189,7 @@ const Admin = () => {
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors"
                 style={{
                   fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500,
-                  background: active ? 'rgba(201,148,30,0.15)' : 'transparent',
+                  background: active ? 'rgba(248,220,138,0.40)' : 'transparent',
                   color: active ? 'var(--gold-bright)' : 'var(--text-3)',
                   border: active ? '1px solid rgba(201,148,30,0.25)' : '1px solid transparent',
                 }}
