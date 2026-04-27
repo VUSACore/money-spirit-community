@@ -210,8 +210,8 @@ const LessonPage = () => {
     return (
       <div className="p-6 md:p-8 animate-fade-in">
         <div className="max-w-3xl">
-          <div className="animate-pulse h-10 w-80 rounded mb-4" style={{ background: 'rgba(196,151,58,0.08)' }} />
-          <div className="animate-pulse aspect-video w-full rounded-xl mb-4" style={{ background: 'rgba(196,151,58,0.04)' }} />
+          <div className="animate-pulse h-10 w-80 rounded mb-4" style={{ background: 'rgba(224,176,64,0.08)' }} />
+          <div className="animate-pulse aspect-video w-full rounded-xl mb-4" style={{ background: 'rgba(224,176,64,0.04)' }} />
         </div>
       </div>
     );
@@ -230,14 +230,14 @@ const LessonPage = () => {
         <div className="flex-1 min-w-0">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 mb-4">
-            <Link to={`/learn/${courseId}`} className="text-xs font-body transition-colors" style={{ color: '#A08B62' }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#EEC96E'; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#A08B62'; }}
+            <Link to={`/learn/${courseId}`} className="text-xs font-body transition-colors" style={{ color: '#D8C896' }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#F8DC8A'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#D8C896'; }}
             >
               {course?.title ?? "Course"}
             </Link>
             <span className="text-xs" style={{ color: '#5C4E34' }}>›</span>
-            <span className="text-xs font-body" style={{ color: '#F2EAD8' }}>
+            <span className="text-xs font-body" style={{ color: '#FFFFFF' }}>
               Lesson {currentIndex + 1} of {totalLessons}
             </span>
           </div>
@@ -278,7 +278,7 @@ const LessonPage = () => {
           {/* Title */}
           <h1 style={{
             fontFamily: 'var(--font-display)', fontSize: 'clamp(22px, 3vw, 30px)', fontWeight: 300,
-            color: '#F2EAD8', letterSpacing: '-0.02em', marginBottom: '8px', lineHeight: 1.2,
+            color: '#FFFFFF', letterSpacing: '-0.02em', marginBottom: '8px', lineHeight: 1.2,
           }}>
             {lesson.title}
           </h1>
@@ -308,7 +308,7 @@ const LessonPage = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 font-body text-sm transition-colors mb-4"
-              style={{ background: 'rgba(196,151,58,0.08)', border: '1px solid rgba(196,151,58,0.15)', color: '#D4C49A' }}
+              style={{ background: 'rgba(224,176,64,0.08)', border: '1px solid rgba(224,176,64,0.15)', color: '#F0E8D4' }}
             >
               <FileDown size={18} style={{ color: '#C9941E' }} />
               Download Resources
@@ -316,9 +316,9 @@ const LessonPage = () => {
           )}
 
           {/* Navigation */}
-          <div className="flex items-center justify-between gap-4 mt-8 pt-6" style={{ borderTop: '1px solid rgba(196,151,58,0.10)' }}>
+          <div className="flex items-center justify-between gap-4 mt-8 pt-6" style={{ borderTop: '1px solid rgba(224,176,64,0.10)' }}>
             {prevLesson ? (
-              <Button asChild variant="ghost" className="font-body text-sm" style={{ color: '#A08B62' }}>
+              <Button asChild variant="ghost" className="font-body text-sm" style={{ color: '#D8C896' }}>
                 <Link to={`/learn/${courseId}/${prevLesson.id}`}>
                   <ChevronLeft size={16} className="mr-1" /> Previous
                 </Link>
@@ -350,14 +350,14 @@ const LessonPage = () => {
 
         {/* ── RIGHT: sidebar (desktop) ── */}
         <aside className="hidden lg:block w-[260px] shrink-0">
-          <p className="text-[11px] font-body font-semibold tracking-wider uppercase mb-3" style={{ color: '#A08B62' }}>
+          <p className="text-[11px] font-body font-semibold tracking-wider uppercase mb-3" style={{ color: '#D8C896' }}>
             Course Progress
           </p>
-          <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(196,151,58,0.12)', marginBottom: '4px' }}>
+          <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(224,176,64,0.12)', marginBottom: '4px' }}>
             <div style={{
               height: '100%', borderRadius: 'var(--r-pill)',
               width: `${progressPct}%`,
-              background: 'linear-gradient(90deg, #8B6612, #C4973A, #EEC96E)',
+              background: 'linear-gradient(90deg, #8B6612, #E0B040, #F8DC8A)',
               transition: 'width 0.5s ease',
             }} />
           </div>
@@ -385,9 +385,9 @@ const LessonPage = () => {
                       className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs transition-colors"
                       style={{
                         fontFamily: 'var(--font-body)',
-                        background: isCurrent ? 'rgba(196,151,58,0.10)' : 'transparent',
+                        background: isCurrent ? 'rgba(224,176,64,0.10)' : 'transparent',
                         borderLeft: isCurrent ? '2px solid #C9941E' : '2px solid transparent',
-                        color: isDone ? '#5C4E34' : '#F2EAD8',
+                        color: isDone ? '#5C4E34' : '#FFFFFF',
                         fontWeight: isCurrent ? 500 : 400,
                       }}
                     >
@@ -413,16 +413,16 @@ const LessonPage = () => {
         {/* ── Mobile lesson progress bar ── */}
         <div className="lg:hidden mt-6">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-body font-semibold tracking-wider uppercase" style={{ color: '#A08B62' }}>
+            <span className="text-[11px] font-body font-semibold tracking-wider uppercase" style={{ color: '#D8C896' }}>
               Progress
             </span>
-            <span className="text-xs font-body font-medium" style={{ color: '#EEC96E' }}>{progressPct}%</span>
+            <span className="text-xs font-body font-medium" style={{ color: '#F8DC8A' }}>{progressPct}%</span>
           </div>
-          <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(196,151,58,0.12)' }}>
+          <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(224,176,64,0.12)' }}>
             <div style={{
               height: '100%', borderRadius: 'var(--r-pill)',
               width: `${progressPct}%`,
-              background: 'linear-gradient(90deg, #8B6612, #C4973A, #EEC96E)',
+              background: 'linear-gradient(90deg, #8B6612, #E0B040, #F8DC8A)',
               transition: 'width 0.5s ease',
             }} />
           </div>
@@ -441,17 +441,17 @@ const LessonPage = () => {
           <div className="mx-auto mb-4">
             <Trophy size={64} style={{ color: '#C9941E' }} />
           </div>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '30px', fontWeight: 300, color: '#EEC96E', marginBottom: '8px' }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '30px', fontWeight: 300, color: '#F8DC8A', marginBottom: '8px' }}>
             Course Complete!
           </h2>
-          <p className="text-sm font-body mb-1" style={{ color: '#F2EAD8' }}>
+          <p className="text-sm font-body mb-1" style={{ color: '#FFFFFF' }}>
             {course?.title}
           </p>
-          <p className="text-xs font-body mb-8" style={{ color: '#A08B62' }}>
+          <p className="text-xs font-body mb-8" style={{ color: '#D8C896' }}>
             You have completed this course. Your achievement has been recorded.
           </p>
           <div className="flex items-center justify-center gap-3">
-            <Button variant="ghost" onClick={() => navigate("/learn")} className="font-body" style={{ color: '#A08B62' }}>
+            <Button variant="ghost" onClick={() => navigate("/learn")} className="font-body" style={{ color: '#D8C896' }}>
               Back to Courses
             </Button>
             <Button variant="gold" onClick={() => navigate(`/learn/${courseId}`)}>

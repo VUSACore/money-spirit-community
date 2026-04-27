@@ -15,7 +15,7 @@ const archetypeDisplay: Record<string, { name: string; accent: string }> = {
   keeper: { name: "The Keeper", accent: "#6B9EC4" },
   rebel: { name: "The Rebel", accent: "#A87CC4" },
   seeker: { name: "The Seeker", accent: "#4DB89A" },
-  achiever: { name: "The Achiever", accent: "#C4973A" },
+  achiever: { name: "The Achiever", accent: "#E0B040" },
 };
 
 interface Props {
@@ -105,10 +105,10 @@ const NextSacredStep = ({ userId, profile }: Props) => {
     <div className="ss-sacred">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Sparkles size={16} style={{ color: '#EEC96E' }} />
+          <Sparkles size={16} style={{ color: '#F8DC8A' }} />
           <span style={{
             fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 600,
-            letterSpacing: '0.18em', textTransform: 'uppercase', color: '#C4973A',
+            letterSpacing: '0.18em', textTransform: 'uppercase', color: '#E0B040',
           }}>
             Your Next Sacred Step
           </span>
@@ -119,7 +119,7 @@ const NextSacredStep = ({ userId, profile }: Props) => {
           className="transition-colors disabled:opacity-50"
           style={{ color: '#5C4E34' }}
           aria-label="Refresh sacred step"
-          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#C4973A'; }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#E0B040'; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#5C4E34'; }}
         >
           <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
@@ -128,28 +128,28 @@ const NextSacredStep = ({ userId, profile }: Props) => {
 
       {loading && !text ? (
         <div className="space-y-3">
-          <div className="h-4 w-full rounded animate-pulse" style={{ background: 'rgba(196,151,58,0.08)' }} />
-          <div className="h-4 w-3/4 rounded animate-pulse" style={{ background: 'rgba(196,151,58,0.08)' }} />
+          <div className="h-4 w-full rounded animate-pulse" style={{ background: 'rgba(224,176,64,0.08)' }} />
+          <div className="h-4 w-3/4 rounded animate-pulse" style={{ background: 'rgba(224,176,64,0.08)' }} />
         </div>
       ) : (
         <>
           <p style={{
             fontFamily: 'var(--font-display)', fontSize: '20px', fontStyle: 'italic',
-            fontWeight: 300, color: '#F2EAD8', lineHeight: 1.75, letterSpacing: '-0.01em',
+            fontWeight: 300, color: '#FFFFFF', lineHeight: 1.75, letterSpacing: '-0.01em',
             opacity: loading ? 0.5 : 1,
             transition: 'opacity 0.3s ease',
           }}>
             {text}
           </p>
-          <div className="mt-4 pt-3 flex items-center gap-2" style={{ borderTop: '1px solid rgba(196,151,58,0.12)' }}>
+          <div className="mt-4 pt-3 flex items-center gap-2" style={{ borderTop: '1px solid rgba(224,176,64,0.12)' }}>
             <span style={{
               display: 'inline-block',
-              background: 'rgba(196,151,58,0.10)',
-              border: '1px solid rgba(196,151,58,0.25)',
+              background: 'rgba(224,176,64,0.10)',
+              border: '1px solid rgba(224,176,64,0.25)',
               borderRadius: 'var(--r-pill)',
               padding: '4px 14px',
               fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 500,
-              color: '#C4973A',
+              color: '#E0B040',
             }}>
               {info.name}
             </span>

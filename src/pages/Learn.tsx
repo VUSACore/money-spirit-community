@@ -42,13 +42,13 @@ const Learn = () => {
   return (
     <div className="p-6 md:p-8 ss-appear">
       <SEOHead title="Courses & Learning — Money Spirit" description="Courses and resources to deepen your financial wellbeing. Learn at your own pace." />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em', marginBottom: '4px' }}>Learn</h1>
-      <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', marginBottom: '24px' }}>Courses and resources to deepen your financial wellbeing.</p>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: '#FFFFFF', letterSpacing: '-0.03em', marginBottom: '4px' }}>Learn</h1>
+      <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896', marginBottom: '24px' }}>Courses and resources to deepen your financial wellbeing.</p>
 
       {isLoading ? (
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="animate-pulse h-64 rounded-xl" style={{ background: 'rgba(196,151,58,0.06)' }} />
+            <div key={i} className="animate-pulse h-64 rounded-xl" style={{ background: 'rgba(224,176,64,0.06)' }} />
           ))}
         </div>
       ) : (

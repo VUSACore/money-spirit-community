@@ -34,16 +34,16 @@ const ForgotPassword = () => {
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '26px', color: '#C4973A', fontWeight: 700, marginBottom: '6px' }}>Money Spirit</h1>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62' }}>Reset your password</p>
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '26px', color: '#E0B040', fontWeight: 700, marginBottom: '6px' }}>Money Spirit</h1>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896' }}>Reset your password</p>
           </div>
 
           {sent ? (
             <div style={{
               background: 'rgba(13,27,46,0.70)',
-              border: '1px solid rgba(196,151,58,0.18)',
+              border: '1px solid rgba(224,176,64,0.18)',
               borderRadius: 'var(--r-xl)',
-              boxShadow: 'inset 0 1px 0 rgba(238,201,110,0.20), 0 24px 60px rgba(0,0,0,0.60)',
+              boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.20), 0 24px 60px rgba(0,0,0,0.60)',
               padding: '40px 36px',
               backdropFilter: 'blur(20px)',
               textAlign: 'center',
@@ -55,10 +55,10 @@ const ForgotPassword = () => {
                 }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#27AE8F" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
                 </div>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D4C49A', lineHeight: 1.6 }}>
-                  We've sent a reset link to <span style={{ color: '#EEC96E', fontWeight: 500 }}>{email}</span>. Please check your inbox.
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#F0E8D4', lineHeight: 1.6 }}>
+                  We've sent a reset link to <span style={{ color: '#F8DC8A', fontWeight: 500 }}>{email}</span>. Please check your inbox.
                 </p>
-                <Link to="/login" style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#C4973A' }}>
+                <Link to="/login" style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#E0B040' }}>
                   Back to sign in
                 </Link>
               </div>
@@ -66,9 +66,9 @@ const ForgotPassword = () => {
           ) : (
             <div style={{
               background: 'rgba(13,27,46,0.70)',
-              border: '1px solid rgba(196,151,58,0.18)',
+              border: '1px solid rgba(224,176,64,0.18)',
               borderRadius: 'var(--r-xl)',
-              boxShadow: 'inset 0 1px 0 rgba(238,201,110,0.20), 0 24px 60px rgba(0,0,0,0.60)',
+              boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.20), 0 24px 60px rgba(0,0,0,0.60)',
               padding: '40px 36px',
               backdropFilter: 'blur(20px)',
             }}>
@@ -84,7 +84,7 @@ const ForgotPassword = () => {
                 )}
 
                 <div>
-                  <label style={{ display: 'block', fontFamily: 'var(--font-body)', fontSize: '13px', color: '#A08B62', marginBottom: '6px' }}>Email</label>
+                  <label style={{ display: 'block', fontFamily: 'var(--font-body)', fontSize: '13px', color: '#D8C896', marginBottom: '6px' }}>Email</label>
                   <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="ms-input-dark" placeholder="you@example.com" />
                 </div>
 
@@ -94,7 +94,7 @@ const ForgotPassword = () => {
 
                 <p style={{ textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '14px', color: '#5C4E34' }}>
                   Remember your password?{" "}
-                  <Link to="/login" style={{ color: '#C4973A', fontWeight: 500 }}>Sign in</Link>
+                  <Link to="/login" style={{ color: '#E0B040', fontWeight: 500 }}>Sign in</Link>
                 </p>
               </form>
             </div>

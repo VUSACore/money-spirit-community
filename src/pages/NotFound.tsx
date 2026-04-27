@@ -18,14 +18,14 @@ const NotFound = () => {
       <SEOHead title="Page Not Found — Money Spirit" description="The page you're looking for doesn't exist or has been moved." />
       <p style={{
         fontFamily: 'var(--font-display)', fontSize: '120px', lineHeight: 1,
-        color: 'rgba(196,151,58,0.12)', fontWeight: 300, userSelect: 'none',
+        color: 'rgba(224,176,64,0.12)', fontWeight: 300, userSelect: 'none',
       }}>404</p>
       <h1 style={{
         fontFamily: 'var(--font-display)', fontSize: '28px', fontWeight: 400,
-        color: '#F2EAD8', marginTop: '8px', letterSpacing: '-0.02em',
+        color: '#FFFFFF', marginTop: '8px', letterSpacing: '-0.02em',
       }}>This page has moved on its journey</h1>
       <p style={{
-        fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62',
+        fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896',
         maxWidth: '380px', marginTop: '12px', lineHeight: 1.65,
       }}>
         The page you're looking for doesn't exist or has been moved. Let us guide you back.
@@ -38,7 +38,7 @@ const NotFound = () => {
           {authed ? "Go to Dashboard" : "Sign In"}
         </button>
         <Link to="/" className="px-8 py-3 rounded-full font-body text-sm transition-colors" style={{
-          color: '#A08B62', border: '1px solid rgba(196,151,58,0.20)',
+          color: '#D8C896', border: '1px solid rgba(224,176,64,0.20)',
         }}>
           Back to Home
         </Link>

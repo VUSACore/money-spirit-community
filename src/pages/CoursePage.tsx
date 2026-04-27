@@ -83,11 +83,11 @@ const CoursePage = () => {
     return (
       <div className="p-6 md:p-8 animate-fade-in">
         <div className="max-w-2xl mx-auto space-y-4">
-          <div className="animate-pulse h-8 w-64 rounded-lg" style={{ background: 'rgba(196,151,58,0.08)' }} />
-          <div className="animate-pulse h-4 w-96 rounded" style={{ background: 'rgba(196,151,58,0.06)' }} />
+          <div className="animate-pulse h-8 w-64 rounded-lg" style={{ background: 'rgba(224,176,64,0.08)' }} />
+          <div className="animate-pulse h-4 w-96 rounded" style={{ background: 'rgba(224,176,64,0.06)' }} />
           <div className="space-y-2 mt-8">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="animate-pulse h-12 rounded-lg" style={{ background: 'rgba(196,151,58,0.04)' }} />
+              <div key={i} className="animate-pulse h-12 rounded-lg" style={{ background: 'rgba(224,176,64,0.04)' }} />
             ))}
           </div>
         </div>
@@ -139,12 +139,12 @@ const CoursePage = () => {
         {/* Course title */}
         <h1 style={{
           fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: 300,
-          color: '#F2EAD8', letterSpacing: '-0.03em', marginBottom: '8px', lineHeight: 1.1,
+          color: '#FFFFFF', letterSpacing: '-0.03em', marginBottom: '8px', lineHeight: 1.1,
         }}>
           {course.title}
         </h1>
         {course.description && (
-          <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', lineHeight: 1.6, marginBottom: '24px', maxWidth: '560px' }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896', lineHeight: 1.6, marginBottom: '24px', maxWidth: '560px' }}>
             {course.description}
           </p>
         )}
@@ -166,15 +166,15 @@ const CoursePage = () => {
         {!isCompleted && (
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
-              <span style={{ fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500, color: '#A08B62', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Progress</span>
-              <span style={{ fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 600, color: '#EEC96E' }}>{pct}%</span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500, color: '#D8C896', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Progress</span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 600, color: '#F8DC8A' }}>{pct}%</span>
             </div>
-            <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(196,151,58,0.12)' }}>
+            <div style={{ height: '3px', borderRadius: 'var(--r-pill)', overflow: 'hidden', background: 'rgba(224,176,64,0.12)' }}>
               <div style={{
                 height: '100%', borderRadius: 'var(--r-pill)',
                 width: `${pct}%`,
-                background: 'linear-gradient(90deg, #8B6612 0%, #C4973A 50%, #EEC96E 100%)',
-                boxShadow: '0 0 8px rgba(238,201,110,0.35)',
+                background: 'linear-gradient(90deg, #8B6612 0%, #E0B040 50%, #F8DC8A 100%)',
+                boxShadow: '0 0 8px rgba(248,220,138,0.35)',
                 transition: 'width 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
               }} />
             </div>
@@ -191,7 +191,7 @@ const CoursePage = () => {
 
         {/* Lesson list */}
         <div className="space-y-1">
-          <p className="text-[11px] font-body font-semibold tracking-wider uppercase mb-3" style={{ color: '#A08B62' }}>Lessons</p>
+          <p className="text-[11px] font-body font-semibold tracking-wider uppercase mb-3" style={{ color: '#D8C896' }}>Lessons</p>
           {lessons.map((l, i) => {
             const isDone = done.has(l.id);
             const locked = isLessonLocked(i);
@@ -211,10 +211,10 @@ const CoursePage = () => {
                     to={`/learn/${courseId}/${l.id}`}
                     className="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors"
                     style={{
-                      background: isNext ? 'rgba(196,151,58,0.08)' : 'transparent',
-                      border: isNext ? '1px solid rgba(196,151,58,0.15)' : '1px solid transparent',
+                      background: isNext ? 'rgba(224,176,64,0.08)' : 'transparent',
+                      border: isNext ? '1px solid rgba(224,176,64,0.15)' : '1px solid transparent',
                     }}
-                    onMouseEnter={(e) => { if (!isNext) (e.currentTarget as HTMLElement).style.background = 'rgba(196,151,58,0.05)'; }}
+                    onMouseEnter={(e) => { if (!isNext) (e.currentTarget as HTMLElement).style.background = 'rgba(224,176,64,0.05)'; }}
                     onMouseLeave={(e) => { if (!isNext) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
                   >
                     {isDone ? (
@@ -223,14 +223,14 @@ const CoursePage = () => {
                       <Circle size={16} className="shrink-0" style={{ color: isNext ? '#C9941E' : '#5C4E34' }} />
                     )}
                     <span className="flex-1 text-sm font-body" style={{
-                      color: isDone ? '#5C4E34' : '#F2EAD8',
+                      color: isDone ? '#5C4E34' : '#FFFFFF',
                       textDecoration: isDone ? 'line-through' : 'none',
                     }}>
                       {l.title}
                     </span>
                     {isNext && (
                       <span className="text-[10px] font-body font-medium px-2 py-0.5 rounded-full" style={{
-                        background: 'rgba(201,148,30,0.15)', color: '#EEC96E',
+                        background: 'rgba(201,148,30,0.15)', color: '#F8DC8A',
                       }}>Next</span>
                     )}
                     {duration && <span className="text-xs font-body" style={{ color: '#5C4E34' }}>{duration}</span>}

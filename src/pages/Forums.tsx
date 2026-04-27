@@ -65,7 +65,7 @@ const Forums = () => {
                   <div className="flex items-center gap-2 mt-2">
                     {forum.is_finance && (
                       <span style={{
-                        background: 'rgba(196,151,58,0.08)', border: '1px solid rgba(196,151,58,0.18)',
+                        background: 'rgba(224,176,64,0.08)', border: '1px solid rgba(224,176,64,0.18)',
                         borderRadius: 'var(--r-pill)', padding: '2px 10px',
                         fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 500, color: 'var(--gold-base)',
                       }}>Finance</span>

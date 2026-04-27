@@ -58,7 +58,7 @@ const HeroSection = () => {
           <Link
             to="/login"
             style={{ color: "#C9941E", textDecoration: "underline", textUnderlineOffset: "2px" }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#EEC96E"; }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#F8DC8A"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#C9941E"; }}
           >
             Sign in
