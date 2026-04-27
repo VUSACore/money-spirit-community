@@ -178,7 +178,7 @@ const DesktopBell = ({ userId, expanded }: { userId: string; expanded: boolean }
         {expanded && <span>Notifications</span>}
       </button>
       {open && (
-        <div className="absolute left-full bottom-0 ml-2 z-50" style={{ minWidth: 380 }}>
+        <div className="fixed z-[60]" style={{ left: expanded ? 248 : 72, bottom: 16, minWidth: 380 }}>
           <NotificationPanel userId={userId} onClose={() => setOpen(false)} onCountChange={setUnreadCount} compact />
         </div>
       )}
