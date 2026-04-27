@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,opsz,wght@0,14..40,300;0,14..40,400;0,14..40,500;0,14..40,600;1,14..40,300;1,14..40,400;1,14..40,500&family=Outfit:wght@300;400;500;600&display=swap');
+/* Apple iOS system typography — uses San Francisco on Apple devices,
+   with native system fallbacks elsewhere. No webfont download required. */
 
 @tailwind base;
 @tailwind components;
