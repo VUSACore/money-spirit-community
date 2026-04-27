@@ -101,13 +101,13 @@ const Events = () => {
   if (loading) {
     return (
       <div className="p-4 sm:p-6 md:p-8 max-w-5xl mx-auto">
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: '#FFFFFF', letterSpacing: '-0.03em', marginBottom: '8px' }}>Events</h1>
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896', marginBottom: '32px' }}>Workshops, circles, and gatherings to support your journey.</p>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em', marginBottom: '8px' }}>Events</h1>
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', marginBottom: '32px' }}>Workshops, circles, and gatherings to support your journey.</p>
         <div className="grid gap-6 sm:grid-cols-2">
           {[1, 2].map((i) => (
             <div key={i} className="ss-card overflow-hidden p-0">
-              <Skeleton className="h-40 w-full rounded-none" style={{ background: 'rgba(248,220,138,0.30)' }} />
-              <div className="p-5 space-y-3"><Skeleton className="h-6 w-3/4" style={{ background: 'rgba(248,220,138,0.30)' }} /></div>
+              <Skeleton className="h-40 w-full rounded-none" style={{ background: 'rgba(196,151,58,0.06)' }} />
+              <div className="p-5 space-y-3"><Skeleton className="h-6 w-3/4" style={{ background: 'rgba(196,151,58,0.06)' }} /></div>
             </div>
           ))}
         </div>
@@ -135,21 +135,21 @@ const Events = () => {
           background: 'linear-gradient(145deg, rgba(17,32,54,0.90), rgba(6,12,24,0.95))',
           borderRadius: '14px 14px 0 0',
         }}>
-          <Sparkles className="h-8 w-8" style={{ color: 'rgba(224,176,64,0.25)' }} />
+          <Sparkles className="h-8 w-8" style={{ color: 'rgba(196,151,58,0.25)' }} />
         </div>
         <div className="p-5 space-y-3">
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#FFFFFF' }}>{event.title}</h2>
-          <div className="flex items-center gap-2" style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#D8C896' }}>
-            <CalendarDays className="h-4 w-4" style={{ color: '#E0B040' }} />
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#F2EAD8' }}>{event.title}</h2>
+          <div className="flex items-center gap-2" style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#A08B62' }}>
+            <CalendarDays className="h-4 w-4" style={{ color: '#C4973A' }} />
             {format(new Date(event.event_date), "EEEE d MMMM yyyy")}
           </div>
-          <div className="flex items-center gap-2" style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#D8C896' }}>
-            {event.is_virtual ? (<><Globe className="h-4 w-4" style={{ color: '#E0B040' }} />Online event</>) : (<><MapPin className="h-4 w-4" style={{ color: '#E0B040' }} />{event.location ?? "Location TBA"}</>)}
+          <div className="flex items-center gap-2" style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#A08B62' }}>
+            {event.is_virtual ? (<><Globe className="h-4 w-4" style={{ color: '#C4973A' }} />Online event</>) : (<><MapPin className="h-4 w-4" style={{ color: '#C4973A' }} />{event.location ?? "Location TBA"}</>)}
           </div>
 
           {/* Capacity badge */}
           {event.capacity && !isEventPast && (
-            <div className="flex items-center gap-2" style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: isSoldOut ? '#f59e0b' : nearlyFull ? '#f59e0b' : '#D8C896' }}>
+            <div className="flex items-center gap-2" style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: isSoldOut ? '#f59e0b' : nearlyFull ? '#f59e0b' : '#A08B62' }}>
               <Users className="h-3.5 w-3.5" />
               {isSoldOut ? "Sold out" : nearlyFull ? `Only ${spacesLeft} spots left` : `${spacesLeft} spots available`}
             </div>
@@ -157,19 +157,19 @@ const Events = () => {
 
           <div className="flex items-center justify-between pt-2">
             <span style={{
-              background: 'rgba(224,176,64,0.11)', border: '1px solid rgba(224,176,64,0.25)',
+              background: 'rgba(196,151,58,0.11)', border: '1px solid rgba(196,151,58,0.25)',
               borderRadius: 'var(--r-pill)', padding: '4px 12px',
-              fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500, color: '#F8DC8A',
+              fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500, color: '#EEC96E',
             }}>{formatPrice(event.price_pence)}</span>
 
             {isEventPast ? (
               <span style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: 'var(--text-4)' }}>Past event</span>
             ) : hasTicket ? (
-              <span className="inline-flex items-center gap-1.5" style={{ fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500, color: '#F8DC8A' }}>
+              <span className="inline-flex items-center gap-1.5" style={{ fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500, color: '#EEC96E' }}>
                 <Ticket className="h-4 w-4" /> Registered
               </span>
             ) : hasInterest ? (
-              <span style={{ fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500, color: '#F8DC8A' }}>✓ Interest registered</span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500, color: '#EEC96E' }}>✓ Interest registered</span>
             ) : isSoldOut && event.waitlist_enabled ? (
               <Button variant="gold" size="sm" disabled={claimingId === event.id} onClick={(e) => registerInterest(event.id, e)} className="btn-gold">
                 {claimingId === event.id ? "Joining…" : "Join waitlist"}
@@ -191,8 +191,8 @@ const Events = () => {
     <div className="p-4 sm:p-6 md:p-8 max-w-5xl mx-auto ss-appear">
       <SEOHead title="Events — Money Spirit" description="Workshops, circles, and gatherings for women building financial wellbeing. Join live and virtual events." />
       <EducationBanner />
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: '#FFFFFF', letterSpacing: '-0.03em', marginBottom: '8px' }}>Events</h1>
-      <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896', marginBottom: '32px' }}>Workshops, circles, and gatherings to support your journey.</p>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em', marginBottom: '8px' }}>Events</h1>
+      <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', marginBottom: '32px' }}>Workshops, circles, and gatherings to support your journey.</p>
 
       {upcoming.length === 0 && past.length === 0 ? (
         <EmptyState icon={CalendarDays} heading="Events are on the way" body="We're preparing meaningful gatherings. Check back soon." />

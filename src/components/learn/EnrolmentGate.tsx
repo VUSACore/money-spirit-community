@@ -41,19 +41,19 @@ const EnrolmentGate = ({ courseId, userId, title, description, lessonCount }: En
     <div className="flex items-center justify-center min-h-[60vh] animate-fade-in">
       <div className="w-full max-w-lg text-center" style={{ padding: '48px 32px' }}>
         <div className="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-6" style={{
-          background: 'rgba(248,220,138,0.36)', border: '1px solid rgba(201,148,30,0.25)',
+          background: 'rgba(201,148,30,0.12)', border: '1px solid rgba(201,148,30,0.25)',
         }}>
           <BookOpen size={28} style={{ color: '#C9941E' }} />
         </div>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '32px', fontWeight: 300, color: '#FFFFFF', letterSpacing: '-0.02em', marginBottom: '12px' }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '32px', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.02em', marginBottom: '12px' }}>
           {title}
         </h1>
         {description && (
-          <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896', lineHeight: 1.6, marginBottom: '16px', maxWidth: '400px', marginLeft: 'auto', marginRight: 'auto' }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', lineHeight: 1.6, marginBottom: '16px', maxWidth: '400px', marginLeft: 'auto', marginRight: 'auto' }}>
             {description}
           </p>
         )}
-        <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: '#D8C896', marginBottom: '32px' }}>
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: '#5C4E34', marginBottom: '32px' }}>
           {lessonCount} {lessonCount === 1 ? "lesson" : "lessons"} included
         </p>
         <Button
@@ -65,7 +65,7 @@ const EnrolmentGate = ({ courseId, userId, title, description, lessonCount }: En
           {enrol.isPending ? "Enrolling…" : "Enrol Free and Begin"}
         </Button>
         {!userId && (
-          <p style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: '#D8C896', marginTop: '16px' }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: '#5C4E34', marginTop: '16px' }}>
             Please log in to enrol in this course.
           </p>
         )}

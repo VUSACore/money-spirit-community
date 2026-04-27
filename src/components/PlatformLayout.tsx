@@ -39,7 +39,7 @@ const navItems: { labelKey: TranslationKey; label: string; to: string; icon: typ
 ];
 
 const accentMap: Record<string, string> = {
-  giver: "#D4856A", keeper: "#6B9EC4", rebel: "#A87CC4", seeker: "#4DB89A", achiever: "#E0B040",
+  giver: "#D4856A", keeper: "#6B9EC4", rebel: "#A87CC4", seeker: "#4DB89A", achiever: "#C4973A",
 };
 const nameMap: Record<string, string> = {
   giver: "The Giver", keeper: "The Keeper", rebel: "The Rebel", seeker: "The Seeker", achiever: "The Achiever",
@@ -58,13 +58,13 @@ const getPageTitle = (pathname: string, t: (key: TranslationKey) => string) => {
 const tooltipStyle: React.CSSProperties = {
   background: 'rgba(11,21,37,0.95)',
   backdropFilter: 'blur(12px)',
-  border: '1px solid rgba(224,176,64,0.25)',
+  border: '1px solid rgba(196,151,58,0.25)',
   borderRadius: '10px',
   padding: '7px 14px',
   fontSize: '13px',
   fontFamily: 'Outfit, sans-serif',
-  color: '#F0E8D4',
-  boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.15), 0 8px 24px rgba(0,0,0,0.50)',
+  color: '#D4C49A',
+  boxShadow: 'inset 0 1px 0 rgba(238,201,110,0.15), 0 8px 24px rgba(0,0,0,0.50)',
   whiteSpace: 'nowrap',
 };
 
@@ -99,10 +99,10 @@ const MobileBell = ({ userId }: { userId: string }) => {
   return (
     <div className="relative" ref={ref}>
       <button onClick={() => setOpen(!open)} className="relative p-1" aria-label="Notifications">
-        <Bell size={20} style={{ color: unreadCount > 0 ? '#F8DC8A' : 'rgba(216,200,150,0.85)', transition: 'color 0.2s ease' }} />
+        <Bell size={20} style={{ color: unreadCount > 0 ? '#EEC96E' : 'rgba(160,139,98,0.60)', transition: 'color 0.2s ease' }} />
         {unreadCount > 0 && (
           <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-[16px] flex items-center justify-center rounded-full text-[10px] font-semibold px-1"
-            style={{ background: '#E0B040', color: '#004a93', boxShadow: '0 0 8px rgba(224,176,64,0.40)' }}>
+            style={{ background: '#C4973A', color: '#0B1525', boxShadow: '0 0 8px rgba(196,151,58,0.40)' }}>
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
@@ -158,9 +158,9 @@ const DesktopBell = ({ userId, expanded }: { userId: string; expanded: boolean }
           fontFamily: 'var(--font-body)',
           fontSize: '13px',
           fontWeight: 400,
-          color: unreadCount > 0 ? '#F8DC8A' : 'rgba(216,200,150,0.95)',
+          color: unreadCount > 0 ? '#EEC96E' : 'rgba(160,139,98,0.80)',
         }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(224,176,64,0.07)'; }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(196,151,58,0.07)'; }}
         onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
         aria-label="Notifications"
       >
@@ -169,7 +169,7 @@ const DesktopBell = ({ userId, expanded }: { userId: string; expanded: boolean }
           {unreadCount > 0 && (
             <span
               className="absolute -top-1.5 -right-1.5 min-w-[16px] h-[16px] flex items-center justify-center rounded-full text-[9px] font-bold px-1"
-              style={{ background: '#E0B040', color: '#004a93', boxShadow: '0 0 8px rgba(224,176,64,0.40)' }}
+              style={{ background: '#C4973A', color: '#0B1525', boxShadow: '0 0 8px rgba(196,151,58,0.40)' }}
             >
               {displayCount}
             </span>
@@ -225,8 +225,8 @@ const PlatformLayout = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#005eb8" }}>
-        <img src="/logo.png" alt="Money Spirit" style={{ width: 48, filter: 'drop-shadow(0 0 10px rgba(248,220,138,0.44))' }} className="animate-pulse" />
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0B1F3A" }}>
+        <img src="/logo.png" alt="Money Spirit" style={{ width: 48, filter: 'drop-shadow(0 0 10px rgba(196,151,58,0.20))' }} className="animate-pulse" />
       </div>
     );
   }
@@ -243,7 +243,7 @@ const PlatformLayout = () => {
             minHeight: '100vh',
             position: 'relative',
             overflow: 'hidden',
-            background: `radial-gradient(ellipse 100% 100% at 50% 50%, #005eb8 60%, #004a93 100%)`,
+            background: `radial-gradient(ellipse 100% 100% at 50% 50%, #0B1F3A 60%, #081629 100%)`,
           }}
         >
           {/* SacredBackground removed — logo IS the mandala */}
@@ -258,15 +258,15 @@ const PlatformLayout = () => {
               background: 'rgba(6, 12, 24, 0.82)',
               backdropFilter: 'blur(32px)',
               WebkitBackdropFilter: 'blur(32px)',
-              borderRight: '1px solid rgba(248,220,138,0.36)',
-              boxShadow: 'inset -1px 0 0 rgba(248,220,138,0.30), 8px 0 32px rgba(0,0,0,0.40)',
+              borderRight: '1px solid rgba(196,151,58,0.12)',
+              boxShadow: 'inset -1px 0 0 rgba(196,151,58,0.06), 8px 0 32px rgba(0,0,0,0.40)',
               transition: 'width 0.30s cubic-bezier(0.4, 0, 0.2, 1)',
             }}
           >
             {/* Logo */}
-            <div className="flex items-center gap-2.5 px-4 py-4 min-h-[56px]" style={{ borderBottom: '1px solid rgba(248,220,138,0.32)' }}>
+            <div className="flex items-center gap-2.5 px-4 py-4 min-h-[56px]" style={{ borderBottom: '1px solid rgba(196,151,58,0.08)' }}>
               {sidebarExpanded && (
-                <span style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, letterSpacing: '-0.01em', color: '#E0B040', whiteSpace: 'nowrap' }}>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, letterSpacing: '-0.01em', color: '#C4973A', whiteSpace: 'nowrap' }}>
                   Money Spirit
                 </span>
               )}
@@ -292,11 +292,11 @@ const PlatformLayout = () => {
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       ...(active ? {
-                        background: 'rgba(248,220,138,0.36)',
+                        background: 'rgba(196,151,58,0.12)',
                         borderRadius: '10px',
-                        borderLeft: '2px solid rgba(248,220,138,0.65)',
-                        boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.12), 0 0 16px rgba(248,220,138,0.32)',
-                        color: '#F8DC8A',
+                        borderLeft: '2px solid rgba(238,201,110,0.65)',
+                        boxShadow: 'inset 0 1px 0 rgba(238,201,110,0.12), 0 0 16px rgba(196,151,58,0.08)',
+                        color: '#EEC96E',
                       } : {
                         background: 'transparent',
                         borderRadius: '10px',
@@ -307,7 +307,7 @@ const PlatformLayout = () => {
                     }}
                     onMouseEnter={(e) => {
                       if (!active) {
-                        (e.currentTarget as HTMLElement).style.background = 'rgba(224,176,64,0.07)';
+                        (e.currentTarget as HTMLElement).style.background = 'rgba(196,151,58,0.07)';
                         (e.currentTarget as HTMLElement).style.color = 'rgba(210,180,120,0.90)';
                       }
                     }}
@@ -340,13 +340,13 @@ const PlatformLayout = () => {
             </nav>
 
             {/* Bottom section */}
-            <div className="px-2 pb-3 space-y-1" style={{ borderTop: '1px solid rgba(248,220,138,0.32)', background: 'rgba(4,8,16,0.40)' }}>
+            <div className="px-2 pb-3 space-y-1" style={{ borderTop: '1px solid rgba(196,151,58,0.08)', background: 'rgba(4,8,16,0.40)' }}>
               {profile?.user_id && (
                 <DesktopBell userId={profile.user_id} expanded={sidebarExpanded} />
               )}
 
               {profile?.role === "admin" && sidebarExpanded && (
-                <Link to="/admin" className="flex items-center gap-2 px-3 py-2 text-xs transition-colors" style={{ fontFamily: 'var(--font-body)', color: '#F8DC8A' }}>
+                <Link to="/admin" className="flex items-center gap-2 px-3 py-2 text-xs transition-colors" style={{ fontFamily: 'var(--font-body)', color: '#EEC96E' }}>
                   <Shield size={14} />
                   Admin Panel
                 </Link>
@@ -354,11 +354,11 @@ const PlatformLayout = () => {
 
               {sidebarExpanded ? (
                 <div className="px-3 py-2 space-y-1">
-                  <Link to="/profile" className="text-[13px] truncate block hover:underline" style={{ fontFamily: 'var(--font-body)', fontWeight: 500, color: '#FFFFFF' }}>
+                  <Link to="/profile" className="text-[13px] truncate block hover:underline" style={{ fontFamily: 'var(--font-body)', fontWeight: 500, color: '#F2EAD8' }}>
                     {profile?.display_name ?? "Member"}
                   </Link>
                   {profile?.pathway_type && (
-                    <p className="text-[11px]" style={{ fontFamily: 'var(--font-body)', color: '#D8C896' }}>
+                    <p className="text-[11px]" style={{ fontFamily: 'var(--font-body)', color: '#A08B62' }}>
                       {nameMap[profile.pathway_type] ?? profile.pathway_type}
                     </p>
                   )}
@@ -366,9 +366,9 @@ const PlatformLayout = () => {
                   <button
                     onClick={handleSignOut}
                     className="flex items-center gap-2 text-[12px] transition-colors mt-1"
-                    style={{ fontFamily: 'var(--font-body)', color: '#D8C896' }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#FFFFFF'; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#D8C896'; }}
+                    style={{ fontFamily: 'var(--font-body)', color: '#A08B62' }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#F2EAD8'; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#A08B62'; }}
                   >
                     <LogOut size={14} />
                     {t("sign_out")}
@@ -383,10 +383,10 @@ const PlatformLayout = () => {
                         style={{
                           width: 32, height: 32, borderRadius: '50%',
                           background: 'var(--ss-gold-gradient)',
-                          border: '1.5px solid rgba(248,220,138,0.40)',
-                          boxShadow: '0 0 16px rgba(248,220,138,0.44)',
+                          border: '1.5px solid rgba(238,201,110,0.40)',
+                          boxShadow: '0 0 16px rgba(196,151,58,0.20)',
                           fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 600,
-                          color: '#004a93',
+                          color: '#0B1525',
                         }}
                       >
                         {initials}
@@ -409,14 +409,14 @@ const PlatformLayout = () => {
               background: 'rgba(4, 8, 16, 0.75)',
               backdropFilter: 'blur(24px)',
               WebkitBackdropFilter: 'blur(24px)',
-              borderBottom: '1px solid rgba(248,220,138,0.34)',
-              boxShadow: '0 1px 0 rgba(224,176,64,0.05)',
+              borderBottom: '1px solid rgba(196,151,58,0.10)',
+              boxShadow: '0 1px 0 rgba(196,151,58,0.05)',
             }}
           >
             <div className="flex items-center gap-2">
               <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
                 <SheetTrigger asChild>
-                  <button style={{ color: '#FFFFFF' }} className="p-1">
+                  <button style={{ color: '#F2EAD8' }} className="p-1">
                     <Menu size={24} />
                   </button>
                 </SheetTrigger>
@@ -425,8 +425,8 @@ const PlatformLayout = () => {
                   backdropFilter: 'blur(32px)',
                 }}>
                   <div className="flex flex-col h-full">
-                    <div className="px-6 py-6 flex items-center gap-2.5" style={{ borderBottom: '1px solid rgba(248,220,138,0.32)' }}>
-                      <span style={{ fontFamily: 'var(--font-display)', fontSize: '20px', color: '#E0B040', fontWeight: 700 }}>Money Spirit</span>
+                    <div className="px-6 py-6 flex items-center gap-2.5" style={{ borderBottom: '1px solid rgba(196,151,58,0.08)' }}>
+                      <span style={{ fontFamily: 'var(--font-display)', fontSize: '20px', color: '#C4973A', fontWeight: 700 }}>Money Spirit</span>
                     </div>
                     <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
                       {navItems.map((item) => {
@@ -439,8 +439,8 @@ const PlatformLayout = () => {
                             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors"
                             style={{
                               fontFamily: 'var(--font-body)',
-                              background: active ? 'rgba(248,220,138,0.36)' : 'transparent',
-                              color: active ? '#F8DC8A' : '#BBA96E',
+                              background: active ? 'rgba(196,151,58,0.12)' : 'transparent',
+                              color: active ? '#EEC96E' : '#BBA96E',
                             }}
                           >
                             <item.icon size={18} />
@@ -450,16 +450,16 @@ const PlatformLayout = () => {
                       })}
                     </nav>
                     {profile?.role === "admin" && (
-                      <Link to="/admin" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 px-6 py-2 text-xs" style={{ fontFamily: 'var(--font-body)', color: '#F8DC8A' }}>
+                      <Link to="/admin" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 px-6 py-2 text-xs" style={{ fontFamily: 'var(--font-body)', color: '#EEC96E' }}>
                         <Shield size={14} />
                         Admin Panel
                       </Link>
                     )}
-                    <div className="px-4 py-4 space-y-2" style={{ borderTop: '1px solid rgba(248,220,138,0.32)', background: 'rgba(4,8,16,0.40)' }}>
-                      <p className="text-sm truncate" style={{ fontFamily: 'var(--font-body)', fontWeight: 500, color: '#FFFFFF' }}>
+                    <div className="px-4 py-4 space-y-2" style={{ borderTop: '1px solid rgba(196,151,58,0.08)', background: 'rgba(4,8,16,0.40)' }}>
+                      <p className="text-sm truncate" style={{ fontFamily: 'var(--font-body)', fontWeight: 500, color: '#F2EAD8' }}>
                         {profile?.display_name ?? "Member"}
                       </p>
-                      <button onClick={handleSignOut} className="flex items-center gap-2 text-xs transition-colors" style={{ fontFamily: 'var(--font-body)', color: '#D8C896' }}>
+                      <button onClick={handleSignOut} className="flex items-center gap-2 text-xs transition-colors" style={{ fontFamily: 'var(--font-body)', color: '#A08B62' }}>
                         <LogOut size={14} />
                         {t("sign_out")}
                       </button>
@@ -467,7 +467,7 @@ const PlatformLayout = () => {
                   </div>
                 </SheetContent>
               </Sheet>
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', color: '#E0B040', fontWeight: 700 }}>Money Spirit</span>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', color: '#C4973A', fontWeight: 700 }}>Money Spirit</span>
             </div>
             <div className="flex items-center gap-3">
               {profile?.user_id && (
@@ -478,10 +478,10 @@ const PlatformLayout = () => {
                 style={{
                   width: 32, height: 32, borderRadius: '50%',
                   background: 'var(--ss-gold-gradient)',
-                  border: '1.5px solid rgba(248,220,138,0.40)',
-                  boxShadow: '0 0 16px rgba(248,220,138,0.44)',
+                  border: '1.5px solid rgba(238,201,110,0.40)',
+                  boxShadow: '0 0 16px rgba(196,151,58,0.20)',
                   fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 600,
-                  color: '#004a93',
+                  color: '#0B1525',
                 }}
               >
                 {initials}
@@ -496,7 +496,7 @@ const PlatformLayout = () => {
               background: 'rgba(4,8,16,0.85)',
               backdropFilter: 'blur(24px)',
               WebkitBackdropFilter: 'blur(24px)',
-              borderTop: '1px solid rgba(248,220,138,0.34)',
+              borderTop: '1px solid rgba(196,151,58,0.10)',
             }}
           >
             {navItems.slice(0, 5).map((item) => {
@@ -506,7 +506,7 @@ const PlatformLayout = () => {
                   key={item.to}
                   to={item.to}
                   className="flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg text-[10px] transition-colors"
-                  style={{ fontFamily: 'var(--font-body)', color: active ? '#F8DC8A' : '#D8C896' }}
+                  style={{ fontFamily: 'var(--font-body)', color: active ? '#EEC96E' : '#9A8856' }}
                 >
                   <item.icon size={20} />
                   <span>{item.labelKey === "my_pathway" ? "Home" : t(item.labelKey)}</span>
@@ -532,8 +532,8 @@ const PlatformLayout = () => {
                   background: 'rgba(4, 8, 16, 0.75)',
                   backdropFilter: 'blur(24px)',
                   WebkitBackdropFilter: 'blur(24px)',
-                  borderBottom: '1px solid rgba(248,220,138,0.34)',
-                  boxShadow: '0 1px 0 rgba(224,176,64,0.05)',
+                  borderBottom: '1px solid rgba(196,151,58,0.10)',
+                  boxShadow: '0 1px 0 rgba(196,151,58,0.05)',
                 }}
               >
                 <h2 style={{
@@ -549,7 +549,7 @@ const PlatformLayout = () => {
                 <div className="flex items-center gap-4">
                   {profile?.user_id && (
                     <div className="relative">
-                      <Bell size={20} style={{ color: 'rgba(216,200,150,0.85)', cursor: 'pointer', transition: 'color 0.15s ease' }} />
+                      <Bell size={20} style={{ color: 'rgba(160,139,98,0.60)', cursor: 'pointer', transition: 'color 0.15s ease' }} />
                     </div>
                   )}
                   <Link to="/profile"
@@ -557,10 +557,10 @@ const PlatformLayout = () => {
                     style={{
                       width: 32, height: 32, borderRadius: '50%',
                       background: 'var(--ss-gold-gradient)',
-                      border: '1.5px solid rgba(248,220,138,0.40)',
-                      boxShadow: '0 0 16px rgba(248,220,138,0.44)',
+                      border: '1.5px solid rgba(238,201,110,0.40)',
+                      boxShadow: '0 0 16px rgba(196,151,58,0.20)',
                       fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 600,
-                      color: '#004a93',
+                      color: '#0B1525',
                     }}
                   >
                     {initials}

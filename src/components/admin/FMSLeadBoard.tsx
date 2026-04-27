@@ -14,25 +14,25 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const archetypeAccents: Record<string, string> = {
-  giver: "#FFA37A", keeper: "#7BB0E0", rebel: "#C490DA", seeker: "#3DD4A8", achiever: "#C9941E",
+  giver: "#E8845C", keeper: "#5B8DB8", rebel: "#9B59B6", seeker: "#27AE8F", achiever: "#C9941E",
 };
 const archetypeNames: Record<string, string> = {
   giver: "The Giver", keeper: "The Keeper", rebel: "The Rebel", seeker: "The Seeker", achiever: "The Achiever",
 };
 
 const leadTypeConfig: Record<string, { label: string; icon: typeof Home; color: string }> = {
-  first_home_buyer: { label: "First Home Buyer", icon: Home, color: "#7BB0E0" },
-  refinancer: { label: "Refinancer", icon: RefreshCw, color: "#C490DA" },
+  first_home_buyer: { label: "First Home Buyer", icon: Home, color: "#5B8DB8" },
+  refinancer: { label: "Refinancer", icon: RefreshCw, color: "#9B59B6" },
   wealth_builder: { label: "Wealth Builder", icon: TrendingUp, color: "#C9941E" },
-  protection: { label: "Protection", icon: Shield, color: "#3DD4A8" },
-  investment_property: { label: "Investment Property", icon: Building, color: "#FFA37A" },
-  not_ready: { label: "Not Ready", icon: Clock, color: "#A8B0BC" },
+  protection: { label: "Protection", icon: Shield, color: "#27AE8F" },
+  investment_property: { label: "Investment Property", icon: Building, color: "#E8845C" },
+  not_ready: { label: "Not Ready", icon: Clock, color: "#6B7280" },
 };
 
 const signalLabels: Record<string, { label: string; color: string }> = {
-  strong: { label: "Strong Signal", color: "#3DD4A8" },
+  strong: { label: "Strong Signal", color: "#27AE8F" },
   possible: { label: "Possible Signal", color: "#C9941E" },
-  none: { label: "No Signal", color: "#A8B0BC" },
+  none: { label: "No Signal", color: "#6B7280" },
 };
 
 const lifeStageLabels: Record<string, string> = {
@@ -135,9 +135,9 @@ const FMSLeadBoard = () => {
   };
 
   const scoreColor = (score: number) => {
-    if (score >= 60) return "#3DD4A8";
+    if (score >= 60) return "#27AE8F";
     if (score >= 35) return "#C9941E";
-    return "#A8B0BC";
+    return "#6B7280";
   };
 
   return (

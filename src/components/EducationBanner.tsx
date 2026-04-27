@@ -11,7 +11,7 @@ const EducationBanner = () => {
   return (
     <div style={{
       background: 'rgba(201,148,30,0.06)',
-      border: '1px solid rgba(248,220,138,0.40)',
+      border: '1px solid rgba(201,148,30,0.15)',
       borderRadius: 'var(--r-md)',
       padding: '12px 16px',
       marginBottom: '24px',

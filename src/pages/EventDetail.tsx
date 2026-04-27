@@ -157,9 +157,9 @@ const EventDetail = () => {
   if (loading) {
     return (
       <div className="p-4 sm:p-6 md:p-8 max-w-3xl mx-auto space-y-6">
-        <Skeleton className="h-8 w-48" style={{ background: "rgba(255,255,255,0.22)" }} />
-        <Skeleton className="h-48 w-full rounded-xl" style={{ background: "rgba(255,255,255,0.22)" }} />
-        <Skeleton className="h-6 w-64" style={{ background: "rgba(255,255,255,0.22)" }} />
+        <Skeleton className="h-8 w-48" style={{ background: "rgba(255,255,255,0.06)" }} />
+        <Skeleton className="h-48 w-full rounded-xl" style={{ background: "rgba(255,255,255,0.06)" }} />
+        <Skeleton className="h-6 w-64" style={{ background: "rgba(255,255,255,0.06)" }} />
       </div>
     );
   }
@@ -306,7 +306,7 @@ const EventDetail = () => {
         padding: "clamp(28px, 5vw, 48px) clamp(16px, 4vw, 32px)",
         textAlign: "center",
       }}>
-        <Sparkles className="mx-auto mb-4" size={32} style={{ color: "rgba(224,176,64,0.3)" }} />
+        <Sparkles className="mx-auto mb-4" size={32} style={{ color: "rgba(196,151,58,0.3)" }} />
         <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 4vw, 32px)", fontWeight: 300, color: "var(--text-1)", letterSpacing: "-0.03em" }}>
           {event.title}
         </h1>

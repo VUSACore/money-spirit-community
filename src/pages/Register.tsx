@@ -43,25 +43,25 @@ const Register = () => {
     navigate("/onboarding");
   };
 
-  const labelStyle: React.CSSProperties = { display: 'block', fontFamily: 'var(--font-body)', fontSize: '13px', color: '#D8C896', marginBottom: '6px' };
-  const errorStyle: React.CSSProperties = { color: '#FCA5A5', fontSize: '13px', fontFamily: 'var(--font-body)', marginTop: '4px' };
+  const labelStyle: React.CSSProperties = { display: 'block', fontFamily: 'var(--font-body)', fontSize: '13px', color: '#A08B62', marginBottom: '6px' };
+  const errorStyle: React.CSSProperties = { color: '#F87171', fontSize: '13px', fontFamily: 'var(--font-body)', marginTop: '4px' };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#005eb8' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#0B1F3A' }}>
       <SEOHead title="Create Account — Money Spirit" description="Join Money Spirit. Create your free account to access rituals, courses, events and a supportive community for financial wellbeing." />
       <div className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <img src="/logo.png" alt="Money Spirit" style={{ width: 64, height: 64, margin: '0 auto 16px', filter: 'drop-shadow(0 0 10px rgba(248,220,138,0.44))' }} />
-            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '26px', color: '#E0B040', fontWeight: 700, marginBottom: '6px' }}>Money Spirit</h1>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896' }}>Join Money Spirit</p>
+            <img src="/logo.png" alt="Money Spirit" style={{ width: 64, height: 64, margin: '0 auto 16px', filter: 'drop-shadow(0 0 10px rgba(196,151,58,0.20))' }} />
+            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '26px', color: '#C4973A', fontWeight: 700, marginBottom: '6px' }}>Money Spirit</h1>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62' }}>Join Money Spirit</p>
           </div>
 
           <div style={{
             background: 'rgba(13,27,46,0.70)',
-            border: '1px solid rgba(248,220,138,0.42)',
+            border: '1px solid rgba(196,151,58,0.18)',
             borderRadius: 'var(--r-xl)',
-            boxShadow: 'inset 0 1px 0 rgba(248,220,138,0.20), 0 24px 60px rgba(0,0,0,0.60)',
+            boxShadow: 'inset 0 1px 0 rgba(238,201,110,0.20), 0 24px 60px rgba(0,0,0,0.60)',
             padding: 'clamp(24px, 5vw, 40px) clamp(20px, 5vw, 36px)',
             backdropFilter: 'blur(20px)',
           }}>
@@ -70,7 +70,7 @@ const Register = () => {
                 <div style={{
                   background: 'rgba(220,38,38,0.10)', border: '1px solid rgba(220,38,38,0.30)',
                   borderRadius: '12px', padding: '12px 16px',
-                  fontFamily: 'var(--font-body)', fontSize: '14px', color: '#FCA5A5',
+                  fontFamily: 'var(--font-body)', fontSize: '14px', color: '#F87171',
                 }}>
                   {errors.general}
                 </div>
@@ -102,14 +102,14 @@ const Register = () => {
 
               <div className="flex items-start gap-2.5">
                 <input type="checkbox" id="terms" checked={termsAccepted} onChange={(e) => setTermsAccepted(e.target.checked)}
-                  className="mt-1 h-4 w-4 rounded" style={{ accentColor: '#E0B040' }} />
-                <label htmlFor="terms" style={{ fontSize: '13px', fontFamily: 'var(--font-body)', color: '#D8C896', lineHeight: 1.5 }}>
+                  className="mt-1 h-4 w-4 rounded" style={{ accentColor: '#C4973A' }} />
+                <label htmlFor="terms" style={{ fontSize: '13px', fontFamily: 'var(--font-body)', color: '#A08B62', lineHeight: 1.5 }}>
                   I agree to the{" "}
-                  <Link to="/terms" style={{ color: '#E0B040' }} target="_blank">Terms of Service</Link>
+                  <Link to="/terms" style={{ color: '#C4973A' }} target="_blank">Terms of Service</Link>
                   {" "}and have read the{" "}
-                  <Link to="/privacy" style={{ color: '#E0B040' }} target="_blank">Privacy Policy</Link>
+                  <Link to="/privacy" style={{ color: '#C4973A' }} target="_blank">Privacy Policy</Link>
                   {" "}and{" "}
-                  <Link to="/ethics" style={{ color: '#E0B040' }} target="_blank">Ethics &amp; Education Policy</Link>.
+                  <Link to="/ethics" style={{ color: '#C4973A' }} target="_blank">Ethics &amp; Education Policy</Link>.
                 </label>
               </div>
               {errors.terms && <p style={errorStyle}>{errors.terms}</p>}
@@ -118,9 +118,9 @@ const Register = () => {
                 {loading ? "Creating account..." : "Join Money Spirit"}
               </Button>
 
-              <p style={{ textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896' }}>
+              <p style={{ textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '14px', color: '#5C4E34' }}>
                 Already have an account?{" "}
-                <Link to="/login" style={{ color: '#E0B040', fontWeight: 500 }}>Sign in</Link>
+                <Link to="/login" style={{ color: '#C4973A', fontWeight: 500 }}>Sign in</Link>
               </p>
             </form>
           </div>

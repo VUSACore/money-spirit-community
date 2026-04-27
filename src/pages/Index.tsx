@@ -35,14 +35,14 @@ const Index = () => {
       />
       <HeroSection />
 
-      <section style={{ background: '#005eb8', padding: '80px 24px' }}>
+      <section style={{ background: '#0B1F3A', padding: '80px 24px' }}>
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
             {features.map((f) => (
               <div key={f.title} className="text-center space-y-4">
-                <f.icon className="mx-auto" size={36} strokeWidth={1.5} style={{ color: '#E0B040' }} />
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#FFFFFF' }}>{f.title}</h3>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896', lineHeight: 1.65 }}>{f.description}</p>
+                <f.icon className="mx-auto" size={36} strokeWidth={1.5} style={{ color: '#C4973A' }} />
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: 400, color: '#F2EAD8' }}>{f.title}</h3>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', lineHeight: 1.65 }}>{f.description}</p>
               </div>
             ))}
           </div>
@@ -55,16 +55,16 @@ const Index = () => {
         </div>
       </section>
 
-      <footer style={{ background: '#005eb8', borderTop: '1px solid rgba(248,220,138,0.32)', padding: '24px' }}>
+      <footer style={{ background: '#0B1F3A', borderTop: '1px solid rgba(196,151,58,0.08)', padding: '24px' }}>
         <div className="max-w-4xl mx-auto text-center">
-          <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#D8C896', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#5C4E34', lineHeight: 1.6 }}>
             Money Spirit provides financial education and community — not financial advice.
           </p>
-          <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#D8C89680', marginTop: '8px' }}>
+          <p style={{ fontSize: '12px', fontFamily: 'var(--font-body)', color: '#5C4E3480', marginTop: '8px' }}>
             © 2026 Money Spirit ·{" "}
-            <Link to="/ethics" style={{ color: '#D8C896', textDecoration: 'underline', textUnderlineOffset: '2px' }}>Ethics &amp; Education Policy</Link>{" "}·{" "}
-            <Link to="/privacy" style={{ color: '#D8C896', textDecoration: 'underline', textUnderlineOffset: '2px' }}>Privacy</Link>{" "}·{" "}
-            <Link to="/terms" style={{ color: '#D8C896', textDecoration: 'underline', textUnderlineOffset: '2px' }}>Terms</Link>
+            <Link to="/ethics" style={{ color: '#5C4E34', textDecoration: 'underline', textUnderlineOffset: '2px' }}>Ethics &amp; Education Policy</Link>{" "}·{" "}
+            <Link to="/privacy" style={{ color: '#5C4E34', textDecoration: 'underline', textUnderlineOffset: '2px' }}>Privacy</Link>{" "}·{" "}
+            <Link to="/terms" style={{ color: '#5C4E34', textDecoration: 'underline', textUnderlineOffset: '2px' }}>Terms</Link>
           </p>
         </div>
       </footer>

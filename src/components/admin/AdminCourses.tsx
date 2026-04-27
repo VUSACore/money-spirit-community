@@ -174,8 +174,8 @@ const AdminCourses = () => {
 
   const publishBadge = (published: boolean, lessonCount: number) => {
     if (published) return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-body" style={{ background: "rgba(16,185,129,0.15)", color: "#10b981" }}><Check size={10} /> Live</span>;
-    if (lessonCount === 0) return <span className="inline-flex px-2 py-0.5 rounded-full text-xs font-body" style={{ background: "rgba(239,68,68,0.12)", color: "#FCA5A5" }}>Empty draft</span>;
-    return <span className="inline-flex px-2 py-0.5 rounded-full text-xs font-body" style={{ background: "rgba(255,255,255,0.22)", color: "var(--text-3)" }}>Draft</span>;
+    if (lessonCount === 0) return <span className="inline-flex px-2 py-0.5 rounded-full text-xs font-body" style={{ background: "rgba(239,68,68,0.12)", color: "#ef4444" }}>Empty draft</span>;
+    return <span className="inline-flex px-2 py-0.5 rounded-full text-xs font-body" style={{ background: "rgba(255,255,255,0.06)", color: "var(--text-3)" }}>Draft</span>;
   };
 
   if (loading) return <p className="text-muted-foreground font-body">Loading courses…</p>;

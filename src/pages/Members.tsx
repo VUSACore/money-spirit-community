@@ -56,8 +56,8 @@ const Members = () => {
         <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="glass-card space-y-3">
-              <Skeleton className="h-14 w-14 rounded-full" style={{ background: 'rgba(255,255,255,0.22)' }} />
-              <Skeleton className="h-5 w-32" style={{ background: 'rgba(255,255,255,0.22)' }} />
+              <Skeleton className="h-14 w-14 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }} />
+              <Skeleton className="h-5 w-32" style={{ background: 'rgba(255,255,255,0.06)' }} />
             </div>
           ))}
         </div>
@@ -106,7 +106,7 @@ const Members = () => {
                     <h3 style={{ fontFamily: 'var(--font-body)', fontSize: '14px', fontWeight: 500, color: 'var(--text-1)' }} className="truncate">{member.display_name}</h3>
                     {member.ritual_streak > 0 && (
                       <span className="inline-flex items-center gap-0.5 flex-shrink-0" style={{
-                        background: 'rgba(248,220,138,0.40)', borderRadius: 'var(--r-full)',
+                        background: 'rgba(201,148,30,0.15)', borderRadius: 'var(--r-full)',
                         padding: '2px 8px', fontSize: '11px', fontFamily: 'var(--font-body)', fontWeight: 600, color: 'var(--text-gold)',
                       }}>
                         <Flame className="h-3 w-3" /> {member.ritual_streak}
@@ -140,7 +140,7 @@ const Members = () => {
               {member.financial_goals && member.financial_goals.length > 0 && (
                 <div className="flex flex-wrap gap-1">
                   {member.financial_goals.slice(0, 2).map((goal) => (
-                    <span key={goal} style={{ fontSize: '10px', fontFamily: 'var(--font-body)', background: 'rgba(248,220,138,0.36)', border: '1px solid rgba(248,220,138,0.44)', borderRadius: 'var(--r-full)', padding: '2px 8px', color: 'var(--text-gold-dim)' }}>{goal}</span>
+                    <span key={goal} style={{ fontSize: '10px', fontFamily: 'var(--font-body)', background: 'rgba(201,148,30,0.12)', border: '1px solid rgba(201,148,30,0.20)', borderRadius: 'var(--r-full)', padding: '2px 8px', color: 'var(--text-gold-dim)' }}>{goal}</span>
                   ))}
                   {member.financial_goals.length > 2 && (
                     <span style={{ fontSize: '10px', fontFamily: 'var(--font-body)', color: 'var(--text-4)', padding: '2px 8px' }}>+{member.financial_goals.length - 2}</span>

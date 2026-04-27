@@ -81,9 +81,9 @@ const NotificationPreferences = () => {
   if (loading) {
     return (
       <div className="p-6 md:p-10 max-w-2xl mx-auto space-y-6">
-        <div className="h-8 w-64 rounded animate-pulse" style={{ background: 'rgba(248,220,138,0.32)' }} />
+        <div className="h-8 w-64 rounded animate-pulse" style={{ background: 'rgba(196,151,58,0.08)' }} />
         {[1, 2, 3].map(i => (
-          <div key={i} className="h-16 rounded-xl animate-pulse" style={{ background: 'rgba(224,176,64,0.04)' }} />
+          <div key={i} className="h-16 rounded-xl animate-pulse" style={{ background: 'rgba(196,151,58,0.04)' }} />
         ))}
       </div>
     );
@@ -93,11 +93,11 @@ const NotificationPreferences = () => {
     <div className="p-6 md:p-10 max-w-2xl mx-auto">
       <h1 style={{
         fontFamily: 'var(--font-display)', fontSize: 'clamp(24px, 3.5vw, 32px)',
-        fontWeight: 400, color: '#FFFFFF', letterSpacing: '-0.03em', marginBottom: '4px',
+        fontWeight: 400, color: '#F2EAD8', letterSpacing: '-0.03em', marginBottom: '4px',
       }}>
         Notification Preferences
       </h1>
-      <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D8C896', marginBottom: '32px' }}>
+      <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#A08B62', marginBottom: '32px' }}>
         Choose which notifications you want to receive
       </p>
 
@@ -109,13 +109,13 @@ const NotificationPreferences = () => {
               key={row.key}
               className="flex items-center gap-4 px-4 py-4 rounded-xl transition-colors"
               style={{ background: 'transparent' }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(224,176,64,0.04)'; }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(196,151,58,0.04)'; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
             >
-              <Icon size={18} className="shrink-0" style={{ color: '#D8C896' }} />
+              <Icon size={18} className="shrink-0" style={{ color: '#A08B62' }} />
               <div className="flex-1 min-w-0">
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#FFFFFF', fontWeight: 500 }}>{row.label}</p>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: '#D8C896', marginTop: '2px' }}>{row.description}</p>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#F2EAD8', fontWeight: 500 }}>{row.label}</p>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '12px', color: '#A08B62', marginTop: '2px' }}>{row.description}</p>
               </div>
               <Switch
                 checked={prefs[row.key]}

@@ -141,10 +141,10 @@ const ForumDetail = () => {
   if (loading) {
     return (
       <div className="p-4 sm:p-6 md:p-8 max-w-4xl mx-auto space-y-4">
-        <Skeleton className="h-8 w-48" style={{ background: "rgba(255,255,255,0.22)" }} />
-        <Skeleton className="h-4 w-72" style={{ background: "rgba(255,255,255,0.22)" }} />
+        <Skeleton className="h-8 w-48" style={{ background: "rgba(255,255,255,0.06)" }} />
+        <Skeleton className="h-4 w-72" style={{ background: "rgba(255,255,255,0.06)" }} />
         {[1, 2, 3].map(i => (
-          <Skeleton key={i} className="h-20 w-full rounded-xl" style={{ background: "rgba(255,255,255,0.22)" }} />
+          <Skeleton key={i} className="h-20 w-full rounded-xl" style={{ background: "rgba(255,255,255,0.06)" }} />
         ))}
       </div>
     );
@@ -216,7 +216,7 @@ const ForumDetail = () => {
             value={title}
             onChange={e => setTitle(e.target.value)}
             className="ms-input"
-            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.24)", color: "var(--text-1)" }}
+            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", color: "var(--text-1)" }}
           />
           <textarea
             placeholder="Share your thoughts…"

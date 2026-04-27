@@ -90,7 +90,7 @@ const ReportDialog = ({ open, onOpenChange, contentType, contentId }: Props) => 
         style={{
           background: "rgba(12, 18, 33, 0.95)",
           backdropFilter: "blur(24px)",
-          border: "1px solid rgba(255,255,255,0.24)",
+          border: "1px solid rgba(255,255,255,0.08)",
           borderRadius: 16,
         }}
       >
@@ -168,7 +168,7 @@ const ReportDialog = ({ open, onOpenChange, contentType, contentId }: Props) => 
                     border:
                       reason === r.value
                         ? "1px solid rgba(201, 148, 30, 0.3)"
-                        : "1px solid rgba(255,255,255,0.22)",
+                        : "1px solid rgba(255,255,255,0.06)",
                   }}
                 >
                   {r.label}

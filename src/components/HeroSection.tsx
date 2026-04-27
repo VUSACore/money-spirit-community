@@ -5,7 +5,7 @@ const HeroSection = () => {
   return (
     <section
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
-      style={{ backgroundColor: "#005eb8" }}
+      style={{ backgroundColor: "#0B1F3A" }}
     >
       <div
         style={{
@@ -53,12 +53,12 @@ const HeroSection = () => {
         </div>
 
         {/* Sign in */}
-        <p style={{ fontSize: 14, fontFamily: "var(--font-body)", color: "#D8C896" }}>
+        <p style={{ fontSize: 14, fontFamily: "var(--font-body)", color: "#5C4E34" }}>
           Already a member?{" "}
           <Link
             to="/login"
             style={{ color: "#C9941E", textDecoration: "underline", textUnderlineOffset: "2px" }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#F8DC8A"; }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#EEC96E"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#C9941E"; }}
           >
             Sign in

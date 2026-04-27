@@ -44,7 +44,7 @@ const Profile = () => {
       <SEOHead title="My Profile — Money Spirit" />
 
       {/* Cover */}
-      <div className="relative w-full" style={{ height: 'clamp(140px, 20vw, 200px)', background: p.cover_url ? `url(${p.cover_url}) center/cover` : "linear-gradient(135deg, #005eb8 0%, #004a93 100%)" }}>
+      <div className="relative w-full" style={{ height: 'clamp(140px, 20vw, 200px)', background: p.cover_url ? `url(${p.cover_url}) center/cover` : "linear-gradient(135deg, #0E2D5F 0%, #0B1525 100%)" }}>
         <CoverUpload userId={profile.user_id} />
       </div>
 
@@ -53,25 +53,25 @@ const Profile = () => {
         <div className="flex flex-col md:flex-row md:items-end gap-4">
           <div className="relative group shrink-0">
             {p.avatar_url ? (
-              <img src={p.avatar_url} alt={profile.display_name} className="w-24 h-24 rounded-full object-cover" style={{ border: "3px solid #004a93" }} />
+              <img src={p.avatar_url} alt={profile.display_name} className="w-24 h-24 rounded-full object-cover" style={{ border: "3px solid #0B1525" }} />
             ) : (
-              <div className="w-24 h-24 rounded-full flex items-center justify-center" style={{ background: "#C9941E", border: "3px solid #004a93" }}>
+              <div className="w-24 h-24 rounded-full flex items-center justify-center" style={{ background: "#C9941E", border: "3px solid #0B1525" }}>
                 <span className="font-heading text-2xl font-bold" style={{ color: "#0A0D14" }}>{getInitials(profile.display_name)}</span>
               </div>
             )}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="font-heading text-xl sm:text-[28px] font-medium" style={{ color: "#FFFFFF" }}>{profile.display_name}</h1>
-              <Button variant="ghost" size="sm" onClick={() => setEditOpen(true)} className="text-xs font-body gap-1" style={{ color: "#D8C896" }}>
+              <h1 className="font-heading text-xl sm:text-[28px] font-medium" style={{ color: "#F2EAD8" }}>{profile.display_name}</h1>
+              <Button variant="ghost" size="sm" onClick={() => setEditOpen(true)} className="text-xs font-body gap-1" style={{ color: "#A08B62" }}>
                 <Pencil size={14} /> Edit
               </Button>
             </div>
             {archName && (
               <span className="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[13px] font-body" style={{ background: `${accent}26`, color: accent }}>{archName}</span>
             )}
-            <p className="text-xs font-body mt-1" style={{ color: "#D8C896" }}>Member since {format(new Date(profile.created_at), "MMMM yyyy")}</p>
-            {p.bio && <p className="text-sm font-body mt-2 leading-relaxed max-w-lg" style={{ color: "#F0E8D4" }}>{p.bio}</p>}
+            <p className="text-xs font-body mt-1" style={{ color: "#A08B62" }}>Member since {format(new Date(profile.created_at), "MMMM yyyy")}</p>
+            {p.bio && <p className="text-sm font-body mt-2 leading-relaxed max-w-lg" style={{ color: "#D4C49A" }}>{p.bio}</p>}
           </div>
           <div className="flex gap-6">
             {[
@@ -79,8 +79,8 @@ const Profile = () => {
               { label: "Streak", value: profile.ritual_streak },
             ].map((s) => (
               <div key={s.label} className="text-center">
-                <div className="font-heading text-2xl" style={{ color: "#FFFFFF" }}>{s.value}</div>
-                <div className="text-[11px] font-body" style={{ color: "#D8C896" }}>{s.label}</div>
+                <div className="font-heading text-2xl" style={{ color: "#F2EAD8" }}>{s.value}</div>
+                <div className="text-[11px] font-body" style={{ color: "#A08B62" }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -103,7 +103,7 @@ const Profile = () => {
               <p className="text-xs font-body mb-2" style={{ color: "var(--ms-text-muted)" }}>Financial Goals</p>
               <div className="flex flex-wrap gap-1.5">
                 {(p.financial_goals as string[]).map((g: string) => (
-                  <span key={g} className="text-[11px] font-body px-2.5 py-1 rounded-full" style={{ background: "rgba(248,220,138,0.36)", color: "#F5C842" }}>{g}</span>
+                  <span key={g} className="text-[11px] font-body px-2.5 py-1 rounded-full" style={{ background: "rgba(201,148,30,0.12)", color: "#F5C842" }}>{g}</span>
                 ))}
               </div>
             </div>
@@ -113,7 +113,7 @@ const Profile = () => {
               <p className="text-xs font-body mb-2" style={{ color: "var(--ms-text-muted)" }}>Interests</p>
               <div className="flex flex-wrap gap-1.5">
                 {(p.interests as string[]).map((i: string) => (
-                  <span key={i} className="text-[11px] font-body px-2.5 py-1 rounded-full" style={{ background: "rgba(248,220,138,0.36)", color: "#F5C842" }}>{i}</span>
+                  <span key={i} className="text-[11px] font-body px-2.5 py-1 rounded-full" style={{ background: "rgba(201,148,30,0.12)", color: "#F5C842" }}>{i}</span>
                 ))}
               </div>
             </div>

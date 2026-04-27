@@ -139,8 +139,8 @@ const Rituals = () => {
     return (
       <div className="p-8 flex items-center justify-center min-h-[50vh]">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#E0B040', borderTopColor: 'transparent' }} />
-          <p style={{ fontFamily: 'var(--font-body)', color: '#D8C896', fontSize: '14px' }}>Loading rituals…</p>
+          <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#C4973A', borderTopColor: 'transparent' }} />
+          <p style={{ fontFamily: 'var(--font-body)', color: '#A08B62', fontSize: '14px' }}>Loading rituals…</p>
         </div>
       </div>
     );
@@ -153,20 +153,20 @@ const Rituals = () => {
 
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
-          <Sparkles size={32} style={{ color: '#F8DC8A' }} />
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: 300, color: '#FFFFFF', letterSpacing: '-0.03em' }}>Rituals</h1>
+          <Sparkles size={32} style={{ color: '#EEC96E' }} />
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em' }}>Rituals</h1>
         </div>
         {ritualStreak > 0 && (
           <span
             className={ritualStreak >= 3 ? 'animate-streak-glow' : ''}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '6px',
-              background: 'rgba(224,176,64,0.09)',
-              border: '1px solid rgba(224,176,64,0.22)',
+              background: 'rgba(196,151,58,0.09)',
+              border: '1px solid rgba(196,151,58,0.22)',
               borderRadius: 'var(--r-pill)',
               padding: '7px 16px',
               fontFamily: 'var(--font-body)', fontSize: '13px', fontWeight: 500,
-              color: '#F8DC8A',
+              color: '#EEC96E',
             }}
           >
             <Flame size={16} />
@@ -179,62 +179,62 @@ const Rituals = () => {
         <div className="ss-elevated ss-appear ss-appear-1 space-y-5" style={{ padding: 'clamp(24px, 4vw, 36px) clamp(20px, 4vw, 40px)' }}>
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Calendar size={14} style={{ color: '#E0B040' }} />
-              <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#E0B040' }}>
+              <Calendar size={14} style={{ color: '#C4973A' }} />
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C4973A' }}>
                 Week of {format(new Date(currentRitual.week_of), "d MMM yyyy")}
               </p>
             </div>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.5vw, 34px)', fontWeight: 300, color: '#FFFFFF', letterSpacing: '-0.03em' }}>{currentRitual.title}</h2>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px, 3.5vw, 34px)', fontWeight: 300, color: '#F2EAD8', letterSpacing: '-0.03em' }}>{currentRitual.title}</h2>
           </div>
 
-          <p style={{ fontSize: '15px', fontFamily: 'var(--font-body)', color: '#F0E8D4', lineHeight: 1.75 }}>{currentRitual.description}</p>
+          <p style={{ fontSize: '15px', fontFamily: 'var(--font-body)', color: '#D4C49A', lineHeight: 1.75 }}>{currentRitual.description}</p>
 
           {currentRitual.reflection_prompt && (
             <div style={{
-              background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(248,220,138,0.36)',
+              background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(196,151,58,0.12)',
               borderRadius: '12px', padding: '16px 20px',
             }}>
-              <p style={{ fontFamily: 'var(--font-display)', fontSize: '15px', fontStyle: 'italic', color: '#D8C896', lineHeight: 1.75 }}>{currentRitual.reflection_prompt}</p>
+              <p style={{ fontFamily: 'var(--font-display)', fontSize: '15px', fontStyle: 'italic', color: '#A08B62', lineHeight: 1.75 }}>{currentRitual.reflection_prompt}</p>
             </div>
           )}
 
           {completed ? (
             <div className="ritual-complete-card with-glow space-y-4" style={{
-              background: 'linear-gradient(135deg, rgba(248,220,138,0.30) 0%, rgba(248,220,138,0.03) 100%)',
-              border: '1px solid rgba(248,220,138,0.42)',
+              background: 'linear-gradient(135deg, rgba(196,151,58,0.06) 0%, rgba(238,201,110,0.03) 100%)',
+              border: '1px solid rgba(196,151,58,0.18)',
               borderRadius: '16px', padding: '24px 28px',
             }}>
               <div className="flex items-center gap-4">
                 <div style={{
                   width: '44px', height: '44px', borderRadius: '50%',
-                  background: 'linear-gradient(135deg, rgba(224,176,64,0.15), rgba(248,220,138,0.08))',
-                  border: '1px solid rgba(248,220,138,0.25)',
+                  background: 'linear-gradient(135deg, rgba(196,151,58,0.15), rgba(238,201,110,0.08))',
+                  border: '1px solid rgba(238,201,110,0.25)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   flexShrink: 0,
                 }}>
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="ritual-check-svg">
-                    <path d="M5 13l4 4L19 7" stroke="#F8DC8A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M5 13l4 4L19 7" stroke="#EEC96E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
                 <div>
-                  <p style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 400, color: '#F8DC8A', letterSpacing: '-0.02em' }}>Ritual complete</p>
-                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: '#D8C896', marginTop: '2px' }}>Your intention has been set for this week.</p>
+                  <p style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: 400, color: '#EEC96E', letterSpacing: '-0.02em' }}>Ritual complete</p>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: '#A08B62', marginTop: '2px' }}>Your intention has been set for this week.</p>
                 </div>
               </div>
               {savedReflection && (
                 <div style={{
-                  background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(248,220,138,0.34)',
+                  background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(196,151,58,0.10)',
                   borderRadius: '12px', padding: '16px 20px', marginTop: '8px',
                 }}>
-                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.10em', textTransform: 'uppercase', color: '#D8C896', marginBottom: '8px' }}>Your reflection</p>
-                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#F0E8D4', lineHeight: 1.75, whiteSpace: 'pre-wrap' }}>{savedReflection}</p>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.10em', textTransform: 'uppercase', color: '#5C4E34', marginBottom: '8px' }}>Your reflection</p>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#D4C49A', lineHeight: 1.75, whiteSpace: 'pre-wrap' }}>{savedReflection}</p>
                 </div>
               )}
             </div>
           ) : (
             <div className="space-y-4">
               <div className="space-y-2">
-                <label style={{ fontSize: '14px', fontFamily: 'var(--font-body)', fontWeight: 500, color: '#FFFFFF' }}>Your reflection (optional)</label>
+                <label style={{ fontSize: '14px', fontFamily: 'var(--font-body)', fontWeight: 500, color: '#F2EAD8' }}>Your reflection (optional)</label>
                 <textarea
                   value={reflection}
                   onChange={(e) => setReflection(e.target.value)}
@@ -245,7 +245,7 @@ const Rituals = () => {
               </div>
               <div className="flex items-center gap-2">
                 <Checkbox id="share" checked={shareToFeed} onCheckedChange={(v) => setShareToFeed(v === true)} />
-                <label htmlFor="share" style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: '#FFFFFF', cursor: 'pointer' }}>Share my reflection with the community</label>
+                <label htmlFor="share" style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: '#F2EAD8', cursor: 'pointer' }}>Share my reflection with the community</label>
               </div>
               <Button variant="gold" onClick={handleComplete} disabled={submitting} className="w-full sm:w-auto btn-gold">
                 {submitting ? "Completing…" : "Complete this ritual"}
@@ -264,35 +264,35 @@ const Rituals = () => {
 
       {pastRituals.length > 0 && (
         <div className="space-y-3 ss-appear ss-appear-2">
-          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', fontWeight: 400, color: '#FFFFFF', letterSpacing: '-0.02em' }}>Past Rituals</h3>
+          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', fontWeight: 400, color: '#F2EAD8', letterSpacing: '-0.02em' }}>Past Rituals</h3>
           <Accordion type="single" collapsible className="space-y-2">
             {pastRituals.map((ritual) => {
               const isComplete = pastCompletions.has(ritual.id);
               const pastReflection = pastCompletions.get(ritual.id);
               return (
                 <AccordionItem key={ritual.id} value={ritual.id} className="ss-interactive" style={{ padding: '12px 16px', borderRadius: 'var(--r-md)' }}>
-                  <AccordionTrigger className="hover:no-underline" style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#FFFFFF' }}>
+                  <AccordionTrigger className="hover:no-underline" style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#F2EAD8' }}>
                     <div className="flex items-center gap-2 text-left">
                       {isComplete ? (
                         <CheckCircle2 className="shrink-0" size={16} style={{ color: '#4DB89A' }} />
                       ) : (
-                        <div className="w-4 h-4 rounded-full border shrink-0" style={{ borderColor: '#D8C896' }} />
+                        <div className="w-4 h-4 rounded-full border shrink-0" style={{ borderColor: '#5C4E34' }} />
                       )}
                       <span>{ritual.title}</span>
-                      <span style={{ fontSize: '12px', marginLeft: '8px', color: '#D8C896' }}>{format(new Date(ritual.week_of), "d MMM yyyy")}</span>
+                      <span style={{ fontSize: '12px', marginLeft: '8px', color: '#5C4E34' }}>{format(new Date(ritual.week_of), "d MMM yyyy")}</span>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="space-y-3 pb-4">
-                    <p style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: '#F0E8D4' }}>{ritual.description}</p>
+                    <p style={{ fontSize: '14px', fontFamily: 'var(--font-body)', color: '#D4C49A' }}>{ritual.description}</p>
                     {ritual.reflection_prompt && (
-                      <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(248,220,138,0.36)', borderRadius: '12px', padding: '16px 20px' }}>
-                        <p style={{ fontFamily: 'var(--font-display)', fontSize: '14px', fontStyle: 'italic', color: '#D8C896' }}>{ritual.reflection_prompt}</p>
+                      <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(196,151,58,0.12)', borderRadius: '12px', padding: '16px 20px' }}>
+                        <p style={{ fontFamily: 'var(--font-display)', fontSize: '14px', fontStyle: 'italic', color: '#A08B62' }}>{ritual.reflection_prompt}</p>
                       </div>
                     )}
                     {isComplete && pastReflection && (
-                      <div style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(248,220,138,0.34)', borderRadius: '12px', padding: '14px 18px' }}>
-                        <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.10em', textTransform: 'uppercase', color: '#D8C896', marginBottom: '6px' }}>Your reflection</p>
-                        <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: '#F0E8D4', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{pastReflection}</p>
+                      <div style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(196,151,58,0.10)', borderRadius: '12px', padding: '14px 18px' }}>
+                        <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.10em', textTransform: 'uppercase', color: '#5C4E34', marginBottom: '6px' }}>Your reflection</p>
+                        <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: '#D4C49A', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{pastReflection}</p>
                       </div>
                     )}
                     {isComplete && !pastReflection && (

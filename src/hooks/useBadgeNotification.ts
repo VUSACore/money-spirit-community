@@ -33,11 +33,11 @@ export function useBadgeNotification(userId: string | undefined) {
               position: "bottom-right",
               style: {
                 background: "rgba(6, 12, 24, 0.96)",
-                border: "1px solid rgba(224, 176, 64, 0.25)",
+                border: "1px solid rgba(196, 151, 58, 0.25)",
                 borderRadius: "16px",
-                boxShadow: "0 8px 32px rgba(224, 176, 64, 0.15)",
+                boxShadow: "0 8px 32px rgba(196, 151, 58, 0.15)",
                 fontFamily: "var(--font-body, 'DM Sans')",
-                color: "#F8DC8A",
+                color: "#EEC96E",
               },
             });
           }

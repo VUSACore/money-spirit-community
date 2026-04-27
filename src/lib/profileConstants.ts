@@ -60,7 +60,7 @@ export const formatEnumLabel = (v: string | null | undefined) => {
 };
 
 export const archetypeAccent: Record<string, string> = {
-  giver: "#FFA37A", keeper: "#7BB0E0", rebel: "#C490DA", seeker: "#3DD4A8", achiever: "#C9941E",
+  giver: "#E8845C", keeper: "#5B8DB8", rebel: "#9B59B6", seeker: "#27AE8F", achiever: "#C9941E",
 };
 export const archetypeName: Record<string, string> = {
   giver: "The Giver", keeper: "The Keeper", rebel: "The Rebel", seeker: "The Seeker", achiever: "The Achiever",
