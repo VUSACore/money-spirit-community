@@ -16,6 +16,15 @@ const TILE_URL = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
 const TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>';
 
+const PATHWAYS: { key: string; label: string; color: string; meaning: string }[] = [
+  { key: "giver",    label: "The Giver",    color: "#D4856A", meaning: "Generous, family-first money flow" },
+  { key: "keeper",   label: "The Keeper",   color: "#6B9EC4", meaning: "Saver, security-led, careful" },
+  { key: "rebel",    label: "The Rebel",    color: "#A87CC4", meaning: "Independent, unconventional path" },
+  { key: "seeker",   label: "The Seeker",   color: "#4DB89A", meaning: "Curious, learning, exploring" },
+  { key: "achiever", label: "The Achiever", color: "#C4973A", meaning: "Driven, growth & ambition" },
+  { key: "unknown",  label: "Not yet set",  color: "#EEC96E", meaning: "Member hasn't chosen a pathway" },
+];
+
 function MapView({
   points,
   center,
@@ -29,7 +38,13 @@ function MapView({
   minZoom: number;
   maxBounds?: [[number, number], [number, number]];
 }) {
-  const heatPoints = points.map((p) => ({ lat: p.approx_lat, lng: p.approx_lng }));
+  // Group points by pathway so each pathway gets its own colored heat layer
+  const grouped = PATHWAYS.map((pw) => ({
+    ...pw,
+    points: points
+      .filter((p) => (p.pathway_type ?? "unknown") === pw.key)
+      .map((p) => ({ lat: p.approx_lat, lng: p.approx_lng })),
+  }));
 
   return (
     <div
@@ -51,7 +66,11 @@ function MapView({
         style={{ height: "100%", width: "100%", background: "#04101F" }}
       >
         <TileLayer attribution={TILE_ATTRIBUTION} url={TILE_URL} />
-        <HeatLayer points={heatPoints} />
+        {grouped.map((g) =>
+          g.points.length > 0 ? (
+            <HeatLayer key={g.key} points={g.points} color={g.color} radius={32} blur={22} />
+          ) : null,
+        )}
       </MapContainer>
 
       <div
@@ -152,30 +171,60 @@ export default function Commensalism() {
           )}
         </Tabs>
 
-        {/* Legend */}
+        {/* Pathway legend */}
         <div
-          className="mt-6 p-4 rounded-xl flex flex-wrap gap-3 items-center"
+          className="mt-6 p-4 md:p-5 rounded-xl"
           style={{
             background: "rgba(6,12,24,0.55)",
             border: "1px solid rgba(196,151,58,0.12)",
             fontFamily: "var(--font-body)",
-            fontSize: 12,
-            color: "#D4C49A",
           }}
         >
-          <span style={{ color: "#BBA96E", fontWeight: 500 }}>Density:</span>
-          <span className="inline-flex items-center gap-2">
-            <span
-              style={{
-                width: 120,
-                height: 10,
-                borderRadius: 6,
-                background: "linear-gradient(90deg, #4DB89A, #6B9EC4, #EEC96E, #D4856A, #A87CC4)",
-                display: "inline-block",
-              }}
-            />
-            <span style={{ color: "#A08B62" }}>low → high</span>
-          </span>
+          <div
+            className="mb-3 flex items-center gap-2"
+            style={{ color: "#EEC96E", fontSize: 13, fontWeight: 600, letterSpacing: "0.02em" }}
+          >
+            <span>Pathway colours</span>
+            <span style={{ color: "#A08B62", fontWeight: 400, fontSize: 11 }}>
+              · each glow on the map represents one of these archetypes
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2.5">
+            {PATHWAYS.map((p) => (
+              <div key={p.key} className="flex items-start gap-2.5">
+                <span
+                  aria-hidden
+                  style={{
+                    width: 14,
+                    height: 14,
+                    borderRadius: "50%",
+                    background: p.color,
+                    boxShadow: `0 0 12px ${p.color}, inset 0 0 4px rgba(255,255,255,0.25)`,
+                    flexShrink: 0,
+                    marginTop: 2,
+                  }}
+                />
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ color: "#F2EAD8", fontSize: 13, fontWeight: 500 }}>{p.label}</div>
+                  <div style={{ color: "#A08B62", fontSize: 11.5, lineHeight: 1.35 }}>{p.meaning}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p
+            className="mt-3 pt-3"
+            style={{
+              borderTop: "1px solid rgba(196,151,58,0.10)",
+              color: "#A08B62",
+              fontSize: 11,
+              lineHeight: 1.5,
+            }}
+          >
+            Brighter, denser glows = more members of that pathway in the area. Locations are rounded to
+            roughly 110&nbsp;km — never exact.
+          </p>
         </div>
       </div>
     </>
