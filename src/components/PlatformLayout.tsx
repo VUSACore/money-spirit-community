@@ -211,6 +211,7 @@ const PlatformLayout = () => {
       const { data } = await supabase.from("profiles").select("*").eq("user_id", session.user.id).maybeSingle();
       setProfile(data);
       setLoading(false);
+      if (data?.user_id) recordViewerLocation(data.user_id, data.pathway_type);
     };
     load();
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
