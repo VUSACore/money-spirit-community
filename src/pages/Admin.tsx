@@ -224,6 +224,7 @@ const Admin = () => {
           {activeTab === "revenue" && <AdminRevenue />}
           {activeTab === "intelligence" && <FounderIntelligence />}
           {activeTab === "fms" && <FMSLeadBoard />}
+          {activeTab === "affiliates" && <AdminAffiliates />}
           {activeTab === "settings" && <AdminSettings />}
           {activeTab === "audit" && <AdminAuditLog />}
         </div>
