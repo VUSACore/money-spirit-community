@@ -178,7 +178,7 @@ const DesktopBell = ({ userId, expanded }: { userId: string; expanded: boolean }
         {expanded && <span>Notifications</span>}
       </button>
       {open && (
-        <div className="absolute left-full bottom-0 ml-2 z-50" style={{ minWidth: 380 }}>
+        <div className="fixed z-[60]" style={{ left: expanded ? 248 : 72, bottom: 16, minWidth: 380 }}>
           <NotificationPanel userId={userId} onClose={() => setOpen(false)} onCountChange={setUnreadCount} compact />
         </div>
       )}
@@ -548,9 +548,7 @@ const PlatformLayout = () => {
                 </h2>
                 <div className="flex items-center gap-4">
                   {profile?.user_id && (
-                    <div className="relative">
-                      <Bell size={20} style={{ color: 'rgba(160,139,98,0.60)', cursor: 'pointer', transition: 'color 0.15s ease' }} />
-                    </div>
+                    <MobileBell userId={profile.user_id} />
                   )}
                   <Link to="/profile"
                     className="flex items-center justify-center"
