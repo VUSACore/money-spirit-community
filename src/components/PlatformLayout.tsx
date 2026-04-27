@@ -29,7 +29,7 @@ type Profile = Tables<"profiles">;
 const ProfileContext = createContext<Profile | null>(null);
 export const useProfile = () => useContext(ProfileContext);
 
-const navItems: { labelKey: TranslationKey; label: string; to: string; icon: typeof Compass }[] = [
+const navItems: { labelKey: TranslationKey; label: string; to: string; icon: typeof Compass; useLiteral?: boolean }[] = [
   { labelKey: "my_pathway", label: "My Pathway", to: "/dashboard", icon: Compass },
   { labelKey: "community", label: "Community", to: "/community", icon: Users },
   { labelKey: "forums", label: "Forums", to: "/forums", icon: MessageSquare },
@@ -37,7 +37,7 @@ const navItems: { labelKey: TranslationKey; label: string; to: string; icon: typ
   { labelKey: "learn", label: "Learn", to: "/learn", icon: BookOpen },
   { labelKey: "events", label: "Events", to: "/events", icon: CalendarDays },
   { labelKey: "members", label: "Members", to: "/members", icon: Contact },
-  { labelKey: "members", label: "Commensalism", to: "/commensalism", icon: Globe2 },
+  { labelKey: "members", label: "Commensalism", to: "/commensalism", icon: Globe2, useLiteral: true },
 ];
 
 const accentMap: Record<string, string> = {
