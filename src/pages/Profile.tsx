@@ -44,7 +44,7 @@ const Profile = () => {
       <SEOHead title="My Profile — Money Spirit" />
 
       {/* Cover */}
-      <div className="relative w-full" style={{ height: 'clamp(140px, 20vw, 200px)', background: p.cover_url ? `url(${p.cover_url}) center/cover` : "linear-gradient(135deg, #4169E1 0%, #2F4FB8 100%)" }}>
+      <div className="relative w-full" style={{ height: 'clamp(140px, 20vw, 200px)', background: p.cover_url ? `url(${p.cover_url}) center/cover` : "linear-gradient(135deg, #005eb8 0%, #004a93 100%)" }}>
         <CoverUpload userId={profile.user_id} />
       </div>
 
@@ -53,9 +53,9 @@ const Profile = () => {
         <div className="flex flex-col md:flex-row md:items-end gap-4">
           <div className="relative group shrink-0">
             {p.avatar_url ? (
-              <img src={p.avatar_url} alt={profile.display_name} className="w-24 h-24 rounded-full object-cover" style={{ border: "3px solid #2F4FB8" }} />
+              <img src={p.avatar_url} alt={profile.display_name} className="w-24 h-24 rounded-full object-cover" style={{ border: "3px solid #004a93" }} />
             ) : (
-              <div className="w-24 h-24 rounded-full flex items-center justify-center" style={{ background: "#C9941E", border: "3px solid #2F4FB8" }}>
+              <div className="w-24 h-24 rounded-full flex items-center justify-center" style={{ background: "#C9941E", border: "3px solid #004a93" }}>
                 <span className="font-heading text-2xl font-bold" style={{ color: "#0A0D14" }}>{getInitials(profile.display_name)}</span>
               </div>
             )}

@@ -216,7 +216,7 @@ const Onboarding = () => {
   // PROFILE SETUP — About You
   if (result && scores && profileStep === "about") {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 py-8" style={{ background: "#4169E1" }}>
+      <div className="min-h-screen flex items-center justify-center px-4 py-8" style={{ background: "#005eb8" }}>
         <div className="w-full max-w-lg space-y-6 animate-fade-in">
           <div className="text-center">
             <h1 className="font-heading text-[32px]" style={{ color: "#F1F5F9" }}>Tell your community about yourself</h1>
@@ -266,7 +266,7 @@ const Onboarding = () => {
   // PROFILE SETUP — Goals & Social
   if (result && scores && profileStep === "goals") {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 py-8" style={{ background: "#4169E1" }}>
+      <div className="min-h-screen flex items-center justify-center px-4 py-8" style={{ background: "#005eb8" }}>
         <div className="w-full max-w-lg space-y-6 animate-fade-in">
           <div className="text-center">
             <h1 className="font-heading text-[32px]" style={{ color: "#F1F5F9" }}>What are you working toward?</h1>
@@ -318,7 +318,7 @@ const Onboarding = () => {
   if (result && scores && profileStep === "reveal") {
     const info = archetypeInfo[result];
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 py-8" style={{ background: "#4169E1" }}>
+      <div className="min-h-screen flex items-center justify-center px-4 py-8" style={{ background: "#005eb8" }}>
         <div className="w-full max-w-lg text-center space-y-6 animate-fade-in">
           <div className="mx-auto w-28 h-28 rounded-full flex items-center justify-center text-5xl"
             style={{ border: `3px solid ${info.accent}`, boxShadow: `0 0 30px ${info.accent}40` }}>
@@ -342,7 +342,7 @@ const Onboarding = () => {
   const canProceed = currentSelected !== null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8" style={{ background: "#4169E1" }}>
+    <div className="min-h-screen flex items-center justify-center px-4 py-8" style={{ background: "#005eb8" }}>
       <div className="w-full max-w-lg">
         <div className="text-center mb-6">
           <h1 className="text-3xl font-heading" style={{ color: "#fff" }}>Your Money Spirit Path</h1>

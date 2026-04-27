@@ -39,7 +39,7 @@ const Login = () => {
       {showLoading && (
         <LoadingScreen onComplete={() => navigate('/dashboard', { replace: true })} />
       )}
-      {!showLoading && <div className="min-h-screen flex flex-col" style={{ background: '#4169E1' }}>
+      {!showLoading && <div className="min-h-screen flex flex-col" style={{ background: '#005eb8' }}>
       <SEOHead title="Sign In — Money Spirit" description="Sign in to your Money Spirit account to access your dashboard, rituals, courses and community." />
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-md">
