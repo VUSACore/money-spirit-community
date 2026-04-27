@@ -39,7 +39,7 @@ const ResetPassword = () => {
   const errorStyle: React.CSSProperties = { color: '#F87171', fontSize: '13px', fontFamily: 'var(--font-body)', marginTop: '4px' };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#0B1F3A' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#4169E1' }}>
       <SEOHead title="Set New Password — Money Spirit" noindex />
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-md">

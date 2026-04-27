@@ -2,7 +2,7 @@ import LotusIcon from "@/components/LotusIcon";
 import SEOHead from "@/components/SEOHead";
 
 const ErrorPage = () => (
-  <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center" style={{ background: '#0B1F3A' }}>
+  <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center" style={{ background: '#4169E1' }}>
     <SEOHead title="Something Went Wrong — Money Spirit" noindex />
     <LotusIcon className="text-accent" size={36} />
     <p style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: '#C4973A', fontWeight: 700, marginTop: '16px' }}>Money Spirit</p>

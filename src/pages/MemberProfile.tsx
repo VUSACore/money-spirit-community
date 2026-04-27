@@ -50,7 +50,7 @@ const MemberProfile = () => {
       <SEOHead title={`${profile.display_name} — Money Spirit`} />
 
       {/* Cover */}
-      <div className="w-full" style={{ height: 200, background: profile.cover_url ? `url(${profile.cover_url}) center/cover` : "linear-gradient(135deg, #0E2D5F 0%, var(--ms-surface-2) 100%)" }} />
+      <div className="w-full" style={{ height: 200, background: profile.cover_url ? `url(${profile.cover_url}) center/cover` : "linear-gradient(135deg, #4169E1 0%, var(--ms-surface-2) 100%)" }} />
 
       {/* Header */}
       <div className="px-8 max-w-5xl mx-auto" style={{ marginTop: -60 }}>

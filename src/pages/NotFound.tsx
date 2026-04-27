@@ -14,7 +14,7 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center" style={{ background: '#0B1F3A' }}>
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center" style={{ background: '#4169E1' }}>
       <SEOHead title="Page Not Found — Money Spirit" description="The page you're looking for doesn't exist or has been moved." />
       <p style={{
         fontFamily: 'var(--font-display)', fontSize: '120px', lineHeight: 1,

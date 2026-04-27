@@ -9,10 +9,10 @@
   --ss-void:    #4169E1;
   --ss-abyss:   #4169E1;
   --ss-deep:    #4169E1;
-  --ss-base:    #0D1B2E;
-  --ss-surface: #112036;
-  --ss-raised:  #162640;
-  --ss-peak:    #1C2E4A;
+  --ss-base:    #3A5FD0;
+  --ss-surface: #4169E1;
+  --ss-raised:  #5278E6;
+  --ss-peak:    #6488EB;
 
   --ss-gold-shadow:  #6B4E0E;
   --ss-gold-deep:    #8B6612;
@@ -111,20 +111,7 @@ html, body {
   background-color: #4169E1 !important;
 }
 
-/* Sacred mandala watermark — persistent across all pages */
-body::after {
-  content: '';
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: min(90vw, 90vh);
-  height: min(90vw, 90vh);
-  transform: translate(-50%, -50%);
-  background: url('/mandala-watermark.png') center / contain no-repeat;
-  opacity: 0.03;
-  pointer-events: none;
-  z-index: 0;
-}
+/* Sacred mandala watermark removed */
 
 html {
   -webkit-font-smoothing: antialiased;
@@ -305,7 +292,7 @@ p, span, div, label, button {
   .btn-gold {
     background: var(--ss-gold-gradient);
     background-size: 200% 200%;
-    color: #0B1525;
+    color: #2F4FB8;
     font-family: 'Outfit', sans-serif;
     font-size: 14px;
     font-weight: 600;
@@ -363,7 +350,7 @@ p, span, div, label, button {
 
   .ms-badge {
     background: var(--ss-gold-gradient);
-    color: #0B1525;
+    color: #2F4FB8;
     font-weight: 600;
   }
 
