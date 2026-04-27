@@ -1399,6 +1399,45 @@ export type Database = {
           },
         ]
       }
+      user_locations: {
+        Row: {
+          approx_lat: number
+          approx_lng: number
+          city: string | null
+          country: string | null
+          created_at: string
+          id: string
+          pathway_type: Database["public"]["Enums"]["pathway_type"] | null
+          region: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approx_lat: number
+          approx_lng: number
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          id?: string
+          pathway_type?: Database["public"]["Enums"]["pathway_type"] | null
+          region?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approx_lat?: number
+          approx_lng?: number
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          id?: string
+          pathway_type?: Database["public"]["Enums"]["pathway_type"] | null
+          region?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       public_profiles: {

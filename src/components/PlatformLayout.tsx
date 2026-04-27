@@ -4,8 +4,9 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Compass, Users, MessageSquare, Flame, BookOpen, CalendarDays,
-  Contact, LogOut, Shield, Menu, Bell,
+  Contact, LogOut, Shield, Menu, Bell, Globe2,
 } from "lucide-react";
+import { recordViewerLocation } from "@/lib/actions/userLocation";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import NotificationBell from "@/components/notifications/NotificationBell";
 import NotificationPanel from "@/components/notifications/NotificationPanel";
@@ -28,7 +29,7 @@ type Profile = Tables<"profiles">;
 const ProfileContext = createContext<Profile | null>(null);
 export const useProfile = () => useContext(ProfileContext);
 
-const navItems: { labelKey: TranslationKey; label: string; to: string; icon: typeof Compass }[] = [
+const navItems: { labelKey: TranslationKey; label: string; to: string; icon: typeof Compass; useLiteral?: boolean }[] = [
   { labelKey: "my_pathway", label: "My Pathway", to: "/dashboard", icon: Compass },
   { labelKey: "community", label: "Community", to: "/community", icon: Users },
   { labelKey: "forums", label: "Forums", to: "/forums", icon: MessageSquare },
@@ -36,6 +37,7 @@ const navItems: { labelKey: TranslationKey; label: string; to: string; icon: typ
   { labelKey: "learn", label: "Learn", to: "/learn", icon: BookOpen },
   { labelKey: "events", label: "Events", to: "/events", icon: CalendarDays },
   { labelKey: "members", label: "Members", to: "/members", icon: Contact },
+  { labelKey: "members", label: "Commensalism", to: "/commensalism", icon: Globe2, useLiteral: true },
 ];
 
 const accentMap: Record<string, string> = {
@@ -50,7 +52,7 @@ const getInitials = (name: string) =>
 
 const getPageTitle = (pathname: string, t: (key: TranslationKey) => string) => {
   const item = navItems.find((n) => pathname.startsWith(n.to));
-  if (item) return t(item.labelKey);
+  if (item) return item.useLiteral ? item.label : t(item.labelKey);
   if (pathname.startsWith("/settings")) return "Settings";
   return "Money Spirit";
 };
@@ -209,6 +211,7 @@ const PlatformLayout = () => {
       const { data } = await supabase.from("profiles").select("*").eq("user_id", session.user.id).maybeSingle();
       setProfile(data);
       setLoading(false);
+      if (data?.user_id) recordViewerLocation(data.user_id, data.pathway_type);
     };
     load();
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -320,7 +323,7 @@ const PlatformLayout = () => {
                   >
                     <item.icon size={18} className="shrink-0" />
                     {sidebarExpanded && (
-                      <span style={{ opacity: 1, transition: 'opacity 0.15s ease' }}>{t(item.labelKey)}</span>
+                      <span style={{ opacity: 1, transition: 'opacity 0.15s ease' }}>{item.useLiteral ? item.label : t(item.labelKey)}</span>
                     )}
                   </NavLink>
                 );
@@ -330,7 +333,7 @@ const PlatformLayout = () => {
                     <Tooltip key={item.to}>
                       <TooltipTrigger asChild>{navButton}</TooltipTrigger>
                       <TooltipContent side="right" sideOffset={16} style={tooltipStyle}>
-                        {t(item.labelKey)}
+                        {item.useLiteral ? item.label : t(item.labelKey)}
                       </TooltipContent>
                     </Tooltip>
                   );
@@ -441,7 +444,7 @@ const PlatformLayout = () => {
                             }}
                           >
                             <item.icon size={18} />
-                            {t(item.labelKey)}
+                            {item.useLiteral ? item.label : t(item.labelKey)}
                           </NavLink>
                         );
                       })}
@@ -506,7 +509,7 @@ const PlatformLayout = () => {
                   style={{ fontFamily: 'var(--font-body)', color: active ? '#EEC96E' : '#9A8856' }}
                 >
                   <item.icon size={20} />
-                  <span>{item.labelKey === "my_pathway" ? "Home" : t(item.labelKey)}</span>
+                  <span>{item.useLiteral ? item.label : (item.labelKey === "my_pathway" ? "Home" : t(item.labelKey))}</span>
                 </NavLink>
               );
             })}

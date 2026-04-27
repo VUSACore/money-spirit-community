@@ -36,6 +36,7 @@ const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const NotificationPreferences = lazy(() => import("./pages/NotificationPreferences"));
+const Commensalism = lazy(() => import("./pages/Commensalism"));
 
 const queryClient = new QueryClient();
 
@@ -77,6 +78,7 @@ const App = () => (
                   <Route path="/members" element={<Members />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/members/:userId" element={<MemberProfile />} />
+                  <Route path="/commensalism" element={<Commensalism />} />
                   <Route path="/settings/notifications" element={<NotificationPreferences />} />
                 </Route>
 
