@@ -305,7 +305,7 @@ p, span, div, label, button {
   .btn-gold {
     background: var(--ss-gold-gradient);
     background-size: 200% 200%;
-    color: #0B1525;
+    color: #2F4FB8;
     font-family: 'Outfit', sans-serif;
     font-size: 14px;
     font-weight: 600;
@@ -363,7 +363,7 @@ p, span, div, label, button {
 
   .ms-badge {
     background: var(--ss-gold-gradient);
-    color: #0B1525;
+    color: #2F4FB8;
     font-weight: 600;
   }
 

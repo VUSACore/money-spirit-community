@@ -102,7 +102,7 @@ const MobileBell = ({ userId }: { userId: string }) => {
         <Bell size={20} style={{ color: unreadCount > 0 ? '#EEC96E' : 'rgba(160,139,98,0.60)', transition: 'color 0.2s ease' }} />
         {unreadCount > 0 && (
           <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-[16px] flex items-center justify-center rounded-full text-[10px] font-semibold px-1"
-            style={{ background: '#C4973A', color: '#0B1525', boxShadow: '0 0 8px rgba(196,151,58,0.40)' }}>
+            style={{ background: '#C4973A', color: '#2F4FB8', boxShadow: '0 0 8px rgba(196,151,58,0.40)' }}>
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
@@ -169,7 +169,7 @@ const DesktopBell = ({ userId, expanded }: { userId: string; expanded: boolean }
           {unreadCount > 0 && (
             <span
               className="absolute -top-1.5 -right-1.5 min-w-[16px] h-[16px] flex items-center justify-center rounded-full text-[9px] font-bold px-1"
-              style={{ background: '#C4973A', color: '#0B1525', boxShadow: '0 0 8px rgba(196,151,58,0.40)' }}
+              style={{ background: '#C4973A', color: '#2F4FB8', boxShadow: '0 0 8px rgba(196,151,58,0.40)' }}
             >
               {displayCount}
             </span>
@@ -225,7 +225,7 @@ const PlatformLayout = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0B1F3A" }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#4169E1" }}>
         <img src="/logo.png" alt="Money Spirit" style={{ width: 48, filter: 'drop-shadow(0 0 10px rgba(196,151,58,0.20))' }} className="animate-pulse" />
       </div>
     );
@@ -243,7 +243,7 @@ const PlatformLayout = () => {
             minHeight: '100vh',
             position: 'relative',
             overflow: 'hidden',
-            background: `radial-gradient(ellipse 100% 100% at 50% 50%, #0B1F3A 60%, #081629 100%)`,
+            background: `radial-gradient(ellipse 100% 100% at 50% 50%, #4169E1 60%, #2F4FB8 100%)`,
           }}
         >
           {/* SacredBackground removed — logo IS the mandala */}
@@ -386,7 +386,7 @@ const PlatformLayout = () => {
                           border: '1.5px solid rgba(238,201,110,0.40)',
                           boxShadow: '0 0 16px rgba(196,151,58,0.20)',
                           fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 600,
-                          color: '#0B1525',
+                          color: '#2F4FB8',
                         }}
                       >
                         {initials}
@@ -481,7 +481,7 @@ const PlatformLayout = () => {
                   border: '1.5px solid rgba(238,201,110,0.40)',
                   boxShadow: '0 0 16px rgba(196,151,58,0.20)',
                   fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 600,
-                  color: '#0B1525',
+                  color: '#2F4FB8',
                 }}
               >
                 {initials}
@@ -560,7 +560,7 @@ const PlatformLayout = () => {
                       border: '1.5px solid rgba(238,201,110,0.40)',
                       boxShadow: '0 0 16px rgba(196,151,58,0.20)',
                       fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 600,
-                      color: '#0B1525',
+                      color: '#2F4FB8',
                     }}
                   >
                     {initials}
